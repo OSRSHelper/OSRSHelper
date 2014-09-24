@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -24,12 +23,11 @@ public class HighScoreActivity extends Activity {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
-	private static PlayerSkills playerSkills;
+	private PlayerSkills playerSkills;
 
 	public static void show(final Context context, final String username) {
 		Intent intent = new Intent(context, HighScoreActivity.class);
 		intent.putExtra(EXTRA_USERNAME, username);
-		playerSkills = null;
 		context.startActivity(intent);
 	}
 
@@ -38,7 +36,6 @@ public class HighScoreActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.activity_high_score);
 
@@ -50,13 +47,8 @@ public class HighScoreActivity extends Activity {
 		HiscoreHelper hiscoreHelper = new HiscoreHelper();
 		hiscoreHelper.setUserName(username);
 
-		if (playerSkills == null) {
-			Log.i(TAG, "Populate table with downloaded skills");
-			new PopulateTable().execute();
-		} else {
-			Log.i(TAG, "Populate table with saved skills");
-			populateTable(playerSkills);
-		}
+		Log.i(TAG, "Populate table with downloaded skills");
+		new PopulateTable().execute();
 
 	}
 

@@ -30,4 +30,5 @@
     <string name="loading_tracking">Loading tracking for: %1$s</string>
     <string name="showing_tracking">Showing tracking for: %1$s</string>
     <string name="xp_gain">(+%1$d)</string>
+    <string name="tracking_since">Tracking since %1$s</string>
 </resources>
