@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OSRS Helper</string>
+    <string name="highscores">Highscores</string>
+    <string name="zybez">Zybez Item Exchange</string>
+    <string name="wiki">OSRS Wiki</string>
+    <string name="xptracker">XP Tracker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_username">Choose a username</string>
+    <string name="username_desc">Enter a username</string>
+    <string name="prompt_username">Username</string>
+    <string name="continuee">Continue</string>
+    <string name="username_error">You need to specify a username</string>
+    <string name="username_choose">Or choose a username</string>
+    <string name="title_activity_xptracker">XPTrackerActivity</string>
+    
+    <string name="title_activity_high_score">Highscore</string>
+    <string name="skill">Skill</string>
+    <string name="xp">XP</string>
+    <string name="level">Level</string>
+    <string name="ranking">Ranking</string>
+    <string name="loading_highscores">Loading highscores for: %1$s</string>
+    <string name="not_existing_player">%1$s does not exist in the database.</string>
+    <string name="showing_results">Showing highscores for: %1$s</string>
+    <string name="network_error">Network error</string>
+    <string name="xp_item">%1$d XP</string>
+    
+    <string name="gain">(Gain)</string>
+    <string name="loading_tracking">Loading tracking for: %1$s</string>
+    <string name="showing_tracking">Showing tracking for: %1$s</string>
+    <string name="xp_gain">(+%1$d)</string>
+</resources>

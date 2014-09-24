@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/highscore_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/greenbt_sel"
+        android:gravity="center"
+        android:text="@string/highscores"
+        android:textColor="@color/White"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/zybez_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/greenbt_sel"
+        android:gravity="center"
+        android:text="@string/zybez"
+        android:textColor="@color/White"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/wiki_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/greenbt_sel"
+        android:gravity="center"
+        android:text="@string/wiki"
+        android:textColor="@color/White"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/xptracker_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/greenbt_sel"
+        android:gravity="center"
+        android:text="@string/xptracker"
+        android:textColor="@color/White"
+        android:textSize="18sp" />
+
+</LinearLayout>
