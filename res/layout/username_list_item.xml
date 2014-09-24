@@ -20,6 +20,6 @@
     android:layout_height="48dp"
     android:gravity="center_vertical"
     android:textColor="@color/Black"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
 />
