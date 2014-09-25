@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.hiscore;
+package com.infonuascape.osrshelper.utils;
 
 /**
  * Created by maden on 9/12/14.
