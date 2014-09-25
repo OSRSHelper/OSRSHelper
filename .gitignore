@@ -16,3 +16,9 @@ hs_err_pid*
 /gen/com/infonuascape/osrshelper/BuildConfig.java
 /gen/com/infonuascape/osrshelper/R.java
 /project.properties
+
+# don't version intellij idea's spam
+.idea/
+*.iml
+gen/
+out/
