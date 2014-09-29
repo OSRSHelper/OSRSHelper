@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper;
 
+import java.text.NumberFormat;
+
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
@@ -138,7 +140,9 @@ public class HighScoreActivity extends Activity {
 
 		// Lvl
 		TextView text = new TextView(this);
-		text.setText(skill.getLevel() + "");
+		if (skill.getRank() != -1) {
+			text.setText(skill.getLevel() + "");
+		}
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -146,7 +150,9 @@ public class HighScoreActivity extends Activity {
 
 		// XP
 		text = new TextView(this);
-		text.setText(getString(R.string.xp_item, skill.getExperience()));
+		if (skill.getRank() != -1) {
+			text.setText(getString(R.string.xp_item, NumberFormat.getInstance().format(skill.getExperience())));
+		}
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -154,10 +160,17 @@ public class HighScoreActivity extends Activity {
 
 		// Ranking
 		text = new TextView(this);
-		text.setText(skill.getRank() + "");
+
+		if (skill.getRank() != -1) {
+			text.setText(NumberFormat.getInstance().format(skill.getRank()));
+			text.setTextColor(getResources().getColor(R.color.text_normal));
+		} else {
+			text.setText(getString(R.string.not_ranked));
+			text.setTextColor(getResources().getColor(R.color.Red));
+		}
+
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
-		text.setTextColor(getResources().getColor(R.color.text_normal));
 		tableRow.addView(text);
 
 		return tableRow;
