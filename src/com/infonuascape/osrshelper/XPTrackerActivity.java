@@ -1,7 +1,7 @@
 package com.infonuascape.osrshelper;
 
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
-import com.infonuascape.osrshelper.hiscore.PlayerNotFoundException;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 import com.infonuascape.osrshelper.utils.Skill;
 import android.app.Activity;

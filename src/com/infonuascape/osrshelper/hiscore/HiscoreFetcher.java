@@ -1,5 +1,6 @@
 package com.infonuascape.osrshelper.hiscore;
 
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;

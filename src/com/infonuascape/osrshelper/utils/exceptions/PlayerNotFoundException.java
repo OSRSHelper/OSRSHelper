@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.utils;
+package com.infonuascape.osrshelper.utils.exceptions;
 
 /**
  * Created by maden on 9/12/14.

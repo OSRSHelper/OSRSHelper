@@ -1,5 +1,6 @@
 package com.infonuascape.osrshelper.hiscore;
 
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 public class HiscoreHelper {

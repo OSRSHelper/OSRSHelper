@@ -60,4 +60,8 @@ public class Skill {
     public void setRank(int rank) {
         this.rank = rank;
     }
+
+    public String toString() {
+        return this.skillType.toString();
+    }
 }
