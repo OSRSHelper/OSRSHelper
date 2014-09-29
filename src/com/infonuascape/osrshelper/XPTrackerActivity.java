@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper;
 
+import java.text.NumberFormat;
+
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.hiscore.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
@@ -146,7 +148,7 @@ public class XPTrackerActivity extends Activity {
 
 		// XP
 		text = new TextView(this);
-		text.setText(getString(R.string.xp_item, skill.getExperience()));
+		text.setText(getString(R.string.xp_item, NumberFormat.getInstance().format(skill.getExperience())));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -154,10 +156,17 @@ public class XPTrackerActivity extends Activity {
 
 		// Gain
 		text = new TextView(this);
-		text.setText(getString(R.string.xp_gain, skill.getRank()));
+		text.setText(getString(R.string.xp_gain, skill.getRank() / 1000));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
-		text.setTextColor(getResources().getColor(R.color.text_normal));
+
+		if (skill.getRank() == 0) {
+			text.setTextColor(getResources().getColor(R.color.Red));
+		} else if (skill.getRank() < 100000) {
+			text.setTextColor(getResources().getColor(R.color.DarkYellow));
+		} else {
+			text.setTextColor(getResources().getColor(R.color.Green));
+		}
 		tableRow.addView(text);
 
 		return tableRow;

@@ -143,4 +143,5 @@
  <color name="Black">#000000</color>
  <color name="background">#e2e2e2</color>
  <color name="text_normal">#454545</color>
+ <color name="DarkYellow">#A1A100</color>
 </resources>
