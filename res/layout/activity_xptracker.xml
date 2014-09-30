@@ -27,52 +27,31 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_normal" />
 
+    <Spinner
+        android:id="@+id/time_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/track_since"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:background="#D92EB82E"
+        android:padding="10dp" />
+
     <ScrollView
         android:id="@+id/scroll_table"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/track_since"
+        android:layout_below="@id/time_spinner"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
         android:overScrollMode="never" >
 
         <TableLayout
-            android:id="@+id/table_hiscores"
+            android:id="@+id/table_tracking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchColumns="1" >
-
-            <TableRow>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/skill"
-                    android:textColor="@color/text_normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/level"
-                    android:textColor="@color/text_normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/xp"
-                    android:textColor="@color/text_normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/gain"
-                    android:textColor="@color/text_normal" />
-            </TableRow>
         </TableLayout>
     </ScrollView>
 

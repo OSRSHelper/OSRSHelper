@@ -31,5 +31,15 @@
     <string name="loading_tracking">Loading tracking for: %1$s</string>
     <string name="showing_tracking">Showing tracking for: %1$s</string>
     <string name="xp_gain">(+ %1$dK)</string>
-    <string name="tracking_since">Tracking since %1$s</string>
+    <string name="xp_gain_small">(+ %1$d)</string>
+    <string name="xp_gain_medium">(+ %1$.1fK)</string>
+    <string name="tracking_since">Tracking since\n%1$s</string>
+    
+    <string-array name="time_array">
+        <item>Hour</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
+    </string-array>
 </resources>

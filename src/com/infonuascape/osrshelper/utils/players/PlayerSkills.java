@@ -29,4 +29,9 @@ public class PlayerSkills {
 	public Skill runecraft = new Skill(SkillType.Runecraft);
 	public Skill hunter = new Skill(SkillType.Hunter);
 	public Skill construction = new Skill(SkillType.Construction);
+	public String sinceWhen;
+
+	public void setSinceWhen(String sinceWhen) {
+		this.sinceWhen = sinceWhen;
+	}
 }

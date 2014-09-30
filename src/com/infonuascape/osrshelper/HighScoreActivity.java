@@ -2,16 +2,11 @@ package com.infonuascape.osrshelper;
 
 import java.text.NumberFormat;
 
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
-import com.infonuascape.osrshelper.utils.Skill;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +14,11 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
+import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
+import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 public class HighScoreActivity extends Activity {
 	private final static String TAG = "HighScoreActivity";
@@ -46,10 +46,6 @@ public class HighScoreActivity extends Activity {
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_highscores, username));
 
-		HiscoreHelper hiscoreHelper = new HiscoreHelper();
-		hiscoreHelper.setUserName(username);
-
-		Log.i(TAG, "Populate table with downloaded skills");
 		new PopulateTable().execute();
 
 	}
