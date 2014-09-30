@@ -232,11 +232,11 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 
-		if (skillTrack.getExperience() <= 0) {
-			text.setTextColor(getResources().getColor(R.color.Red));
+		if (skillTrack.getExperience() == 0) {
+			text.setTextColor(getResources().getColor(R.color.DarkGray));
 			text.setText(getString(R.string.xp_gain_small, skillTrack.getExperience()));
-		} else if (skillTrack.getExperience() < 100000) {
-			text.setTextColor(getResources().getColor(R.color.DarkYellow));
+		} else {
+			text.setTextColor(getResources().getColor(R.color.Green));
 			if (skillTrack.getExperience() < 1000) {
 				text.setText(getString(R.string.xp_gain_small, skillTrack.getExperience()));
 			} else if (skillTrack.getExperience() >= 1000 && skillTrack.getExperience() < 10000) {
@@ -244,9 +244,6 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 			} else {
 				text.setText(getString(R.string.xp_gain, skillTrack.getExperience() / 1000));
 			}
-		} else {
-			text.setTextColor(getResources().getColor(R.color.Green));
-			text.setText(getString(R.string.xp_gain, skillTrack.getExperience() / 1000));
 		}
 		tableRow.addView(text);
 
