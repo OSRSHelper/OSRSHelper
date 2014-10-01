@@ -23,6 +23,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
+        android:lines="2"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_normal" />
 
@@ -41,9 +42,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/time_spinner"
+        android:layout_alignParentRight="true"
         android:layout_alignTop="@id/time_spinner"
         android:layout_marginRight="10dp"
-        android:layout_alignParentRight="true"
         android:background="@drawable/greenbt_sel"
         android:gravity="center"
         android:padding="10dp"

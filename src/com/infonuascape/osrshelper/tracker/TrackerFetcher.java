@@ -89,7 +89,7 @@ public class TrackerFetcher {
 					long millis = seconds * 1000;
 					Date date = new Date(System.currentTimeMillis() - millis);
 					SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, yyyy h:mm a", Locale.ENGLISH);
-					sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+					sdf.setTimeZone(TimeZone.getDefault());
 					String formattedDate = sdf.format(date);
 					ps.setSinceWhen(formattedDate);
 				}

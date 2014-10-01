@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.tracker.TrackerHelper;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
+import com.infonuascape.osrshelper.tracker.Updater;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
@@ -79,9 +80,11 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		private TrackerTimeEnum.TrackerTime time;
 		private PlayerSkills hiscores;
 		private PlayerSkills trackedSkills;
+		private boolean isUpdating;
 
-		public PopulateTable(TrackerTimeEnum.TrackerTime time) {
+		public PopulateTable(TrackerTimeEnum.TrackerTime time, boolean isUpdating) {
 			this.time = time;
+			this.isUpdating = isUpdating;
 		}
 
 		@Override
@@ -92,6 +95,9 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 			hiscoreHelper.setUserName(username);
 
 			try {
+				if (isUpdating) {
+					Updater.perform(username);
+				}
 				hiscores = hiscoreHelper.getPlayerStats();
 				trackedSkills = trackerHelper.getPlayerStats(time);
 			} catch (PlayerNotFoundException e) {
@@ -248,7 +254,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		return tableRow;
 	}
 
-	private void createAsyncTaskToPopulate(String selectedTime) {
+	private void createAsyncTaskToPopulate(String selectedTime, boolean isUpdating) {
 		TrackerTimeEnum.TrackerTime time = null;
 
 		if (selectedTime.equals("Hour")) {
@@ -267,14 +273,14 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 			((TableLayout) findViewById(R.id.table_tracking)).removeAllViews();
 			((TextView) findViewById(R.id.track_since)).setText("");
 			changeHeaderText(getString(R.string.loading_tracking, username), View.VISIBLE);
-			new PopulateTable(time).execute();
+			new PopulateTable(time, isUpdating).execute();
 		}
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		String text = ((TextView) view).getText().toString();
-		createAsyncTaskToPopulate(text);
+		createAsyncTaskToPopulate(text, false);
 	}
 
 	@Override
@@ -284,7 +290,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.update) {
-			createAsyncTaskToPopulate((String) spinner.getSelectedItem());
+			createAsyncTaskToPopulate((String) spinner.getSelectedItem(), true);
 		}
 	}
 }
