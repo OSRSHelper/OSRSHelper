@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -26,7 +27,7 @@ import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
-public class XPTrackerActivity extends Activity implements OnItemSelectedListener {
+public class XPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener {
 	private final static String TAG = "XPTrackerActivity";
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
@@ -53,20 +54,14 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		header.setText(getString(R.string.loading_tracking, username));
 
 		spinner = (Spinner) findViewById(R.id.time_spinner);
-		// Create an ArrayAdapter using the string array and a default spinner
-		// layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array,
 				android.R.layout.simple_spinner_item);
-		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
 		spinner.setAdapter(adapter);
-
 		spinner.setSelection(2);
-
 		spinner.setOnItemSelectedListener(this);
 
-		((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_since, ""));
+		findViewById(R.id.update).setOnClickListener(this);
 
 	}
 
@@ -119,9 +114,12 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 	private void populateTable(PlayerSkills hiscores, PlayerSkills trackedSkills) {
 		changeHeaderText(getString(R.string.showing_tracking, username), View.GONE);
-
-		((TextView) findViewById(R.id.track_since))
-				.setText(getString(R.string.tracking_since, trackedSkills.sinceWhen));
+		if (trackedSkills.sinceWhen != null) {
+			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_since,
+					trackedSkills.sinceWhen));
+		} else {
+			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_starting));
+		}
 
 		TableLayout table = (TableLayout) findViewById(R.id.table_tracking);
 		table.removeAllViews();
@@ -250,33 +248,43 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		return tableRow;
 	}
 
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		String text = ((TextView) view).getText().toString();
+	private void createAsyncTaskToPopulate(String selectedTime) {
 		TrackerTimeEnum.TrackerTime time = null;
 
-		if (text.equals("Hour")) {
+		if (selectedTime.equals("Hour")) {
 			time = TrackerTimeEnum.TrackerTime.Hour;
-		} else if (text.equals("Day")) {
+		} else if (selectedTime.equals("Day")) {
 			time = TrackerTimeEnum.TrackerTime.Day;
-		} else if (text.equals("Week")) {
+		} else if (selectedTime.equals("Week")) {
 			time = TrackerTimeEnum.TrackerTime.Week;
-		} else if (text.equals("Month")) {
+		} else if (selectedTime.equals("Month")) {
 			time = TrackerTimeEnum.TrackerTime.Month;
-		} else if (text.equals("Year")) {
+		} else if (selectedTime.equals("Year")) {
 			time = TrackerTimeEnum.TrackerTime.Year;
 		}
 
 		if (time != null) {
 			((TableLayout) findViewById(R.id.table_tracking)).removeAllViews();
+			((TextView) findViewById(R.id.track_since)).setText("");
 			changeHeaderText(getString(R.string.loading_tracking, username), View.VISIBLE);
 			new PopulateTable(time).execute();
 		}
 	}
 
 	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		String text = ((TextView) view).getText().toString();
+		createAsyncTaskToPopulate(text);
+	}
 
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.update) {
+			createAsyncTaskToPopulate((String) spinner.getSelectedItem());
+		}
 	}
 }

@@ -23,7 +23,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:text="@string/tracking_since"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_normal" />
 
@@ -34,8 +33,22 @@
         android:layout_below="@+id/track_since"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
-        android:background="#D92EB82E"
+        android:background="@drawable/greenbt_sel"
         android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/time_spinner"
+        android:layout_alignTop="@id/time_spinner"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/greenbt_sel"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/update"
+        android:textColor="@color/White" />
 
     <ScrollView
         android:id="@+id/scroll_table"

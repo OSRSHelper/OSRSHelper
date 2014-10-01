@@ -34,6 +34,8 @@
     <string name="xp_gain_small">(+ %1$d)</string>
     <string name="xp_gain_medium">(+ %1$.1fK)</string>
     <string name="tracking_since">Tracking since\n%1$s</string>
+    <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
+    <string name="update">Update</string>
     
     <string-array name="time_array">
         <item>Hour</item>
