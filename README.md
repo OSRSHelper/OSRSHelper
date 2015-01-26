@@ -4,4 +4,6 @@ Do you sometimes feel the urgent need to look up your total level or your daily 
 
 We solved that problem for you. You can now consult your tracker experience and your hiscores from this new app, and it's super fast.
 
+You can download the stable release here: https://play.google.com/store/apps/details?id=com.infonuascape.osrshelper
+
 OSRSHelper
