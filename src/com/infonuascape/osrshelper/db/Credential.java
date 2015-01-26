@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.db;
 
 public class Credential {
 	private String username;

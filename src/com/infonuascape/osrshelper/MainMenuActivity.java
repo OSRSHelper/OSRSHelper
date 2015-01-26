@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper;
 
+import com.infonuascape.osrshelper.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +13,7 @@ import android.view.Window;
 public class MainMenuActivity extends Activity implements OnClickListener {
 	private final static int RESULT_HIGHSCORE = 1;
 	private final static int RESULT_XP_TRACKER = 2;
+	private final static int RESULT_ZYBEZ_SEARCH = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +21,11 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.activity_main_menu);
+		setContentView(R.layout.main_menu);
 
 		findViewById(R.id.highscore_btn).setOnClickListener(this);
-		findViewById(R.id.zybez_btn).setOnClickListener(this);
+		//findViewById(R.id.zybez_btn).setOnClickListener(this);
+		findViewById(R.id.zybez_btn).setVisibility(View.GONE);
 		findViewById(R.id.wiki_btn).setOnClickListener(this);
 		findViewById(R.id.xptracker_btn).setOnClickListener(this);
 	}
@@ -40,6 +44,9 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		} else if (id == R.id.xptracker_btn) {
 			Intent intent = new Intent(this, UsernameActivity.class);
 			startActivityForResult(intent, RESULT_XP_TRACKER);
+		} else if (id == R.id.zybez_btn) {
+			Intent intent = new Intent(this, ZybezSearchActivity.class);
+			startActivityForResult(intent, RESULT_ZYBEZ_SEARCH);
 		}
 	}
 

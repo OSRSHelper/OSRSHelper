@@ -13,9 +13,7 @@
     <string name="continuee">Continue</string>
     <string name="username_error">You need to specify a username</string>
     <string name="username_choose">Or choose a username</string>
-    <string name="title_activity_xptracker">XPTrackerActivity</string>
     
-    <string name="title_activity_high_score">Highscore</string>
     <string name="skill">Skill</string>
     <string name="xp">XP</string>
     <string name="level">Level</string>
@@ -26,6 +24,8 @@
     <string name="network_error">Network error</string>
     <string name="xp_item">%1$s XP</string>
     <string name="not_ranked">Not ranked</string>
+    <string name="runescape_view">Runescape View</string>
+    <string name="list_view">List View</string>
     
     <string name="gain">(Gain)</string>
     <string name="loading_tracking">Loading tracking for: %1$s</string>
@@ -44,4 +44,6 @@
         <item>Month</item>
         <item>Year</item>
     </string-array>
+    
+    <string name="search">Search</string>
 </resources>

@@ -1,8 +1,11 @@
 package com.infonuascape.osrshelper;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,22 +13,36 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.views.GridViewRSViewAdapter;
+import com.infonuascape.osrshelper.views.HiscoresDialogFragment;
 
-public class HighScoreActivity extends Activity {
+public class HighScoreActivity extends Activity implements OnItemClickListener, OnCheckedChangeListener {
 	private final static String TAG = "HighScoreActivity";
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
 	private PlayerSkills playerSkills;
+	private GridView rsView;
+	private TableLayout table;
+	private ScrollView tableScroll;
+	private ToggleButton rsViewToggle;
+	private boolean mIsLargeLayout;
 
 	public static void show(final Context context, final String username) {
 		Intent intent = new Intent(context, HighScoreActivity.class);
@@ -39,12 +56,26 @@ public class HighScoreActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.activity_high_score);
+		setContentView(R.layout.hiscores);
+
+		mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
 
 		username = getIntent().getStringExtra(EXTRA_USERNAME);
 
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_highscores, username));
+
+		rsView = (GridView) findViewById(R.id.rs_view);
+		table = (TableLayout) findViewById(R.id.table_hiscores);
+		tableScroll = (ScrollView) findViewById(R.id.scroll_table);
+
+		rsViewToggle = (ToggleButton) findViewById(R.id.rs_switch);
+		rsViewToggle.setOnCheckedChangeListener(this);
+
+		if (rsViewToggle.isChecked()) {
+			rsView.setVisibility(View.VISIBLE);
+			table.setVisibility(View.GONE);
+		}
 
 		new PopulateTable().execute();
 
@@ -92,34 +123,16 @@ public class HighScoreActivity extends Activity {
 	private void populateTable(PlayerSkills playerSkills) {
 		changeHeaderText(getString(R.string.showing_results, username));
 
-		TableLayout table = (TableLayout) findViewById(R.id.table_hiscores);
-		table.addView(createRow(playerSkills.overall, R.drawable.overall));
-		table.addView(createRow(playerSkills.attack, R.drawable.attack));
-		table.addView(createRow(playerSkills.defence, R.drawable.defence));
-		table.addView(createRow(playerSkills.strength, R.drawable.strength));
-		table.addView(createRow(playerSkills.hitpoints, R.drawable.constitution));
-		table.addView(createRow(playerSkills.ranged, R.drawable.ranged));
-		table.addView(createRow(playerSkills.prayer, R.drawable.prayer));
-		table.addView(createRow(playerSkills.magic, R.drawable.magic));
-		table.addView(createRow(playerSkills.cooking, R.drawable.cooking));
-		table.addView(createRow(playerSkills.woodcutting, R.drawable.woodcutting));
-		table.addView(createRow(playerSkills.fletching, R.drawable.fletching));
-		table.addView(createRow(playerSkills.fishing, R.drawable.fishing));
-		table.addView(createRow(playerSkills.firemaking, R.drawable.firemaking));
-		table.addView(createRow(playerSkills.crafting, R.drawable.crafting));
-		table.addView(createRow(playerSkills.smithing, R.drawable.smithing));
-		table.addView(createRow(playerSkills.mining, R.drawable.mining));
-		table.addView(createRow(playerSkills.herblore, R.drawable.herblore));
-		table.addView(createRow(playerSkills.agility, R.drawable.agility));
-		table.addView(createRow(playerSkills.thieving, R.drawable.thieving));
-		table.addView(createRow(playerSkills.slayer, R.drawable.slayer));
-		table.addView(createRow(playerSkills.farming, R.drawable.farming));
-		table.addView(createRow(playerSkills.runecraft, R.drawable.runecrafting));
-		table.addView(createRow(playerSkills.hunter, R.drawable.hunter));
-		table.addView(createRow(playerSkills.construction, R.drawable.construction));
+		ArrayList<Skill> skills = PlayerSkills.getSkillsInOrder(playerSkills);
+		for (Skill skill : skills) {
+			table.addView(createRow(skill));
+		}
+
+		rsView.setAdapter(new GridViewRSViewAdapter(this, PlayerSkills.getSkillsInOrderForRSView(playerSkills)));
+		rsView.setOnItemClickListener(this);
 	}
 
-	private TableRow createRow(Skill skill, int imageId) {
+	private TableRow createRow(Skill skill) {
 		TableRow tableRow = new TableRow(this);
 		TableRow.LayoutParams params = new TableRow.LayoutParams();
 		params.weight = 1;
@@ -130,7 +143,7 @@ public class HighScoreActivity extends Activity {
 
 		// Skill image
 		ImageView image = new ImageView(this);
-		image.setImageResource(imageId);
+		image.setImageResource(skill.getDrawableInt());
 		image.setLayoutParams(params);
 		tableRow.addView(image);
 
@@ -170,5 +183,41 @@ public class HighScoreActivity extends Activity {
 		tableRow.addView(text);
 
 		return tableRow;
+	}
+
+	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		android.util.Log.i(TAG, position + "");
+		showDialog();
+	}
+
+	public void showDialog() {
+		FragmentManager fragmentManager = getFragmentManager();
+		HiscoresDialogFragment newFragment = new HiscoresDialogFragment();
+
+		if (mIsLargeLayout) {
+			// The device is using a large layout, so show the fragment as a
+			// dialog
+			newFragment.show(fragmentManager, "dialog");
+		} else {
+			// The device is smaller, so show the fragment fullscreen
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			// For a little polish, specify a transition animation
+			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			// To make it fullscreen, use the 'content' root view as the
+			// container
+			// for the fragment, which is always the root view for the activity
+			transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
+		}
+	}
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		if (isChecked) {
+			rsView.setVisibility(View.VISIBLE);
+			tableScroll.setVisibility(View.GONE);
+		} else {
+			rsView.setVisibility(View.GONE);
+			tableScroll.setVisibility(View.VISIBLE);
+		}
 	}
 }

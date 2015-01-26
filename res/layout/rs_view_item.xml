@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/base"
+    android:padding="10dp" >
+
+    <ImageView
+        android:id="@+id/skill_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/agility" />
+
+    <TextView
+        android:id="@+id/skill_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/skill_image"
+        android:text="56"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>

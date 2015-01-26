@@ -1,11 +1,8 @@
 package com.infonuascape.osrshelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,10 +10,12 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.infonuascape.osrshelper.adapters.StableArrayAdapter;
+import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
 
 public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener {
 	private OSRSHelperDataSource osrsHelperDataSource;
@@ -28,7 +27,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.activity_username);
+		setContentView(R.layout.username);
 
 		findViewById(R.id.username_edit).clearFocus();
 
@@ -71,30 +70,6 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		data.putExtra("username", username);
 		setResult(RESULT_OK, data);
 		finish();
-	}
-
-	private class StableArrayAdapter extends ArrayAdapter<String> {
-
-		HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-		public StableArrayAdapter(Context context, int textViewResourceId, List<String> objects) {
-			super(context, textViewResourceId, objects);
-			for (int i = 0; i < objects.size(); ++i) {
-				mIdMap.put(objects.get(i), i);
-			}
-		}
-
-		@Override
-		public long getItemId(int position) {
-			String item = getItem(position);
-			return mIdMap.get(item);
-		}
-
-		@Override
-		public boolean hasStableIds() {
-			return true;
-		}
-
 	}
 
 	@Override

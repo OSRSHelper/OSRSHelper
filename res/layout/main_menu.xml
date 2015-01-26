@@ -11,15 +11,15 @@
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="40dp"
+        android:drawableLeft="@drawable/ic_launcher"
         android:gravity="center"
         android:text="@string/app_name"
-        android:drawableLeft="@drawable/ic_launcher"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/text_normal" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/app_name"
         android:layout_margin="50dp"
         android:orientation="vertical" >
@@ -33,6 +33,8 @@
             android:layout_weight="1"
             android:background="@drawable/greenbt_sel"
             android:gravity="center"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:text="@string/highscores"
             android:textColor="@color/White"
             android:textSize="18sp" />
@@ -46,9 +48,12 @@
             android:layout_weight="1"
             android:background="@drawable/greenbt_sel"
             android:gravity="center"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:text="@string/zybez"
             android:textColor="@color/White"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/wiki_btn"
@@ -59,6 +64,8 @@
             android:layout_weight="1"
             android:background="@drawable/greenbt_sel"
             android:gravity="center"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:text="@string/wiki"
             android:textColor="@color/White"
             android:textSize="18sp" />
@@ -72,6 +79,8 @@
             android:layout_weight="1"
             android:background="@drawable/greenbt_sel"
             android:gravity="center"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:text="@string/xptracker"
             android:textColor="@color/White"
             android:textSize="18sp" />

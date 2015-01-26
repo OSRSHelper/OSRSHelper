@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

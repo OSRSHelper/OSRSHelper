@@ -1,67 +1,75 @@
 package com.infonuascape.osrshelper.utils;
+
 import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
 
 public class Skill {
-    private SkillsEnum.SkillType skillType;
-    private long experience;
-    private short level;
-    private int rank;
+	private SkillsEnum.SkillType skillType;
+	private long experience;
+	private short level;
+	private int rank;
+	private int drawableId;
 
-    public Skill(SkillType skillType) {
-        this.skillType = skillType;
-        this.experience = experience;
-    }
+	public Skill(SkillType skillType, int drawableId) {
+		this.skillType = skillType;
+		this.drawableId = drawableId;
+	}
 
-    public Skill(SkillType skillType, long experience) {
-        this.skillType = skillType;
-        this.experience = experience;
-    }
+	public Skill(SkillType skillType, long experience) {
+		this.skillType = skillType;
+		this.experience = experience;
+	}
 
-    public Skill(SkillType skillType, long experience, short level) {
-        this.skillType = skillType;
-        this.experience = experience;
-        this.level = level;
-    }
-    public Skill(SkillType skillType, long experience, short level, int rank) {
-        this.skillType = skillType;
-        this.experience = experience;
-        this.level = level;
-        this.rank = rank;
-    }
+	public Skill(SkillType skillType, long experience, short level) {
+		this.skillType = skillType;
+		this.experience = experience;
+		this.level = level;
+	}
 
-    public short getLevel() {
-        return level;
-    }
+	public Skill(SkillType skillType, long experience, short level, int rank) {
+		this.skillType = skillType;
+		this.experience = experience;
+		this.level = level;
+		this.rank = rank;
+	}
 
-    public void setLevel(short level) {
-        this.level = level;
-    }
+	public short getLevel() {
+		return level;
+	}
 
-    public SkillsEnum.SkillType getSkillType() {
-        return skillType;
-    }
+	public void setLevel(short level) {
+		this.level = level;
+	}
 
-    public void setSkillType(SkillsEnum.SkillType skillType) {
-        this.skillType = skillType;
-    }
+	public SkillsEnum.SkillType getSkillType() {
+		return skillType;
+	}
 
-    public long getExperience() {
-        return experience;
-    }
+	public void setSkillType(SkillsEnum.SkillType skillType) {
+		this.skillType = skillType;
+	}
 
-    public void setExperience(long experience) {
-        this.experience = experience;
-    }
+	public long getExperience() {
+		return experience;
+	}
 
-    public int getRank() {
-        return rank;
-    }
+	public void setExperience(long experience) {
+		this.experience = experience;
+	}
 
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
+	public int getRank() {
+		return rank;
+	}
 
-    public String toString() {
-        return this.skillType.toString();
-    }
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+
+	public int getDrawableInt() {
+		return drawableId;
+	}
+
+	@Override
+	public String toString() {
+		return skillType.toString();
+	}
 }

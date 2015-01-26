@@ -20,6 +20,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.tracker.TrackerHelper;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
@@ -47,7 +48,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.activity_xptracker);
+		setContentView(R.layout.xptracker);
 
 		username = getIntent().getStringExtra(EXTRA_USERNAME);
 
@@ -130,30 +131,30 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		TableLayout table = (TableLayout) findViewById(R.id.table_tracking);
 		table.removeAllViews();
 		table.addView(createHeadersRow());
-		table.addView(createRow(hiscores.overall, trackedSkills.overall, R.drawable.overall));
-		table.addView(createRow(hiscores.attack, trackedSkills.attack, R.drawable.attack));
-		table.addView(createRow(hiscores.defence, trackedSkills.defence, R.drawable.defence));
-		table.addView(createRow(hiscores.strength, trackedSkills.strength, R.drawable.strength));
-		table.addView(createRow(hiscores.hitpoints, trackedSkills.hitpoints, R.drawable.constitution));
-		table.addView(createRow(hiscores.ranged, trackedSkills.ranged, R.drawable.ranged));
-		table.addView(createRow(hiscores.prayer, trackedSkills.prayer, R.drawable.prayer));
-		table.addView(createRow(hiscores.magic, trackedSkills.magic, R.drawable.magic));
-		table.addView(createRow(hiscores.cooking, trackedSkills.cooking, R.drawable.cooking));
-		table.addView(createRow(hiscores.woodcutting, trackedSkills.woodcutting, R.drawable.woodcutting));
-		table.addView(createRow(hiscores.fletching, trackedSkills.fletching, R.drawable.fletching));
-		table.addView(createRow(hiscores.fishing, trackedSkills.fishing, R.drawable.fishing));
-		table.addView(createRow(hiscores.firemaking, trackedSkills.firemaking, R.drawable.firemaking));
-		table.addView(createRow(hiscores.crafting, trackedSkills.crafting, R.drawable.crafting));
-		table.addView(createRow(hiscores.smithing, trackedSkills.smithing, R.drawable.smithing));
-		table.addView(createRow(hiscores.mining, trackedSkills.mining, R.drawable.mining));
-		table.addView(createRow(hiscores.herblore, trackedSkills.herblore, R.drawable.herblore));
-		table.addView(createRow(hiscores.agility, trackedSkills.agility, R.drawable.agility));
-		table.addView(createRow(hiscores.thieving, trackedSkills.thieving, R.drawable.thieving));
-		table.addView(createRow(hiscores.slayer, trackedSkills.slayer, R.drawable.slayer));
-		table.addView(createRow(hiscores.farming, trackedSkills.farming, R.drawable.farming));
-		table.addView(createRow(hiscores.runecraft, trackedSkills.runecraft, R.drawable.runecrafting));
-		table.addView(createRow(hiscores.hunter, trackedSkills.hunter, R.drawable.hunter));
-		table.addView(createRow(hiscores.construction, trackedSkills.construction, R.drawable.construction));
+		table.addView(createRow(hiscores.overall, trackedSkills.overall));
+		table.addView(createRow(hiscores.attack, trackedSkills.attack));
+		table.addView(createRow(hiscores.defence, trackedSkills.defence));
+		table.addView(createRow(hiscores.strength, trackedSkills.strength));
+		table.addView(createRow(hiscores.hitpoints, trackedSkills.hitpoints));
+		table.addView(createRow(hiscores.ranged, trackedSkills.ranged));
+		table.addView(createRow(hiscores.prayer, trackedSkills.prayer));
+		table.addView(createRow(hiscores.magic, trackedSkills.magic));
+		table.addView(createRow(hiscores.cooking, trackedSkills.cooking));
+		table.addView(createRow(hiscores.woodcutting, trackedSkills.woodcutting));
+		table.addView(createRow(hiscores.fletching, trackedSkills.fletching));
+		table.addView(createRow(hiscores.fishing, trackedSkills.fishing));
+		table.addView(createRow(hiscores.firemaking, trackedSkills.firemaking));
+		table.addView(createRow(hiscores.crafting, trackedSkills.crafting));
+		table.addView(createRow(hiscores.smithing, trackedSkills.smithing));
+		table.addView(createRow(hiscores.mining, trackedSkills.mining));
+		table.addView(createRow(hiscores.herblore, trackedSkills.herblore));
+		table.addView(createRow(hiscores.agility, trackedSkills.agility));
+		table.addView(createRow(hiscores.thieving, trackedSkills.thieving));
+		table.addView(createRow(hiscores.slayer, trackedSkills.slayer));
+		table.addView(createRow(hiscores.farming, trackedSkills.farming));
+		table.addView(createRow(hiscores.runecraft, trackedSkills.runecraft));
+		table.addView(createRow(hiscores.hunter, trackedSkills.hunter));
+		table.addView(createRow(hiscores.construction, trackedSkills.construction));
 	}
 
 	private TableRow createHeadersRow() {
@@ -200,7 +201,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		return tableRow;
 	}
 
-	private TableRow createRow(Skill skillHiscore, Skill skillTrack, int imageId) {
+	private TableRow createRow(Skill skillHiscore, Skill skillTrack) {
 		TableRow tableRow = new TableRow(this);
 		TableRow.LayoutParams params = new TableRow.LayoutParams();
 		params.weight = 1;
@@ -211,7 +212,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		// Skill image
 		ImageView image = new ImageView(this);
-		image.setImageResource(imageId);
+		image.setImageResource(skillHiscore.getDrawableInt());
 		image.setLayoutParams(params);
 		tableRow.addView(image);
 

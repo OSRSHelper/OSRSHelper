@@ -1,6 +1,7 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.db;
 
 import java.util.ArrayList;
+
 
 import android.content.ContentValues;
 import android.content.Context;
