@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
 
 public class GridViewRSViewAdapter extends BaseAdapter {
 	private Context context;
@@ -38,8 +39,14 @@ public class GridViewRSViewAdapter extends BaseAdapter {
 			textView.setText(skill.getLevel() + "");
 
 			// set image based on selected text
-			ImageView imageView = (ImageView) convertView.findViewById(R.id.skill_image);
-			imageView.setImageResource(skill.getDrawableInt());
+			if(skill.getSkillType() != SkillType.Overall){
+				ImageView imageView = (ImageView) convertView.findViewById(R.id.skill_image);
+				imageView.setImageResource(skill.getDrawableInt());
+			} else{
+				ImageView imageView = (ImageView) convertView.findViewById(R.id.skill_image);
+				imageView.setImageResource(R.drawable.overall_rsview);
+			}
+			
 
 		}
 

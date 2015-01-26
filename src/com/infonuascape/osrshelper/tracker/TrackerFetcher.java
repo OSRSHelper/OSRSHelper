@@ -99,8 +99,6 @@ public class TrackerFetcher {
 	}
 
 	public PlayerSkills mapDataSet(String dataSet) {
-		String[] dataSetArray;
-
 		// split dataset, map to skills enum
 		return new PlayerSkills(); // dummy return
 	}

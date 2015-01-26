@@ -15,7 +15,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_normal" />
 
-    <ToggleButton
+    <LinearLayout
         android:id="@+id/rs_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,11 +23,37 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textColor="@color/White"
-        android:textOff="@string/list_view"
-        android:textOn="@string/runescape_view" />
+        android:background="@drawable/switch_background"
+        android:padding="2dp" >
+
+        <TextView
+            android:id="@+id/rs_switch_list"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#D92EB82E"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/list_view"
+            android:textColor="@color/text_normal" />
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@color/text_normal" />
+
+        <TextView
+            android:id="@+id/rs_switch_rs"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/runescape_view"
+            android:textColor="@color/text_normal" />
+    </LinearLayout>
 
     <GridView
         android:id="@+id/rs_view"

@@ -2,11 +2,10 @@
 <resources>
 
     <string name="app_name">OSRS Helper</string>
-    <string name="highscores">Highscores</string>
+    <string name="highscores">Hiscores</string>
     <string name="zybez">Zybez Item Exchange</string>
     <string name="wiki">OSRS Wiki</string>
     <string name="xptracker">XP Tracker</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_username">Choose a username</string>
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
@@ -22,7 +21,6 @@
     <string name="not_existing_player">%1$s does not exist in the database.</string>
     <string name="showing_results">Showing highscores for: %1$s</string>
     <string name="network_error">Network error</string>
-    <string name="xp_item">%1$s XP</string>
     <string name="not_ranked">Not ranked</string>
     <string name="runescape_view">Runescape View</string>
     <string name="list_view">List View</string>

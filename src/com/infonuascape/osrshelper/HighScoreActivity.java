@@ -12,18 +12,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.utils.Skill;
@@ -32,8 +30,7 @@ import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.GridViewRSViewAdapter;
 import com.infonuascape.osrshelper.views.HiscoresDialogFragment;
 
-public class HighScoreActivity extends Activity implements OnItemClickListener, OnCheckedChangeListener {
-	private final static String TAG = "HighScoreActivity";
+public class HighScoreActivity extends Activity implements OnItemClickListener, OnClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
@@ -41,8 +38,10 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 	private GridView rsView;
 	private TableLayout table;
 	private ScrollView tableScroll;
-	private ToggleButton rsViewToggle;
 	private boolean mIsLargeLayout;
+	private GridViewRSViewAdapter gridAdapter;
+	private TextView tvList;
+	private TextView tvRSView;
 
 	public static void show(final Context context, final String username) {
 		Intent intent = new Intent(context, HighScoreActivity.class);
@@ -69,13 +68,11 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 		table = (TableLayout) findViewById(R.id.table_hiscores);
 		tableScroll = (ScrollView) findViewById(R.id.scroll_table);
 
-		rsViewToggle = (ToggleButton) findViewById(R.id.rs_switch);
-		rsViewToggle.setOnCheckedChangeListener(this);
-
-		if (rsViewToggle.isChecked()) {
-			rsView.setVisibility(View.VISIBLE);
-			table.setVisibility(View.GONE);
-		}
+		tvList = (TextView) findViewById(R.id.rs_switch_list);
+		tvList.setOnClickListener(this);
+		
+		tvRSView = (TextView) findViewById(R.id.rs_switch_rs);
+		tvRSView.setOnClickListener(this);
 
 		new PopulateTable().execute();
 
@@ -128,7 +125,8 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 			table.addView(createRow(skill));
 		}
 
-		rsView.setAdapter(new GridViewRSViewAdapter(this, PlayerSkills.getSkillsInOrderForRSView(playerSkills)));
+		gridAdapter = new GridViewRSViewAdapter(this, PlayerSkills.getSkillsInOrderForRSView(playerSkills));
+		rsView.setAdapter(gridAdapter);
 		rsView.setOnItemClickListener(this);
 	}
 
@@ -146,6 +144,7 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 		image.setImageResource(skill.getDrawableInt());
 		image.setLayoutParams(params);
 		tableRow.addView(image);
+		
 
 		// Lvl
 		TextView text = new TextView(this);
@@ -160,8 +159,9 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 		// XP
 		text = new TextView(this);
 		if (skill.getRank() != -1) {
-			text.setText(getString(R.string.xp_item, NumberFormat.getInstance().format(skill.getExperience())));
+			text.setText(NumberFormat.getInstance().format(skill.getExperience()));
 		}
+		
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -186,13 +186,12 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 	}
 
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		android.util.Log.i(TAG, position + "");
-		showDialog();
+		showDialog(gridAdapter.getItem(position));
 	}
 
-	public void showDialog() {
+	public void showDialog(Skill skill) {
 		FragmentManager fragmentManager = getFragmentManager();
-		HiscoresDialogFragment newFragment = new HiscoresDialogFragment();
+		HiscoresDialogFragment newFragment = new HiscoresDialogFragment(skill);
 
 		if (mIsLargeLayout) {
 			// The device is using a large layout, so show the fragment as a
@@ -211,13 +210,17 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 	}
 
 	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		if (isChecked) {
+	public void onClick(View v) {
+		if (v.getId() == R.id.rs_switch_rs) {
 			rsView.setVisibility(View.VISIBLE);
 			tableScroll.setVisibility(View.GONE);
-		} else {
+			tvList.setBackgroundColor(getResources().getColor(R.color.WhiteSmoke));
+			tvRSView.setBackgroundColor(getResources().getColor(R.color.green_bt));
+		} else if(v.getId() == R.id.rs_switch_list) {
 			rsView.setVisibility(View.GONE);
 			tableScroll.setVisibility(View.VISIBLE);
+			tvList.setBackgroundColor(getResources().getColor(R.color.green_bt));
+			tvRSView.setBackgroundColor(getResources().getColor(R.color.WhiteSmoke));
 		}
 	}
 }

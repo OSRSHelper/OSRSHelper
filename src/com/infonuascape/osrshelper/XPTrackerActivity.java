@@ -30,7 +30,6 @@ import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 public class XPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener {
-	private final static String TAG = "XPTrackerActivity";
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
@@ -226,7 +225,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		// XP
 		text = new TextView(this);
-		text.setText(getString(R.string.xp_item, NumberFormat.getInstance().format(skillHiscore.getExperience())));
+		text.setText(NumberFormat.getInstance().format(skillHiscore.getExperience()));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
