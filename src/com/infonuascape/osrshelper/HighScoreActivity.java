@@ -4,8 +4,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,9 +12,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -27,19 +22,17 @@ import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
-import com.infonuascape.osrshelper.views.GridViewRSViewAdapter;
-import com.infonuascape.osrshelper.views.HiscoresDialogFragment;
+import com.infonuascape.osrshelper.views.RSViewPopulate;
 
-public class HighScoreActivity extends Activity implements OnItemClickListener, OnClickListener {
+public class HighScoreActivity extends Activity implements OnClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
 	private PlayerSkills playerSkills;
-	private GridView rsView;
+	private TableLayout rsView;
 	private TableLayout table;
 	private ScrollView tableScroll;
-	private boolean mIsLargeLayout;
-	private GridViewRSViewAdapter gridAdapter;
+	private ScrollView tableRSScroll;
 	private TextView tvList;
 	private TextView tvRSView;
 
@@ -57,14 +50,13 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 
 		setContentView(R.layout.hiscores);
 
-		mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
-
 		username = getIntent().getStringExtra(EXTRA_USERNAME);
 
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_highscores, username));
 
-		rsView = (GridView) findViewById(R.id.rs_view);
+		rsView = (TableLayout) findViewById(R.id.rs_view);
+		tableRSScroll = (ScrollView) findViewById(R.id.scroll_table_rs_view);
 		table = (TableLayout) findViewById(R.id.table_hiscores);
 		tableScroll = (ScrollView) findViewById(R.id.scroll_table);
 
@@ -125,9 +117,8 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 			table.addView(createRow(skill));
 		}
 
-		gridAdapter = new GridViewRSViewAdapter(this, PlayerSkills.getSkillsInOrderForRSView(playerSkills));
-		rsView.setAdapter(gridAdapter);
-		rsView.setOnItemClickListener(this);
+		RSViewPopulate rsViewPopulate = new RSViewPopulate(this, PlayerSkills.getSkillsInOrderForRSView(playerSkills));
+		rsView = rsViewPopulate.populate(rsView);
 	}
 
 	private TableRow createRow(Skill skill) {
@@ -185,39 +176,16 @@ public class HighScoreActivity extends Activity implements OnItemClickListener, 
 		return tableRow;
 	}
 
-	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		showDialog(gridAdapter.getItem(position));
-	}
-
-	public void showDialog(Skill skill) {
-		FragmentManager fragmentManager = getFragmentManager();
-		HiscoresDialogFragment newFragment = new HiscoresDialogFragment(skill);
-
-		if (mIsLargeLayout) {
-			// The device is using a large layout, so show the fragment as a
-			// dialog
-			newFragment.show(fragmentManager, "dialog");
-		} else {
-			// The device is smaller, so show the fragment fullscreen
-			FragmentTransaction transaction = fragmentManager.beginTransaction();
-			// For a little polish, specify a transition animation
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			// To make it fullscreen, use the 'content' root view as the
-			// container
-			// for the fragment, which is always the root view for the activity
-			transaction.add(android.R.id.content, newFragment).addToBackStack(null).commit();
-		}
-	}
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.rs_switch_rs) {
-			rsView.setVisibility(View.VISIBLE);
+			tableRSScroll.setVisibility(View.VISIBLE);
 			tableScroll.setVisibility(View.GONE);
 			tvList.setBackgroundColor(getResources().getColor(R.color.WhiteSmoke));
 			tvRSView.setBackgroundColor(getResources().getColor(R.color.green_bt));
 		} else if(v.getId() == R.id.rs_switch_list) {
-			rsView.setVisibility(View.GONE);
+			tableRSScroll.setVisibility(View.GONE);
 			tableScroll.setVisibility(View.VISIBLE);
 			tvList.setBackgroundColor(getResources().getColor(R.color.green_bt));
 			tvRSView.setBackgroundColor(getResources().getColor(R.color.WhiteSmoke));

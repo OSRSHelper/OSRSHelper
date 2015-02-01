@@ -146,4 +146,5 @@
  <color name="DarkYellow">#A1A100</color>
  <color name="green_bt">#D92EB82E</color>
  <color name="green_bt_over">#802EB82E</color>
+ <color name="rs_view_bg">#453C33</color>
 </resources>

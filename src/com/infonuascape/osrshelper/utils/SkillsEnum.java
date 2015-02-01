@@ -25,7 +25,7 @@ public class SkillsEnum {
         Thieving("Thieving"),
         Slayer("Slayer"),
         Farming("Farming"),
-        Runecraft("Runecraft"),
+        Runecraft("Runecrafting"),
         Hunter("Hunter"),
         Construction("Construction");
 
