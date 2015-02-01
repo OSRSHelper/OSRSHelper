@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.Utils;
+import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
 
 public class HiscoresDialogFragment extends DialogFragment implements OnClickListener  {
 	private Skill skill;
@@ -34,6 +36,7 @@ public class HiscoresDialogFragment extends DialogFragment implements OnClickLis
 		View v = inflater.inflate(R.layout.hiscores_dialog, container, false);
 
 		v.findViewById(R.id.container).setOnClickListener(this);
+		v.findViewById(R.id.dialog_container).setOnClickListener(this);
 
 		((TextView) v.findViewById(R.id.skill_name)).setText(skill.getSkillType().toString());
 		((TextView) v.findViewById(R.id.skill_name)).setCompoundDrawablesWithIntrinsicBounds(skill.getDrawableInt(), 0, 0, 0);
@@ -41,7 +44,12 @@ public class HiscoresDialogFragment extends DialogFragment implements OnClickLis
 
 		((TextView) v.findViewById(R.id.skill_lvl)).setText(getString(R.string.level) + " : " + skill.getLevel());
 		((TextView) v.findViewById(R.id.skill_exp)).setText(getString(R.string.xp) + " : " +  NumberFormat.getInstance().format(skill.getExperience()));
-		((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText(getString(R.string.xp_to_lvl) + " : " +  NumberFormat.getInstance().format(999999999 - skill.getExperience()));
+		if(skill.getSkillType() != SkillType.Overall && skill.getLevel() != 99){
+			//((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText(getString(R.string.xp_to_lvl) + " : " +  NumberFormat.getInstance().format(Utils.getXPToLvl(skill.getLevel() + 1) - skill.getExperience()));
+		} else{
+			((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText("");
+		}
+		
 		return v;
 	}
 
@@ -57,7 +65,7 @@ public class HiscoresDialogFragment extends DialogFragment implements OnClickLis
 		v.startAnimation(anim);
 		v2.startAnimation(anim);
 	}
-	
+
 	/** The system calls this only when creating the layout in a dialog. */
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -68,7 +76,7 @@ public class HiscoresDialogFragment extends DialogFragment implements OnClickLis
 
 	@Override
 	public void onClick(View v) {
-		if(v.getId() == R.id.container){
+		if(v.getId() == R.id.container || v.getId() == R.id.dialog_container){
 			getActivity().onBackPressed();
 		}
 	}

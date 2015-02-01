@@ -1,7 +1,5 @@
 package com.infonuascape.osrshelper;
 
-import com.infonuascape.osrshelper.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
