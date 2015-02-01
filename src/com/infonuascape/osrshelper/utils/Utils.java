@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper.utils;
 
+import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+
 public class Utils {
 
 	public static final float getXPToLvl(final int nextLvl){
@@ -14,6 +16,18 @@ public class Utils {
 		exp = (float) Math.floor(exp / 4f);
 		
 		return exp;
+	}
+	
+	public static final int getCombatLvl(final PlayerSkills skills){
+		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
+		
+		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
+		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
+		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
+		
+		int combatLvl = (int) Math.floor(base + Math.max(melee, Math.max(range, mage)));
+		
+		return combatLvl;
 	}
 
 }

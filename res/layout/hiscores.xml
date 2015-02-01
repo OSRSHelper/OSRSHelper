@@ -16,11 +16,25 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/text_normal" />
 
+    <TextView
+        android:id="@+id/combat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/combat_lvl"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_normal"
+        android:visibility="invisible" />
+
     <LinearLayout
         android:id="@+id/rs_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header"
+        android:layout_below="@id/combat"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.RSViewPopulate;
@@ -28,6 +29,7 @@ public class HighScoreActivity extends Activity implements OnClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
+	private TextView combatText;
 	private PlayerSkills playerSkills;
 	private TableLayout rsView;
 	private TableLayout table;
@@ -54,6 +56,8 @@ public class HighScoreActivity extends Activity implements OnClickListener {
 
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_highscores, username));
+		
+		combatText = (TextView) findViewById(R.id.combat);
 
 		rsView = (TableLayout) findViewById(R.id.rs_view);
 		tableRSScroll = (ScrollView) findViewById(R.id.scroll_table_rs_view);
@@ -76,6 +80,16 @@ public class HighScoreActivity extends Activity implements OnClickListener {
 			public void run() {
 				findViewById(R.id.progressbar).setVisibility(View.GONE);
 				header.setText(text);
+			}
+		});
+	}
+	
+	private void changeCombatText(){
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				combatText.setVisibility(View.VISIBLE);
+				combatText.setText(getString(R.string.combat_lvl, Utils.getCombatLvl(playerSkills)));
 			}
 		});
 	}
@@ -111,6 +125,7 @@ public class HighScoreActivity extends Activity implements OnClickListener {
 
 	private void populateTable(PlayerSkills playerSkills) {
 		changeHeaderText(getString(R.string.showing_results, username));
+		changeCombatText();
 
 		ArrayList<Skill> skills = PlayerSkills.getSkillsInOrder(playerSkills);
 		for (Skill skill : skills) {
