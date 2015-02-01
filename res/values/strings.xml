@@ -15,6 +15,7 @@
     
     <string name="skill">Skill</string>
     <string name="xp">XP</string>
+    <string name="xp_to_lvl">XP To Level</string>
     <string name="level">Level</string>
     <string name="ranking">Ranking</string>
     <string name="loading_highscores">Loading highscores for: %1$s</string>

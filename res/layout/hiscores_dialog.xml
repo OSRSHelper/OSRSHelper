@@ -7,10 +7,11 @@
     <RelativeLayout
         android:id="@+id/dialog_container"
         android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_height="175dp"
         android:layout_centerInParent="true"
         android:background="@drawable/dialog_background"
-        android:padding="20dp" >
+        android:clickable="true"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/skill_name"
@@ -41,6 +42,16 @@
             android:layout_below="@id/skill_lvl"
             android:gravity="center_vertical"
             android:text="@string/xp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/text_normal" />
+
+        <TextView
+            android:id="@+id/skill_exp_to_lvl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/skill_exp"
+            android:gravity="center_vertical"
+            android:text="@string/xp_to_lvl"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/text_normal" />
     </RelativeLayout>
