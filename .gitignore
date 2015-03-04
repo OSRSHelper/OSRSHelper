@@ -56,3 +56,4 @@ out/
 /bin/res/crunch/drawable-xxhdpi/ic_launcher.png
 /bin/resources.ap_
 bin
+/.settings/org.eclipse.jdt.core.prefs
