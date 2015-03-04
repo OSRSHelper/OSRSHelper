@@ -34,11 +34,15 @@
         </activity>
         <activity
             android:name=".XPTrackerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
             android:name=".ZybezSearchActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+        <activity
+            android:name=".WorldMapActivity"
+            android:label="@string/title_activity_world_map" >
         </activity>
     </application>
 
