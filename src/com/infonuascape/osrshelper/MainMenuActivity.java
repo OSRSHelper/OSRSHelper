@@ -22,8 +22,7 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.main_menu);
 
 		findViewById(R.id.highscore_btn).setOnClickListener(this);
-		//findViewById(R.id.zybez_btn).setOnClickListener(this);
-		findViewById(R.id.zybez_btn).setVisibility(View.GONE);
+		findViewById(R.id.world_map_btn).setOnClickListener(this);
 		findViewById(R.id.wiki_btn).setOnClickListener(this);
 		findViewById(R.id.xptracker_btn).setOnClickListener(this);
 	}
@@ -42,9 +41,8 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		} else if (id == R.id.xptracker_btn) {
 			Intent intent = new Intent(this, UsernameActivity.class);
 			startActivityForResult(intent, RESULT_XP_TRACKER);
-		} else if (id == R.id.zybez_btn) {
-			Intent intent = new Intent(this, ZybezSearchActivity.class);
-			startActivityForResult(intent, RESULT_ZYBEZ_SEARCH);
+		} else if (id == R.id.world_map_btn) {
+			WorldMapActivity.show(this);
 		}
 	}
 

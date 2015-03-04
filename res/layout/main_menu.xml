@@ -41,7 +41,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/zybez_btn"
+            android:id="@+id/world_map_btn"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginBottom="5dp"
@@ -51,10 +51,9 @@
             android:gravity="center"
             android:paddingBottom="20dp"
             android:paddingTop="20dp"
-            android:text="@string/zybez"
+            android:text="@string/world_map"
             android:textColor="@color/White"
-            android:textSize="18sp"
-            android:visibility="gone" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/wiki_btn"

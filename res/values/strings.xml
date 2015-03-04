@@ -3,7 +3,7 @@
 
     <string name="app_name">OSRS Helper</string>
     <string name="highscores">Hiscores</string>
-    <string name="zybez">Zybez Item Exchange</string>
+    <string name="world_map">World Map</string>
     <string name="wiki">OSRS Wiki</string>
     <string name="xptracker">XP Tracker</string>
     <string name="title_activity_username">Choose a username</string>
@@ -12,7 +12,6 @@
     <string name="continuee">Continue</string>
     <string name="username_error">You need to specify a username</string>
     <string name="username_choose">Or choose a username</string>
-    
     <string name="skill">Skill</string>
     <string name="xp">XP</string>
     <string name="xp_to_lvl">XP To Level</string>
@@ -26,7 +25,6 @@
     <string name="not_ranked">Not ranked</string>
     <string name="runescape_view">Runescape View</string>
     <string name="list_view">List View</string>
-    
     <string name="gain">(Gain)</string>
     <string name="loading_tracking">Loading tracking for: %1$s</string>
     <string name="showing_tracking">Showing tracking for: %1$s</string>
@@ -36,7 +34,7 @@
     <string name="tracking_since">Tracking since\n%1$s</string>
     <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
     <string name="update">Update</string>
-    
+
     <string-array name="time_array">
         <item>Hour</item>
         <item>Day</item>
@@ -44,6 +42,9 @@
         <item>Month</item>
         <item>Year</item>
     </string-array>
-    
+
     <string name="search">Search</string>
+    <string name="title_activity_world_map">World Map</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
