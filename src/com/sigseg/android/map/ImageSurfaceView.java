@@ -44,6 +44,10 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         int y = (sceneSize.y - viewportSize.y) / 2;
         scene.getViewport().setOrigin(x, y);
     }
+    
+    public void zoom(float scale, PointF point){
+    	scene.getViewport().zoom(scale, point);
+    }
 
     public void setInputStream(InputStream inputStream) throws IOException {
         scene = new InputStreamScene(inputStream);
@@ -106,8 +110,9 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             if (scaleFactor!=0f && scaleFactor!=1.0f){
                 scaleFactor = 1/scaleFactor;
                 screenFocus.set(detector.getFocusX(),detector.getFocusY());
+                float newZoom = scene.getViewport().getZoom() * scaleFactor;
                 scene.getViewport().zoom(
-                        scaleFactor,
+                		newZoom,
                         screenFocus);
                 invalidate();
             }

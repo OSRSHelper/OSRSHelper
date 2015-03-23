@@ -236,15 +236,14 @@ public abstract class Scene {
         public float getZoom(){
             return zoom;
         }
-        public void zoom(float factor, PointF screenFocus){
-            if (factor!=1.0){
+        public void zoom(float newZoom, PointF screenFocus){
+            if (newZoom!=1.0){
 
                 PointF screenSize = new PointF(bitmap.getWidth(),bitmap.getHeight());
                 PointF sceneSize = new PointF(getSceneSize());
                 float screenWidthToHeight = screenSize.x / screenSize.y;
                 float screenHeightToWidth = screenSize.y / screenSize.x;
                 synchronized (this){
-                    float newZoom = zoom * factor;
                     RectF w1 = new RectF(window);
                     RectF w2 = new RectF();
                     PointF sceneFocus = new PointF(
