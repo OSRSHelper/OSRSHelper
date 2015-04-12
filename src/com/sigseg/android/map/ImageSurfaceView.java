@@ -99,6 +99,10 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         getHolder().addCallback(this);
         scaleGestureDetector = new ScaleGestureDetector(context, new ScaleListener());
     }
+    
+    public long getLastScaleTime(){
+    	return lastScaleTime;
+    }
     //endregion
 
     //region class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener
@@ -116,6 +120,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         screenFocus);
                 invalidate();
             }
+            Log.i("ImageSurfaceView", "onScale");
             lastScaleTime = System.currentTimeMillis();
             return true;
         }

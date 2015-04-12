@@ -15,40 +15,10 @@
         android:textColor="@color/White"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/pot_city_falador"
+    <ListView
+        android:id="@+id/poi_cities"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gen_bt_sel"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:text="Falador"
-        android:textColor="@color/Black"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/pot_city_varrock"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gen_bt_sel"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:text="Varrock"
-        android:textColor="@color/Black"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/pot_city_ardougne"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/gen_bt_sel"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:text="Ardougne"
-        android:textColor="@color/Black"
-        android:textSize="16sp" />
+        android:layout_height="match_parent" >
+    </ListView>
 
 </LinearLayout>

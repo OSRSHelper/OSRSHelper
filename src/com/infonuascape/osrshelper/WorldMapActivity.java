@@ -14,22 +14,26 @@ import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
+import com.infonuascape.osrshelper.adapters.PoIAdapter;
+import com.infonuascape.osrshelper.utils.Utils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.sigseg.android.io.RandomAccessFileInputStream;
 import com.sigseg.android.map.ImageSurfaceView;
 
-public class WorldMapActivity extends Activity implements OnClickListener {
+public class WorldMapActivity extends Activity implements OnItemClickListener, OnClickListener {
 	private static final String TAG = "WorldMapActivity";
 	private static final String KEY_X = "X";
 	private static final String KEY_Y = "Y";
 	private static final String KEY_FN = "FN";
 	private static final Point DEFAULT_POINT = new Point(3050, 2580);
-	private static final Point POT_CITY_FALADOR = new Point(3050, 2580);
-	private static final Point POT_CITY_VARROCK = new Point(3685, 2355);
-	private static final Point POT_CITY_ARDOUGNE = new Point(1920, 2775);
 	private SlidingMenu slidingMenu;
-	private boolean alreadyZoomedOnMap;
+	private ListView poICitiesListView;
+	private PoIAdapter adapterCities;
+	private long lastTimeZoomed = 0;
 
 
 	private ImageSurfaceView imageSurfaceView;
@@ -48,8 +52,9 @@ public class WorldMapActivity extends Activity implements OnClickListener {
 
 		imageSurfaceView = (ImageSurfaceView) findViewById(R.id.world_map_image);
 		slidingMenu = (SlidingMenu) findViewById(R.id.slidingmenulayout);
+		poICitiesListView = (ListView) findViewById(R.id.poi_cities);
 		
-		alreadyZoomedOnMap = false;
+		findViewById(R.id.world_map_open).setOnClickListener(this);
 
 		// Setup/restore state
 		if (savedInstanceState != null && savedInstanceState.containsKey(KEY_X) && savedInstanceState.containsKey(KEY_Y)) {
@@ -96,26 +101,37 @@ public class WorldMapActivity extends Activity implements OnClickListener {
 			imageSurfaceView.setViewport(new Point(DEFAULT_POINT.x - (int)center.x, DEFAULT_POINT.y - (int)center.y));
 		}
 
-		initClickListenersPoT();
+		initPoT();
+	}
+	
+	
+
+	@Override
+	public void onBackPressed() {
+		if(slidingMenu.isMenuShowing()){
+			slidingMenu.toggle(true);
+		} else{
+			super.onBackPressed();
+		}
 	}
 
-	private void initClickListenersPoT() {
+	private void initPoT() {
 		//Cities
-		findViewById(R.id.pot_city_falador).setOnClickListener(this);
-		findViewById(R.id.pot_city_varrock).setOnClickListener(this);
-		findViewById(R.id.pot_city_ardougne).setOnClickListener(this);
+		adapterCities = new PoIAdapter(Utils.getCitiesPoI());
+		poICitiesListView.setAdapter(adapterCities);
+		poICitiesListView.setOnItemClickListener(this);
 	}
 
 	public void zoomToPoT(Point point){
 		PointF center = getCenterScreen();
-		if(!alreadyZoomedOnMap){
+		if(imageSurfaceView.getLastScaleTime() >= lastTimeZoomed){
 			imageSurfaceView.setViewport(new Point(point.x - (int)center.x, point.y - (int)center.y));
-			alreadyZoomedOnMap = true;
+			imageSurfaceView.zoom(0.4f, center);
 		}
-		else{
-			imageSurfaceView.setViewport(new Point(point.x - (int)(center.x/2.5), point.y - (int)(center.y/2.5)));	
-		}
+		imageSurfaceView.setViewport(new Point(point.x - (int)(center.x/2.5), point.y - (int)(center.y/2.5)));	
+		
 		imageSurfaceView.zoom(0.4f, center);
+		lastTimeZoomed = System.currentTimeMillis();
 	}
 
 	@Override
@@ -146,18 +162,17 @@ public class WorldMapActivity extends Activity implements OnClickListener {
 		super.onSaveInstanceState(outState);
 	}
 
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		zoomToPoT(adapterCities.getItem(position).getPoint());
+		slidingMenu.toggle(true);
+	}
+
 	@Override
 	public void onClick(View v) {
-		int id = v.getId();
-
-		if(id == R.id.pot_city_falador){
-			zoomToPoT(POT_CITY_FALADOR);
-			slidingMenu.toggle(true);
-		} else if(id == R.id.pot_city_varrock){
-			zoomToPoT(POT_CITY_VARROCK);
-			slidingMenu.toggle(true);
-		} else if(id == R.id.pot_city_ardougne){
-			zoomToPoT(POT_CITY_ARDOUGNE);
+		if(v.getId() == R.id.world_map_open){
 			slidingMenu.toggle(true);
 		}
 	}
