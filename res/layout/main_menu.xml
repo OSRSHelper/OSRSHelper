@@ -18,72 +18,87 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/text_normal" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/app_name"
-        android:layout_margin="50dp"
-        android:orientation="vertical" >
+        android:layout_margin="30dp" >
 
-        <TextView
-            android:id="@+id/highscore_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/greenbt_sel"
-            android:gravity="center"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="@string/highscores"
-            android:textColor="@color/White"
-            android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/world_map_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/greenbt_sel"
-            android:gravity="center"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="@string/world_map"
-            android:textColor="@color/White"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/highscore_btn"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/highscores"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/wiki_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/greenbt_sel"
-            android:gravity="center"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="@string/wiki"
-            android:textColor="@color/White"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/world_map_btn"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/world_map"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/xptracker_btn"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/greenbt_sel"
-            android:gravity="center"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:text="@string/xptracker"
-            android:textColor="@color/White"
-            android:textSize="18sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/wiki_btn"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/wiki"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/combat_btn"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/combat"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/xptracker_btn"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/xptracker"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

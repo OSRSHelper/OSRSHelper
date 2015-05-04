@@ -11,7 +11,6 @@ import android.view.Window;
 public class MainMenuActivity extends Activity implements OnClickListener {
 	private final static int RESULT_HIGHSCORE = 1;
 	private final static int RESULT_XP_TRACKER = 2;
-	private final static int RESULT_ZYBEZ_SEARCH = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +24,7 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		findViewById(R.id.world_map_btn).setOnClickListener(this);
 		findViewById(R.id.wiki_btn).setOnClickListener(this);
 		findViewById(R.id.xptracker_btn).setOnClickListener(this);
+		findViewById(R.id.combat_btn).setOnClickListener(this);
 	}
 
 	@Override
@@ -43,6 +43,8 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 			startActivityForResult(intent, RESULT_XP_TRACKER);
 		} else if (id == R.id.world_map_btn) {
 			WorldMapActivity.show(this);
+		} else if (id == R.id.combat_btn) {
+			CombatCalcActivity.show(this);
 		}
 	}
 

@@ -10,6 +10,7 @@
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
     <string name="continuee">Continue</string>
+    <string name="combat">Combat lvl calc</string>
     <string name="username_error">You need to specify a username</string>
     <string name="username_choose">Or choose a username</string>
     <string name="skill">Skill</string>
@@ -45,6 +46,13 @@
 
     <string name="search">Search</string>
     <string name="title_activity_world_map">World Map</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hitpoints_lvl">Hitpoints lvl</string>
+    <string name="attack_lvl">Attack lvl</string>
+    <string name="strength_lvl">Strength lvl</string>
+    <string name="defence_lvl">Defence lvl</string>
+    <string name="magic_lvl">Magic lvl</string>
+    <string name="ranging_lvl">Ranging lvl</string>
+    <string name="prayer_lvl">Prayer lvl</string>
+    
 
 </resources>
