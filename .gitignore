@@ -57,3 +57,6 @@ out/
 /bin/resources.ap_
 bin
 /.settings/org.eclipse.jdt.core.prefs
+
+#Macintosh
+.DS_Store
