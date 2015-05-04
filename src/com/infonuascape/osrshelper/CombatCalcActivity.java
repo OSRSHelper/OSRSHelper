@@ -39,6 +39,7 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 		setContentView(R.layout.combat_lvl_calc);
 		
 		combatText = (TextView) findViewById(R.id.combat_lvl);
+		combatText.setText(getString(R.string.combat_lvl, 0));
 
 		hitpointEdit = ((EditText) findViewById(R.id.edit_hitpoints));
 		hitpointEdit.addTextChangedListener(this);

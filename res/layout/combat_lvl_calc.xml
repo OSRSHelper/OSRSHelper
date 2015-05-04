@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/combat_lvl"
-            android:textColor="@color/text_normal" />
+            android:textColor="@color/text_normal"
+            android:textSize="20sp" />
 
         <RelativeLayout
             android:layout_width="175dp"
@@ -35,12 +36,12 @@
 
             <EditText
                 android:id="@+id/edit_hitpoints"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
+                android:maxLength="2"
                 android:text="0"
                 android:textColor="@color/text_normal" />
         </RelativeLayout>
@@ -48,6 +49,7 @@
         <RelativeLayout
             android:layout_width="175dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -61,12 +63,12 @@
 
             <EditText
                 android:id="@+id/edit_attack"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
+                android:maxLength="2"
                 android:text="0"
                 android:textColor="@color/text_normal" />
         </RelativeLayout>
@@ -74,6 +76,7 @@
         <RelativeLayout
             android:layout_width="175dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -87,12 +90,12 @@
 
             <EditText
                 android:id="@+id/edit_strength"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
+                android:maxLength="2"
                 android:text="0"
                 android:textColor="@color/text_normal" />
         </RelativeLayout>
@@ -100,6 +103,7 @@
         <RelativeLayout
             android:layout_width="175dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -113,12 +117,12 @@
 
             <EditText
                 android:id="@+id/edit_defence"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
+                android:maxLength="2"
                 android:text="0"
                 android:textColor="@color/text_normal" />
         </RelativeLayout>
@@ -126,6 +130,7 @@
         <RelativeLayout
             android:layout_width="175dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -139,12 +144,12 @@
 
             <EditText
                 android:id="@+id/edit_ranging"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
+                android:maxLength="2"
                 android:text="0"
                 android:textColor="@color/text_normal" />
         </RelativeLayout>
@@ -152,6 +157,7 @@
         <RelativeLayout
             android:layout_width="175dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -165,12 +171,12 @@
 
             <EditText
                 android:id="@+id/edit_prayer"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
+                android:maxLength="2"
                 android:text="0"
                 android:textColor="@color/text_normal" />
         </RelativeLayout>
@@ -178,6 +184,7 @@
         <RelativeLayout
             android:layout_width="175dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -191,12 +198,12 @@
 
             <EditText
                 android:id="@+id/edit_magic"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:ems="2"
                 android:gravity="center"
                 android:inputType="number"
+                android:maxLength="2"
                 android:text="0"
                 android:textColor="@color/text_normal" />
         </RelativeLayout>
