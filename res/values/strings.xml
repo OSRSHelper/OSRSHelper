@@ -10,7 +10,7 @@
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
     <string name="continuee">Continue</string>
-    <string name="combat">Combat lvl calc</string>
+    <string name="combat">Combat Lvl Calculator</string>
     <string name="username_error">You need to specify a username</string>
     <string name="username_choose">Or choose a username</string>
     <string name="skill">Skill</string>
@@ -18,6 +18,7 @@
     <string name="xp_to_lvl">XP To Level</string>
     <string name="level">Level</string>
     <string name="ranking">Ranking</string>
+    <string name="load">Load</string>
     <string name="loading_highscores">Loading highscores for: %1$s</string>
     <string name="combat_lvl">Combat lvl: %1$d</string>
     <string name="not_existing_player">%1$s does not exist in the database.</string>
@@ -46,13 +47,13 @@
 
     <string name="search">Search</string>
     <string name="title_activity_world_map">World Map</string>
-    <string name="hitpoints_lvl">Hitpoints lvl</string>
-    <string name="attack_lvl">Attack lvl</string>
-    <string name="strength_lvl">Strength lvl</string>
-    <string name="defence_lvl">Defence lvl</string>
-    <string name="magic_lvl">Magic lvl</string>
-    <string name="ranging_lvl">Ranging lvl</string>
-    <string name="prayer_lvl">Prayer lvl</string>
+    <string name="hitpoints_lvl">Hitpoints</string>
+    <string name="attack_lvl">Attack</string>
+    <string name="strength_lvl">Strength</string>
+    <string name="defence_lvl">Defence</string>
+    <string name="magic_lvl">Magic</string>
+    <string name="ranging_lvl">Ranging</string>
+    <string name="prayer_lvl">Prayer</string>
     
 
 </resources>

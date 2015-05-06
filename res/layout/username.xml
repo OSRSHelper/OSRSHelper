@@ -32,12 +32,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/editbox"
             android:hint="@string/prompt_username"
-            android:inputType="textVisiblePassword"
+            android:inputType="text"
             android:maxLength="12"
             android:maxLines="1"
             android:padding="5dp"
             android:singleLine="true"
-            android:textColor="@color/Black" />
+            android:textColor="@color/Black"
+            android:textCursorDrawable="@drawable/blackcursor" />
 
         <TextView
             android:id="@+id/continue_btn"

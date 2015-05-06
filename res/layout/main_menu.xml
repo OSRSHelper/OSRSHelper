@@ -22,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_name"
-        android:layout_margin="30dp" >
+        android:layout_margin="30dp"
+        android:scrollbars="none" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +32,8 @@
 
             <TextView
                 android:id="@+id/highscore_btn"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
@@ -45,8 +46,8 @@
 
             <TextView
                 android:id="@+id/world_map_btn"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
@@ -59,8 +60,8 @@
 
             <TextView
                 android:id="@+id/wiki_btn"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
@@ -73,8 +74,8 @@
 
             <TextView
                 android:id="@+id/combat_btn"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
@@ -87,8 +88,8 @@
 
             <TextView
                 android:id="@+id/xptracker_btn"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"

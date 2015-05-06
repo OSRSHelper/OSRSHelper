@@ -1,11 +1,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <!--  Finger interaction -->
-  <item android:state_focused="false" android:state_pressed="false" android:drawable="@drawable/greenbt" />
-  <item android:state_focused="false" android:state_pressed="true" android:drawable="@drawable/greenbt_over" />
-  
-  <!--  Keyboard interaction -->
-  <item android:state_focused="true" android:state_pressed="false" android:drawable="@drawable/greenbt_over" />
-  <item android:state_focused="true" android:state_pressed="true" android:drawable="@drawable/greenbt" />
-  
+    <item android:drawable="@drawable/graybt" android:state_enabled="false"/>
+    <!-- Finger interaction -->
+    <item android:drawable="@drawable/greenbt" android:state_focused="false" android:state_pressed="false"/>
+    <item android:drawable="@drawable/greenbt_over" android:state_focused="false" android:state_pressed="true"/>
+
+    <!-- Keyboard interaction -->
+    <item android:drawable="@drawable/greenbt_over" android:state_focused="true" android:state_pressed="false"/>
+    <item android:drawable="@drawable/greenbt" android:state_focused="true" android:state_pressed="true"/>
+
 </selector>
