@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +19,17 @@ import com.infonuascape.osrshelper.adapters.StableArrayAdapter;
 import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
 
 public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener {
+	public static final int HISCORES = 0;
+	public static final int XP_TRACKER = 1;
 	private OSRSHelperDataSource osrsHelperDataSource;
 	private StableArrayAdapter adapter;
+	private int type;
+
+	public static void show(final Context context, int type){
+		Intent i = new Intent(context, UsernameActivity.class);
+		i.putExtra("type", type);
+		context.startActivity(i);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +39,24 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 		setContentView(R.layout.username);
 
+		type = getIntent().getIntExtra("type", HISCORES);
+
 		findViewById(R.id.username_edit).clearFocus();
 
 		findViewById(R.id.continue_btn).setOnClickListener(this);
 
-		ListView list = (ListView) findViewById(android.R.id.list);
 		osrsHelperDataSource = new OSRSHelperDataSource(this);
+	}
 
+	public void onResume(){
+		super.onResume();
 		// Get all usernames
 		osrsHelperDataSource.open();
 		ArrayList<String> usernames = osrsHelperDataSource.getAllUsernames();
 		osrsHelperDataSource.close();
 
 		adapter = new StableArrayAdapter(this, R.layout.username_list_item, usernames);
+		ListView list = (ListView) findViewById(android.R.id.list);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
 	}
@@ -66,10 +81,11 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		osrsHelperDataSource.addUsername(username);
 		osrsHelperDataSource.close();
 
-		Intent data = new Intent();
-		data.putExtra("username", username);
-		setResult(RESULT_OK, data);
-		finish();
+		if(type == HISCORES){
+			HighScoreActivity.show(this, username);
+		} else{
+			XPTrackerActivity.show(this, username);
+		}
 	}
 
 	@Override
