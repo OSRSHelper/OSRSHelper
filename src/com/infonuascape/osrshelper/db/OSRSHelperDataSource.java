@@ -53,6 +53,10 @@ public class OSRSHelperDataSource {
 		cursor.close();
 		return usernames;
 	}
+	
+	public void deleteUsername(final String username) {
+		database.delete(DBController.TABLE_USERNAMES_OSRSHELPER, DBController.COLUMN_USERNAME_OSRSHELPER + "=?", new String[]{username});
+	}
 
 	public void deleteAllUsernames() {
 		database.delete(DBController.TABLE_USERNAMES_OSRSHELPER, null, null);

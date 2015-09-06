@@ -10,9 +10,13 @@
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
     <string name="continuee">Continue</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
     <string name="combat">Combat Lvl Calculator</string>
     <string name="username_error">You need to specify a username</string>
     <string name="username_choose">Or choose a username</string>
+    <string name="delete">Delete</string>
+    <string name="delete_username">Do you want to delete this username?</string>
     <string name="skill">Skill</string>
     <string name="xp">XP</string>
     <string name="xp_to_lvl">XP To Level</string>
