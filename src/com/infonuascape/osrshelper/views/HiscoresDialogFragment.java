@@ -45,7 +45,7 @@ public class HiscoresDialogFragment extends DialogFragment implements OnClickLis
 		((TextView) v.findViewById(R.id.skill_lvl)).setText(getString(R.string.level) + " : " + skill.getLevel());
 		((TextView) v.findViewById(R.id.skill_exp)).setText(getString(R.string.xp) + " : " +  NumberFormat.getInstance().format(skill.getExperience()));
 		if(skill.getSkillType() != SkillType.Overall && skill.getLevel() != 99){
-			//((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText(getString(R.string.xp_to_lvl) + " : " +  NumberFormat.getInstance().format(Utils.getXPToLvl(skill.getLevel() + 1) - skill.getExperience()));
+			((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText(getString(R.string.xp_to_lvl) + " : " +  NumberFormat.getInstance().format(Utils.getXPToLvl(skill.getLevel() + 1) - skill.getExperience()));
 		} else{
 			((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText("");
 		}
