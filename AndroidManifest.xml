@@ -27,6 +27,9 @@
         <activity
             android:name=".UsernameActivity"
             android:label="@string/title_activity_username" >
+             <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".HighScoreActivity"
@@ -47,7 +50,7 @@
 
         <receiver
             android:name=".widget.OSRSAppWidgetProvider"
-            android:label="OSRS Stats" >
+            android:label="@string/widget_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -61,13 +64,6 @@
             android:name=".widget.OSRSWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" >
         </service>
-
-        <activity android:name=".widget.OSRSWidgetConfigurationActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

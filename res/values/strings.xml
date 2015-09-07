@@ -40,6 +40,7 @@
     <string name="tracking_since">Tracking since\n%1$s</string>
     <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
     <string name="update">Update</string>
+    <string name="widget_name">OSRS Stats</string>
 
     <string-array name="time_array">
         <item>Hour</item>

@@ -2,6 +2,10 @@ package com.infonuascape.osrshelper.widget;
 
 import java.util.Arrays;
 
+import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.UsernameActivity;
+import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -11,9 +15,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
-
-import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
 
 public class OSRSAppWidgetProvider extends AppWidgetProvider {
 	public static String ACTION_WIDGET_CONFIGURE = "ConfigureWidget";
@@ -54,8 +55,10 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			views.setTextViewText(R.id.username, username);
 			
 			//Config
-			Intent configIntent = new Intent(context, OSRSWidgetConfigurationActivity.class);
+			Intent configIntent = new Intent(context, UsernameActivity.class);
 	        configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+	        configIntent.putExtra("type", 2);
+	        configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 	        PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
 	        views.setOnClickPendingIntent(R.id.username_btn, configPendingIntent);
 	        configIntent.setAction(ACTION_WIDGET_CONFIGURE + Integer.toString(appWidgetId));
