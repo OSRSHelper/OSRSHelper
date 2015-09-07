@@ -1,0 +1,11 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <!--  Finger interaction -->
+  <item android:state_focused="false" android:state_pressed="false" android:drawable="@drawable/btn_plus" />
+  <item android:state_focused="false" android:state_pressed="true" android:drawable="@drawable/btn_plus_over" />
+  
+  <!--  Keyboard interaction -->
+  <item android:state_focused="true" android:state_pressed="false" android:drawable="@drawable/btn_plus" />
+  <item android:state_focused="true" android:state_pressed="true" android:drawable="@drawable/btn_plus_over" />
+  
+</selector>

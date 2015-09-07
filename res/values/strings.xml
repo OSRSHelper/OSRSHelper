@@ -59,5 +59,13 @@
     <string name="ranging_lvl">Ranging</string>
     <string name="prayer_lvl">Prayer</string>
     
+    <string name="lvl_need">Number of levels needed until next combat lvl</string>
+    <string name="maxed_out">You are currently maxed out</string>
+    <string name="attack_strength_lvl_needed">%1$d attack or strength</string>
+    <string name="hitpoint_defence_lvl_needed">%1$d hitpoint or defence</string>
+    <string name="ranging_lvl_needed">%1$d ranged</string>
+    <string name="magic_lvl_needed">%1$d magic</string>
+    <string name="prayer_lvl_needed">%1$d prayer</string>
+    
 
 </resources>
