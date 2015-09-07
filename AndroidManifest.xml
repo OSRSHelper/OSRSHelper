@@ -44,6 +44,30 @@
             android:name=".WorldMapActivity"
             android:label="@string/title_activity_world_map" >
         </activity>
+
+        <receiver
+            android:name=".widget.OSRSAppWidgetProvider"
+            android:label="OSRS Stats" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+
+        <service
+            android:name=".widget.OSRSWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" >
+        </service>
+
+        <activity android:name=".widget.OSRSWidgetConfigurationActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
