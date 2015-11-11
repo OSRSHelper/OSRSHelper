@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -64,6 +65,37 @@ public class RSViewPopulate {
 
 		if(currentRow != null){
 			layout.addView(currentRow);
+		}
+
+		return layout;
+	}
+	
+	public GridView populate(GridView layout){
+		layout.removeAllViews();
+		LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		for(int i = 0 ; i < skills.size() ; i++){
+			Skill skill = skills.get(i);
+
+			View currentSkill = new View(activity);
+
+			currentSkill = inflater.inflate(R.layout.rs_view_item, null);
+
+			// set value into textview
+			TextView textView = (TextView) currentSkill.findViewById(R.id.skill_level);
+			textView.setText(skill.getLevel() + "");
+
+			// set image based on selected text
+			ImageView imageView = (ImageView) currentSkill.findViewById(R.id.skill_image);
+			if(skill.getSkillType() != SkillType.Overall){
+				imageView.setImageResource(skill.getDrawableInt());
+			} else{
+				imageView.setImageResource(R.drawable.overall_rsview);
+			}
+
+
+			currentSkill.setOnClickListener(new RSViewOnClickListener(activity, skill));
+			layout.addView(currentSkill);
 		}
 
 		return layout;

@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.utils;
 import java.util.ArrayList;
 
 import android.graphics.Point;
+import android.net.Uri;
 
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
@@ -33,6 +34,127 @@ public class Utils {
 		int combatLvl = (int) Math.floor(base + Math.max(melee, Math.max(range, mage)));
 		
 		return combatLvl;
+	}
+	
+	public static final int getMissingAttackStrengthUntilNextCombatLvl(final PlayerSkills skills){
+		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
+		
+		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
+		
+		
+		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
+		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
+		
+		double max = Math.max(melee, Math.max(range, mage));
+		
+		int combatLvl = (int) Math.floor(base + max);
+		
+		int needed = 0;
+		
+		for(double start = base + melee; start < (combatLvl + 1); start += 0.325){
+			needed += 1;
+		}
+		
+		return needed;
+	}
+	
+	public static final int getMissingHPDefenceUntilNextCombatLvl(final PlayerSkills skills){
+		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
+		
+		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
+		
+		
+		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
+		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
+		
+		double max = Math.max(melee, Math.max(range, mage));
+		
+		int combatLvl = (int) Math.floor(base + max);
+		
+		int needed = 0;
+		
+		
+		for(double start = base + max; start < (combatLvl + 1); start += 0.25){
+			needed += 1;
+		}
+		
+		return needed;
+	}
+	
+	public static final int getMissingPrayerUntilNextCombatLvl(final PlayerSkills skills){
+		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
+		
+		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
+		
+		
+		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
+		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
+		
+		double max = Math.max(melee, Math.max(range, mage));
+		
+		int combatLvl = (int) Math.floor(base + max);
+		
+		int needed = 0;
+		
+		for(double start = base + max; start < (combatLvl + 1); start += 0.125){
+			needed += 1;
+		}
+		
+		if(skills.prayer.getLevel() % 2 == 0){
+			needed += 1;
+		}
+		
+		return needed;
+	}
+	
+	public static final int getMissingRangingUntilNextCombatLvl(final PlayerSkills skills){
+		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
+		
+		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
+		
+		
+		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
+		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
+		
+		double max = Math.max(melee, Math.max(range, mage));
+		
+		int combatLvl = (int) Math.floor(base + max);
+		
+		int needed = 0;
+		double current = skills.ranged.getLevel();
+		double initial = current;
+		current = Math.floor(initial * 1.5) * 0.325;
+		
+		while((current + base) < (combatLvl + 1)){
+			current = Math.floor((initial + ++needed) * 1.5d) * 0.325d;
+		}
+		
+		return needed;
+	}
+	
+	public static final int getMissingMagicUntilNextCombatLvl(final PlayerSkills skills){
+		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
+		
+		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
+		
+		
+		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
+		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
+		
+		double max = Math.max(melee, Math.max(range, mage));
+		
+		int combatLvl = (int) Math.floor(base + max);
+		
+		int needed = 0;
+		double start = skills.magic.getLevel();
+		double initial = start;
+		start = Math.floor(initial * 1.5) * 0.325;
+		
+		while((start + base) < (combatLvl + 1)){
+			start = Math.floor((initial + ++needed) * 1.5) * 0.325;
+		}
+		
+		return needed;
 	}
 	
 	public static ArrayList<PointOfInterest> getCitiesPoI(){

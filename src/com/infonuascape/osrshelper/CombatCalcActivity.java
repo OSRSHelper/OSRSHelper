@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +23,12 @@ import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 public class CombatCalcActivity extends Activity implements TextWatcher, OnClickListener {
 	private TextView combatText;
+	private TextView lvlNeededText;
+	private TextView attStrText;
+	private TextView hpDefText;
+	private TextView rangeText;
+	private TextView mageText;
+	private TextView prayerText;
 	private EditText hitpointEdit;
 	private EditText attackEdit;
 	private EditText strengthEdit;
@@ -48,10 +55,18 @@ public class CombatCalcActivity extends Activity implements TextWatcher, OnClick
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		setContentView(R.layout.combat_lvl_calc);
 		
 		combatText = (TextView) findViewById(R.id.combat_lvl);
+		lvlNeededText = (TextView) findViewById(R.id.number_lvl_needed);
+		attStrText = (TextView) findViewById(R.id.attack_strength_needed);
+		hpDefText = (TextView) findViewById(R.id.hitpoint_defence_needed);
+		rangeText = (TextView) findViewById(R.id.ranging_needed);
+		mageText = (TextView) findViewById(R.id.magic_needed);
+		prayerText = (TextView) findViewById(R.id.prayer_needed);
 
 		hitpointEdit = ((EditText) findViewById(R.id.edit_hitpoints));
 		hitpointEdit.addTextChangedListener(this);
@@ -106,7 +121,60 @@ public class CombatCalcActivity extends Activity implements TextWatcher, OnClick
 				playerSkills.prayer = prayer.isEmpty() ? new Skill(SkillType.Prayer, 0, (short)0) : new Skill(SkillType.Prayer, 0, Short.valueOf(prayer));
 				playerSkills.magic = magic.isEmpty() ? new Skill(SkillType.Magic, 0, (short)0) : new Skill(SkillType.Magic, 0, Short.valueOf(magic));
 				
+				boolean isOneShown = false;
 				combatText.setText(getString(R.string.combat_lvl, Utils.getCombatLvl(playerSkills)));
+				
+				int missingAttStr = Utils.getMissingAttackStrengthUntilNextCombatLvl(playerSkills);
+				if(playerSkills.attack.getLevel() + playerSkills.strength.getLevel() + missingAttStr < 199) {
+					attStrText.setText(getString(R.string.attack_strength_lvl_needed, missingAttStr));
+					attStrText.setVisibility(View.VISIBLE);
+					isOneShown = true;
+				} else {
+					attStrText.setVisibility(View.GONE);
+				}
+				
+				int missingHpDef = Utils.getMissingHPDefenceUntilNextCombatLvl(playerSkills);
+				
+				if(playerSkills.hitpoints.getLevel() + playerSkills.defence.getLevel() + missingHpDef < 199) {
+					hpDefText.setText(getString(R.string.hitpoint_defence_lvl_needed, missingHpDef));
+					hpDefText.setVisibility(View.VISIBLE);
+					isOneShown = true;
+				} else {
+					hpDefText.setVisibility(View.GONE);
+				}
+				
+				int missingMage = Utils.getMissingMagicUntilNextCombatLvl(playerSkills);
+				if(playerSkills.magic.getLevel() + missingMage <= 99) {
+					mageText.setText(getString(R.string.magic_lvl_needed, missingMage));
+					mageText.setVisibility(View.VISIBLE);
+					isOneShown = true;
+				} else {
+					mageText.setVisibility(View.GONE);
+				}
+				
+				int missingRanged = Utils.getMissingRangingUntilNextCombatLvl(playerSkills);
+				if(playerSkills.ranged.getLevel() + missingRanged <= 99) {
+					rangeText.setText(getString(R.string.ranging_lvl_needed, missingRanged));
+					rangeText.setVisibility(View.VISIBLE);
+					isOneShown = true;
+				} else {
+					rangeText.setVisibility(View.GONE);
+				}
+				
+				int missingPrayer = Utils.getMissingPrayerUntilNextCombatLvl(playerSkills);
+				if(playerSkills.prayer.getLevel() + missingPrayer <= 99) {
+					prayerText.setText(getString(R.string.prayer_lvl_needed, missingPrayer));
+					prayerText.setVisibility(View.VISIBLE);
+					isOneShown = true;
+				} else {
+					prayerText.setVisibility(View.GONE);
+				}
+				
+				if(!isOneShown) {
+					lvlNeededText.setText(R.string.maxed_out);
+				} else {
+					lvlNeededText.setText(R.string.lvl_need);
+				}
 			}
 		});
 	}

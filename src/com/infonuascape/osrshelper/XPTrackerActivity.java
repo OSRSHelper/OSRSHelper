@@ -56,7 +56,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		spinner = (Spinner) findViewById(R.id.time_spinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array,
-				android.R.layout.simple_spinner_item);
+				R.layout.spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setSelection(2);

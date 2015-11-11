@@ -10,9 +10,13 @@
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
     <string name="continuee">Continue</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
     <string name="combat">Combat Lvl Calculator</string>
     <string name="username_error">You need to specify a username</string>
     <string name="username_choose">Or choose a username</string>
+    <string name="delete">Delete</string>
+    <string name="delete_username">Do you want to delete this username?</string>
     <string name="skill">Skill</string>
     <string name="xp">XP</string>
     <string name="xp_to_lvl">XP To Level</string>
@@ -36,6 +40,7 @@
     <string name="tracking_since">Tracking since\n%1$s</string>
     <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
     <string name="update">Update</string>
+    <string name="widget_name">OSRS Stats</string>
 
     <string-array name="time_array">
         <item>Hour</item>
@@ -54,6 +59,14 @@
     <string name="magic_lvl">Magic</string>
     <string name="ranging_lvl">Ranging</string>
     <string name="prayer_lvl">Prayer</string>
+    
+    <string name="lvl_need">Number of levels needed until next combat lvl</string>
+    <string name="maxed_out">You are currently maxed out</string>
+    <string name="attack_strength_lvl_needed">%1$d attack or strength</string>
+    <string name="hitpoint_defence_lvl_needed">%1$d hitpoint or defence</string>
+    <string name="ranging_lvl_needed">%1$d ranged</string>
+    <string name="magic_lvl_needed">%1$d magic</string>
+    <string name="prayer_lvl_needed">%1$d prayer</string>
     
 
 </resources>

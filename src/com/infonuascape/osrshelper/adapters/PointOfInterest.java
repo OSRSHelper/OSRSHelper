@@ -2,6 +2,7 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.graphics.Point;
 
+
 public class PointOfInterest {
 	public String name;
 	public Point point;
