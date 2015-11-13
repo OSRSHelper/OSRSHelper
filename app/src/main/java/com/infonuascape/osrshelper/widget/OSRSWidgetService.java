@@ -42,7 +42,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 		Log.i(TAG, "onCreate");
 		skills = new ArrayList<Skill>();
 		playerSkills = new PlayerSkills();
-		skills = PlayerSkills.getSkillsInOrder(playerSkills);
+		skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
 	}
 
 	public void onDestroy() {
@@ -107,14 +107,14 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
 		try {
 			playerSkills = hiscoreHelper.getPlayerStats();
-			skills = PlayerSkills.getSkillsInOrder(playerSkills);
+			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
 		} catch (PlayerNotFoundException e) {
 			playerSkills = new PlayerSkills();
-			skills = PlayerSkills.getSkillsInOrder(playerSkills);
+			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
 			e.printStackTrace();
 		} catch (Exception uhe) {
 			playerSkills = new PlayerSkills();
-			skills = PlayerSkills.getSkillsInOrder(playerSkills);
+			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
 			uhe.printStackTrace();
 		}
 	}
