@@ -277,11 +277,11 @@
                 android:id="@+id/number_lvl_needed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/lvl_need"
-                android:textSize="16sp"
-                android:textColor="@color/text_normal" />
+                android:textColor="@color/text_normal"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/attack_strength_needed"
