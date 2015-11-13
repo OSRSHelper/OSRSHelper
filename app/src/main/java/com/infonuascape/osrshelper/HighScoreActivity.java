@@ -6,13 +6,19 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -25,18 +31,17 @@ import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.RSViewPopulate;
 
-public class HighScoreActivity extends Activity implements OnClickListener {
+public class HighScoreActivity extends Activity {
 	private final static String EXTRA_USERNAME = "extra_username";
+	private static final int NUM_PAGES = 2;
 	private String username;
 	private TextView header;
 	private TextView combatText;
 	private PlayerSkills playerSkills;
 	private TableLayout rsView;
 	private TableLayout table;
-	private ScrollView tableScroll;
-	private ScrollView tableRSScroll;
-	private TextView tvList;
-	private TextView tvRSView;
+	private ArrayList<ImageView> dots;
+	private ViewPager mViewPager;
 
 	public static void show(final Context context, final String username) {
 		Intent intent = new Intent(context, HighScoreActivity.class);
@@ -60,15 +65,12 @@ public class HighScoreActivity extends Activity implements OnClickListener {
 		combatText = (TextView) findViewById(R.id.combat);
 
 		rsView = (TableLayout) findViewById(R.id.rs_view);
-		tableRSScroll = (ScrollView) findViewById(R.id.scroll_table_rs_view);
 		table = (TableLayout) findViewById(R.id.table_hiscores);
-		tableScroll = (ScrollView) findViewById(R.id.scroll_table);
 
-		tvList = (TextView) findViewById(R.id.rs_switch_list);
-		tvList.setOnClickListener(this);
-		
-		tvRSView = (TextView) findViewById(R.id.rs_switch_rs);
-		tvRSView.setOnClickListener(this);
+		WizardPagerAdapter adapter = new WizardPagerAdapter();
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setAdapter(adapter);
+		addDots();
 
 		new PopulateTable().execute();
 
@@ -191,19 +193,75 @@ public class HighScoreActivity extends Activity implements OnClickListener {
 		return tableRow;
 	}
 
+	public void addDots() {
+		dots = new ArrayList<ImageView>();
+		LinearLayout dotsLayout = (LinearLayout)findViewById(R.id.dots);
 
-	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.rs_switch_rs) {
-			tableRSScroll.setVisibility(View.VISIBLE);
-			tableScroll.setVisibility(View.GONE);
-			tvList.setBackgroundColor(getResources().getColor(R.color.WhiteSmoke));
-			tvRSView.setBackgroundColor(getResources().getColor(R.color.green_bt));
-		} else if(v.getId() == R.id.rs_switch_list) {
-			tableRSScroll.setVisibility(View.GONE);
-			tableScroll.setVisibility(View.VISIBLE);
-			tvList.setBackgroundColor(getResources().getColor(R.color.green_bt));
-			tvRSView.setBackgroundColor(getResources().getColor(R.color.WhiteSmoke));
+		for(int i = 0; i < NUM_PAGES; i++) {
+			ImageView dot = new ImageView(this);
+			dot.setImageDrawable(getResources().getDrawable(R.drawable.pager_dot_not_selected));
+
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.WRAP_CONTENT,
+					LinearLayout.LayoutParams.WRAP_CONTENT
+			);
+			dotsLayout.addView(dot, params);
+
+			dots.add(dot);
+		}
+
+		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				selectDot(position);
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+			}
+		});
+
+		selectDot(0);
+	}
+
+	public void selectDot(int idx) {
+		Resources res = getResources();
+		for(int i = 0; i < NUM_PAGES; i++) {
+			int drawableId = (i==idx)?(R.drawable.pager_dot_selected):(R.drawable.pager_dot_not_selected);
+			Drawable drawable = res.getDrawable(drawableId);
+			dots.get(i).setImageDrawable(drawable);
+		}
+	}
+
+
+	class WizardPagerAdapter extends PagerAdapter {
+
+		public Object instantiateItem(ViewGroup collection, int position) {
+
+			int resId = 0;
+			switch (position) {
+				case 0:
+					resId = R.id.scroll_table;
+					break;
+				case 1:
+					resId = R.id.scroll_table_rs_view;
+					break;
+			}
+			return findViewById(resId);
+		}
+
+		@Override
+		public int getCount() {
+			return 2;
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == ((View) arg1);
 		}
 	}
 }
