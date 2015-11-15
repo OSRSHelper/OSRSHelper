@@ -9,10 +9,12 @@ import org.json.*;
 
 public class GESearchResults {
     public int length = 0;
+	private ArrayList<Item> itemsSearch;
 
     public GESearchResults(String JSONObject) {
 
 		JSONObject json = null;
+		itemsSearch = new ArrayList<Item>();
 		try {
 			json = new JSONObject(JSONObject);
 
@@ -21,8 +23,6 @@ public class GESearchResults {
 			this.length = items.length();
 
 			if (this.length > 0) { //received items
-
-				ArrayList<Item> itemList = new ArrayList<Item>();
 
 				Item iterItem = new Item();
 
@@ -48,14 +48,17 @@ public class GESearchResults {
 					Log.i("GESearchResults", "Item #" + i);
 					Log.i("GESearchResults", iterItem.toString());
 
+					itemsSearch.add(iterItem);
 				}
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-
     }
+
+	public ArrayList<Item> getItemsSearch() {
+		return itemsSearch;
+	}
 
     private Item.Trend parseTrend(JSONObject jsonObject) {
 		try {

@@ -145,7 +145,7 @@
  <color name="background">#e2e2e2</color>
  <color name="text_normal">#454545</color>
  <color name="DarkYellow">#A1A100</color>
- <color name="green_bt">#D92EB82E</color>
- <color name="green_bt_over">#802EB82E</color>
+ <color name="green_bt">#404040</color>
+ <color name="green_bt_over">#555555</color>
  <color name="rs_view_bg">#453C33</color>
 </resources>

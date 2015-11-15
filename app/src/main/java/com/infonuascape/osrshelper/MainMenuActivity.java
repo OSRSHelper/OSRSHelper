@@ -23,6 +23,7 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		findViewById(R.id.wiki_btn).setOnClickListener(this);
 		findViewById(R.id.xptracker_btn).setOnClickListener(this);
 		findViewById(R.id.combat_btn).setOnClickListener(this);
+		findViewById(R.id.ge_btn).setOnClickListener(this);
 	}
 
 	@Override
@@ -41,6 +42,8 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 			WorldMapActivity.show(this);
 		} else if (id == R.id.combat_btn) {
 			CombatCalcActivity.show(this);
+		} else if (id == R.id.ge_btn) {
+			SearchItemActivity.show(this);
 		}
 	}
 }

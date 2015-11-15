@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:drawablePadding="10dp"
         android:drawableTop="@drawable/ic_launcher"
         android:gravity="center"
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_name"
-        android:layout_margin="30dp"
+        android:layout_margin="20dp"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -97,6 +97,20 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/xptracker"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/ge_btn"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/grand_exchange"
                 android:textColor="@color/White"
                 android:textSize="16sp" />
         </LinearLayout>

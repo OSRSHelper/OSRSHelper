@@ -21,35 +21,35 @@ public class Item {
 
 
     public class Trend {
-	public Trend(int change, TrendRate rate) { //temp string
-	    this.change = change;
-	    this.rate = rate;
-	}
+        public Trend(int change, TrendRate rate) { //temp string
+            this.change = change;
+            this.rate = rate;
+        }
 
-	int change;
-	TrendRate rate;
-    }
-    
-    public enum TrendRate {
-	POSITIVE, NEGATIVE, NEUTRAL
-    };
+        public int change;
+        public TrendRate rate;
+        }
 
-    public static TrendRate getTrendRateEnum(String trend) {
-	if (trend.equals("positive")) return TrendRate.POSITIVE;
-	if (trend.equals("negative")) return TrendRate.NEGATIVE;
-	if (trend.equals("neutral")) return TrendRate.NEUTRAL;
-	return TrendRate.POSITIVE;
-    }
-    
+        public enum TrendRate {
+        POSITIVE, NEGATIVE, NEUTRAL
+        };
 
-    public String toString() {
-	String output;
-	output = "Item data:\n";
-	output += "ID:"+ id+",\nType:"+type+",\nDescription:"+description+"\nName:"+name+"\ntypeIcon:"+typeIcon+"\nicon:"+icon+"\niconLarge:"+iconLarge+"\nmembers:"+(members ? "yes" : "no")+"\n\n\n";
-	output += "Trend data\n";
-	output += "Today:"+today.change+"\n";
-	output += "Current:"+current.change+"\n";
+        public static TrendRate getTrendRateEnum(String trend) {
+        if (trend.equals("positive")) return TrendRate.POSITIVE;
+        if (trend.equals("negative")) return TrendRate.NEGATIVE;
+        if (trend.equals("neutral")) return TrendRate.NEUTRAL;
+        return TrendRate.POSITIVE;
+        }
 
-	return output;
+
+        public String toString() {
+        String output;
+        output = "Item data:\n";
+        output += "ID:"+ id+",\nType:"+type+",\nDescription:"+description+"\nName:"+name+"\ntypeIcon:"+typeIcon+"\nicon:"+icon+"\niconLarge:"+iconLarge+"\nmembers:"+(members ? "yes" : "no")+"\n\n\n";
+        output += "Trend data\n";
+        output += "Today:"+today.change+"\n";
+        output += "Current:"+current.change+"\n";
+
+        return output;
     }
 }

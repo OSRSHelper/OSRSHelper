@@ -6,9 +6,11 @@
     <string name="world_map">World Map</string>
     <string name="wiki">OSRS Wiki</string>
     <string name="xptracker">XP Tracker</string>
+    <string name="grand_exchange">Grand Exchange</string>
     <string name="title_activity_username">Choose a username</string>
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
+    <string name="prompt_search">Search an item...</string>
     <string name="continuee">Continue</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>

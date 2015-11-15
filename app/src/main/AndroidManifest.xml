@@ -44,8 +44,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
-            android:name=".WorldMapActivity"
-            android:label="@string/title_activity_world_map" >
+            android:name=".WorldMapActivity">
+        </activity>
+        <activity
+            android:name=".SearchItemActivity">
         </activity>
 
         <receiver
