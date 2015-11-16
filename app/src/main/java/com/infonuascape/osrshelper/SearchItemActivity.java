@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.infonuascape.osrshelper.adapters.EndlessScrollListener;
 import com.infonuascape.osrshelper.adapters.SearchAdapter;
 import com.infonuascape.osrshelper.adapters.StableArrayAdapter;
 import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
@@ -38,6 +39,10 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 	private GEHelper geHelper;
 	private EditText editText;
 	private PopulateSearchResults runnableSearch;
+	private int pageNum;
+	private String searchText;
+	private boolean isRestartAdapter;
+    private boolean isContinueToLoad;
 
 
 	public static void show(final Context context){
@@ -66,6 +71,19 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 		super.onResume();
 
 		ListView list = (ListView) findViewById(android.R.id.list);
+		list.setOnScrollListener(new EndlessScrollListener() {
+			@Override
+			public boolean onLoadMore(int page, int totalItemsCount) {
+                if(isContinueToLoad) {
+                    if (!runnableSearch.isCancelled()) {
+                        runnableSearch.cancel(true);
+                    }
+                    runnableSearch = new PopulateSearchResults();
+                    runnableSearch.execute(searchText);
+                }
+				return true;
+			}
+		});
 		list.setOnItemClickListener(this);
 	}
 
@@ -73,7 +91,13 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 
 		@Override
 		protected GESearchResults doInBackground(String... urls) {
-			return geHelper.search(urls[0], 0);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
+                }
+            });
+			return geHelper.search(urls[0], pageNum);
 		}
 
 		@Override
@@ -81,9 +105,22 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					adapter = new SearchAdapter(SearchItemActivity.this, searchResults.getItemsSearch());
-					ListView list = (ListView) findViewById(android.R.id.list);
-					list.setAdapter(adapter);
+                    if(searchResults.itemsSearch.size() == 0) {
+                        isContinueToLoad = false;
+                    }
+
+                    findViewById(R.id.progress_loading).setVisibility(View.GONE);
+					if(isRestartAdapter) {
+						adapter = new SearchAdapter(SearchItemActivity.this, searchResults.itemsSearch);
+						ListView list = (ListView) findViewById(android.R.id.list);
+						list.setAdapter(adapter);
+                        isRestartAdapter = false;
+					} else {
+						adapter.addAll(searchResults.itemsSearch);
+						adapter.notifyDataSetChanged();
+					}
+
+					pageNum++;
 				}
 			});
 		}
@@ -111,8 +148,12 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 			if(!runnableSearch.isCancelled()) {
 				runnableSearch.cancel(true);
 			}
+			isRestartAdapter = true;
+            isContinueToLoad = true;
 			runnableSearch = new PopulateSearchResults();
-			runnableSearch.execute(editText.getText().toString());
+			searchText = editText.getText().toString();
+			pageNum = 1;
+			runnableSearch.execute(searchText);
 		}
 	}
 }

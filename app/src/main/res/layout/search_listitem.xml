@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/item_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"/>
+
+    <ImageView
+        android:id="@+id/item_member"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/member"
+        android:visibility="gone"
+        android:layout_alignBottom="@id/item_image"
+        android:layout_alignRight="@id/item_image"/>
 
     <TextView
         android:id="@+id/item_name"
@@ -16,6 +27,7 @@
         android:layout_toRightOf="@id/item_image"
         android:layout_toLeftOf="@+id/item_current"
         android:textSize="16sp"
+        android:layout_marginLeft="5dp"
         android:text="Adamant Axe"/>
 
     <TextView
@@ -24,6 +36,7 @@
         android:layout_height="wrap_content"
         android:text="A powerful axe."
         android:layout_below="@id/item_name"
+        android:layout_marginLeft="5dp"
         android:layout_toLeftOf="@+id/item_trend"
         android:layout_toRightOf="@id/item_image" />
 
