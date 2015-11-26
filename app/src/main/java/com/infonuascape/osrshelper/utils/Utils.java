@@ -199,4 +199,8 @@ public class Utils {
 		return poi;
 	}
 
+	public static String replaceCustomSearchTerms(final String search) {
+		return search.toLowerCase().replace("addy", "adamant").replace("mith", "mithril").replace("rune", "runite").replace("scimmy", "scimitar");
+	}
+
 }

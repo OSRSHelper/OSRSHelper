@@ -13,11 +13,13 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.infonuascape.osrshelper.adapters.EndlessScrollListener;
@@ -27,6 +29,7 @@ import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
 import com.infonuascape.osrshelper.grandexchange.GEHelper;
 import com.infonuascape.osrshelper.grandexchange.GESearchResults;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
+import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.grandexchange.Item;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
@@ -34,15 +37,16 @@ import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
 
 import java.util.ArrayList;
 
-public class SearchItemActivity extends Activity implements OnItemClickListener, TextWatcher {
+public class SearchItemActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener {
 	private SearchAdapter adapter;
 	private GEHelper geHelper;
-	private EditText editText;
+	private SearchView editText;
 	private PopulateSearchResults runnableSearch;
 	private int pageNum;
 	private String searchText;
 	private boolean isRestartAdapter;
     private boolean isContinueToLoad;
+	private ListView list;
 
 
 	public static void show(final Context context){
@@ -58,9 +62,11 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 
 		setContentView(R.layout.search_ge);
 
-		editText = ((EditText) findViewById(R.id.search_edit));
-		editText.addTextChangedListener(this);
-		editText.clearFocus();
+		editText = ((SearchView) findViewById(R.id.searchView));
+		editText.setOnQueryTextListener(this);
+		editText.setIconified(false);
+
+		list = (ListView) findViewById(android.R.id.list);
 
 		runnableSearch = new PopulateSearchResults();
 
@@ -85,6 +91,31 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 			}
 		});
 		list.setOnItemClickListener(this);
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String s) {
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String s) {
+		if(s.length() > 0) {
+			if(!runnableSearch.isCancelled()) {
+				runnableSearch.cancel(true);
+			}
+			isRestartAdapter = true;
+			isContinueToLoad = true;
+			list.scrollTo(0, 0);
+			runnableSearch = new PopulateSearchResults();
+			searchText = Utils.replaceCustomSearchTerms(s);
+			pageNum = 1;
+			runnableSearch.execute(searchText);
+		} else if (adapter != null) {
+			adapter.clear();
+			adapter.notifyDataSetChanged();
+		}
+		return false;
 	}
 
 	private class PopulateSearchResults extends AsyncTask<String, Void, GESearchResults> {
@@ -112,9 +143,9 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
                     findViewById(R.id.progress_loading).setVisibility(View.GONE);
 					if(isRestartAdapter) {
 						adapter = new SearchAdapter(SearchItemActivity.this, searchResults.itemsSearch);
-						ListView list = (ListView) findViewById(android.R.id.list);
 						list.setAdapter(adapter);
                         isRestartAdapter = false;
+						isContinueToLoad = true;
 					} else {
 						adapter.addAll(searchResults.itemsSearch);
 						adapter.notifyDataSetChanged();
@@ -130,30 +161,5 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		final Item item = adapter.getItem(position);
-	}
-
-	@Override
-	public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-	}
-
-	@Override
-	public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-	}
-
-	@Override
-	public void afterTextChanged(Editable editable) {
-		if(editText.getText().length() > 2) {
-			if(!runnableSearch.isCancelled()) {
-				runnableSearch.cancel(true);
-			}
-			isRestartAdapter = true;
-            isContinueToLoad = true;
-			runnableSearch = new PopulateSearchResults();
-			searchText = editText.getText().toString();
-			pageNum = 1;
-			runnableSearch.execute(searchText);
-		}
 	}
 }

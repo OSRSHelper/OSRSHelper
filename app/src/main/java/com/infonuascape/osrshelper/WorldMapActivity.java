@@ -68,7 +68,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 
 			try {
 				if (fn == null || fn.length()==0) {
-					imageSurfaceView.setInputStream(getAssets().open("osrs.jpg"));
+					imageSurfaceView.setInputStream(getAssets().open("osrs.png"));
 				} else {
 					imageSurfaceView.setInputStream(new RandomAccessFileInputStream(fn));
 				}

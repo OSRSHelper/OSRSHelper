@@ -40,7 +40,7 @@ public class OSRSHelperDataSource {
 	
 	public void setUsernameForWidget(final int appWidgetId, final String username) {
 		final ContentValues values = new ContentValues();
-		
+
 		values.put(DBController.COLUMN_USERNAME_OSRSHELPER, username);
 		
 		if(getUsernameForWidget(appWidgetId) == null) {
