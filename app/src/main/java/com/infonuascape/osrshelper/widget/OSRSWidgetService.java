@@ -109,12 +109,16 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 			playerSkills = hiscoreHelper.getPlayerStats();
 			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
 		} catch (PlayerNotFoundException e) {
-			playerSkills = new PlayerSkills();
-			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
+			if(playerSkills == null) {
+				playerSkills = new PlayerSkills();
+				skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
+			}
 			e.printStackTrace();
 		} catch (Exception uhe) {
-			playerSkills = new PlayerSkills();
-			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
+			if(playerSkills == null) {
+				playerSkills = new PlayerSkills();
+				skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
+			}
 			uhe.printStackTrace();
 		}
 	}

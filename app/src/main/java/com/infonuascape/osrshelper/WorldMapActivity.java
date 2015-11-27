@@ -30,6 +30,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	private static final String KEY_Y = "Y";
 	private static final String KEY_FN = "FN";
 	private static final Point DEFAULT_POINT = new Point(3050, 2580);
+	private static final String MAP_FILE_NAME = "osrs.png";
 	private SlidingMenu slidingMenu;
 	private ListView poICitiesListView;
 	private PoIAdapter adapterCities;
@@ -68,7 +69,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 
 			try {
 				if (fn == null || fn.length()==0) {
-					imageSurfaceView.setInputStream(getAssets().open("osrs.png"));
+					imageSurfaceView.setInputStream(getAssets().open(MAP_FILE_NAME));
 				} else {
 					imageSurfaceView.setInputStream(new RandomAccessFileInputStream(fn));
 				}
@@ -89,7 +90,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 					filename = uri.getPath();
 					is = new RandomAccessFileInputStream(uri.getPath());
 				} else {
-					is = getAssets().open("osrs.jpg");
+					is = getAssets().open(MAP_FILE_NAME);
 				}
 
 				imageSurfaceView.setInputStream(is);
