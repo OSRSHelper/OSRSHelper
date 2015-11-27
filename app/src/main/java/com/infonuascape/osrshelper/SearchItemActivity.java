@@ -108,7 +108,7 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 			isContinueToLoad = true;
 			list.scrollTo(0, 0);
 			runnableSearch = new PopulateSearchResults();
-			searchText = Utils.replaceCustomSearchTerms(s);
+			searchText = s;
 			pageNum = 1;
 			runnableSearch.execute(searchText);
 		} else if (adapter != null) {
