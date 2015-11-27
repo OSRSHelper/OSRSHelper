@@ -30,7 +30,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	private static final String KEY_Y = "Y";
 	private static final String KEY_FN = "FN";
 	private static final Point DEFAULT_POINT = new Point(3050, 2580);
-	private static final String MAP_FILE_NAME = "osrs.png";
+	private static final String MAP_FILE_NAME = "osrs.jpg";
 	private SlidingMenu slidingMenu;
 	private ListView poICitiesListView;
 	private PoIAdapter adapterCities;
