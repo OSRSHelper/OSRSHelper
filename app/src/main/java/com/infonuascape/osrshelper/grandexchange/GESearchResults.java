@@ -59,6 +59,7 @@ public class GESearchResults {
 			priceStr = priceStr.replace("+", "");
 			priceStr = priceStr.replace("k", "00");
 			priceStr = priceStr.replace("m", "00000");
+			priceStr = priceStr.replace("b", "00000000");
 
 			int price = Integer.parseInt(priceStr);
 
