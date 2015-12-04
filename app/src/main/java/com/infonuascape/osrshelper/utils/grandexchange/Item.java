@@ -28,21 +28,21 @@ public class Item {
 
         public int change;
         public TrendRate rate;
-        }
+    }
 
-        public enum TrendRate {
+    public enum TrendRate {
         POSITIVE, NEGATIVE, NEUTRAL
-        };
+    };
 
-        public static TrendRate getTrendRateEnum(String trend) {
+    public static TrendRate getTrendRateEnum(String trend) {
         if (trend.equals("positive")) return TrendRate.POSITIVE;
         if (trend.equals("negative")) return TrendRate.NEGATIVE;
         if (trend.equals("neutral")) return TrendRate.NEUTRAL;
         return TrendRate.POSITIVE;
-        }
+    }
 
 
-        public String toString() {
+    public String toString() {
         String output;
         output = "Item data:\n";
         output += "ID:"+ id+",\nType:"+type+",\nDescription:"+description+"\nName:"+name+"\ntypeIcon:"+typeIcon+"\nicon:"+icon+"\niconLarge:"+iconLarge+"\nmembers:"+(members ? "yes" : "no")+"\n\n\n";
