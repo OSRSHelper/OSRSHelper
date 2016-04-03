@@ -5,16 +5,6 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/green_bt"
-        android:paddingLeft="8dp"
-        android:text="Cities"
-        android:textColor="@color/White"
-        android:textSize="18sp" />
-
     <ListView
         android:id="@+id/poi_cities"
         android:layout_width="match_parent"
