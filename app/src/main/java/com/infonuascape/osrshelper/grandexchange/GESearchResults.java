@@ -10,37 +10,42 @@ import org.json.*;
 public class GESearchResults {
 	public ArrayList<Item> itemsSearch;
 
-    public GESearchResults(String JSONObject) {
+    public GESearchResults(String jsonObject) {
 
-		JSONObject json = null;
 		itemsSearch = new ArrayList<Item>();
-		try {
-			json = new JSONObject(JSONObject);
 
-			JSONArray items = (JSONArray) json.get("items");
+		if(jsonObject != null) {
+			JSONObject json = null;
+			try {
+				json = new JSONObject(jsonObject);
 
-			for (int i = 0; i < items.length(); i++) {
-				Item iterItem = new Item();
-				JSONObject currItem = (JSONObject) items.get(i);
-				iterItem.id = (Integer) currItem.get("id");
-				iterItem.type = (String) currItem.get("type");
-				iterItem.description = (String) currItem.get("description");
-				iterItem.name = (String) currItem.get("name");
-				iterItem.icon = (String) currItem.get("icon");
-				iterItem.iconLarge = (String) currItem.get("icon_large");
+				JSONArray items = (JSONArray) json.get("items");
 
-				if (currItem.get("members").equals("true")) {
-					iterItem.members = true;
+				if (items != null) {
+					for (int i = 0; i < items.length(); i++) {
+						Item iterItem = new Item();
+						JSONObject currItem = (JSONObject) items.get(i);
+						iterItem.id = (Integer) currItem.get("id");
+						iterItem.type = (String) currItem.get("type");
+						iterItem.description = (String) currItem.get("description");
+						iterItem.name = (String) currItem.get("name");
+						iterItem.icon = (String) currItem.get("icon");
+						iterItem.iconLarge = (String) currItem.get("icon_large");
+
+						if (currItem.get("members").equals("true")) {
+							iterItem.members = true;
+						}
+
+						//Trends
+						iterItem.today = parseTrend((JSONObject) currItem.get("today"));
+						iterItem.current = parseTrend((JSONObject) currItem.get("current"));
+
+						itemsSearch.add(iterItem);
+					}
 				}
-
-				//Trends
-				iterItem.today = parseTrend((JSONObject)currItem.get("today"));
-				iterItem.current = parseTrend((JSONObject)currItem.get("current"));
-
-				itemsSearch.add(iterItem);
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
     }
 
@@ -54,16 +59,19 @@ public class GESearchResults {
 				priceStr = (String) priceObj;
 			}
 
+			String priceTemp = priceStr;
+			priceTemp = priceTemp.replaceAll("[- ,.]", "");
+			priceTemp = priceTemp.replace("+", "");
+			priceTemp = priceTemp.replace("k", "00");
+			priceTemp = priceTemp.replace("m", "00000");
+			priceTemp = priceTemp.replace("b", "00000000");
 
-			priceStr = priceStr.replaceAll("[- ,.]", "");
-			priceStr = priceStr.replace("+", "");
-			priceStr = priceStr.replace("k", "00");
-			priceStr = priceStr.replace("m", "00000");
-			priceStr = priceStr.replace("b", "00000000");
+			if(!priceStr.endsWith("k") && !priceStr.endsWith("b") && !priceStr.endsWith("m")) {
+				priceStr += "gp";
+			}
+			int price = Integer.parseInt(priceTemp);
 
-			int price = Integer.parseInt(priceStr);
-
-			return new Item().new Trend(price, Item.getTrendRateEnum((String) jsonObject.get("trend")));
+			return new Item().new Trend(priceStr, price, Item.getTrendRateEnum((String) jsonObject.get("trend")));
 		} catch(JSONException e) {
 			e.printStackTrace();
 		}

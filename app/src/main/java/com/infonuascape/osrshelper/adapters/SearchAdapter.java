@@ -64,7 +64,7 @@ public class SearchAdapter extends ArrayAdapter<Item> {
 
         holder.name.setText(item.name);
         holder.description.setText(item.description);
-        holder.current.setText(item.current.change + " gp");
+        holder.current.setText(item.current.value);
 
 
         if(item.today.rate == Item.TrendRate.POSITIVE) {
@@ -74,7 +74,7 @@ public class SearchAdapter extends ArrayAdapter<Item> {
         } else {
             holder.trending.setTextColor(mContext.getResources().getColor(R.color.DarkGray));
         }
-        holder.trending.setText((item.today.rate == Item.TrendRate.POSITIVE ? "+" : (item.today.rate == Item.TrendRate.NEGATIVE ? "-" : "")) + item.today.change + " gp");
+        holder.trending.setText(item.today.value);
         Picasso.with(mContext).load(item.iconLarge).into(holder.image);
 
         if(item.members) {

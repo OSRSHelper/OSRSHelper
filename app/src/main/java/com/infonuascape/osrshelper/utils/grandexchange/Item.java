@@ -21,11 +21,13 @@ public class Item {
 
 
     public class Trend {
-        public Trend(int change, TrendRate rate) { //temp string
+        public Trend(String value, int change, TrendRate rate) { //temp string
+            this.value = value;
             this.change = change;
             this.rate = rate;
         }
 
+        public String value;
         public int change;
         public TrendRate rate;
     }
