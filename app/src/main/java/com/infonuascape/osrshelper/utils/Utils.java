@@ -193,6 +193,7 @@ public class Utils {
 		poi.add(new PointOfInterest("Sophanem", new Point(ZEAH_OFFSET_X + 3945, 4325 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Tai Bwo Wannai", new Point(ZEAH_OFFSET_X + 2430, 3470 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Taverley", new Point(ZEAH_OFFSET_X + 2750, 2335 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Tirannwn", new Point(2551, 2725)));
 		poi.add(new PointOfInterest("Tutorial Island", new Point(ZEAH_OFFSET_X + 3370, 3370 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Varrock", new Point(ZEAH_OFFSET_X + 3685, 2355 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Waterbirth Island", new Point(ZEAH_OFFSET_X + 1645, 1440 + ZEAH_OFFSET_Y)));
@@ -203,6 +204,7 @@ public class Utils {
 		poi.add(new PointOfInterest("Zeah's Lovakengj House", new Point(275, 1185)));
 		poi.add(new PointOfInterest("Zeah's Piscarilius House", new Point(1236, 1286)));
 		poi.add(new PointOfInterest("Zeah's Shayzien House", new Point(380, 1777)));
+		poi.add(new PointOfInterest("Zeah's Wintertodt", new Point(720, 512)));
 		
 		return poi;
 	}
