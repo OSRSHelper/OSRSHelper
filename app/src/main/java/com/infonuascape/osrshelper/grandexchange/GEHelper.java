@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper.grandexchange;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,10 +10,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class GEHelper {
-    public GESearchResults search(String itemName, int pageNum) {
+    public GESearchResults search(Context context, String itemName, int pageNum) {
 		GEFetcher geFetcher = new GEFetcher();
 
-		String output = geFetcher.search(itemName, pageNum);
+		String output = geFetcher.search(context, itemName, pageNum);
 
 		GESearchResults geSearchResults = new GESearchResults(output);
 

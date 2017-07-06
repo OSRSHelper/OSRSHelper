@@ -1,24 +1,20 @@
 package com.infonuascape.osrshelper.utils.http;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
+import android.content.Context;
+import android.util.Log;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.RequestFuture;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.HttpHostConnectException;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.util.concurrent.ExecutionException;
 
 public class HTTPRequest {
+	private static final String TAG = "HTTPRequest";
+
 	public enum RequestType {
 		POST, GET
 	};
@@ -51,57 +47,27 @@ public class HTTPRequest {
 	private String output;
 	private StatusCode statusCode = StatusCode.REQUEST_NOT_SENT;
 
-	public HTTPRequest(String URL, RequestType requestType) {
-		this(URL, requestType, null);
+	public HTTPRequest(Context context, String url, int requestMethod) {
+		performRequest(context, url, requestMethod);
 	}
 
-	public HTTPRequest(String URL, RequestType requestType, Map<String, String> data) {
-	        performRequest(URL, requestType, data);
-	}
-
-	private void performRequest(String URL, RequestType requestType, Map<String, String> data) {
+	private void performRequest(Context context, String url, int requestMethod) {
 		statusCode = StatusCode.FOUND;
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpRequestBase httpRequest;
-		HttpResponse httpResponse;
-		HttpEntity httpEntity;
-		InputStream is = null;
-		int statusCode = -1;
+		// Instantiate the RequestQueue.
+		RequestQueue queue = Volley.newRequestQueue(context);
+		RequestFuture<String> future = RequestFuture.newFuture();
+
+		Log.i(TAG, url);
+		StringRequest stringRequest = new StringRequest(requestMethod, url, future, future);
+		queue.add(stringRequest);
 
 		try {
-			if (requestType == RequestType.GET) {
-				httpRequest = new HttpGet(URL);
-			} else { // assume POST
-				httpRequest = new HttpPost(URL);
-			}
-
-			httpResponse = httpClient.execute(httpRequest);
-			httpEntity = httpResponse.getEntity();
-
-			is = httpEntity.getContent();
-			statusCode = httpResponse.getStatusLine().getStatusCode();
-			this.statusCode = StatusCode.get(statusCode);
-		} catch (HttpHostConnectException e) {
+			output = future.get();
+		} catch (InterruptedException e) {
+			statusCode = StatusCode.NOT_FOUND;
 			e.printStackTrace();
-		} catch (ConnectException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} // assume server went on with request, analyse it
-			// if it's 404, don't bother reading
-
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			is.close();
-			output = sb.toString();
-		} catch (Exception e) {
+		} catch (ExecutionException e) {
+			statusCode = StatusCode.NOT_FOUND;
 			e.printStackTrace();
 		}
 	}

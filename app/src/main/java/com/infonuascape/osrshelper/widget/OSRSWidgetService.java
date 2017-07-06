@@ -106,7 +106,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 		hiscoreHelper.setUserName(username);
 
 		try {
-			playerSkills = hiscoreHelper.getPlayerStats();
+			playerSkills = hiscoreHelper.getPlayerStats(mContext);
 			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
 		} catch (PlayerNotFoundException e) {
 			if(playerSkills == null) {

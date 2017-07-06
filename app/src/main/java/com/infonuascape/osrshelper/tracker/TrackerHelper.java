@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper.tracker;
 
+import android.content.Context;
+
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
@@ -15,15 +17,15 @@ public class TrackerHelper {
 		return userName;
 	}
 
-	public PlayerSkills getPlayerStats() throws PlayerNotFoundException, ParserErrorException {
+	public PlayerSkills getPlayerStats(Context context) throws PlayerNotFoundException, ParserErrorException {
 		TrackerFetcher tf = new TrackerFetcher(getUserName(), TrackerTimeEnum.TrackerTime.Day);
-		return tf.getPlayerTracker();
+		return tf.getPlayerTracker(context);
 	}
 
-	public PlayerSkills getPlayerStats(TrackerTimeEnum.TrackerTime time) throws PlayerNotFoundException,
+	public PlayerSkills getPlayerStats(Context context, TrackerTimeEnum.TrackerTime time) throws PlayerNotFoundException,
 			ParserErrorException {
 		TrackerFetcher tf = new TrackerFetcher(getUserName(), time);
-		return tf.getPlayerTracker();
+		return tf.getPlayerTracker(context);
 	}
 
 }

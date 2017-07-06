@@ -156,12 +156,15 @@ public class Utils {
 		
 		return needed;
 	}
+
+	private static final int ZEAH_OFFSET_X = 2534;
+	private static final int ZEAH_OFFSET_Y = -167;
+
+	public static Point VARROCK_POINT = new Point(ZEAH_OFFSET_X + 3685, 2355 + ZEAH_OFFSET_Y);
 	
 	public static ArrayList<PointOfInterest> getCitiesPoI(){
 		ArrayList<PointOfInterest> poi = new ArrayList<PointOfInterest>();
-		final int ZEAH_OFFSET_X = 1784;
-		final int ZEAH_OFFSET_Y = -142;
-		
+
 		poi.add(new PointOfInterest("Al Kharid", new Point(ZEAH_OFFSET_X + 3932, 3126 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Ardougne", new Point(ZEAH_OFFSET_X + 1920, 2775 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Barbarian Village", new Point(ZEAH_OFFSET_X + 3285, 2400 + ZEAH_OFFSET_Y)));
@@ -195,17 +198,18 @@ public class Utils {
 		poi.add(new PointOfInterest("Taverley", new Point(ZEAH_OFFSET_X + 2750, 2335 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Tirannwn", new Point(2551, 2725)));
 		poi.add(new PointOfInterest("Tutorial Island", new Point(ZEAH_OFFSET_X + 3370, 3370 + ZEAH_OFFSET_Y)));
-		poi.add(new PointOfInterest("Varrock", new Point(ZEAH_OFFSET_X + 3685, 2355 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Varrock", VARROCK_POINT));
 		poi.add(new PointOfInterest("Waterbirth Island", new Point(ZEAH_OFFSET_X + 1645, 1440 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Yanille", new Point(ZEAH_OFFSET_X + 1780, 3395 + ZEAH_OFFSET_Y)));
 
-		poi.add(new PointOfInterest("Zeah's Arceuus House", new Point(833, 1240)));
-		poi.add(new PointOfInterest("Zeah's Hosidius House", new Point(1000, 1850)));
-		poi.add(new PointOfInterest("Zeah's Lovakengj House", new Point(275, 1185)));
-		poi.add(new PointOfInterest("Zeah's Piscarilius House", new Point(1236, 1286)));
-		poi.add(new PointOfInterest("Zeah's Shayzien House", new Point(380, 1777)));
-		poi.add(new PointOfInterest("Zeah's Wintertodt", new Point(720, 512)));
-		
+		poi.add(new PointOfInterest("Zeah's Arceuus House", new Point(1583, 1215)));
+		poi.add(new PointOfInterest("Zeah's Hosidius House", new Point(1750, 1825)));
+		poi.add(new PointOfInterest("Zeah's Lovakengj House", new Point(1000, 1165)));
+		poi.add(new PointOfInterest("Zeah's Piscarilius House", new Point(1986, 1261)));
+		poi.add(new PointOfInterest("Zeah's Shayzien House", new Point(1130, 1752)));
+		poi.add(new PointOfInterest("Zeah's Wintertodt", new Point(1470, 477)));
+		poi.add(new PointOfInterest("Zeah's Mount Quidamortem", new Point(315, 1825)));
+
 		return poi;
 	}
 

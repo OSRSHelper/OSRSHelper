@@ -3,13 +3,16 @@ package com.sigseg.android.view;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.annotation.TargetApi;
 import android.graphics.*;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 public class InputStreamScene extends Scene {
-    private static final String TAG=InputStreamScene.class.getSimpleName();
+    private static final String TAG = "InputStreamScene";
     
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final BitmapFactory.Options options = new BitmapFactory.Options();
 
     /** What is the downsample size for the sample image?  1=1/2, 2=1/4 3=1/8, etc */
@@ -49,11 +52,30 @@ public class InputStreamScene extends Scene {
         initialize();
     }
 
+    public InputStreamScene(byte[] byteArray) throws IOException {
+        BitmapFactory.Options tmpOptions = new BitmapFactory.Options();
+
+        this.decoder = BitmapRegionDecoder.newInstance(byteArray, 0, byteArray.length, false);
+
+        // Grab the bounds for the scene dimensions
+        tmpOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, tmpOptions);
+        setSceneSize(tmpOptions.outWidth, tmpOptions.outHeight);
+
+        // Create the sample image
+        tmpOptions.inJustDecodeBounds = false;
+        tmpOptions.inSampleSize = (1<< DOWN_SAMPLE_SHIFT);
+        sampleBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length, tmpOptions);
+
+        initialize();
+    }
+
     @Override
     protected Bitmap fillCache(Rect origin) {
         Bitmap bitmap = null;
-        if (decoder!=null)
-            bitmap = decoder.decodeRegion( origin, options );
+        if (decoder!=null) {
+            bitmap = decoder.decodeRegion(origin, options);
+        }
         return bitmap;
     }
 

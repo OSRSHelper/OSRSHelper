@@ -41,7 +41,7 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		} else if (id == R.id.world_map_btn) {
 			WorldMapActivity.show(this);
 		} else if (id == R.id.combat_btn) {
-			CombatCalcActivity.show(this);
+			UsernameActivity.show(this, UsernameActivity.COMBAT);
 		} else if (id == R.id.ge_btn) {
 			SearchItemActivity.show(this);
 		}

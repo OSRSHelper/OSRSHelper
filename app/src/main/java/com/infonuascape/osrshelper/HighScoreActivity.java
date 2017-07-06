@@ -105,7 +105,7 @@ public class HighScoreActivity extends Activity {
 			PlayerSkills playerSkills = null;
 
 			try {
-				playerSkills = hiscoreHelper.getPlayerStats();
+				playerSkills = hiscoreHelper.getPlayerStats(getApplicationContext());
 			} catch (PlayerNotFoundException e) {
 				changeHeaderText(getString(R.string.not_existing_player, username));
 

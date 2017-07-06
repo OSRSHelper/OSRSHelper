@@ -96,10 +96,10 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 			try {
 				if (isUpdating) {
-					Updater.perform(username);
+					Updater.perform(getApplicationContext(), username);
 				}
-				hiscores = hiscoreHelper.getPlayerStats();
-				trackedSkills = trackerHelper.getPlayerStats(time);
+				hiscores = hiscoreHelper.getPlayerStats(getApplicationContext());
+				trackedSkills = trackerHelper.getPlayerStats(getApplicationContext(), time);
 			} catch (PlayerNotFoundException e) {
 				changeHeaderText(getString(R.string.not_existing_player, username), View.GONE);
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
@@ -11,6 +12,7 @@ import android.view.GestureDetector.OnGestureListener;
 import android.widget.Scroller;
 import com.sigseg.android.view.InputStreamScene;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -50,7 +52,18 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     public void setInputStream(InputStream inputStream) throws IOException {
-        scene = new InputStreamScene(inputStream);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+            byte[] file = output.toByteArray();
+            scene = new InputStreamScene(file);
+        } else {
+            scene = new InputStreamScene(inputStream);
+        }
     }
 
     //endregion

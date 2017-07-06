@@ -1,5 +1,8 @@
 package com.infonuascape.osrshelper.hiscore;
 
+import android.content.Context;
+
+import com.android.volley.Request;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
@@ -25,8 +28,8 @@ public class HiscoreFetcher {
 		return userName;
 	}
 
-	public PlayerSkills getPlayerSkills() throws PlayerNotFoundException {
-		String APIOutput = getDataFromAPI();
+	public PlayerSkills getPlayerSkills(final Context context) throws PlayerNotFoundException {
+		String APIOutput = getDataFromAPI(context);
 		PlayerSkills ps = new PlayerSkills();
 		List<Skill> skillList = new ArrayList<Skill>();
 		skillList.add(ps.overall);
@@ -69,12 +72,10 @@ public class HiscoreFetcher {
 		return new PlayerSkills(); // dummy return
 	}
 
-	private String getDataFromAPI() throws PlayerNotFoundException {
-		HTTPRequest httpREquest = new HTTPRequest(API_URL + getUserName(), HTTPRequest.RequestType.GET);
-		if (httpREquest.getStatusCode() == StatusCode.FOUND) { // got 200,
-																// assume user
-																// found
-			return httpREquest.getOutput();
+	private String getDataFromAPI(final Context context) throws PlayerNotFoundException {
+		HTTPRequest httpRequest = new HTTPRequest(context, API_URL + getUserName(), Request.Method.GET);
+		if (httpRequest.getStatusCode() == StatusCode.FOUND) {
+			return httpRequest.getOutput();
 		} else {
 			throw new PlayerNotFoundException(getUserName());
 		}

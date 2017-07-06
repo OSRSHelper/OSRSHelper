@@ -198,16 +198,20 @@ public abstract class Scene {
         }
         public void setSize( int w, int h ){
             synchronized (this) {
+                Log.d(TAG, "set size 1");
                 if (bitmap !=null){
                     bitmap.recycle();
                     bitmap = null;
                 }
+                Log.d(TAG, "set size 2");
                 bitmap = Bitmap.createBitmap(w, h, Config.RGB_565);
+                Log.d(TAG, "set size 3");
                 window.set(
                         window.left,
                         window.top,
                         window.left + w,
                         window.top + h);
+                Log.d(TAG, "set size 4");
             }
         }
         public void getOrigin(Point p){
@@ -308,8 +312,11 @@ public abstract class Scene {
             cache.update(this);
             synchronized (this){
                 if (c!=null && bitmap !=null){
+                    Log.d(TAG, "draw map 1");
                     c.drawBitmap(bitmap, 0F, 0F, null);
+                    Log.d(TAG, "draw map 2");
                     drawComplete(c);
+                    Log.d(TAG, "draw map 3");
                 }
             }
         }

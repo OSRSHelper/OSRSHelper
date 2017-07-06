@@ -24,9 +24,13 @@ import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
 import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
 
 public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
+	private static final String EXTRA_TYPE = "EXTRA_TYPE";
+
 	public static final int HISCORES = 0;
 	public static final int XP_TRACKER = 1;
 	public static final int CONFIGURATION = 2;
+	public static final int COMBAT = 3;
+
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private OSRSHelperDataSource osrsHelperDataSource;
 	private StableArrayAdapter adapter;
@@ -34,7 +38,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 	public static void show(final Context context, int type){
 		Intent i = new Intent(context, UsernameActivity.class);
-		i.putExtra("type", type);
+		i.putExtra(EXTRA_TYPE, type);
 		context.startActivity(i);
 	}
 
@@ -46,11 +50,20 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 		setContentView(R.layout.username);
 
-		type = getIntent().getIntExtra("type", CONFIGURATION);
-		
+		type = getIntent().getIntExtra(EXTRA_TYPE, CONFIGURATION);
+
+		checkIfConfiguration();
+
+		findViewById(R.id.username_edit).clearFocus();
+		findViewById(R.id.continue_btn).setOnClickListener(this);
+
+		osrsHelperDataSource = new OSRSHelperDataSource(this);
+	}
+
+	private void checkIfConfiguration() {
 		if(type == CONFIGURATION){
 			setResult(RESULT_CANCELED);
-			
+
 			Intent intent = getIntent();
 			Bundle extras = intent.getExtras();
 			if (extras != null) {
@@ -64,12 +77,6 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 				finish();
 			}
 		}
-
-		findViewById(R.id.username_edit).clearFocus();
-
-		findViewById(R.id.continue_btn).setOnClickListener(this);
-
-		osrsHelperDataSource = new OSRSHelperDataSource(this);
 	}
 
 	public void onResume(){
@@ -119,8 +126,10 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {mAppWidgetId});
 			sendBroadcast(intent);
 			finish();
-		} else {
+		} else if (type == XP_TRACKER) {
 			XPTrackerActivity.show(this, username);
+		} else if (type == COMBAT) {
+			CombatCalcActivity.show(this, username);
 		}
 	}
 

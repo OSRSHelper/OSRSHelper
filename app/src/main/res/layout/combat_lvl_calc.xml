@@ -27,38 +27,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal" >
-
-                <EditText
-                    android:id="@+id/edit_username"
-                    android:layout_width="155dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/editbox"
-                    android:hint="@string/prompt_username"
-                    android:inputType="text"
-                    android:maxLength="12"
-                    android:maxLines="1"
-                    android:padding="5dp"
-                    android:singleLine="true"
-                    android:textColor="@color/Black"
-                    android:textCursorDrawable="@drawable/blackcursor"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:id="@+id/load_btn"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/greenbt_sel"
-                    android:gravity="center"
-                    android:src="@drawable/checkmark"
-                    android:tint="@color/White" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 

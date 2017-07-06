@@ -1,5 +1,6 @@
 package com.infonuascape.osrshelper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import android.app.Activity;
@@ -28,8 +29,6 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	private static final String TAG = "WorldMapActivity";
 	private static final String KEY_X = "X";
 	private static final String KEY_Y = "Y";
-	private static final String KEY_FN = "FN";
-	private static final Point DEFAULT_POINT = new Point(3050, 2580);
 	private static final String MAP_FILE_NAME = "osrs.jpg";
 	private SlidingMenu slidingMenu;
 	private ListView poICitiesListView;
@@ -38,7 +37,6 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 
 
 	private ImageSurfaceView imageSurfaceView;
-	private String filename = null;
 
 	public static void show(final Context context){
 		Intent i = new Intent(context, WorldMapActivity.class);
@@ -57,49 +55,23 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 		
 		findViewById(R.id.world_map_open).setOnClickListener(this);
 
+		try {
+			InputStream inputStream = getAssets().open(MAP_FILE_NAME);
+			imageSurfaceView.setInputStream(inputStream);
+		} catch (java.io.IOException e) {
+			e.printStackTrace();
+			finish();
+		}
+
 		// Setup/restore state
-		if (savedInstanceState != null && savedInstanceState.containsKey(KEY_X) && savedInstanceState.containsKey(KEY_Y)) {
+		if (savedInstanceState != null) {
 			Log.d(TAG, "restoring state");
-			int x = (Integer) savedInstanceState.get(KEY_X);
-			int y = (Integer) savedInstanceState.get(KEY_Y);
-
-			String fn = null;
-			if (savedInstanceState.containsKey(KEY_FN))
-				fn = (String) savedInstanceState.get(KEY_FN);
-
-			try {
-				if (fn == null || fn.length()==0) {
-					imageSurfaceView.setInputStream(getAssets().open(MAP_FILE_NAME));
-				} else {
-					imageSurfaceView.setInputStream(new RandomAccessFileInputStream(fn));
-				}
-				imageSurfaceView.setViewport(new Point(x, y));
-			} catch (java.io.IOException e) {
-				Log.e(TAG, e.getMessage());
-			}
+			int x = savedInstanceState.getInt(KEY_X);
+			int y = savedInstanceState.getInt(KEY_Y);
+			imageSurfaceView.setViewport(new Point(x, y));
 		} else {
-			// Centering the map to start
-			Intent intent = getIntent();
-			try {
-				Uri uri = null;
-				if (intent!=null)
-					uri = getIntent().getData();
-
-				InputStream is;
-				if (uri != null) {
-					filename = uri.getPath();
-					is = new RandomAccessFileInputStream(uri.getPath());
-				} else {
-					is = getAssets().open(MAP_FILE_NAME);
-				}
-
-				imageSurfaceView.setInputStream(is);
-			} catch (java.io.IOException e) {
-				Log.e(TAG, e.getMessage());
-			}
-
 			PointF center = getCenterScreen();
-			imageSurfaceView.setViewport(new Point(DEFAULT_POINT.x - (int)center.x, DEFAULT_POINT.y - (int)center.y));
+			imageSurfaceView.setViewport(new Point(Utils.VARROCK_POINT.x - (int)center.x, Utils.VARROCK_POINT.y - (int)center.y));
 		}
 
 		initPoT();
@@ -141,7 +113,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 
 		PointF center = getCenterScreen();
 		imageSurfaceView.setViewportCenter();
-		imageSurfaceView.setViewport(new Point(DEFAULT_POINT.x - (int)center.x, DEFAULT_POINT.y - (int)center.y));
+		imageSurfaceView.setViewport(new Point(Utils.VARROCK_POINT.x - (int)center.x, Utils.VARROCK_POINT.y - (int)center.y));
 	}
 
 	public PointF getCenterScreen(){
@@ -158,8 +130,6 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 		imageSurfaceView.getViewport(p);
 		outState.putInt(KEY_X, p.x);
 		outState.putInt(KEY_Y, p.y);
-		if (filename!=null)
-			outState.putString(KEY_FN, filename);
 		super.onSaveInstanceState(outState);
 	}
 

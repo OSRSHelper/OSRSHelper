@@ -128,7 +128,7 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
                     findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
                 }
             });
-			return geHelper.search(urls[0], pageNum);
+			return geHelper.search(getApplicationContext(), urls[0], pageNum);
 		}
 
 		@Override

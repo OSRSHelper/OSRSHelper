@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -21,7 +20,9 @@ import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
-public class CombatCalcActivity extends Activity implements TextWatcher, OnClickListener {
+public class CombatCalcActivity extends Activity implements TextWatcher {
+	private static final String EXTRA_USERNAME = "EXTRA_USERNAME";
+
 	private TextView combatText;
 	private TextView lvlNeededText;
 	private TextView attStrText;
@@ -36,17 +37,12 @@ public class CombatCalcActivity extends Activity implements TextWatcher, OnClick
 	private EditText magicEdit;
 	private EditText rangingEdit;
 	private EditText prayerEdit;
-	private EditText usernameEdit;
-	private String username;
 
-	public static void show(final Context context) {
-		Intent intent = new Intent(context, CombatCalcActivity.class);
-		context.startActivity(intent);
-	}
+	private String username;
 	
-	public static void showWithPrefillUSername(final Context context, final String username) {
+	public static void show(final Context context, final String username) {
 		Intent intent = new Intent(context, CombatCalcActivity.class);
-		intent.putExtra("username", username);
+		intent.putExtra(EXTRA_USERNAME, username);
 		context.startActivity(intent);
 	}
 
@@ -88,14 +84,10 @@ public class CombatCalcActivity extends Activity implements TextWatcher, OnClick
 		
 		magicEdit = ((EditText) findViewById(R.id.edit_magic));
 		magicEdit.addTextChangedListener(this);
-		
-		usernameEdit = ((EditText) findViewById(R.id.edit_username));
-		findViewById(R.id.load_btn).setOnClickListener(this);
 
 		changeCombatText();
-		username = getIntent().getStringExtra("username");
+		username = getIntent().getStringExtra(EXTRA_USERNAME);
 		if(username != null){
-			usernameEdit.setText(username);
 			new PopulateTable().execute();
 		}
 	}
@@ -188,18 +180,13 @@ public class CombatCalcActivity extends Activity implements TextWatcher, OnClick
 			PlayerSkills playerSkills = null;
 
 			try {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						findViewById(R.id.load_btn).setEnabled(false);
-					}});
-				playerSkills = hiscoreHelper.getPlayerStats();
+				playerSkills = hiscoreHelper.getPlayerStats(getApplicationContext());
 			} catch (PlayerNotFoundException e) {
 				e.printStackTrace();
-				eraseAndChangeHint(getString(R.string.not_existing_player, username));
+				changeHint(getString(R.string.not_existing_player, username));
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
-				eraseAndChangeHint(getString(R.string.network_error));
+				changeHint(getString(R.string.network_error));
 			}
 			return playerSkills;
 		}
@@ -207,34 +194,25 @@ public class CombatCalcActivity extends Activity implements TextWatcher, OnClick
 		@Override
 		protected void onPostExecute(final PlayerSkills playerSkillsCallback) {
 			if (playerSkillsCallback != null) {
-				runOnUiThread(new Runnable(){
-
-					@Override
-					public void run() {
-						findViewById(R.id.load_btn).setEnabled(true);
-						usernameEdit.setHint(R.string.prompt_username);
-						hitpointEdit.setText(playerSkillsCallback.hitpoints.getLevel()+"");
-						attackEdit.setText(playerSkillsCallback.attack.getLevel()+"");
-						strengthEdit.setText(playerSkillsCallback.strength.getLevel()+"");
-						defenceEdit.setText(playerSkillsCallback.defence.getLevel()+"");
-						magicEdit.setText(playerSkillsCallback.magic.getLevel()+"");
-						rangingEdit.setText(playerSkillsCallback.ranged.getLevel()+"");
-						prayerEdit.setText(playerSkillsCallback.prayer.getLevel()+"");
-						changeCombatText();
-					}});
+				hitpointEdit.setText(playerSkillsCallback.hitpoints.getLevel()+"");
+				attackEdit.setText(playerSkillsCallback.attack.getLevel()+"");
+				strengthEdit.setText(playerSkillsCallback.strength.getLevel()+"");
+				defenceEdit.setText(playerSkillsCallback.defence.getLevel()+"");
+				magicEdit.setText(playerSkillsCallback.magic.getLevel()+"");
+				rangingEdit.setText(playerSkillsCallback.ranged.getLevel()+"");
+				prayerEdit.setText(playerSkillsCallback.prayer.getLevel()+"");
+				changeCombatText();
 			}
 		}
 	}
-	
-	public void eraseAndChangeHint(final String text){
-		runOnUiThread(new Runnable(){
 
+	private void changeHint(final String text) {
+		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				usernameEdit.setText("");
-				usernameEdit.setHint(text);
-				findViewById(R.id.load_btn).setEnabled(true);
-			}});
+				combatText.setText(text);
+			}
+		});
 	}
 
 	@Override
@@ -247,15 +225,4 @@ public class CombatCalcActivity extends Activity implements TextWatcher, OnClick
 
 	@Override
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
-
-	@Override
-	public void onClick(View v) {
-		if(v.getId() == R.id.load_btn) {
-			String text = usernameEdit.getText().toString();
-			if(text != null && !text.isEmpty()){
-				username = text;
-				new PopulateTable().execute();
-			}
-		}
-	}
 }
