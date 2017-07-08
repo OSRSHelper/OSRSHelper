@@ -47,14 +47,13 @@ public class HTTPRequest {
 	private String output;
 	private StatusCode statusCode = StatusCode.REQUEST_NOT_SENT;
 
-	public HTTPRequest(Context context, String url, int requestMethod) {
-		performRequest(context, url, requestMethod);
+	public HTTPRequest(RequestQueue queue, String url, int requestMethod) {
+		performRequest(queue, url, requestMethod);
 	}
 
-	private void performRequest(Context context, String url, int requestMethod) {
+	private void performRequest(RequestQueue queue, String url, int requestMethod) {
 		statusCode = StatusCode.FOUND;
 		// Instantiate the RequestQueue.
-		RequestQueue queue = Volley.newRequestQueue(context);
 		RequestFuture<String> future = RequestFuture.newFuture();
 
 		Log.i(TAG, url);

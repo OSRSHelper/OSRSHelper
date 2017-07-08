@@ -1,7 +1,5 @@
 package com.infonuascape.osrshelper;
 
-import java.text.NumberFormat;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +18,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.tracker.TrackerHelper;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
@@ -28,6 +25,8 @@ import com.infonuascape.osrshelper.tracker.Updater;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+
+import java.text.NumberFormat;
 
 public class XPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
@@ -96,10 +95,10 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 			try {
 				if (isUpdating) {
-					Updater.perform(getApplicationContext(), username);
+					Updater.perform(username);
 				}
-				hiscores = hiscoreHelper.getPlayerStats(getApplicationContext());
-				trackedSkills = trackerHelper.getPlayerStats(getApplicationContext(), time);
+				hiscores = hiscoreHelper.getPlayerStats();
+				trackedSkills = trackerHelper.getPlayerStats(time);
 			} catch (PlayerNotFoundException e) {
 				changeHeaderText(getString(R.string.not_existing_player, username), View.GONE);
 

@@ -1,12 +1,11 @@
 package com.infonuascape.osrshelper.hiscore;
 
-import android.content.Context;
-
 import com.android.volley.Request;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
+import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 import java.util.ArrayList;
@@ -28,8 +27,8 @@ public class HiscoreFetcher {
 		return userName;
 	}
 
-	public PlayerSkills getPlayerSkills(final Context context) throws PlayerNotFoundException {
-		String APIOutput = getDataFromAPI(context);
+	public PlayerSkills getPlayerSkills() throws PlayerNotFoundException {
+		String APIOutput = getDataFromAPI();
 		PlayerSkills ps = new PlayerSkills();
 		List<Skill> skillList = new ArrayList<Skill>();
 		skillList.add(ps.overall);
@@ -72,8 +71,8 @@ public class HiscoreFetcher {
 		return new PlayerSkills(); // dummy return
 	}
 
-	private String getDataFromAPI(final Context context) throws PlayerNotFoundException {
-		HTTPRequest httpRequest = new HTTPRequest(context, API_URL + getUserName(), Request.Method.GET);
+	private String getDataFromAPI() throws PlayerNotFoundException {
+		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(API_URL + getUserName(), Request.Method.GET);
 		if (httpRequest.getStatusCode() == StatusCode.FOUND) {
 			return httpRequest.getOutput();
 		} else {

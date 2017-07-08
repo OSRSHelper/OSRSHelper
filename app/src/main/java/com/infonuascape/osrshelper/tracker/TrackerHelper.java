@@ -17,15 +17,15 @@ public class TrackerHelper {
 		return userName;
 	}
 
-	public PlayerSkills getPlayerStats(Context context) throws PlayerNotFoundException, ParserErrorException {
+	public PlayerSkills getPlayerStats() throws PlayerNotFoundException, ParserErrorException {
 		TrackerFetcher tf = new TrackerFetcher(getUserName(), TrackerTimeEnum.TrackerTime.Day);
-		return tf.getPlayerTracker(context);
+		return tf.getPlayerTracker();
 	}
 
-	public PlayerSkills getPlayerStats(Context context, TrackerTimeEnum.TrackerTime time) throws PlayerNotFoundException,
+	public PlayerSkills getPlayerStats(TrackerTimeEnum.TrackerTime time) throws PlayerNotFoundException,
 			ParserErrorException {
 		TrackerFetcher tf = new TrackerFetcher(getUserName(), time);
-		return tf.getPlayerTracker(context);
+		return tf.getPlayerTracker();
 	}
 
 }

@@ -16,8 +16,8 @@ public class HiscoreHelper {
         return this.userName;
     }
 
-    public PlayerSkills getPlayerStats(final Context context) throws PlayerNotFoundException {
+    public PlayerSkills getPlayerStats() throws PlayerNotFoundException {
         HiscoreFetcher hf = new HiscoreFetcher(this.getUserName());
-        return hf.getPlayerSkills(context);
+        return hf.getPlayerSkills();
     }
 }

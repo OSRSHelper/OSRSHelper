@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class GEHelper {
-    public GESearchResults search(Context context, String itemName, int pageNum) {
+    public GESearchResults search(String itemName, int pageNum) {
 		GEFetcher geFetcher = new GEFetcher();
 
-		String output = geFetcher.search(context, itemName, pageNum);
+		String output = geFetcher.search(itemName, pageNum);
 
 		GESearchResults geSearchResults = new GESearchResults(output);
 

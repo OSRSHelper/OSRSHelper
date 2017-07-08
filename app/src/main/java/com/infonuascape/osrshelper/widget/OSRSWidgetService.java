@@ -1,7 +1,5 @@
 package com.infonuascape.osrshelper.widget;
 
-import java.util.ArrayList;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +14,8 @@ import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+
+import java.util.ArrayList;
 
 public class OSRSWidgetService extends RemoteViewsService {
 	
@@ -106,7 +106,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 		hiscoreHelper.setUserName(username);
 
 		try {
-			playerSkills = hiscoreHelper.getPlayerStats(mContext);
+			playerSkills = hiscoreHelper.getPlayerStats();
 			skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
 		} catch (PlayerNotFoundException e) {
 			if(playerSkills == null) {

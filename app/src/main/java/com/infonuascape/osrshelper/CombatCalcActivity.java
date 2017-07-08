@@ -180,7 +180,7 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 			PlayerSkills playerSkills = null;
 
 			try {
-				playerSkills = hiscoreHelper.getPlayerStats(getApplicationContext());
+				playerSkills = hiscoreHelper.getPlayerStats();
 			} catch (PlayerNotFoundException e) {
 				e.printStackTrace();
 				changeHint(getString(R.string.not_existing_player, username));

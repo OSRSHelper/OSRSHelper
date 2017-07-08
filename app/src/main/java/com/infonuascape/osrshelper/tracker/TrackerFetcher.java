@@ -1,7 +1,5 @@
 package com.infonuascape.osrshelper.tracker;
 
-import android.content.Context;
-
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum.TrackerTime;
 import com.infonuascape.osrshelper.utils.Skill;
@@ -9,6 +7,7 @@ import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
+import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 import java.text.SimpleDateFormat;
@@ -45,8 +44,8 @@ public class TrackerFetcher {
 		return lookupTime;
 	}
 
-	public PlayerSkills getPlayerTracker(Context context) throws PlayerNotFoundException, ParserErrorException {
-		final String APIOutput = getDataFromAPI(context);
+	public PlayerSkills getPlayerTracker() throws PlayerNotFoundException, ParserErrorException {
+		final String APIOutput = getDataFromAPI();
 		PlayerSkills ps = new PlayerSkills();
 		List<Skill> skillList = new ArrayList<Skill>();
 		skillList.add(ps.overall);
@@ -106,17 +105,19 @@ public class TrackerFetcher {
 		return new PlayerSkills(); // dummy return
 	}
 
-	private String getDataFromAPI(Context context) throws PlayerNotFoundException {
+	private String getDataFromAPI() throws PlayerNotFoundException {
 		String connectionString = API_URL + "&user=" + userName + "&time=" + lookupTime;
-		HTTPRequest httpRequest = new HTTPRequest(context, connectionString, Request.Method.GET);
-		if (httpRequest.getStatusCode() == StatusCode.FOUND) {
-			String output = httpRequest.getOutput();
+		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(connectionString, Request.Method.GET);
+		String output = httpRequest.getOutput();
+		if (httpRequest.getStatusCode() == StatusCode.FOUND && output != null) {
 			for (String line : output.split("\n")) {
 				if (line == "0:-1") { // unknown name
 					throw new PlayerNotFoundException(getUserName());
 				}
 			}
-		} // assume all went well if this point reached
-		return httpRequest.getOutput();
+		} else {
+			throw new PlayerNotFoundException(getUserName());
+		}
+		return output;
 	}
 }

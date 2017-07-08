@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
+import com.infonuascape.osrshelper.utils.http.NetworkStack;
 
 /**
  * This class contains a single method that updates a user on RuneTracker. This
@@ -28,9 +29,9 @@ public class Updater {
 	 *             <code>user</code> throws <tt>IOException</tt>
 	 * @throws PlayerNotFoundException
 	 */
-	public static void perform(final Context context, final String user) throws IOException, PlayerNotFoundException {
+	public static void perform(final String user) throws IOException, PlayerNotFoundException {
 		android.util.Log.i("Updater", "Hey! I'm updating!");
 		String connectionString = "http://runetracker.org/updateUser.php?user=" + URLEncoder.encode(user, "utf-8");
-		new HTTPRequest(context, connectionString, Request.Method.GET);
+		NetworkStack.getInstance().performRequest(connectionString, Request.Method.GET);
 	}
 }
