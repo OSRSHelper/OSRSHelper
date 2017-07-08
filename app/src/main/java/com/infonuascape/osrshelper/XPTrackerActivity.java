@@ -59,7 +59,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 				R.layout.spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
-		spinner.setSelection(2);
+		spinner.setSelection(3);
 		spinner.setOnItemSelectedListener(this);
 
 		findViewById(R.id.update).setOnClickListener(this);
@@ -279,8 +279,9 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		String text = ((TextView) view).getText().toString();
-		createAsyncTaskToPopulate(text, false);
+		if(spinner.getSelectedItem() instanceof String) {
+			createAsyncTaskToPopulate((String) spinner.getSelectedItem(), false);
+		}
 	}
 
 	@Override
