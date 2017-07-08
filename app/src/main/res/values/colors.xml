@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<color name="white_semi_transparent">#80FFFFFF</color>
+<color name="white_semi_transparent">#66FFFFFF</color>
  <color name="White">#FFFFFF</color>
  <color name="Ivory">#FFFFF0</color>
  <color name="LightYellow">#FFFFE0</color>
@@ -148,5 +148,6 @@
  <color name="green_bt">#404040</color>
  <color name="green_bt_over">#555555</color>
  <color name="rs_view_bg">#453C33</color>
+ <color name="widget_rs_view_bg">#50000000</color>
  <color name="progress_bg">#30555555</color>
 </resources>

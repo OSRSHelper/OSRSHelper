@@ -55,9 +55,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			views.setTextViewText(R.id.username, username);
 			
 			//Config
-			Intent configIntent = new Intent(context, UsernameActivity.class);
-	        configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-	        configIntent.putExtra("type", 2);
+			Intent configIntent = UsernameActivity.getIntent(context, UsernameActivity.CONFIGURATION);
 	        configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 	        PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
 	        views.setOnClickPendingIntent(R.id.username_btn, configPendingIntent);

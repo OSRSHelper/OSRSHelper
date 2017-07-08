@@ -37,9 +37,14 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	private int type;
 
 	public static void show(final Context context, int type){
+		Intent i = getIntent(context, type);
+		context.startActivity(i);
+	}
+
+	public static Intent getIntent(Context context, int type) {
 		Intent i = new Intent(context, UsernameActivity.class);
 		i.putExtra(EXTRA_TYPE, type);
-		context.startActivity(i);
+		return i;
 	}
 
 	@Override

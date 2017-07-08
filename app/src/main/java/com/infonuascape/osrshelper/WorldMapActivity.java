@@ -55,6 +55,11 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 		
 		findViewById(R.id.world_map_open).setOnClickListener(this);
 
+		initWorldMap(savedInstanceState);
+		initPoT();
+	}
+
+	private void initWorldMap(final Bundle savedInstanceState) {
 		try {
 			InputStream inputStream = getAssets().open(MAP_FILE_NAME);
 			imageSurfaceView.setInputStream(inputStream);
@@ -73,11 +78,8 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 			PointF center = getCenterScreen();
 			imageSurfaceView.setViewport(new Point(Utils.VARROCK_POINT.x - (int)center.x, Utils.VARROCK_POINT.y - (int)center.y));
 		}
-
-		initPoT();
 	}
-	
-	
+
 
 	@Override
 	public void onBackPressed() {
