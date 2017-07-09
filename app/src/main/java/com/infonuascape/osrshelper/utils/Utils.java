@@ -23,7 +23,36 @@ public class Utils {
 		
 		return exp;
 	}
-	
+
+    public static final int getLevelFromXP(int xp) {
+        return getLevelFromXP(xp, false);
+    }
+
+	public static final int getLevelFromXP(int xp, boolean virtual) {
+		short level=0;
+		double curr_xp = 0;
+		double points = 0;
+		double dividend = 1;
+
+		while (curr_xp <= xp) {
+			Double placeholder = dividend/7;
+			points = points + Math.floor(dividend + 300* Math.pow(2, placeholder));
+			curr_xp = Math.floor(points / 4);
+			dividend++;
+			level++;
+		}
+
+		//virtual level needed, don't cap at 99
+		if (level > 99)
+			if (virtual)
+            	return level;
+			else
+				return 99;
+        else
+		    return level;
+
+	}
+
 	public static final int getCombatLvl(final PlayerSkills skills){
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
 		

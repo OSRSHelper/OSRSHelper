@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.utils.players;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.utils.Skill;
@@ -32,7 +33,34 @@ public class PlayerSkills {
 	public Skill hunter = new Skill(SkillType.Hunter, R.drawable.hunter);
 	public Skill construction = new Skill(SkillType.Construction, R.drawable.construction);
 	public String sinceWhen;
+	public List<Skill> skillList = new ArrayList<Skill>();
 
+	public PlayerSkills() {
+		skillList.add(this.overall);
+		skillList.add(this.attack);
+		skillList.add(this.defence);
+		skillList.add(this.strength);
+		skillList.add(this.hitpoints);
+		skillList.add(this.ranged);
+		skillList.add(this.prayer);
+		skillList.add(this.magic);
+		skillList.add(this.cooking);
+		skillList.add(this.woodcutting);
+		skillList.add(this.fletching);
+		skillList.add(this.fishing);
+		skillList.add(this.firemaking);
+		skillList.add(this.crafting);
+		skillList.add(this.smithing);
+		skillList.add(this.mining);
+		skillList.add(this.herblore);
+		skillList.add(this.agility);
+		skillList.add(this.thieving);
+		skillList.add(this.slayer);
+		skillList.add(this.farming);
+		skillList.add(this.runecraft);
+		skillList.add(this.hunter);
+		skillList.add(this.construction);
+	}
 	public void setSinceWhen(String sinceWhen) {
 		this.sinceWhen = sinceWhen;
 	}
@@ -98,4 +126,5 @@ public class PlayerSkills {
 
 		return skills;
 	}
+
 }
