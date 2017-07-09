@@ -87,7 +87,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/xptracker_btn"
+                android:id="@+id/rt_xptracker_btn"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
@@ -96,7 +96,21 @@
                 android:layout_weight="1"
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
-                android:text="@string/xptracker"
+                android:text="@string/rt_xptracker"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/cml_xptracker_btn"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/cml_xptracker"
                 android:textColor="@color/White"
                 android:textSize="16sp" />
 

@@ -21,7 +21,8 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		findViewById(R.id.highscore_btn).setOnClickListener(this);
 		findViewById(R.id.world_map_btn).setOnClickListener(this);
 		findViewById(R.id.wiki_btn).setOnClickListener(this);
-		findViewById(R.id.xptracker_btn).setOnClickListener(this);
+		findViewById(R.id.rt_xptracker_btn).setOnClickListener(this);
+		findViewById(R.id.cml_xptracker_btn).setOnClickListener(this);
 		findViewById(R.id.combat_btn).setOnClickListener(this);
 		findViewById(R.id.ge_btn).setOnClickListener(this);
 	}
@@ -36,8 +37,10 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 			startActivity(intent);
 		} else if (id == R.id.highscore_btn) {
 			UsernameActivity.show(this, UsernameActivity.HISCORES);
-		} else if (id == R.id.xptracker_btn) {
-			UsernameActivity.show(this, UsernameActivity.XP_TRACKER);
+		} else if (id == R.id.rt_xptracker_btn) {
+			UsernameActivity.show(this, UsernameActivity.RT_XP_TRACKER);
+		} else if (id == R.id.cml_xptracker_btn) {
+			UsernameActivity.show(this, UsernameActivity.CML_XP_TRACKER);
 		} else if (id == R.id.world_map_btn) {
 			WorldMapActivity.show(this);
 		} else if (id == R.id.combat_btn) {

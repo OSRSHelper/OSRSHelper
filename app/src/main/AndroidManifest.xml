@@ -31,7 +31,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
-            android:name=".XPTrackerActivity"
+            android:name=".RTXPTrackerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+        <activity
+            android:name=".CMLXPTrackerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity

@@ -65,7 +65,9 @@
             android:id="@+id/table_tracking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="1" >
+            android:shrinkColumns="0"
+            android:stretchColumns="1,2,3,4,5,6,7,8,9,10">
+
         </TableLayout>
     </ScrollView>
 
