@@ -27,7 +27,8 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	private static final String EXTRA_TYPE = "EXTRA_TYPE";
 
 	public static final int HISCORES = 0;
-	public static final int XP_TRACKER = 1;
+	public static final int RT_XP_TRACKER = 1;
+	public static final int CML_XP_TRACKER = 4;
 	public static final int CONFIGURATION = 2;
 	public static final int COMBAT = 3;
 
@@ -131,8 +132,10 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {mAppWidgetId});
 			sendBroadcast(intent);
 			finish();
-		} else if (type == XP_TRACKER) {
-			XPTrackerActivity.show(this, username);
+		} else if (type == RT_XP_TRACKER) {
+			RTXPTrackerActivity.show(this, username);
+		} else if (type == CML_XP_TRACKER) {
+			CMLXPTrackerActivity.show(this, username);
 		} else if (type == COMBAT) {
 			CombatCalcActivity.show(this, username);
 		}
