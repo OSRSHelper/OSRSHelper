@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.tracker.rt;
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
@@ -57,6 +58,8 @@ public class TrackerFetcher {
 			String[] tokenizer;
 			for (String line : APILine) {
 				tokenizer = line.split(":");
+
+				//parse current exp
 				if (tokenizer[0].equals("start")) {
                     String skillName = tokenizer[1];
                     for (int i = 0; i < skillList.size(); i++) {
@@ -67,25 +70,32 @@ public class TrackerFetcher {
                         }
                     }
                 }
-//				} else if (tokenizerSkillLine[0].equals("gain")) {
-//					if (tokenizerSkillLine.length <= 4) {
-//						for (int i = 0; i < skillList.size() - 1; i++) {
-//							if (tokenizerSkillLine[1].toLowerCase().equals(skillList.get(i).toString().toLowerCase())) {
-//								skillList.get(i).setExperience(Long.parseLong(tokenizerSkillLine[3]));
-//							}
-//						}
-//					} else {
-//						throw new ParserErrorException("Error while parsing Zybez response");
-//					}
-//				} else if (tokenizerSkillLine[0].equals("started")) {
-//					long seconds = Long.parseLong(tokenizerSkillLine[1]);
-//					long millis = seconds * 1000;
-//					Date date = new Date(System.currentTimeMillis() - millis);
-//					SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, yyyy h:mm a", Locale.ENGLISH);
-//					sdf.setTimeZone(TimeZone.getDefault());
-//					String formattedDate = sdf.format(date);
-//					ps.setSinceWhen(formattedDate);
-//				}
+
+                //parse exp gains
+                else if (tokenizer[0].equals("gain")) {
+					if (tokenizer.length == 4) {
+						String skillName = tokenizer[1];
+						for (int i = 0; i < skillList.size(); i++) {
+							if (skillName.equals(skillList.get(i).getSkillType().getSkillName()) ||
+									skillName.equals(skillList.get(i).getSkillType().getAlternativeName())) {
+								skillList.get(i).setExperience(Integer.parseInt(tokenizer[3]));
+							}
+						}
+					} else {
+						throw new APIError("Error while parsing RuneTracker response");
+					}
+				}
+
+				//parse start track time
+				else if (tokenizer[0].equals("started")) {
+					long seconds = Long.parseLong(tokenizer[1]);
+					long millis = seconds * 1000;
+					Date date = new Date(System.currentTimeMillis() - millis);
+					SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, yyyy h:mm a", Locale.ENGLISH);
+					sdf.setTimeZone(TimeZone.getDefault());
+					String formattedDate = sdf.format(date);
+					ps.setSinceWhen(formattedDate);
+				}
 			}
 		} catch (Exception e) {
 			throw new ParserErrorException("Error while parsing Zybez response");
