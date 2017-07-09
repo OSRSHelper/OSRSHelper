@@ -8,6 +8,7 @@ import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
@@ -42,7 +43,7 @@ public class TrackerFetcher {
 		return lookupTime;
 	}
 
-	public PlayerSkills getPlayerTracker() throws PlayerNotFoundException, ParserErrorException, APIError {
+	public PlayerSkills getPlayerTracker() throws ParserErrorException, APIError, PlayerNotTrackedException {
 		final String APIOutput = getDataFromAPI();
 
 		PlayerSkills ps = new PlayerSkills();
@@ -112,17 +113,17 @@ public class TrackerFetcher {
 		return new PlayerSkills(); // dummy return
 	}
 
-	private String getDataFromAPI() throws PlayerNotFoundException, APIError {
+	private String getDataFromAPI() throws PlayerNotTrackedException, APIError {
 		String connectionString = API_URL + "&player=" + userName + "&time=" + lookupTime;
 		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(connectionString, Request.Method.GET);
 		String output = httpRequest.getOutput();
 		if (httpRequest.getStatusCode() == StatusCode.FOUND && output != null) {
 			if (output.equals("-1"))
-				throw new PlayerNotFoundException(getUserName());
+				throw new PlayerNotTrackedException(getUserName());
 			if (output.equals("-4"))
 				throw new APIError("API under heavy load");
 		} else {
-			throw new PlayerNotFoundException(getUserName());
+			throw new APIError("Error parsing API");
 		}
 		return output;
 	}

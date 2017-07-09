@@ -18,15 +18,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.tracker.cml.TrackerHelper;
 import com.infonuascape.osrshelper.tracker.cml.Updater;
 import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 import java.text.NumberFormat;
@@ -91,16 +89,14 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		protected PlayerSkills doInBackground(String... urls) {
 			TrackerHelper trackerHelper = new TrackerHelper();
 			trackerHelper.setUserName(username);
-			HiscoreHelper hiscoreHelper = new HiscoreHelper();
-			hiscoreHelper.setUserName(username);
 
 			try {
 				if (isUpdating) {
 					Updater.perform(username);
 				}
 				playerSkills = trackerHelper.getPlayerStats(time);
-			} catch (PlayerNotFoundException e) {
-				changeHeaderText(getString(R.string.not_existing_player, username), View.GONE);
+			} catch (PlayerNotTrackedException e) {
+				changeHeaderText(getString(R.string.not_tracked_player, username), View.GONE);
 			} catch (APIError e) {
 				changeHeaderText(e.getMessage(), View.GONE);
 			} catch (Exception uhe) {
