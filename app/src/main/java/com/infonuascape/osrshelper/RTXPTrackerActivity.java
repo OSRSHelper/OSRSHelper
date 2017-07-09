@@ -18,7 +18,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.tracker.rt.TrackerHelper;
 import com.infonuascape.osrshelper.tracker.rt.Updater;
@@ -77,7 +76,6 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
 		private TrackerTimeEnum.TrackerTime time;
-		private PlayerSkills hiscores;
 		private PlayerSkills trackedSkills;
 		private boolean isUpdating;
 
@@ -90,14 +88,11 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 		protected PlayerSkills doInBackground(String... urls) {
 			TrackerHelper trackerHelper = new TrackerHelper();
 			trackerHelper.setUserName(username);
-			HiscoreHelper hiscoreHelper = new HiscoreHelper();
-			hiscoreHelper.setUserName(username);
 
 			try {
 				if (isUpdating) {
 					Updater.perform(username);
 				}
-				hiscores = hiscoreHelper.getPlayerStats();
 				trackedSkills = trackerHelper.getPlayerStats(time);
 			} catch (PlayerNotFoundException e) {
 				changeHeaderText(getString(R.string.not_existing_player, username), View.GONE);
@@ -111,13 +106,13 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 		@Override
 		protected void onPostExecute(PlayerSkills playerSkillsCallback) {
-			if (trackedSkills != null && hiscores != null) {
-				populateTable(hiscores, trackedSkills);
+			if (trackedSkills != null) {
+				populateTable(trackedSkills);
 			}
 		}
 	}
 
-	private void populateTable(PlayerSkills hiscores, PlayerSkills trackedSkills) {
+	private void populateTable(PlayerSkills trackedSkills) {
 		changeHeaderText(getString(R.string.showing_tracking, username), View.GONE);
 		if (trackedSkills.sinceWhen != null) {
 			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_since,
@@ -129,30 +124,30 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 		TableLayout table = (TableLayout) findViewById(R.id.table_tracking);
 		table.removeAllViews();
 		table.addView(createHeadersRow());
-		table.addView(createRow(hiscores.overall, trackedSkills.overall));
-		table.addView(createRow(hiscores.attack, trackedSkills.attack));
-		table.addView(createRow(hiscores.defence, trackedSkills.defence));
-		table.addView(createRow(hiscores.strength, trackedSkills.strength));
-		table.addView(createRow(hiscores.hitpoints, trackedSkills.hitpoints));
-		table.addView(createRow(hiscores.ranged, trackedSkills.ranged));
-		table.addView(createRow(hiscores.prayer, trackedSkills.prayer));
-		table.addView(createRow(hiscores.magic, trackedSkills.magic));
-		table.addView(createRow(hiscores.cooking, trackedSkills.cooking));
-		table.addView(createRow(hiscores.woodcutting, trackedSkills.woodcutting));
-		table.addView(createRow(hiscores.fletching, trackedSkills.fletching));
-		table.addView(createRow(hiscores.fishing, trackedSkills.fishing));
-		table.addView(createRow(hiscores.firemaking, trackedSkills.firemaking));
-		table.addView(createRow(hiscores.crafting, trackedSkills.crafting));
-		table.addView(createRow(hiscores.smithing, trackedSkills.smithing));
-		table.addView(createRow(hiscores.mining, trackedSkills.mining));
-		table.addView(createRow(hiscores.herblore, trackedSkills.herblore));
-		table.addView(createRow(hiscores.agility, trackedSkills.agility));
-		table.addView(createRow(hiscores.thieving, trackedSkills.thieving));
-		table.addView(createRow(hiscores.slayer, trackedSkills.slayer));
-		table.addView(createRow(hiscores.farming, trackedSkills.farming));
-		table.addView(createRow(hiscores.runecraft, trackedSkills.runecraft));
-		table.addView(createRow(hiscores.hunter, trackedSkills.hunter));
-		table.addView(createRow(hiscores.construction, trackedSkills.construction));
+		table.addView(createRow(trackedSkills.overall));
+		table.addView(createRow(trackedSkills.attack));
+		table.addView(createRow(trackedSkills.defence));
+		table.addView(createRow(trackedSkills.strength));
+		table.addView(createRow(trackedSkills.hitpoints));
+		table.addView(createRow(trackedSkills.ranged));
+		table.addView(createRow(trackedSkills.prayer));
+		table.addView(createRow(trackedSkills.magic));
+		table.addView(createRow(trackedSkills.cooking));
+		table.addView(createRow(trackedSkills.woodcutting));
+		table.addView(createRow(trackedSkills.fletching));
+		table.addView(createRow(trackedSkills.fishing));
+		table.addView(createRow(trackedSkills.firemaking));
+		table.addView(createRow(trackedSkills.crafting));
+		table.addView(createRow(trackedSkills.smithing));
+		table.addView(createRow(trackedSkills.mining));
+		table.addView(createRow(trackedSkills.herblore));
+		table.addView(createRow(trackedSkills.agility));
+		table.addView(createRow(trackedSkills.thieving));
+		table.addView(createRow(trackedSkills.slayer));
+		table.addView(createRow(trackedSkills.farming));
+		table.addView(createRow(trackedSkills.runecraft));
+		table.addView(createRow(trackedSkills.hunter));
+		table.addView(createRow(trackedSkills.construction));
 	}
 
 	private TableRow createHeadersRow() {
@@ -199,7 +194,7 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 		return tableRow;
 	}
 
-	private TableRow createRow(Skill skillHiscore, Skill skillTrack) {
+	private TableRow createRow(Skill skillTrack) {
 		TableRow tableRow = new TableRow(this);
 		TableRow.LayoutParams params = new TableRow.LayoutParams();
 		params.weight = 1;
@@ -210,13 +205,13 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 		// Skill image
 		ImageView image = new ImageView(this);
-		image.setImageResource(skillHiscore.getDrawableInt());
+		image.setImageResource(skillTrack.getDrawableInt());
 		image.setLayoutParams(params);
 		tableRow.addView(image);
 
 		// Lvl
 		TextView text = new TextView(this);
-		text.setText(skillHiscore.getLevel() + "");
+		text.setText(skillTrack.getLevel() + "");
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -224,7 +219,7 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 		// XP
 		text = new TextView(this);
-		text.setText(NumberFormat.getInstance().format(skillHiscore.getExperience()));
+		text.setText(NumberFormat.getInstance().format(skillTrack.getExperience()));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -234,18 +229,19 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 		text = new TextView(this);
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
-
-		if (skillTrack.getExperience() == 0) {
+		int expDiff = skillTrack.getExperienceDiff();
+		
+		if (expDiff == 0) {
 			text.setTextColor(getResources().getColor(R.color.DarkGray));
-			text.setText(getString(R.string.gain_small, skillTrack.getExperience()));
+			text.setText(getString(R.string.gain_small, expDiff));
 		} else {
 			text.setTextColor(getResources().getColor(R.color.Green));
-			if (skillTrack.getExperience() < 1000) {
-				text.setText(getString(R.string.gain_small, skillTrack.getExperience()));
-			} else if (skillTrack.getExperience() >= 1000 && skillTrack.getExperience() < 10000) {
-				text.setText(getString(R.string.gain_medium, skillTrack.getExperience() / 1000.0f));
+			if (expDiff < 1000) {
+				text.setText(getString(R.string.gain_small, expDiff));
+			} else if (expDiff >= 1000 && expDiff < 10000) {
+				text.setText(getString(R.string.gain_medium, expDiff / 1000.0f));
 			} else {
-				text.setText(getString(R.string.gain, skillTrack.getExperience() / 1000));
+				text.setText(getString(R.string.gain, expDiff / 1000));
 			}
 		}
 		tableRow.addView(text);
