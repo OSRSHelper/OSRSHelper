@@ -4,12 +4,12 @@ import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
 
 public class Skill {
 	private SkillsEnum.SkillType skillType;
-	private int experience = -1;
-	private int experienceDiff = -1;
+	private int experience = 0;
+	private int experienceDiff = 0;
 	private short level = 0;
     private short virtualLevel = 0;
-	private int rank = -1;
-	private int rankDiff = -1;
+	private int rank = 0;
+	private int rankDiff = 0;
 	private int drawableId;
 	private double EHP = 0.0;
 
