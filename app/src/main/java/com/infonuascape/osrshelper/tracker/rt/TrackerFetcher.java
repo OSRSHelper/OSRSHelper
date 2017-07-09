@@ -45,7 +45,7 @@ public class TrackerFetcher {
 		return lookupTime;
 	}
 
-	public PlayerSkills getPlayerTracker() throws PlayerNotFoundException, ParserErrorException {
+	public PlayerSkills getPlayerTracker() throws PlayerNotFoundException, ParserErrorException, APIError {
 		final String APIOutput = getDataFromAPI();
 
 		PlayerSkills ps = new PlayerSkills();
@@ -98,7 +98,7 @@ public class TrackerFetcher {
 				}
 			}
 		} catch (Exception e) {
-			throw new ParserErrorException("Error while parsing Zybez response");
+			throw new APIError("Error while parsing RuneTracker response");
 		}
 		return ps;
 	}
