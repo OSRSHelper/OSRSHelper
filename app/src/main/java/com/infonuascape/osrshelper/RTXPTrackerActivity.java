@@ -190,7 +190,7 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 		// Gain
 		text = new TextView(this);
-		text.setText(getString(R.string.gain));
+		text.setText(getString(R.string.xp_gain));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
