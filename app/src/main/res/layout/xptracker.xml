@@ -16,7 +16,7 @@
         android:textColor="@color/text_normal" />
 
     <TextView
-        android:id="@+id/track_since"
+        android:id="@+id/track_metadata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
@@ -31,7 +31,7 @@
         android:id="@+id/time_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/track_since"
+        android:layout_below="@+id/track_metadata"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/greenbt_sel"

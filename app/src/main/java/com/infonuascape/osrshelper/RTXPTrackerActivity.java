@@ -115,10 +115,10 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 	private void populateTable(PlayerSkills trackedSkills) {
 		changeHeaderText(getString(R.string.showing_tracking, username), View.GONE);
 		if (trackedSkills.sinceWhen != null) {
-			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_since,
+			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
 					trackedSkills.sinceWhen));
 		} else {
-			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_starting));
+			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
 		}
 
 		TableLayout table = (TableLayout) findViewById(R.id.table_tracking);
@@ -266,7 +266,7 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 		if (time != null) {
 			((TableLayout) findViewById(R.id.table_tracking)).removeAllViews();
-			((TextView) findViewById(R.id.track_since)).setText("");
+			((TextView) findViewById(R.id.track_metadata)).setText("");
 			changeHeaderText(getString(R.string.loading_tracking, username), View.VISIBLE);
 			new PopulateTable(time, isUpdating).execute();
 		}

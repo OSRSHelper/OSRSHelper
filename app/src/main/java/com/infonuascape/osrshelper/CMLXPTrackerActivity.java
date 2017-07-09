@@ -116,12 +116,18 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 
 	private void populateTable(PlayerSkills playerSkills) {
 		changeHeaderText(getString(R.string.showing_tracking, username), View.GONE);
-		if (playerSkills.sinceWhen != null) {
-			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_since,
+
+		if (playerSkills.sinceWhen != null)
+			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
 					playerSkills.sinceWhen));
-		} else {
-			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_starting));
-		}
+
+		else if (playerSkills.lastUpdate != null)
+			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.last_update,
+					playerSkills.lastUpdate));
+
+		else
+			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
+
 
 		TableLayout table = (TableLayout) findViewById(R.id.table_tracking);
 		table.removeAllViews();
@@ -308,7 +314,7 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 
 		if (time != null) {
 			((TableLayout) findViewById(R.id.table_tracking)).removeAllViews();
-			((TextView) findViewById(R.id.track_since)).setText("");
+			((TextView) findViewById(R.id.track_metadata)).setText("");
 			changeHeaderText(getString(R.string.loading_tracking, username), View.VISIBLE);
 			new PopulateTable(time, isUpdating).execute();
 		}

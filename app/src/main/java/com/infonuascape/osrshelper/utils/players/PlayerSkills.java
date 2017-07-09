@@ -32,7 +32,10 @@ public class PlayerSkills {
 	public Skill runecraft = new Skill(SkillType.Runecraft, R.drawable.runecrafting);
 	public Skill hunter = new Skill(SkillType.Hunter, R.drawable.hunter);
 	public Skill construction = new Skill(SkillType.Construction, R.drawable.construction);
+
 	public String sinceWhen;
+	public String lastUpdate;
+
 	public List<Skill> skillList = new ArrayList<Skill>();
 
 	public PlayerSkills() {
@@ -63,6 +66,18 @@ public class PlayerSkills {
 	}
 	public void setSinceWhen(String sinceWhen) {
 		this.sinceWhen = sinceWhen;
+	}
+
+	public String getSinceWhen() {
+		return sinceWhen;
+	}
+
+	public String getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(String lastUpdate) {
+		this.lastUpdate = lastUpdate;
 	}
 
 	public static ArrayList<Skill> getSkillsInOrder(PlayerSkills playerSkills) {

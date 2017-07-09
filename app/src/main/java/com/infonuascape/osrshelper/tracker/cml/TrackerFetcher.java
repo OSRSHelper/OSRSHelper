@@ -14,7 +14,11 @@ import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by maden on 9/14/14.
@@ -52,15 +56,21 @@ public class TrackerFetcher {
 		String[] APILine = APIOutput.split("\n");
 		String[] tokenizer;
 
-		int lastTrackTime = -1;
 		int skillId = 0;
+		int lastUpdate = 0;
 
 		for (String line : APILine) {
 			tokenizer = line.split(",");
 
 			//last track time
 			if (tokenizer.length == 1) {
-				lastTrackTime = Integer.parseInt(tokenizer[0]);
+				long seconds = Long.parseLong(tokenizer[0]);
+				long millis = seconds * 1000;
+				Date date = new Date(System.currentTimeMillis() - millis);
+				SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, yyyy h:mm a", Locale.ENGLISH);
+				sdf.setTimeZone(TimeZone.getDefault());
+				String formattedDate = sdf.format(date);
+				ps.setLastUpdate(formattedDate);
 			}
 			// total EHP
 			else if (tokenizer.length == 3) {

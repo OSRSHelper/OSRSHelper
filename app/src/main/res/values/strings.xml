@@ -46,6 +46,7 @@
     <string name="loss_small">(- %1$d)</string>
     <string name="loss_medium">(- %1$.1fK)</string>
     <string name="tracking_since">Tracking since\n%1$s</string>
+    <string name="last_update">Last track\n%1$s</string>
     <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
     <string name="virtual_levels">Virtual Levels</string>
     <string name="update">Update</string>
