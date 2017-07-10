@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.tracker.rt;
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.SkillsEnum;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
@@ -66,6 +67,9 @@ public class TrackerFetcher {
                         if (skillName.equals(skillList.get(i).getSkillType().getSkillName()) ||
 								skillName.equals(skillList.get(i).getSkillType().getAlternativeName())) {
                             skillList.get(i).setExperience(Integer.parseInt(tokenizer[2]));
+							if(skillList.get(i).getSkillType() != SkillsEnum.SkillType.Overall) {
+								skillList.get(i).calculateLevels();
+							}
 							break;
                         }
                     }
@@ -100,6 +104,24 @@ public class TrackerFetcher {
 		} catch (Exception e) {
 			throw new APIError("Error while parsing RuneTracker response");
 		}
+
+        //compute total level
+        short totalLevel = 0;
+        short totalVirtualLevel = 0;
+        for (Skill s : skillList) {
+            if (s.getSkillType() != SkillsEnum.SkillType.Overall) {
+                totalLevel += s.getLevel();
+                totalVirtualLevel += s.getVirtualLevel();
+            }
+        }
+
+        //add total level to appropriate Skill entry
+        Skill overallSkill = skillList.get(0); //always first indexed
+        overallSkill.setLevel(totalLevel);
+        overallSkill.setVirtualLevel(totalVirtualLevel);
+
+		ps.calculateIfVirtualLevelsNecessary();
+
 		return ps;
 	}
 

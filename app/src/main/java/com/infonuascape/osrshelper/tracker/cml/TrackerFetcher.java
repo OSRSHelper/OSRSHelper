@@ -90,7 +90,9 @@ public class TrackerFetcher {
 					skillList.get(skillId).setRankDiff(-rankDiff); // inverse sign
 					skillList.get(skillId).setExperience(experience);
 					skillList.get(skillId).setRank(experienceDiff);
-
+                    if(skillList.get(skillId).getSkillType() != SkillsEnum.SkillType.Overall) {
+                        skillList.get(skillId).calculateLevels();
+                    }
 					skillId++; //pass to next skill in list
 				} catch (Exception e) {
 					throw new APIError("API format error");
@@ -105,8 +107,8 @@ public class TrackerFetcher {
         short totalVirtualLevel = 0;
 		for (Skill s : skillList) {
             if (s.getSkillType() != SkillsEnum.SkillType.Overall) {
-                totalLevel += Utils.getLevelFromXP(s.getExperience());
-                totalVirtualLevel += Utils.getLevelFromXP(s.getExperience(), true);
+                totalLevel += s.getLevel();
+                totalVirtualLevel += s.getVirtualLevel();
             }
         }
 
@@ -114,6 +116,8 @@ public class TrackerFetcher {
         Skill overallSkill = skillList.get(0); //always first indexed
         overallSkill.setLevel(totalLevel);
         overallSkill.setVirtualLevel(totalVirtualLevel);
+
+        ps.calculateIfVirtualLevelsNecessary();
 
 		return ps;
 	}

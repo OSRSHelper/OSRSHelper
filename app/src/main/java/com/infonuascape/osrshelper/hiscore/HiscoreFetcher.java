@@ -2,6 +2,7 @@ package com.infonuascape.osrshelper.hiscore;
 
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.SkillsEnum;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
@@ -62,7 +63,28 @@ public class HiscoreFetcher {
 			skillList.get(i).setRank(Integer.parseInt(dataSeparator[0]));
 			skillList.get(i).setLevel(Short.parseShort(dataSeparator[1]));
 			skillList.get(i).setExperience(Integer.parseInt(dataSeparator[2]));
+			if(skillList.get(i).getSkillType() != SkillsEnum.SkillType.Overall) {
+				skillList.get(i).calculateLevels();
+			}
 		}
+
+		//compute total level
+		short totalLevel = 0;
+		short totalVirtualLevel = 0;
+		for (Skill s : skillList) {
+			if (s.getSkillType() != SkillsEnum.SkillType.Overall) {
+				totalLevel += s.getLevel();
+				totalVirtualLevel += s.getVirtualLevel();
+			}
+		}
+
+		//add total level to appropriate Skill entry
+		Skill overallSkill = skillList.get(0); //always first indexed
+		overallSkill.setLevel(totalLevel);
+		overallSkill.setVirtualLevel(totalVirtualLevel);
+
+        ps.calculateIfVirtualLevelsNecessary();
+
 		return ps;
 	}
 

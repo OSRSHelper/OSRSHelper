@@ -12,28 +12,32 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.tracker.cml.TrackerHelper;
 import com.infonuascape.osrshelper.tracker.cml.Updater;
 import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 import java.text.NumberFormat;
 
-public class CMLXPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener {
+public class CMLXPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener, CompoundButton.OnCheckedChangeListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
 	private Spinner spinner;
+	private CheckBox virtualLevelsCB;
+	private PlayerSkills playerSkills;
 
 	public static void show(final Context context, final String username) {
 		Intent intent = new Intent(context, CMLXPTrackerActivity.class);
@@ -53,6 +57,11 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_tracking, username));
+
+		virtualLevelsCB = (CheckBox) findViewById(R.id.cb_virtual_levels);
+		virtualLevelsCB.setOnCheckedChangeListener(this);
+		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
+		virtualLevelsCB.setVisibility(View.GONE);
 
 		spinner = (Spinner) findViewById(R.id.time_spinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array,
@@ -75,9 +84,21 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		});
 	}
 
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		PreferencesController.setPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
+		if(playerSkills != null) {
+			populateTable(playerSkills);
+		}
+	}
+
+	private boolean isShowVirtualLevels() {
+		return playerSkills != null && playerSkills.hasOneAbove99
+				&& PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+	}
+
 	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
 		private TrackerTimeEnum.TrackerTime time;
-		private PlayerSkills playerSkills;
 		private boolean isUpdating;
 
 		public PopulateTable(TrackerTimeEnum.TrackerTime time, boolean isUpdating) {
@@ -94,7 +115,7 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 				if (isUpdating) {
 					Updater.perform(username);
 				}
-				playerSkills = trackerHelper.getPlayerStats(time);
+				return trackerHelper.getPlayerStats(time);
 			} catch (PlayerNotTrackedException e) {
 				changeHeaderText(getString(R.string.not_tracked_player, username), View.GONE);
 			} catch (APIError e) {
@@ -103,11 +124,12 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 				uhe.printStackTrace();
 				changeHeaderText(uhe.toString(), View.GONE);
 			}
-			return playerSkills;
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(PlayerSkills playerSkillsCallback) {
+			playerSkills = playerSkillsCallback;
 			if (playerSkills != null) {
 				populateTable(playerSkills);
 			}
@@ -137,6 +159,8 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		for (Skill s : playerSkills.skillList) {
 			table.addView(createRow(s));
 		}
+
+		virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 	}
 
 	private TableRow createHeadersRow() {
@@ -206,15 +230,8 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		image.setLayoutParams(params);
 		tableRow.addView(image);
 
-		// Lvl
-		//level is not computed yet
-		if (s.getLevel() == 0) {
-			short level = (short)Utils.getLevelFromXP(s.getExperience());
-			s.setLevel(level);
-		}
-
 		TextView text = new TextView(this);
-		text.setText(s.getLevel() + "");
+		text.setText((isShowVirtualLevels() ? s.getVirtualLevel() : s.getLevel()) + "");
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));

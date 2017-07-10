@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
@@ -42,17 +43,23 @@ public class HiscoresDialogFragment extends DialogFragment implements OnClickLis
 			((TextView) v.findViewById(R.id.skill_name)).setText(skill.getSkillType().toString());
 			((TextView) v.findViewById(R.id.skill_name)).setCompoundDrawablesWithIntrinsicBounds(skill.getDrawableInt(), 0, 0, 0);
 
-
-			((TextView) v.findViewById(R.id.skill_lvl)).setText(getString(R.string.level) + " : " + skill.getLevel());
+			boolean isShowVirtualLevels = isShowVirtualLevels();
+			short level = (isShowVirtualLevels ? skill.getVirtualLevel() : skill.getLevel());
+			((TextView) v.findViewById(R.id.skill_lvl)).setText(getString(R.string.level) + " : " + level);
 			((TextView) v.findViewById(R.id.skill_exp)).setText(getString(R.string.xp) + " : " + NumberFormat.getInstance().format(skill.getExperience()));
-			if (skill.getSkillType() != SkillType.Overall && skill.getLevel() != 99) {
-				((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText(getString(R.string.xp_to_lvl) + " : " + NumberFormat.getInstance().format(Utils.getXPToLvl(skill.getLevel() + 1) - skill.getExperience()));
+			if (skill.getSkillType() != SkillType.Overall && (isShowVirtualLevels || skill.getLevel() != 99)) {
+				((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText(getString(R.string.xp_to_lvl) + " : " + NumberFormat.getInstance().format(Utils.getXPToLvl(level + 1, isShowVirtualLevels) - skill.getExperience()));
 			} else {
 				((TextView) v.findViewById(R.id.skill_exp_to_lvl)).setText("");
 			}
 		}
 
 		return v;
+	}
+
+	private boolean isShowVirtualLevels() {
+		return skill.getVirtualLevel() > 99
+				&& PreferencesController.getBooleanPreference(getActivity(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
 	}
 
 	@Override
