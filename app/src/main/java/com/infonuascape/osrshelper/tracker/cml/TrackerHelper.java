@@ -17,8 +17,13 @@ public class TrackerHelper {
 
 	public PlayerSkills getPlayerStats(TrackerTimeEnum.TrackerTime time) throws PlayerNotTrackedException,
 			ParserErrorException, APIError {
-		TrackerFetcher tf = new TrackerFetcher(getUserName(), time);
-		return tf.getPlayerTracker();
+
+        //Instanciate a new API fetcher
+        TrackerFetcher tf = new TrackerFetcher(getUserName(), time);
+
+
+
+		return tf.getPlayerSkills();
 	}
 
 }

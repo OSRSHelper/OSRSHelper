@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper.tracker.cml;
 
+import android.support.annotation.NonNull;
+
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.utils.Skill;
@@ -13,10 +15,16 @@ import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.utils.players.PlayerSkillsPoint;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -24,19 +32,21 @@ import java.util.TimeZone;
  * Created by maden on 9/14/14.
  */
 public class TrackerFetcher {
-	final String API_URL = "https://crystalmathlabs.com/tracker/api.php?type=trackehp";
+	final String API_URL = "https://crystalmathlabs.com/tracker/api.php?multiquery=";
 
 	private String userName;
 	private int lookupTime;
+    PlayerSkills playerSkills;
 
-	public TrackerFetcher(String userName, int lookupTime) {
+	public TrackerFetcher(String userName, int lookupTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
 		this.userName = userName.replace(" ", "%20");
 		this.lookupTime = lookupTime;
+		this.playerSkills = new PlayerSkills();
+		processAPI();
 	}
 
-	public TrackerFetcher(String userName, TrackerTimeEnum.TrackerTime trackerTime) {
-		this.userName = userName.replace(" ", "%20");
-		lookupTime = trackerTime.getSeconds();
+	public TrackerFetcher(String userName, TrackerTimeEnum.TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
+		this(userName, trackerTime.getSeconds());
 	}
 
 	public String getUserName() {
@@ -47,13 +57,49 @@ public class TrackerFetcher {
 		return lookupTime;
 	}
 
-	public PlayerSkills getPlayerTracker() throws ParserErrorException, APIError, PlayerNotTrackedException {
-		final String APIOutput = getDataFromAPI();
+    public PlayerSkills getPlayerSkills() {
+        return playerSkills;
+    }
 
-		PlayerSkills ps = new PlayerSkills();
+    public void setPlayerSkills(PlayerSkills ps) {
+        this.playerSkills = ps;
+    }
+
+    private void processAPI() throws PlayerNotTrackedException, APIError, ParserErrorException {
+        String APIPayload = getDataFromAPI();
+
+        // Split payload by "~~" which is response delimiter for CML
+        String[] APIResponses = APIPayload.split("~~\n");
+
+        // disregard last, always empty, payload
+        if (APIResponses.length == 2) {
+
+            // Order should be:
+            // - Tracker
+            // - Datapoints
+            String trackerPayload = APIResponses[0];
+            String dataPointPayload = APIResponses[1];
+
+            if (trackerPayload.equals("-1") || dataPointPayload.equals("-1"))
+                throw new PlayerNotTrackedException(getUserName());
+
+            if (trackerPayload.equals("-4") || dataPointPayload.equals("-4"))
+                throw new APIError("API under heavy load");
+
+            // Process API payloads respectively
+            processTrackerPayload(trackerPayload);
+            processDataPointPayload(dataPointPayload);
+
+        } else {
+            throw new ParserErrorException("Error parsing API");
+        }
+    }
+
+    public void processTrackerPayload(String payload) throws ParserErrorException, APIError, PlayerNotTrackedException {
+        PlayerSkills ps = getPlayerSkills();
 		List<Skill> skillList = ps.skillList;
 
-		String[] APILine = APIOutput.split("\n");
+		String[] APILine = payload.split("\n");
 		String[] tokenizer;
 
 		int skillId = 0;
@@ -93,10 +139,10 @@ public class TrackerFetcher {
 
 					skillId++; //pass to next skill in list
 				} catch (Exception e) {
-					throw new APIError("API format error");
+					throw new ParserErrorException("API format error");
 				}
 			} else {
-				throw new APIError("API format error");
+				throw new ParserErrorException("API format error");
 			}
 		}
 
@@ -115,25 +161,59 @@ public class TrackerFetcher {
         overallSkill.setLevel(totalLevel);
         overallSkill.setVirtualLevel(totalVirtualLevel);
 
-		return ps;
+        setPlayerSkills(ps);
 	}
 
-	public PlayerSkills mapDataSet(String dataSet) {
-		// split dataset, map to skills enum
-		return new PlayerSkills(); // dummy return
-	}
+    public void processDataPointPayload(String payload) throws ParserErrorException, APIError, PlayerNotTrackedException {
+		List<PlayerSkillsPoint> playerSkillsPointList = new ArrayList<>();
+
+		String[] APILine = payload.split("\n");
+		String[] tokenizer;
+
+		try {
+			for (String skillsPointEntry : APILine) {
+				// initiate entry at point in time
+				PlayerSkillsPoint playerSkillsPoint = new PlayerSkillsPoint();
+
+				tokenizer = skillsPointEntry.split(" ");
+
+				//store epoch to represent skills at point in time
+				int pointEpoch = Integer.parseInt(tokenizer[0]);
+				playerSkillsPoint.setEpoch(pointEpoch);
+
+				String skillsEntries = tokenizer[1];
+				String[] skillsTokenizer = skillsEntries.split(",");
+
+                String ranksEntries = tokenizer[2];
+                String[] ranksTokenizer = ranksEntries.split(",");
+
+				for (int skillId = 0; skillId < skillsTokenizer.length; skillId++) {
+					// Extract experience at point in time
+					int experienceAtPoint = Integer.parseInt(skillsTokenizer[skillId]);
+                    int rankAtPoint = Integer.parseInt(ranksTokenizer[skillId]);
+
+					// Store experience at point in time
+					playerSkillsPoint.skillList.get(skillId).setExperience(experienceAtPoint);
+                    playerSkillsPoint.skillList.get(skillId).setRank(rankAtPoint);
+				}
+				playerSkillsPointList.add(playerSkillsPoint);
+			}
+		} catch (Exception e) {
+			throw new ParserErrorException("Error parsing the API");
+		}
+
+		System.out.println(playerSkillsPointList);
+    }
 
 	private String getDataFromAPI() throws PlayerNotTrackedException, APIError {
-		String connectionString = API_URL + "&player=" + userName + "&time=" + lookupTime;
+		//String connectionString = API_URL + "&player=" + userName + "&time=" + lookupTime;
+		String connectionString = String.format("%s[{\"type\":\"trackehp\",\"player\":\"%s\",\"time\":\"%d\"},{\"type\":\"datapoints\",\"player\":\"%s\",\"time\":\"%d\"}]",
+				API_URL, userName, lookupTime, userName, lookupTime);
+
 		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(connectionString, Request.Method.GET);
 		String output = httpRequest.getOutput();
-		if (httpRequest.getStatusCode() == StatusCode.FOUND && output != null) {
-			if (output.equals("-1"))
-				throw new PlayerNotTrackedException(getUserName());
-			if (output.equals("-4"))
-				throw new APIError("API under heavy load");
-		} else {
-			throw new APIError("Error parsing API");
+		if (httpRequest.getStatusCode() != StatusCode.FOUND || output == null) {
+            throw new APIError("Error reaching the API");
 		}
 		return output;
 	}
