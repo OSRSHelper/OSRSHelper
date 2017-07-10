@@ -11,7 +11,7 @@ public class ParserErrorException extends Exception{
 private String error;
    public ParserErrorException(String error)
    {
-      this.error = error;
+      super(error);
    }
    public String getError()
    {
