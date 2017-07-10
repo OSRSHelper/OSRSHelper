@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -24,6 +26,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
@@ -31,7 +34,7 @@ import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.RSViewPopulate;
 
-public class HighScoreActivity extends Activity {
+public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private static final int NUM_PAGES = 2;
 	private String username;
@@ -42,6 +45,8 @@ public class HighScoreActivity extends Activity {
 	private TableLayout table;
 	private ArrayList<ImageView> dots;
 	private ViewPager mViewPager;
+
+	private CheckBox virtualLevelsCB;
 
 	public static void show(final Context context, final String username) {
 		Intent intent = new Intent(context, HighScoreActivity.class);
@@ -63,6 +68,11 @@ public class HighScoreActivity extends Activity {
 		header.setText(getString(R.string.loading_highscores, username));
 		
 		combatText = (TextView) findViewById(R.id.combat);
+
+		virtualLevelsCB = (CheckBox) findViewById(R.id.cb_virtual_levels);
+		virtualLevelsCB.setOnCheckedChangeListener(this);
+		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
+		virtualLevelsCB.setVisibility(View.GONE);
 
 		rsView = (TableLayout) findViewById(R.id.rs_view);
 		table = (TableLayout) findViewById(R.id.table_hiscores);
@@ -96,16 +106,28 @@ public class HighScoreActivity extends Activity {
 		});
 	}
 
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		PreferencesController.setPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
+		if(playerSkills != null) {
+			populateTable(playerSkills);
+		}
+	}
+
+	private boolean isShowVirtualLevels() {
+		return playerSkills != null && playerSkills.hasOneAbove99
+				&& PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+	}
+
 	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
 			HiscoreHelper hiscoreHelper = new HiscoreHelper();
 			hiscoreHelper.setUserName(username);
-			PlayerSkills playerSkills = null;
 
 			try {
-				playerSkills = hiscoreHelper.getPlayerStats();
+				return hiscoreHelper.getPlayerStats();
 			} catch (PlayerNotFoundException e) {
 				changeHeaderText(getString(R.string.not_existing_player, username));
 
@@ -113,13 +135,13 @@ public class HighScoreActivity extends Activity {
 				uhe.printStackTrace();
 				changeHeaderText(getString(R.string.network_error));
 			}
-			return playerSkills;
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(PlayerSkills playerSkillsCallback) {
+			playerSkills = playerSkillsCallback;
 			if (playerSkillsCallback != null) {
-				playerSkills = playerSkillsCallback;
 				populateTable(playerSkills);
 			}
 		}
@@ -130,11 +152,15 @@ public class HighScoreActivity extends Activity {
 		changeCombatText();
 
 		ArrayList<Skill> skills = PlayerSkills.getSkillsInOrder(playerSkills);
+
+		table.removeAllViews();
 		for (Skill skill : skills) {
 			table.addView(createRow(skill));
 		}
 
-		RSViewPopulate rsViewPopulate = new RSViewPopulate(this, PlayerSkills.getSkillsInOrderForRSView(playerSkills));
+        virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
+
+		RSViewPopulate rsViewPopulate = new RSViewPopulate(this, playerSkills);
 		rsView = rsViewPopulate.populate(rsView);
 	}
 
@@ -157,7 +183,7 @@ public class HighScoreActivity extends Activity {
 		// Lvl
 		TextView text = new TextView(this);
 		if (skill.getRank() != -1) {
-			text.setText(skill.getLevel() + "");
+			text.setText((isShowVirtualLevels() ? skill.getVirtualLevel() : skill.getLevel()) + "");
 		}
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);

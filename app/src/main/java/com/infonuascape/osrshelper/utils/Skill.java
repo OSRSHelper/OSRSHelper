@@ -115,4 +115,22 @@ public class Skill {
 	public String toString() {
 		return skillType.toString();
 	}
+
+	public void calculateLevels() {
+		short level=0;
+		double curr_xp = 0;
+		double points = 0;
+		double dividend = 1;
+
+		while (curr_xp <= experience) {
+			Double placeholder = dividend/7;
+			points = points + Math.floor(dividend + 300* Math.pow(2, placeholder));
+			curr_xp = Math.floor(points / 4);
+			dividend++;
+			level++;
+		}
+
+		this.level = (short) Math.min(level, 99);
+		this.virtualLevel = level;
+	}
 }

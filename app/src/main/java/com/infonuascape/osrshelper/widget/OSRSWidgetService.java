@@ -9,6 +9,7 @@ import android.widget.RemoteViewsService;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
+import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
@@ -68,8 +69,8 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 		Skill skill = skills.get(position);
 		
 		// set value into textview
-		rv.setTextViewText(R.id.skill_level, skill.getLevel() + "");
-		
+		rv.setTextViewText(R.id.skill_level, (isShowVirtualLevels() ? skill.getVirtualLevel() : skill.getLevel()) + "");
+
 		if(skill.getSkillType() != SkillType.Overall){
 			rv.setImageViewResource(R.id.skill_image, skill.getDrawableInt());
 		} else {
@@ -78,6 +79,11 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
 		// Return the remote views object.
 		return rv;
+	}
+
+	private boolean isShowVirtualLevels() {
+		return playerSkills != null && playerSkills.hasOneAbove99
+				&& PreferencesController.getBooleanPreference(mContext, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
 	}
 
 	public RemoteViews getLoadingView() {

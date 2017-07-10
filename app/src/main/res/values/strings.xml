@@ -79,6 +79,7 @@
     <string name="ranging_lvl_needed">%1$d ranged</string>
     <string name="magic_lvl_needed">%1$d magic</string>
     <string name="prayer_lvl_needed">%1$d prayer</string>
-    
+    <string name="show_virtual_levels">Show virtual levels</string>
+
 
 </resources>
