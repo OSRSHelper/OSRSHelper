@@ -52,7 +52,7 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     public void setInputStream(InputStream inputStream) throws IOException {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             byte[] buffer = new byte[8192];
             int bytesRead;
             ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -61,9 +61,9 @@ public class ImageSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             }
             byte[] file = output.toByteArray();
             scene = new InputStreamScene(file);
-        } else {
-            scene = new InputStreamScene(inputStream);
-        }
+//        } else {
+//            scene = new InputStreamScene(inputStream);
+//        }
     }
 
     //endregion

@@ -32,9 +32,7 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		int id = v.getId();
 
 		if (id == R.id.wiki_btn) {
-			Uri uri = Uri.parse("http://2007.runescape.wikia.com/wiki/2007scape_Wiki");
-			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			startActivity(intent);
+			WebViewActivity.show(this, "http://2007.runescape.wikia.com/wiki/2007scape_Wiki");
 		} else if (id == R.id.highscore_btn) {
 			UsernameActivity.show(this, UsernameActivity.HISCORES);
 		} else if (id == R.id.rt_xptracker_btn) {

@@ -1,14 +1,10 @@
 package com.infonuascape.osrshelper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -22,8 +18,9 @@ import android.widget.ListView;
 import com.infonuascape.osrshelper.adapters.PoIAdapter;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.sigseg.android.io.RandomAccessFileInputStream;
 import com.sigseg.android.map.ImageSurfaceView;
+
+import java.io.InputStream;
 
 public class WorldMapActivity extends Activity implements OnItemClickListener, OnClickListener {
 	private static final String TAG = "WorldMapActivity";
@@ -63,7 +60,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 		try {
 			InputStream inputStream = getAssets().open(MAP_FILE_NAME);
 			imageSurfaceView.setInputStream(inputStream);
-		} catch (java.io.IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			finish();
 		}
@@ -103,8 +100,8 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 			imageSurfaceView.setViewport(new Point(point.x - (int)center.x, point.y - (int)center.y));
 			imageSurfaceView.zoom(0.4f, center);
 		}
-		imageSurfaceView.setViewport(new Point(point.x - (int)(center.x/2.5), point.y - (int)(center.y/2.5)));	
-		
+		imageSurfaceView.setViewport(new Point(point.x - (int)(center.x/2.5), point.y - (int)(center.y/2.5)));
+
 		imageSurfaceView.zoom(0.4f, center);
 		lastTimeZoomed = System.currentTimeMillis();
 	}
