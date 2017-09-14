@@ -43,7 +43,7 @@ public class WebViewActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if(!webView.getOriginalUrl().equalsIgnoreCase(url)) {
+        if(!url.equalsIgnoreCase(webView.getOriginalUrl())) {
             webView.goBack();
         } else {
             super.onBackPressed();
