@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper.tracker.rt;
 
+import android.content.Context;
+
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.utils.Skill;
@@ -25,17 +27,18 @@ import java.util.TimeZone;
 public class TrackerFetcher {
 	final String API_URL = "http://rscript.org/lookup.php?type=track&flag=07track&skill=all";
 
+	private Context context;
 	private String userName;
 	private int lookupTime;
 
-	public TrackerFetcher(String userName, int lookupTime) {
+	public TrackerFetcher(Context context, String userName, int lookupTime) {
+		this.context = context;
 		this.userName = userName.replace(" ", "%20");
 		this.lookupTime = lookupTime;
 	}
 
-	public TrackerFetcher(String userName, TrackerTimeEnum.TrackerTime trackerTime) {
-		this.userName = userName.replace(" ", "%20");
-		lookupTime = trackerTime.getSeconds();
+	public TrackerFetcher(Context context, String userName, TrackerTimeEnum.TrackerTime trackerTime) {
+		this(context, userName, trackerTime.getSeconds());
 	}
 
 	public String getUserName() {
@@ -132,7 +135,7 @@ public class TrackerFetcher {
 
 	private String getDataFromAPI() throws PlayerNotFoundException {
 		String connectionString = API_URL + "&user=" + userName + "&time=" + lookupTime;
-		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(connectionString, Request.Method.GET);
+		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(connectionString, Request.Method.GET);
 		String output = httpRequest.getOutput();
 		if (httpRequest.getStatusCode() == StatusCode.FOUND && output != null) {
 			for (String line : output.split("\n")) {

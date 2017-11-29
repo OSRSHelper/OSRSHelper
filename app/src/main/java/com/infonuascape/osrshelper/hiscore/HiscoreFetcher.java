@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper.hiscore;
 
+import android.content.Context;
+
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.SkillsEnum;
@@ -18,9 +20,11 @@ import java.util.List;
 public class HiscoreFetcher {
 	final String API_URL = "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws?player=";
 
+	private Context context;
 	private String userName;
 
-	public HiscoreFetcher(String userName) {
+	public HiscoreFetcher(final Context context, String userName) {
+		this.context = context;
 		this.userName = userName.replace(" ", "%20");
 	}
 
@@ -94,7 +98,7 @@ public class HiscoreFetcher {
 	}
 
 	private String getDataFromAPI() throws PlayerNotFoundException {
-		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(API_URL + getUserName(), Request.Method.GET);
+		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(API_URL + getUserName(), Request.Method.GET);
 		if (httpRequest.getStatusCode() == StatusCode.FOUND) {
 			return httpRequest.getOutput();
 		} else {

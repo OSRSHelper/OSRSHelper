@@ -14,7 +14,5 @@ public class OSRSApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        NetworkStack.init(this);
     }
 }

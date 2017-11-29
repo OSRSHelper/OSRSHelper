@@ -175,7 +175,7 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
-			HiscoreHelper hiscoreHelper = new HiscoreHelper();
+			HiscoreHelper hiscoreHelper = new HiscoreHelper(getApplicationContext());
 			hiscoreHelper.setUserName(username);
 			PlayerSkills playerSkills = null;
 

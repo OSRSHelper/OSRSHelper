@@ -29,9 +29,9 @@ public class Updater {
 	 *             <code>user</code> throws <tt>IOException</tt>
 	 * @throws PlayerNotFoundException
 	 */
-	public static void perform(final String user) throws IOException, PlayerNotFoundException {
+	public static void perform(final Context context, final String user) throws IOException, PlayerNotFoundException {
 		android.util.Log.i("Updater", "Hey! I'm updating!");
 		String connectionString = "http://runetracker.org/updateUser.php?user=" + URLEncoder.encode(user, "utf-8");
-		NetworkStack.getInstance().performRequest(connectionString, Request.Method.GET);
+		NetworkStack.getInstance(context).performRequest(connectionString, Request.Method.GET);
 	}
 }

@@ -137,16 +137,20 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if(imageSurfaceView.isReady()) {
+		if(imageSurfaceView != null && imageSurfaceView.isReady()) {
 			imageSurfaceView.recycle();
 		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		PointF p = imageSurfaceView.getCenter();
-		outState.putFloat(KEY_X, p.x);
-		outState.putFloat(KEY_Y, p.y);
+		if(imageSurfaceView != null) {
+			PointF p = imageSurfaceView.getCenter();
+			if(p != null) {
+				outState.putFloat(KEY_X, p.x);
+				outState.putFloat(KEY_Y, p.y);
+			}
+		}
 		super.onSaveInstanceState(outState);
 	}
 

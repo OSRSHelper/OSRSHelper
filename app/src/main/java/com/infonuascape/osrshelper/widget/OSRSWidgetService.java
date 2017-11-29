@@ -108,7 +108,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 		osrsHelperDataSource.open();
 		final String username = osrsHelperDataSource.getUsernameForWidget(mAppWidgetId);
 		osrsHelperDataSource.close();
-		HiscoreHelper hiscoreHelper = new HiscoreHelper();
+		HiscoreHelper hiscoreHelper = new HiscoreHelper(mContext);
 		hiscoreHelper.setUserName(username);
 
 		try {

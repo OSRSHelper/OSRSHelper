@@ -109,12 +109,12 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
-			TrackerHelper trackerHelper = new TrackerHelper();
+			TrackerHelper trackerHelper = new TrackerHelper(getApplicationContext());
 			trackerHelper.setUserName(username);
 
 			try {
 				if (isUpdating) {
-					Updater.perform(username);
+					Updater.perform(getApplicationContext(), username);
 				}
 				return trackerHelper.getPlayerStats(time);
 			} catch (PlayerNotFoundException e) {

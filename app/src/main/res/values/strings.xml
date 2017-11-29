@@ -80,6 +80,7 @@
     <string name="magic_lvl_needed">%1$d magic</string>
     <string name="prayer_lvl_needed">%1$d prayer</string>
     <string name="show_virtual_levels">Show virtual levels</string>
+    <string name="tap_to_dismiss">Tap to dismiss</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.infonuascape.osrshelper.tracker.cml;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.android.volley.Request;
@@ -34,19 +35,21 @@ import java.util.TimeZone;
 public class TrackerFetcher {
 	final String API_URL = "https://crystalmathlabs.com/tracker/api.php?multiquery=";
 
+	private Context context;
 	private String userName;
 	private int lookupTime;
     PlayerSkills playerSkills;
 
-	public TrackerFetcher(String userName, int lookupTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
+	public TrackerFetcher(Context context, String userName, int lookupTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
+		this.context = context;
 		this.userName = userName.replace(" ", "%20");
 		this.lookupTime = lookupTime;
 		this.playerSkills = new PlayerSkills();
 		processAPI();
 	}
 
-	public TrackerFetcher(String userName, TrackerTimeEnum.TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
-		this(userName, trackerTime.getSeconds());
+	public TrackerFetcher(Context context, String userName, TrackerTimeEnum.TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
+		this(context, userName, trackerTime.getSeconds());
 	}
 
 	public String getUserName() {
@@ -213,7 +216,7 @@ public class TrackerFetcher {
 		String connectionString = String.format("%s[{\"type\":\"trackehp\",\"player\":\"%s\",\"time\":\"%d\"},{\"type\":\"datapoints\",\"player\":\"%s\",\"time\":\"%d\"}]",
 				API_URL, userName, lookupTime, userName, lookupTime);
 
-		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(connectionString, Request.Method.GET);
+		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(connectionString, Request.Method.GET);
 		String output = httpRequest.getOutput();
 		if (httpRequest.getStatusCode() != StatusCode.FOUND || output == null) {
             throw new APIError("Error reaching the API");

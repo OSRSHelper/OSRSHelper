@@ -123,7 +123,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
-			HiscoreHelper hiscoreHelper = new HiscoreHelper();
+			HiscoreHelper hiscoreHelper = new HiscoreHelper(getApplicationContext());
 			hiscoreHelper.setUserName(username);
 
 			try {
