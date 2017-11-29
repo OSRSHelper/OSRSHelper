@@ -34,29 +34,27 @@ public class RSViewOnClickListener implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if(context.get() != null) {
+		if(context.get() != null && skill != null && skill.getLevel() > 0) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context.get());
 			final View dialogView = ((LayoutInflater) context.get().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.hiscores_dialog, null, false);
 
-			if (skill != null) {
-				((TextView) dialogView.findViewById(R.id.skill_name)).setText(skill.getSkillType().toString());
-				((ImageView) dialogView.findViewById(R.id.skill_image)).setImageResource(skill.getDrawableInt());
+			((TextView) dialogView.findViewById(R.id.skill_name)).setText(skill.getSkillType().getSkillName());
+			((ImageView) dialogView.findViewById(R.id.skill_image)).setImageResource(skill.getDrawableInt());
 
-				boolean isShowVirtualLevels = skill.getVirtualLevel() > 99
-						&& PreferencesController.getBooleanPreference(context.get(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+			boolean isShowVirtualLevels = skill.getVirtualLevel() > 99
+					&& PreferencesController.getBooleanPreference(context.get(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
 
-				short level = (isShowVirtualLevels ? skill.getVirtualLevel() : skill.getLevel());
-				((TextView) dialogView.findViewById(R.id.skill_lvl)).setText(String.valueOf(level));
+			short level = (isShowVirtualLevels ? skill.getVirtualLevel() : skill.getLevel());
+			((TextView) dialogView.findViewById(R.id.skill_lvl)).setText(String.valueOf(level));
 
-				((TextView) dialogView.findViewById(R.id.skill_exp)).setText(String.valueOf(NumberFormat.getInstance().format(skill.getExperience())));
+			((TextView) dialogView.findViewById(R.id.skill_exp)).setText(String.valueOf(NumberFormat.getInstance().format(skill.getExperience())));
 
-				if (skill.getSkillType() != SkillsEnum.SkillType.Overall && (isShowVirtualLevels || skill.getLevel() != 99)) {
-					String xpToLevel = NumberFormat.getInstance().format(Utils.getXPToLvl(level + 1, isShowVirtualLevels) - skill.getExperience());
-					((TextView) dialogView.findViewById(R.id.skill_exp_to_lvl)).setText(String.valueOf(xpToLevel));
-				} else {
-					dialogView.findViewById(R.id.skill_exp_to_lvl_title).setVisibility(View.GONE);
-					dialogView.findViewById(R.id.skill_exp_to_lvl).setVisibility(View.GONE);
-				}
+			if (skill.getSkillType() != SkillsEnum.SkillType.Overall && (isShowVirtualLevels || skill.getLevel() != 99)) {
+				String xpToLevel = NumberFormat.getInstance().format(Utils.getXPToLvl(level + 1, isShowVirtualLevels) - skill.getExperience());
+				((TextView) dialogView.findViewById(R.id.skill_exp_to_lvl)).setText(String.valueOf(xpToLevel));
+			} else {
+				dialogView.findViewById(R.id.skill_exp_to_lvl_title).setVisibility(View.GONE);
+				dialogView.findViewById(R.id.skill_exp_to_lvl).setVisibility(View.GONE);
 			}
 
 			builder.setView(dialogView);
@@ -74,7 +72,7 @@ public class RSViewOnClickListener implements OnClickListener {
 
 			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 			lp.copyFrom(dialog.getWindow().getAttributes());
-			lp.width = (int) Utils.convertDpToPixel(275, context.get());
+			lp.width = (int) Utils.convertDpToPixel(250, context.get());
 			dialog.getWindow().setAttributes(lp);
 		}
 	}
