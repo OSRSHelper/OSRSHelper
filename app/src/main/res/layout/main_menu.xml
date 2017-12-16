@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background" >
+    android:background="@color/background">
 
     <TextView
         android:id="@+id/app_name"
@@ -125,6 +124,20 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/grand_exchange"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/donate_btn"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/donate"
                 android:textColor="@color/White"
                 android:textSize="16sp" />
         </LinearLayout>

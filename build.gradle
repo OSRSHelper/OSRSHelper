@@ -6,9 +6,11 @@ buildscript {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
@@ -19,5 +21,6 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }

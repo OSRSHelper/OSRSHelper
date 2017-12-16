@@ -8,6 +8,7 @@
     <string name="rt_xptracker">RuneTracker XP Tracker</string>
     <string name="cml_xptracker">CML XP Tracker</string>
     <string name="grand_exchange">Grand Exchange</string>
+    <string name="donate">Buy us beer!</string>
     <string name="title_activity_username">Choose a username</string>
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
@@ -82,5 +83,10 @@
     <string name="show_virtual_levels">Show virtual levels</string>
     <string name="tap_to_dismiss">Tap to dismiss</string>
 
+    <string name="donate_text1">Hey! This app is developed by two scapers which happen to be software development enthusiasts.</string>
+    <string name="donate_text2">This app is 100% open-sourced (meaning the source code is freely available for anyone) and free.</string>
+    <string name="donate_text3">We created this app for fun and to learn, so if you feel like you want to help us out by buying us a beer, go right ahead!</string>
+    <string name="donate_text4">We\'re planning on adding more features that require servers (ie. Crystal Math Labs support, and more) which would require some monthly costs. Donating would definitely help towards this.</string>
+    <string name="donate_text5">Thank you for using this app!</string>
 
 </resources>

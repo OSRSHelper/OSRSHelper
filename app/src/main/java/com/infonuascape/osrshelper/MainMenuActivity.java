@@ -1,12 +1,12 @@
 package com.infonuascape.osrshelper;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+
+import com.crashlytics.android.answers.Answers;
 
 public class MainMenuActivity extends Activity implements OnClickListener {
 
@@ -25,6 +25,7 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		findViewById(R.id.cml_xptracker_btn).setVisibility(View.GONE);
 		findViewById(R.id.combat_btn).setOnClickListener(this);
 		findViewById(R.id.ge_btn).setOnClickListener(this);
+		findViewById(R.id.donate_btn).setOnClickListener(this);
 	}
 
 	@Override
@@ -45,6 +46,9 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 			UsernameActivity.show(this, UsernameActivity.COMBAT);
 		} else if (id == R.id.ge_btn) {
 			SearchItemActivity.show(this);
+		} else if (id == R.id.donate_btn) {
+			DonationActivity.show(this);
+			
 		}
 	}
 }
