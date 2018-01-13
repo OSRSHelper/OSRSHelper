@@ -1,9 +1,6 @@
 package com.infonuascape.osrshelper.views;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -50,7 +47,7 @@ public class RSViewOnClickListener implements OnClickListener {
 			((TextView) dialogView.findViewById(R.id.skill_exp)).setText(String.valueOf(NumberFormat.getInstance().format(skill.getExperience())));
 
 			if (skill.getSkillType() != SkillsEnum.SkillType.Overall && (isShowVirtualLevels || skill.getLevel() != 99)) {
-				String xpToLevel = NumberFormat.getInstance().format(Utils.getXPToLvl(level + 1, isShowVirtualLevels) - skill.getExperience());
+				String xpToLevel = NumberFormat.getInstance().format(Utils.getExpFromLevel(level + 1, isShowVirtualLevels) - skill.getExperience());
 				((TextView) dialogView.findViewById(R.id.skill_exp_to_lvl)).setText(String.valueOf(xpToLevel));
 			} else {
 				dialogView.findViewById(R.id.skill_exp_to_lvl_title).setVisibility(View.GONE);

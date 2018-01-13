@@ -13,7 +13,7 @@ import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 public class Utils {
 
-	public static final float getXPToLvl(final int nextLvl, final boolean isVirtualLevel){
+	public static final float getExpFromLevel(final int nextLvl, final boolean isVirtualLevel){
 		if(!isVirtualLevel && nextLvl == 100){
 			return 0f;
 		}

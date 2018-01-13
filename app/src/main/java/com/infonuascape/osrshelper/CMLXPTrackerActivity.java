@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -153,6 +154,7 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 
 		TableLayout table = (TableLayout) findViewById(R.id.table_tracking);
 		table.removeAllViews();
+		table.setStretchAllColumns(true);
 		table.addView(createHeadersRow());
 
 		//Add skills individually to the table
@@ -175,14 +177,6 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		// Skill
 		TextView text = new TextView(this);
 		text.setText(getString(R.string.skill));
-		text.setLayoutParams(params);
-		text.setGravity(Gravity.CENTER);
-		text.setTextColor(getResources().getColor(R.color.text_normal));
-		tableRow.addView(text);
-
-		// Lvl
-		text = new TextView(this);
-		text.setText(getString(R.string.level));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -224,25 +218,46 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		params.bottomMargin = 10;
 		params.gravity = Gravity.CENTER;
 
-		// Skill image
+
+
+		LinearLayout ll = new LinearLayout(this);
+		ll.setOrientation(ll.VERTICAL);
+		LinearLayout ll1 = new LinearLayout(this);
+		LinearLayout ll2 = new LinearLayout(this);
+
+
 		ImageView image = new ImageView(this);
 		image.setImageResource(s.getDrawableInt());
-		image.setLayoutParams(params);
-		tableRow.addView(image);
+		TableRow.LayoutParams image_params = new TableRow.LayoutParams();
+		image_params.topMargin = 0;
+		image.setLayoutParams(image_params);
+		ll1.addView(image);
 
 		TextView text = new TextView(this);
 		text.setText((isShowVirtualLevels() ? s.getVirtualLevel() : s.getLevel()) + "");
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
-		tableRow.addView(text);
+		TableRow.LayoutParams level_params = new TableRow.LayoutParams();
+		level_params.topMargin = 0;
+		text.setLayoutParams(level_params);
+		ll2.addView(text);
+
+		ll.addView(ll1);
+		ll.addView(ll2);
+		ll.setLayoutParams(params);
+		tableRow.addView(ll);
+
 
 		// Current XP
 		text = new TextView(this);
 		text.setText(NumberFormat.getInstance().format(s.getExperience()));
-		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
+		TableRow.LayoutParams p = new TableRow.LayoutParams();
+		p.width = 80;
+		p.gravity = Gravity.CENTER;
+		text.setLayoutParams(p);
 		tableRow.addView(text);
 
 		// XP Gain
