@@ -14,14 +14,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -133,7 +131,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
-				changeHeaderText(getString(R.string.network_error));
+				changeHeaderText(getString(R.string.internal_error));
 			}
 			return null;
 		}

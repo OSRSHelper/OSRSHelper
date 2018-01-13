@@ -122,7 +122,7 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
-				changeHeaderText(getString(R.string.network_error), View.GONE);
+				changeHeaderText(getString(R.string.internal_error), View.GONE);
 			}
 			return null;
 		}

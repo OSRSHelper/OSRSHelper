@@ -186,7 +186,7 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 				changeHint(getString(R.string.not_existing_player, username));
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
-				changeHint(getString(R.string.network_error));
+				changeHint(getString(R.string.internal_error));
 			}
 			return playerSkills;
 		}
