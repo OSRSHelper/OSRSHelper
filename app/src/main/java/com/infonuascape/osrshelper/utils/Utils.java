@@ -2,16 +2,19 @@ package com.infonuascape.osrshelper.utils;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.Uri;
+import android.util.DisplayMetrics;
 
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 public class Utils {
 
-	public static final float getXPToLvl(final int nextLvl){
-		if(nextLvl == 100){
+	public static final float getExpFromLevel(final int nextLvl, final boolean isVirtualLevel){
+		if(!isVirtualLevel && nextLvl == 100){
 			return 0f;
 		}
 
@@ -23,7 +26,7 @@ public class Utils {
 		
 		return exp;
 	}
-	
+
 	public static final int getCombatLvl(final PlayerSkills skills){
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
 		
@@ -213,4 +216,10 @@ public class Utils {
 		return poi;
 	}
 
+	public static float convertDpToPixel(float dp, Context context){
+		Resources resources = context.getResources();
+		DisplayMetrics metrics = resources.getDisplayMetrics();
+		float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+		return px;
+	}
 }

@@ -3,13 +3,13 @@ package com.infonuascape.osrshelper.utils.exceptions;
 /**
  * Created by maden on 9/12/14.
  */
-public class ParserErrorException extends Exception{
+public class APIError extends Exception{
    /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-private String error;
-   public ParserErrorException(String error)
+    private String error;
+   public APIError(String error)
    {
       super(error);
    }

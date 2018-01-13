@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 26
+    buildToolsVersion '26'
 
     defaultConfig {
         applicationId "com.infonuascape.osrshelper"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
 
-        versionCode 15
-        versionName "1.5.0"
+        versionCode 22
+        versionName "1.6.2"
     }
 
     buildTypes {
@@ -22,7 +23,13 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.volley:volley:1.0.0'
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.8.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true;
+    }
+    compile 'com.android.billingclient:billing:1.0'
 }

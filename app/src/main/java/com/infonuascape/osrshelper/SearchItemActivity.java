@@ -70,7 +70,7 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 
 		runnableSearch = new PopulateSearchResults();
 
-		geHelper = new GEHelper();
+		geHelper = new GEHelper(this);
 	}
 
 	public void onResume(){

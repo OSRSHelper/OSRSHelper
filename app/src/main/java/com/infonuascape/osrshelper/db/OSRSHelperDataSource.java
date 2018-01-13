@@ -92,36 +92,4 @@ public class OSRSHelperDataSource {
 		database.delete(DBController.TABLE_USERNAMES_OSRSHELPER, null, null);
 	}
 
-	public void createCredentials(final String username, final String password) {
-		final ContentValues values = new ContentValues();
-		values.put(DBController.COLUMN_USERNAME_OSRSHELPER, username);
-		values.put(DBController.COLUMN_PASSWORD_OSRSHELPER, password);
-		database.insert(DBController.TABLE_CREDENTIALS_OSRSHELPER, null, values);
-	}
-
-	public Credential getCredentials() {
-		Credential credential = null;
-		final Cursor cursor = database.query(DBController.TABLE_CREDENTIALS_OSRSHELPER, allColumnsCredentials, null,
-				null, null, null, null);
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			final String username = cursor.getString(0);
-			final String password = cursor.getString(1);
-			credential = new Credential(username, password);
-			cursor.moveToNext();
-		}
-		// make sure to close the cursor
-		cursor.close();
-		return credential;
-	}
-
-	public void updateCredentials(final String username, final String password) {
-		final ContentValues values = new ContentValues();
-		values.put(DBController.COLUMN_USERNAME_OSRSHELPER, username);
-		values.put(DBController.COLUMN_PASSWORD_OSRSHELPER, password);
-		database.update(DBController.TABLE_CREDENTIALS_OSRSHELPER, values, DBController.COLUMN_ID + "=",
-				new String[] { "1" });
-	}
-
 }

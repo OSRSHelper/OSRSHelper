@@ -16,7 +16,7 @@
         android:textColor="@color/text_normal" />
 
     <TextView
-        android:id="@+id/track_since"
+        android:id="@+id/track_metadata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
@@ -29,27 +29,36 @@
 
     <Spinner
         android:id="@+id/time_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/track_since"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/track_metadata"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/greenbt_sel"
+        android:layout_marginTop="10dp"
         android:padding="10dp" />
 
-    <TextView
+    <ImageView
         android:id="@+id/update"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/time_spinner"
+        android:layout_alignBottom="@id/time_spinner"
+        android:layout_toRightOf="@id/time_spinner"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:tint="@color/rs_view_bg"
+        android:src="@drawable/refresh"/>
+
+    <CheckBox
+        android:id="@+id/cb_virtual_levels"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/time_spinner"
         android:layout_alignBottom="@id/time_spinner"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/time_spinner"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/greenbt_sel"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/update"
-        android:textColor="@color/White" />
+        android:button="@null"
+        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:text="@string/show_virtual_levels"/>
 
     <ScrollView
         android:id="@+id/scroll_table"
@@ -65,7 +74,9 @@
             android:id="@+id/table_tracking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="1" >
+            android:shrinkColumns="0"
+            android:stretchColumns="1,2,3,4,5,6,7,8,9,10">
+
         </TableLayout>
     </ScrollView>
 

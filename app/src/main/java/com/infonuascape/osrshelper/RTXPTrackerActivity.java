@@ -12,30 +12,35 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
-import com.infonuascape.osrshelper.tracker.TrackerHelper;
+import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
-import com.infonuascape.osrshelper.tracker.Updater;
+import com.infonuascape.osrshelper.tracker.rt.TrackerHelper;
+import com.infonuascape.osrshelper.tracker.rt.Updater;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 
 import java.text.NumberFormat;
 
-public class XPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener {
+public class RTXPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener, CompoundButton.OnCheckedChangeListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private String username;
 	private TextView header;
 	private Spinner spinner;
 
+	private CheckBox virtualLevelsCB;
+	private PlayerSkills playerSkills;
+
 	public static void show(final Context context, final String username) {
-		Intent intent = new Intent(context, XPTrackerActivity.class);
+		Intent intent = new Intent(context, RTXPTrackerActivity.class);
 		intent.putExtra(EXTRA_USERNAME, username);
 		context.startActivity(intent);
 	}
@@ -52,6 +57,11 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_tracking, username));
+
+		virtualLevelsCB = (CheckBox) findViewById(R.id.cb_virtual_levels);
+		virtualLevelsCB.setOnCheckedChangeListener(this);
+		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
+		virtualLevelsCB.setVisibility(View.GONE);
 
 		spinner = (Spinner) findViewById(R.id.time_spinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array,
@@ -75,10 +85,21 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		});
 	}
 
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		PreferencesController.setPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
+		if(playerSkills != null) {
+			populateTable(playerSkills);
+		}
+	}
+
+	private boolean isShowVirtualLevels() {
+		return playerSkills != null && playerSkills.hasOneAbove99
+				&& PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+	}
+
 	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
 		private TrackerTimeEnum.TrackerTime time;
-		private PlayerSkills hiscores;
-		private PlayerSkills trackedSkills;
 		private boolean isUpdating;
 
 		public PopulateTable(TrackerTimeEnum.TrackerTime time, boolean isUpdating) {
@@ -88,71 +109,52 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
-			TrackerHelper trackerHelper = new TrackerHelper();
+			TrackerHelper trackerHelper = new TrackerHelper(getApplicationContext());
 			trackerHelper.setUserName(username);
-			HiscoreHelper hiscoreHelper = new HiscoreHelper();
-			hiscoreHelper.setUserName(username);
 
 			try {
 				if (isUpdating) {
-					Updater.perform(username);
+					Updater.perform(getApplicationContext(), username);
 				}
-				hiscores = hiscoreHelper.getPlayerStats();
-				trackedSkills = trackerHelper.getPlayerStats(time);
+				return trackerHelper.getPlayerStats(time);
 			} catch (PlayerNotFoundException e) {
 				changeHeaderText(getString(R.string.not_existing_player, username), View.GONE);
 
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
-				changeHeaderText(getString(R.string.network_error), View.GONE);
+				changeHeaderText(getString(R.string.internal_error), View.GONE);
 			}
-			return trackedSkills;
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(PlayerSkills playerSkillsCallback) {
-			if (trackedSkills != null && hiscores != null) {
-				populateTable(hiscores, trackedSkills);
+			playerSkills = playerSkillsCallback;
+			if (playerSkills != null) {
+				populateTable(playerSkills);
 			}
 		}
 	}
 
-	private void populateTable(PlayerSkills hiscores, PlayerSkills trackedSkills) {
+	private void populateTable(PlayerSkills trackedSkills) {
 		changeHeaderText(getString(R.string.showing_tracking, username), View.GONE);
 		if (trackedSkills.sinceWhen != null) {
-			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_since,
+			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
 					trackedSkills.sinceWhen));
 		} else {
-			((TextView) findViewById(R.id.track_since)).setText(getString(R.string.tracking_starting));
+			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
 		}
 
 		TableLayout table = (TableLayout) findViewById(R.id.table_tracking);
 		table.removeAllViews();
 		table.addView(createHeadersRow());
-		table.addView(createRow(hiscores.overall, trackedSkills.overall));
-		table.addView(createRow(hiscores.attack, trackedSkills.attack));
-		table.addView(createRow(hiscores.defence, trackedSkills.defence));
-		table.addView(createRow(hiscores.strength, trackedSkills.strength));
-		table.addView(createRow(hiscores.hitpoints, trackedSkills.hitpoints));
-		table.addView(createRow(hiscores.ranged, trackedSkills.ranged));
-		table.addView(createRow(hiscores.prayer, trackedSkills.prayer));
-		table.addView(createRow(hiscores.magic, trackedSkills.magic));
-		table.addView(createRow(hiscores.cooking, trackedSkills.cooking));
-		table.addView(createRow(hiscores.woodcutting, trackedSkills.woodcutting));
-		table.addView(createRow(hiscores.fletching, trackedSkills.fletching));
-		table.addView(createRow(hiscores.fishing, trackedSkills.fishing));
-		table.addView(createRow(hiscores.firemaking, trackedSkills.firemaking));
-		table.addView(createRow(hiscores.crafting, trackedSkills.crafting));
-		table.addView(createRow(hiscores.smithing, trackedSkills.smithing));
-		table.addView(createRow(hiscores.mining, trackedSkills.mining));
-		table.addView(createRow(hiscores.herblore, trackedSkills.herblore));
-		table.addView(createRow(hiscores.agility, trackedSkills.agility));
-		table.addView(createRow(hiscores.thieving, trackedSkills.thieving));
-		table.addView(createRow(hiscores.slayer, trackedSkills.slayer));
-		table.addView(createRow(hiscores.farming, trackedSkills.farming));
-		table.addView(createRow(hiscores.runecraft, trackedSkills.runecraft));
-		table.addView(createRow(hiscores.hunter, trackedSkills.hunter));
-		table.addView(createRow(hiscores.construction, trackedSkills.construction));
+
+        //Add skills individually to the table
+        for (Skill s : playerSkills.skillList) {
+            table.addView(createRow(s));
+        }
+
+        virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 	}
 
 	private TableRow createHeadersRow() {
@@ -190,7 +192,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		// Gain
 		text = new TextView(this);
-		text.setText(getString(R.string.gain));
+		text.setText(getString(R.string.xp_gain));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -199,7 +201,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		return tableRow;
 	}
 
-	private TableRow createRow(Skill skillHiscore, Skill skillTrack) {
+	private TableRow createRow(Skill s) {
 		TableRow tableRow = new TableRow(this);
 		TableRow.LayoutParams params = new TableRow.LayoutParams();
 		params.weight = 1;
@@ -210,13 +212,13 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		// Skill image
 		ImageView image = new ImageView(this);
-		image.setImageResource(skillHiscore.getDrawableInt());
+		image.setImageResource(s.getDrawableInt());
 		image.setLayoutParams(params);
 		tableRow.addView(image);
 
 		// Lvl
 		TextView text = new TextView(this);
-		text.setText(skillHiscore.getLevel() + "");
+		text.setText((isShowVirtualLevels() ? s.getVirtualLevel() : s.getLevel()) + "");
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -224,7 +226,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		// XP
 		text = new TextView(this);
-		text.setText(NumberFormat.getInstance().format(skillHiscore.getExperience()));
+		text.setText(NumberFormat.getInstance().format(s.getExperience()));
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
 		text.setTextColor(getResources().getColor(R.color.text_normal));
@@ -234,18 +236,19 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 		text = new TextView(this);
 		text.setLayoutParams(params);
 		text.setGravity(Gravity.CENTER);
-
-		if (skillTrack.getExperience() == 0) {
+		int expDiff = s.getExperienceDiff();
+		
+		if (expDiff == 0) {
 			text.setTextColor(getResources().getColor(R.color.DarkGray));
-			text.setText(getString(R.string.xp_gain_small, skillTrack.getExperience()));
+			text.setText(getString(R.string.gain_small, expDiff));
 		} else {
 			text.setTextColor(getResources().getColor(R.color.Green));
-			if (skillTrack.getExperience() < 1000) {
-				text.setText(getString(R.string.xp_gain_small, skillTrack.getExperience()));
-			} else if (skillTrack.getExperience() >= 1000 && skillTrack.getExperience() < 10000) {
-				text.setText(getString(R.string.xp_gain_medium, skillTrack.getExperience() / 1000.0f));
+			if (expDiff < 1000) {
+				text.setText(getString(R.string.gain_small, expDiff));
+			} else if (expDiff >= 1000 && expDiff < 10000) {
+				text.setText(getString(R.string.gain_medium, expDiff / 1000.0f));
 			} else {
-				text.setText(getString(R.string.xp_gain, skillTrack.getExperience() / 1000));
+				text.setText(getString(R.string.gain, expDiff / 1000));
 			}
 		}
 		tableRow.addView(text);
@@ -270,7 +273,7 @@ public class XPTrackerActivity extends Activity implements OnItemSelectedListene
 
 		if (time != null) {
 			((TableLayout) findViewById(R.id.table_tracking)).removeAllViews();
-			((TextView) findViewById(R.id.track_since)).setText("");
+			((TextView) findViewById(R.id.track_metadata)).setText("");
 			changeHeaderText(getString(R.string.loading_tracking, username), View.VISIBLE);
 			new PopulateTable(time, isUpdating).execute();
 		}

@@ -48,3 +48,5 @@ proguard/
 gen-external-apklibs
 
 .DC_Store
+
+app/app.iml

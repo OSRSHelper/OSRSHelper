@@ -1,7 +1,10 @@
 package com.infonuascape.osrshelper.hiscore;
 
+import android.content.Context;
+
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.utils.SkillsEnum;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
@@ -17,9 +20,11 @@ import java.util.List;
 public class HiscoreFetcher {
 	final String API_URL = "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws?player=";
 
+	private Context context;
 	private String userName;
 
-	public HiscoreFetcher(String userName) {
+	public HiscoreFetcher(final Context context, String userName) {
+		this.context = context;
 		this.userName = userName.replace(" ", "%20");
 	}
 
@@ -62,7 +67,28 @@ public class HiscoreFetcher {
 			skillList.get(i).setRank(Integer.parseInt(dataSeparator[0]));
 			skillList.get(i).setLevel(Short.parseShort(dataSeparator[1]));
 			skillList.get(i).setExperience(Long.parseLong(dataSeparator[2]));
+			if(skillList.get(i).getSkillType() != SkillsEnum.SkillType.Overall) {
+				skillList.get(i).calculateLevels();
+			}
 		}
+
+		//compute total level
+		short totalLevel = 0;
+		short totalVirtualLevel = 0;
+		for (Skill s : skillList) {
+			if (s.getSkillType() != SkillsEnum.SkillType.Overall) {
+				totalLevel += s.getLevel();
+				totalVirtualLevel += s.getVirtualLevel();
+			}
+		}
+
+		//add total level to appropriate Skill entry
+		Skill overallSkill = skillList.get(0); //always first indexed
+		overallSkill.setLevel(totalLevel);
+		overallSkill.setVirtualLevel(totalVirtualLevel);
+
+        ps.calculateIfVirtualLevelsNecessary();
+
 		return ps;
 	}
 
@@ -72,7 +98,7 @@ public class HiscoreFetcher {
 	}
 
 	private String getDataFromAPI() throws PlayerNotFoundException {
-		HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(API_URL + getUserName(), Request.Method.GET);
+		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(API_URL + getUserName(), Request.Method.GET);
 		if (httpRequest.getStatusCode() == StatusCode.FOUND) {
 			return httpRequest.getOutput();
 		} else {

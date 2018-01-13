@@ -5,8 +5,10 @@
     <string name="highscores">Hiscores</string>
     <string name="world_map">World Map</string>
     <string name="wiki">OSRS Wiki</string>
-    <string name="xptracker">XP Tracker</string>
+    <string name="rt_xptracker">RuneTracker XP Tracker</string>
+    <string name="cml_xptracker">CML XP Tracker</string>
     <string name="grand_exchange">Grand Exchange</string>
+    <string name="donate">Buy us beer!</string>
     <string name="title_activity_username">Choose a username</string>
     <string name="username_desc">Enter a username</string>
     <string name="prompt_username">Username</string>
@@ -28,19 +30,26 @@
     <string name="loading_highscores">Loading highscores for: %1$s</string>
     <string name="combat_lvl">Combat lvl: %1$d</string>
     <string name="not_existing_player">%1$s does not exist in the database.</string>
+    <string name="not_tracked_player">%1$s is not tracked yet. Press update to track them from now on.</string>
     <string name="showing_results">Showing highscores for: %1$s</string>
-    <string name="network_error">Network error</string>
+    <string name="internal_error">Network error</string>
     <string name="not_ranked">Not ranked</string>
     <string name="runescape_view">Runescape View</string>
     <string name="list_view">List View</string>
-    <string name="gain">(Gain)</string>
+    <string name="xp_gain">(XPΔ)</string>
+    <string name="rank_diff">(RankΔ)</string>
     <string name="loading_tracking">Loading tracking for: %1$s</string>
     <string name="showing_tracking">Showing tracking for: %1$s</string>
-    <string name="xp_gain">(+ %1$dK)</string>
-    <string name="xp_gain_small">(+ %1$d)</string>
-    <string name="xp_gain_medium">(+ %1$.1fK)</string>
+    <string name="gain">(+ %1$dK)</string>
+    <string name="gain_small">(+ %1$d)</string>
+    <string name="gain_medium">(+ %1$.1fK)</string>
+    <string name="loss">(- %1$dK)</string>
+    <string name="loss_small">(- %1$d)</string>
+    <string name="loss_medium">(- %1$.1fK)</string>
     <string name="tracking_since">Tracking since\n%1$s</string>
+    <string name="last_update">Last track\n%1$s</string>
     <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
+    <string name="virtual_levels">Virtual Levels</string>
     <string name="update">Update</string>
     <string name="widget_name">OSRS Stats</string>
     <string name="next_page">Next Page</string>
@@ -71,6 +80,13 @@
     <string name="ranging_lvl_needed">%1$d ranged</string>
     <string name="magic_lvl_needed">%1$d magic</string>
     <string name="prayer_lvl_needed">%1$d prayer</string>
-    
+    <string name="show_virtual_levels">Show virtual levels</string>
+    <string name="tap_to_dismiss">Tap to dismiss</string>
+
+    <string name="donate_text1">Hey! This app is developed by two scapers which happen to be software development enthusiasts.</string>
+    <string name="donate_text2">This app is 100% open-sourced (meaning the source code is freely available for anyone) and free.</string>
+    <string name="donate_text3">We created this app for fun and to learn, so if you feel like you want to help us out by buying us a beer, go right ahead!</string>
+    <string name="donate_text4">We\'re planning on adding more features that require servers (ie. Crystal Math Labs support, and more) which would require some monthly costs. Donating would definitely help towards this.</string>
+    <string name="donate_text5">Thank you for using this app!</string>
 
 </resources>

@@ -12,14 +12,14 @@ import java.util.ArrayList;
 public class GEFetcher {
     final String API_URL = "http://services.runescape.com/m=itemdb_oldschool/api/catalogue/";
 
-    public GEFetcher() {
+    private Context context;
 
+    public GEFetcher(Context context) {
+        this.context = context;
     }
 
-
-
     public String search(String itemName, int pageNum) {
-        HTTPRequest httpRequest = NetworkStack.getInstance().performRequest(API_URL + "items.json?category=1&alpha=" + itemName.replace(" ", "%20") + "&page=" + pageNum, Request.Method.GET);
+        HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(API_URL + "items.json?category=1&alpha=" + itemName.replace(" ", "%20") + "&page=" + pageNum, Request.Method.GET);
         if (httpRequest.getStatusCode() == StatusCode.FOUND) { // got 200,
             return httpRequest.getOutput();
         }

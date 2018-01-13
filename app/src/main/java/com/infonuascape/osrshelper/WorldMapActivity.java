@@ -1,17 +1,14 @@
 package com.infonuascape.osrshelper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.PointF;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -19,24 +16,23 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.infonuascape.osrshelper.adapters.PoIAdapter;
 import com.infonuascape.osrshelper.utils.Utils;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.sigseg.android.io.RandomAccessFileInputStream;
-import com.sigseg.android.map.ImageSurfaceView;
 
 public class WorldMapActivity extends Activity implements OnItemClickListener, OnClickListener {
 	private static final String TAG = "WorldMapActivity";
 	private static final String KEY_X = "X";
 	private static final String KEY_Y = "Y";
 	private static final String MAP_FILE_NAME = "osrs.jpg";
-	private SlidingMenu slidingMenu;
+	private DrawerLayout drawerLayout;
 	private ListView poICitiesListView;
 	private PoIAdapter adapterCities;
-	private long lastTimeZoomed = 0;
+	private NavigationView navigationView;
 
 
-	private ImageSurfaceView imageSurfaceView;
+	private SubsamplingScaleImageView imageSurfaceView;
 
 	public static void show(final Context context){
 		Intent i = new Intent(context, WorldMapActivity.class);
@@ -47,11 +43,12 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.world_map_container);
+		setContentView(R.layout.world_map);
 
-		imageSurfaceView = (ImageSurfaceView) findViewById(R.id.world_map_image);
-		slidingMenu = (SlidingMenu) findViewById(R.id.slidingmenulayout);
+		imageSurfaceView = (SubsamplingScaleImageView) findViewById(R.id.world_map_image);
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		poICitiesListView = (ListView) findViewById(R.id.poi_cities);
+		navigationView = (NavigationView) findViewById(R.id.navigation);
 		
 		findViewById(R.id.world_map_open).setOnClickListener(this);
 
@@ -61,30 +58,60 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 
 	private void initWorldMap(final Bundle savedInstanceState) {
 		try {
-			InputStream inputStream = getAssets().open(MAP_FILE_NAME);
-			imageSurfaceView.setInputStream(inputStream);
-		} catch (java.io.IOException e) {
+			imageSurfaceView.setImage(ImageSource.asset(MAP_FILE_NAME));
+			imageSurfaceView.setOnImageEventListener(new SubsamplingScaleImageView.OnImageEventListener() {
+				@Override
+				public void onReady() {
+					// Setup/restore state
+					if (savedInstanceState != null) {
+						Log.d(TAG, "restoring state");
+						float x = savedInstanceState.getFloat(KEY_X);
+						float y = savedInstanceState.getFloat(KEY_Y);
+						animateMap(x, y);
+					} else {
+						animateMap(Utils.VARROCK_POINT.x, Utils.VARROCK_POINT.y);
+					}
+				}
+
+				@Override
+				public void onImageLoaded() {}
+
+				@Override
+				public void onPreviewLoadError(Exception e) {
+					finish();
+				}
+
+				@Override
+				public void onImageLoadError(Exception e) {
+					finish();
+				}
+
+				@Override
+				public void onTileLoadError(Exception e) {
+					finish();
+				}
+
+				@Override
+				public void onPreviewReleased() {
+
+				}
+			});
+		} catch (Exception e) {
 			e.printStackTrace();
 			finish();
 		}
+	}
 
-		// Setup/restore state
-		if (savedInstanceState != null) {
-			Log.d(TAG, "restoring state");
-			int x = savedInstanceState.getInt(KEY_X);
-			int y = savedInstanceState.getInt(KEY_Y);
-			imageSurfaceView.setViewport(new Point(x, y));
-		} else {
-			PointF center = getCenterScreen();
-			imageSurfaceView.setViewport(new Point(Utils.VARROCK_POINT.x - (int)center.x, Utils.VARROCK_POINT.y - (int)center.y));
+	private void animateMap(final float x, final float y) {
+		if(imageSurfaceView.isReady()) {
+			imageSurfaceView.animateScaleAndCenter(imageSurfaceView.getMaxScale() * 0.7f, new PointF(x, y)).start();
 		}
 	}
 
-
 	@Override
 	public void onBackPressed() {
-		if(slidingMenu.isMenuShowing()){
-			slidingMenu.toggle(true);
+		if(drawerLayout.isDrawerOpen(navigationView)){
+			drawerLayout.closeDrawers();
 		} else{
 			super.onBackPressed();
 		}
@@ -98,40 +125,32 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	}
 
 	public void zoomToPoT(Point point){
-		PointF center = getCenterScreen();
-		if(imageSurfaceView.getLastScaleTime() >= lastTimeZoomed){
-			imageSurfaceView.setViewport(new Point(point.x - (int)center.x, point.y - (int)center.y));
-			imageSurfaceView.zoom(0.4f, center);
-		}
-		imageSurfaceView.setViewport(new Point(point.x - (int)(center.x/2.5), point.y - (int)(center.y/2.5)));	
-		
-		imageSurfaceView.zoom(0.4f, center);
-		lastTimeZoomed = System.currentTimeMillis();
+		animateMap(point.x, point.y);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		PointF center = getCenterScreen();
-		imageSurfaceView.setViewportCenter();
-		imageSurfaceView.setViewport(new Point(Utils.VARROCK_POINT.x - (int)center.x, Utils.VARROCK_POINT.y - (int)center.y));
+		imageSurfaceView.animateCenter(new PointF(Utils.VARROCK_POINT.x, Utils.VARROCK_POINT.y));
 	}
 
-	public PointF getCenterScreen(){
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		PointF p = new PointF(size.x/2, size.y/2);
-		return p;
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(imageSurfaceView != null && imageSurfaceView.isReady()) {
+			imageSurfaceView.recycle();
+		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		Point p = new Point();
-		imageSurfaceView.getViewport(p);
-		outState.putInt(KEY_X, p.x);
-		outState.putInt(KEY_Y, p.y);
+		if(imageSurfaceView != null) {
+			PointF p = imageSurfaceView.getCenter();
+			if(p != null) {
+				outState.putFloat(KEY_X, p.x);
+				outState.putFloat(KEY_Y, p.y);
+			}
+		}
 		super.onSaveInstanceState(outState);
 	}
 
@@ -140,13 +159,13 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		zoomToPoT(adapterCities.getItem(position).getPoint());
-		slidingMenu.toggle(true);
+		drawerLayout.closeDrawers();
 	}
 
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.world_map_open){
-			slidingMenu.toggle(true);
+			drawerLayout.openDrawer(navigationView);
 		}
 	}
 }

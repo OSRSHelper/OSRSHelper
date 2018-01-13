@@ -17,13 +17,9 @@ public class NetworkStack {
         queue = Volley.newRequestQueue(context);
     }
 
-    public static void init(final Context context) {
-        instance = new NetworkStack(context);
-    }
-
-    public static NetworkStack getInstance() {
+    public static NetworkStack getInstance(final Context context) {
         if(instance == null) {
-            throw new IllegalStateException("NetworkStack must be initialized with application context");
+            instance = new NetworkStack(context);
         }
         return instance;
     }
