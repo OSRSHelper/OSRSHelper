@@ -66,7 +66,7 @@ public class HiscoreFetcher {
 			dataSeparator = skillArray[i].split(",");
 			skillList.get(i).setRank(Integer.parseInt(dataSeparator[0]));
 			skillList.get(i).setLevel(Short.parseShort(dataSeparator[1]));
-			skillList.get(i).setExperience(Integer.parseInt(dataSeparator[2]));
+			skillList.get(i).setExperience(Long.parseLong(dataSeparator[2]));
 			if(skillList.get(i).getSkillType() != SkillsEnum.SkillType.Overall) {
 				skillList.get(i).calculateLevels();
 			}

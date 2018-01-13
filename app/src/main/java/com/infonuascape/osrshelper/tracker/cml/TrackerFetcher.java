@@ -1,16 +1,13 @@
 package com.infonuascape.osrshelper.tracker.cml;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.SkillsEnum;
-import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
@@ -20,12 +17,8 @@ import com.infonuascape.osrshelper.utils.players.PlayerSkillsPoint;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -69,7 +62,8 @@ public class TrackerFetcher {
     }
 
     private void processAPI() throws PlayerNotTrackedException, APIError, ParserErrorException {
-        String APIPayload = getDataFromAPI();
+        // Fetch the results from the CML API
+		String APIPayload = getDataFromAPI();
 
         // Split payload by "~~" which is response delimiter for CML
         String[] APIResponses = APIPayload.split("~~\n");
@@ -131,7 +125,7 @@ public class TrackerFetcher {
 					//parse data
 					int expDiff = Integer.parseInt(tokenizer[0]);
 					int rankDiff = Integer.parseInt(tokenizer[1]);
-					int experience = Integer.parseInt(tokenizer[2]);
+					Long experience = Long.parseLong(tokenizer[2]);
 					int experienceDiff = Integer.parseInt(tokenizer[3]);
 
 					//fill skill list with parsed data
@@ -195,7 +189,7 @@ public class TrackerFetcher {
 
 				for (int skillId = 0; skillId < skillsTokenizer.length; skillId++) {
 					// Extract experience at point in time
-					int experienceAtPoint = Integer.parseInt(skillsTokenizer[skillId]);
+					Long experienceAtPoint = Long.parseLong(skillsTokenizer[skillId]);
                     int rankAtPoint = Integer.parseInt(ranksTokenizer[skillId]);
 
 					// Store experience at point in time

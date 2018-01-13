@@ -4,7 +4,7 @@ import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
 
 public class Skill {
 	private SkillsEnum.SkillType skillType;
-	private int experience = 0;
+	private long experience = 0;
 	private int experienceDiff = 0;
 	private short level = 0;
     private short virtualLevel = 0;
@@ -18,20 +18,20 @@ public class Skill {
 		this.drawableId = drawableId;
 	}
 
-	public Skill(SkillType skillType, int experience, short level) {
+	public Skill(SkillType skillType, long experience, short level) {
 		this.skillType = skillType;
 		this.experience = experience;
 		this.level = level;
 	}
 
-	public Skill(SkillType skillType, int experience, short level, int rank) {
+	public Skill(SkillType skillType, long experience, short level, int rank) {
 		this.skillType = skillType;
 		this.experience = experience;
 		this.level = level;
 		this.rank = rank;
 	}
 
-	public Skill(SkillType skillType, int experience, int experienceDiff, short level, int rank,
+	public Skill(SkillType skillType, long experience, int experienceDiff, short level, int rank,
 				 int rankDiff, int EHP) {
 		this.skillType = skillType;
 		this.experience = experience;
@@ -83,11 +83,11 @@ public class Skill {
 		this.skillType = skillType;
 	}
 
-	public int getExperience() {
+	public Long getExperience() {
 		return experience;
 	}
 
-	public void setExperience(int experience) {
+	public void setExperience(Long experience) {
 		this.experience = experience;
 	}
 
@@ -118,14 +118,15 @@ public class Skill {
 
 	public void calculateLevels() {
 		short level=0;
-		double curr_xp = 0;
+		Long curr_xp = 0L;
 		double points = 0;
 		double dividend = 1;
 
 		while (curr_xp <= experience) {
+
 			Double placeholder = dividend/7;
 			points = points + Math.floor(dividend + 300* Math.pow(2, placeholder));
-			curr_xp = Math.floor(points / 4);
+			curr_xp = (long)Math.floor(points / 4.0);
 			dividend++;
 			level++;
 		}
