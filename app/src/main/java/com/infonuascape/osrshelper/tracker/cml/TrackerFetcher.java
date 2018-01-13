@@ -201,8 +201,6 @@ public class TrackerFetcher {
 		} catch (Exception e) {
 			throw new ParserErrorException("Error parsing the API");
 		}
-
-		System.out.println(playerSkillsPointList);
     }
 
 	private String getDataFromAPI() throws PlayerNotTrackedException, APIError {
