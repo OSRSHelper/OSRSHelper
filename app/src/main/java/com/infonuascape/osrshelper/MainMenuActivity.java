@@ -25,6 +25,7 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		findViewById(R.id.cml_xptracker_btn).setOnClickListener(this);
 		findViewById(R.id.combat_btn).setOnClickListener(this);
 		findViewById(R.id.ge_btn).setOnClickListener(this);
+		findViewById(R.id.cml_top_btn).setOnClickListener(this);
 		findViewById(R.id.donate_btn).setOnClickListener(this);
 	}
 
@@ -46,6 +47,8 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 			UsernameActivity.show(this, UsernameActivity.COMBAT);
 		} else if (id == R.id.ge_btn) {
 			SearchItemActivity.show(this);
+		} else if (id == R.id.cml_top_btn) {
+			CmlTopActivity.show(this);
 		} else if (id == R.id.donate_btn) {
 			DonationActivity.show(this);
 			

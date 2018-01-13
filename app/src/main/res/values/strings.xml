@@ -8,6 +8,7 @@
     <string name="rt_xptracker">RuneTracker XP Tracker</string>
     <string name="cml_xptracker">CML XP Tracker</string>
     <string name="grand_exchange">Grand Exchange</string>
+    <string name="cml_top">CML Top</string>
     <string name="donate">Buy us beer!</string>
     <string name="title_activity_username">Choose a username</string>
     <string name="username_desc">Enter a username</string>
@@ -54,6 +55,8 @@
     <string name="widget_name">OSRS Stats</string>
     <string name="next_page">Next Page</string>
     <string name="back_page">Back Page</string>
+
+    <string name="cml_top_select_skill">Select a skill</string>
 
     <string-array name="time_array">
         <item>Hour</item>

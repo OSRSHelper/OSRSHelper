@@ -128,6 +128,20 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/cml_top_btn"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:text="@string/cml_top"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/donate_btn"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
