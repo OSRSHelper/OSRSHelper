@@ -239,10 +239,10 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 		int expDiff = s.getExperienceDiff();
 		
 		if (expDiff == 0) {
-			text.setTextColor(getResources().getColor(R.color.DarkGray));
+			text.setTextColor(getResources().getColor(R.color.dark_gray));
 			text.setText(getString(R.string.gain_small, expDiff));
 		} else {
-			text.setTextColor(getResources().getColor(R.color.Green));
+			text.setTextColor(getResources().getColor(R.color.green));
 			if (expDiff < 1000) {
 				text.setText(getString(R.string.gain_small, expDiff));
 			} else if (expDiff >= 1000 && expDiff < 10000) {

@@ -38,7 +38,7 @@
             android:maxLines="1"
             android:padding="5dp"
             android:singleLine="true"
-            android:textColor="@color/Black"
+            android:textColor="@color/black"
             android:textCursorDrawable="@drawable/blackcursor" />
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -119,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@id/chooseUsername"
-        android:background="@color/Gray" />
+        android:background="@color/gray" />
 
     <ListView
         android:id="@android:id/list"

@@ -4,17 +4,11 @@
     android:background="@drawable/base"
     android:gravity="center">
 
-    <ImageView
-        android:id="@+id/skill_image"
-        android:layout_width="55dp"
-        android:layout_height="@dimen/rs_view_item_height"
-        android:scaleType="center"
-        android:src="@drawable/agility" />
-
     <TextView
         android:id="@+id/skill_level"
-        android:layout_width="45dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rs_view_item_height"
+        android:gravity="center"
         android:text="56"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/white" />

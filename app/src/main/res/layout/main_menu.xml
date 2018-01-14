@@ -40,7 +40,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/highscores"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/world_map"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/wiki"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -82,7 +82,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/combat"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -96,7 +96,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/rt_xptracker"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -110,7 +110,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/cml_xptracker"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -124,7 +124,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/grand_exchange"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -138,7 +138,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/cml_top"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
@@ -152,7 +152,7 @@
                 android:background="@drawable/greenbt_sel"
                 android:gravity="center"
                 android:text="@string/donate"
-                android:textColor="@color/White"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>

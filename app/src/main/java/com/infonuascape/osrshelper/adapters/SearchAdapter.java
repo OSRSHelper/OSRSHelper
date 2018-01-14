@@ -68,11 +68,11 @@ public class SearchAdapter extends ArrayAdapter<Item> {
 
 
         if(item.today.rate == Item.TrendRate.POSITIVE) {
-            holder.trending.setTextColor(mContext.getResources().getColor(R.color.Green));
+            holder.trending.setTextColor(mContext.getResources().getColor(R.color.green));
         } else if(item.today.rate == Item.TrendRate.NEGATIVE) {
-            holder.trending.setTextColor(mContext.getResources().getColor(R.color.Red));
+            holder.trending.setTextColor(mContext.getResources().getColor(R.color.red));
         } else {
-            holder.trending.setTextColor(mContext.getResources().getColor(R.color.DarkGray));
+            holder.trending.setTextColor(mContext.getResources().getColor(R.color.dark_gray));
         }
         holder.trending.setText(item.today.value);
         Picasso.with(mContext).load(item.iconLarge).into(holder.image);

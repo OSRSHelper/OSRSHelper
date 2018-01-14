@@ -9,19 +9,14 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View.OnClickListener;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.top.TopFetcher;
 import com.infonuascape.osrshelper.utils.SkillsEnum;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerExp;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
-import com.infonuascape.osrshelper.views.RSViewPopulate;
 
 import java.util.List;
 

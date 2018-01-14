@@ -26,8 +26,10 @@ public class ImageUtils {
     public static void shareHiscores(final Context context, final String username, final PlayerSkills playerSkills) {
         RSView rsView = new RSView(context);
         rsView.populateTable(playerSkills, username);
-        int width = (int) Utils.convertDpToPixel(300, context);
-        int height = (int) Utils.convertDpToPixel(90 + (8 * 55), context);
+        int width = context.getResources().getDimensionPixelSize(R.dimen.rs_view_width);
+        int height = context.getResources().getDimensionPixelSize(R.dimen.rs_view_header_height)
+                + (8 * context.getResources().getDimensionPixelSize(R.dimen.rs_view_item_height))
+                + (2 * context.getResources().getDimensionPixelSize(R.dimen.rs_view_padding));
         rsView.measure(width, height);
         rsView.layout(0, 0, width, height);
         shareViewAsBitmap(context, rsView);
@@ -53,6 +55,10 @@ public class ImageUtils {
     private static Bitmap getBitmapFromView(View view) {
         Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(returnedBitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.parseColor("#453C33"));
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawPaint(paint);
         view.draw(canvas);
         return returnedBitmap;
     }

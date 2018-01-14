@@ -267,10 +267,10 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		int expDiff = s.getExperienceDiff();
 		
 		if (expDiff == 0) {
-			text.setTextColor(getResources().getColor(R.color.DarkGray));
+			text.setTextColor(getResources().getColor(R.color.dark_gray));
 			text.setText(getString(R.string.gain_small, expDiff));
 		} else {
-			text.setTextColor(getResources().getColor(R.color.Green));
+			text.setTextColor(getResources().getColor(R.color.green));
 			if (expDiff < 1000) {
 				text.setText(getString(R.string.gain_small, expDiff));
 
@@ -291,15 +291,15 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 		int rankDiff = s.getRankDiff();
 		
 		if (rankDiff == 0) {
-			text.setTextColor(getResources().getColor(R.color.DarkGray));
+			text.setTextColor(getResources().getColor(R.color.dark_gray));
 			text.setText(getString(R.string.gain_small, rankDiff));
 		} else {
 
 			//set appropriate gain color
 			if (rankDiff > 0)
-				text.setTextColor(getResources().getColor(R.color.Green));
+				text.setTextColor(getResources().getColor(R.color.green));
 			else
-				text.setTextColor(getResources().getColor(R.color.Red));
+				text.setTextColor(getResources().getColor(R.color.red));
 
 
 			//ranks "lost" AKA progress were made

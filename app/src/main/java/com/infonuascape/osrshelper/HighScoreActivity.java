@@ -37,7 +37,6 @@ import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.RSView;
-import com.infonuascape.osrshelper.views.RSViewPopulate;
 
 public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
@@ -227,7 +226,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 			text.setTextColor(getResources().getColor(R.color.text_normal));
 		} else {
 			text.setText(getString(R.string.not_ranked));
-			text.setTextColor(getResources().getColor(R.color.Red));
+			text.setTextColor(getResources().getColor(R.color.red));
 		}
 
 		text.setLayoutParams(params);
