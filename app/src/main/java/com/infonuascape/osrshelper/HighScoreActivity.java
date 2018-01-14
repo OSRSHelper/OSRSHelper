@@ -3,15 +3,20 @@ package com.infonuascape.osrshelper;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,20 +31,23 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
+import com.infonuascape.osrshelper.utils.ImageUtils;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewPopulate;
 
-public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener {
+public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private static final int NUM_PAGES = 2;
+	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
 	private String username;
 	private TextView header;
 	private TextView combatText;
 	private PlayerSkills playerSkills;
-	private TableLayout rsView;
+	private RSView rsView;
 	private TableLayout table;
 	private ArrayList<ImageView> dots;
 	private ViewPager mViewPager;
@@ -72,13 +80,15 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
 		virtualLevelsCB.setVisibility(View.GONE);
 
-		rsView = (TableLayout) findViewById(R.id.rs_view);
+		rsView = (RSView) findViewById(R.id.rs_view);
 		table = (TableLayout) findViewById(R.id.table_hiscores);
 
 		WizardPagerAdapter adapter = new WizardPagerAdapter();
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(adapter);
 		addDots();
+
+		findViewById(R.id.share_btn).setOnClickListener(this);
 
 		new PopulateTable().execute();
 
@@ -115,6 +125,17 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 	private boolean isShowVirtualLevels() {
 		return playerSkills != null && playerSkills.hasOneAbove99
 				&& PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+	}
+
+	@Override
+	public void onClick(View view) {
+		if(view.getId() == R.id.share_btn) {
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
+			} else {
+				ImageUtils.shareHiscores(this, username, playerSkills);
+			}
+		}
 	}
 
 	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
@@ -158,8 +179,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
         virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 
-		RSViewPopulate rsViewPopulate = new RSViewPopulate(this, playerSkills);
-		rsView = rsViewPopulate.populate(rsView);
+		rsView.populateTable(playerSkills);
 	}
 
 	private TableRow createRow(Skill skill) {
@@ -286,6 +306,20 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		@Override
 		public boolean isViewFromObject(View arg0, Object arg1) {
 			return arg0 == ((View) arg1);
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if(requestCode == WRITE_PERMISSION_REQUEST_CODE) {
+			for(int i=0 ; i < permissions.length; i++) {
+				if(TextUtils.equals(permissions[i], Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+					if(grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+						ImageUtils.shareHiscores(this, username, playerSkills);
+					}
+				}
+			}
 		}
 	}
 }

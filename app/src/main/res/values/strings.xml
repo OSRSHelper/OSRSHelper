@@ -91,5 +91,6 @@
     <string name="donate_text3">We created this app for fun and to learn, so if you feel like you want to help us out by buying us a beer, go right ahead!</string>
     <string name="donate_text4">We\'re planning on adding more features that require servers (ie. Crystal Math Labs support, and more) which would require some monthly costs. Donating would definitely help towards this.</string>
     <string name="donate_text5">Thank you for using this app!</string>
+    <string name="share_hiscores">Share</string>
 
 </resources>

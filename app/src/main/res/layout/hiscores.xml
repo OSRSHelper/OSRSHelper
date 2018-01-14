@@ -64,12 +64,34 @@
             android:scrollbars="none"
             android:visibility="visible" >
 
-            <TableLayout
-                android:id="@+id/rs_view"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@color/rs_view_bg" />
+                android:orientation="vertical">
+
+                <com.infonuascape.osrshelper.views.RSView
+                    android:id="@+id/rs_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/share_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/greenbt_sel"
+                    android:drawableRight="@android:drawable/ic_menu_share"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/share_hiscores"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
         </ScrollView>
 
         <ScrollView
