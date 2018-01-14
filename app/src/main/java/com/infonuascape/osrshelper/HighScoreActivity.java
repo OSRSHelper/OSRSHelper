@@ -31,14 +31,16 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
+import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.utils.ImageUtils;
 import com.infonuascape.osrshelper.utils.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.RSView;
+import com.infonuascape.osrshelper.views.RSViewDialog;
 
-public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
 	private static final int NUM_PAGES = 2;
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
@@ -137,6 +139,17 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		}
 	}
 
+	@Override
+	public void onItemClicked(int position) {
+		Skill skill = rsView.getItem(position);
+		RSViewDialog.showDialog(this, skill);
+	}
+
+	@Override
+	public void onItemLongClicked(int position) {
+
+	}
+
 	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
 
 		@Override
@@ -178,7 +191,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
         virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 
-		rsView.populateTable(playerSkills);
+		rsView.populateView(playerSkills, this);
 	}
 
 	private TableRow createRow(Skill skill) {

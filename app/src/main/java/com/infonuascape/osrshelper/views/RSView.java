@@ -20,7 +20,7 @@ import com.infonuascape.osrshelper.utils.players.PlayerSkills;
  * Created by marc-antoinehinse on 2018-01-13.
  */
 
-public class RSView extends RelativeLayout implements RecyclerItemClickListener {
+public class RSView extends RelativeLayout {
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private RSViewAdapter adapter;
@@ -59,30 +59,32 @@ public class RSView extends RelativeLayout implements RecyclerItemClickListener 
         gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        populateTable(new PlayerSkills());
+        populateViewForCMLTop(null);
     }
 
-    public void populateTable(final PlayerSkills playerSkills) {
-        adapter = new RSViewAdapter(getContext(), playerSkills, this);
+    public void populateView(final PlayerSkills playerSkills, final RecyclerItemClickListener listener) {
+        adapter = new RSViewAdapter(getContext(), playerSkills, listener);
         recyclerView.setAdapter(adapter);
     }
 
-    public void populateTable(final PlayerSkills playerSkills, final String username) {
-        populateTable(playerSkills);
+    public void populateViewForImageShare(final PlayerSkills playerSkills, final String username, final RecyclerItemClickListener listener) {
+        populateView(playerSkills, listener);
 
         usernameTextView.setText(username);
         combatLvlTextView.setText(getResources().getString(R.string.combat_lvl, Utils.getCombatLvl(playerSkills)));
         headerLayout.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onItemClicked(int position) {
-        Skill skill = adapter.getItem(position);
-        RSViewDialog.showDialog(getContext(), skill);
+    public void populateViewForCMLTop(final RecyclerItemClickListener listener) {
+        adapter = new RSViewAdapter(getContext(), new PlayerSkills(), listener, false);
+        recyclerView.setAdapter(adapter);
     }
 
-    @Override
-    public void onItemLongClicked(int position) {
+    public Skill getItem(int position) {
+        if(adapter != null) {
+            return adapter.getItem(position);
+        }
 
+        return null;
     }
 }

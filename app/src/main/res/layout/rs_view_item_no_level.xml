@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/base"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/skill_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rs_view_item_height"
+        android:scaleType="center"
+        android:src="@drawable/agility" />
+
+</LinearLayout>

@@ -6,10 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.infonuascape.osrshelper.R;
@@ -25,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 public class ImageUtils {
     public static void shareHiscores(final Context context, final String username, final PlayerSkills playerSkills) {
         RSView rsView = new RSView(context);
-        rsView.populateTable(playerSkills, username);
+        rsView.populateViewForImageShare(playerSkills, username, null);
         int width = context.getResources().getDimensionPixelSize(R.dimen.rs_view_width);
         int height = context.getResources().getDimensionPixelSize(R.dimen.rs_view_header_height)
                 + (8 * context.getResources().getDimensionPixelSize(R.dimen.rs_view_item_height))
