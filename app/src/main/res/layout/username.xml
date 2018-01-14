@@ -1,10 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
     android:background="@color/background"
-    android:focusableInTouchMode="true" >
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:id="@+id/newUsernameLayout"
@@ -40,20 +41,64 @@
             android:textColor="@color/Black"
             android:textCursorDrawable="@drawable/blackcursor" />
 
-        <TextView
-            android:id="@+id/continue_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/greenbt_sel"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:paddingTop="10dp"
-            android:text="@string/continuee"
-            android:textColor="@android:color/white" />
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" >
+
+            <ImageView
+                android:id="@+id/ironman"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:background="@drawable/ironman_bt_sel"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="5dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ironman"/>
+
+            <ImageView
+                android:id="@+id/ult_ironman"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:background="@drawable/ironman_bt_sel"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/ironman"
+                android:padding="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ult_ironman"/>
+
+            <ImageView
+                android:id="@+id/hc_ironman"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:background="@drawable/ironman_bt_sel"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/ult_ironman"
+                android:padding="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/hc_ironman"/>
+
+            <TextView
+                android:id="@+id/continue_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/greenbt_sel"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
+                android:text="@string/continuee"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
     </LinearLayout>
 
     <TextView

@@ -63,6 +63,14 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		findViewById(R.id.username_edit).clearFocus();
 		findViewById(R.id.continue_btn).setOnClickListener(this);
 
+        // if hiscore lookup, enable ironman selectors
+        if (type == HISCORES) {
+            for (int id : new int[]{R.id.ironman, R.id.ult_ironman, R.id.hc_ironman}) {
+                View v = findViewById(id);
+                v.setOnClickListener(this);
+                v.setVisibility(View.VISIBLE);
+            }
+        }
 		osrsHelperDataSource = new OSRSHelperDataSource(this);
 	}
 
@@ -110,8 +118,23 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 			} else {
 				Toast.makeText(this, R.string.username_error, Toast.LENGTH_SHORT).show();
 			}
-		}
+		} else if (id == R.id.ironman) {
+            clearSelectedIronman();
+            v.setSelected(!v.isSelected());
+        } else if (id == R.id.hc_ironman) {
+            clearSelectedIronman();
+            v.setSelected(!v.isSelected());
+        } else if (id == R.id.ult_ironman) {
+            clearSelectedIronman();
+            v.setSelected(!v.isSelected());
+        }
 	}
+
+	public void clearSelectedIronman() {
+        findViewById(R.id.ironman).setSelected(false);
+        findViewById(R.id.hc_ironman).setSelected(false);
+        findViewById(R.id.ult_ironman).setSelected(false);
+    }
 
 	private void closeActivity(final String username) {
 		// Add the username to the db

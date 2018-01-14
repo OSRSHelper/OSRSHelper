@@ -1,0 +1,17 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item android:state_selected="true"
+      android:drawable="@drawable/square_border_grey" />
+
+  <!--  Finger interaction -->
+  <item
+      android:state_focused="false"
+      android:state_pressed="false"
+      android:drawable="@android:color/transparent" />
+
+  <item
+      android:state_focused="false"
+      android:state_pressed="true"
+      android:drawable="@drawable/square_border_grey" />
+
+</selector>
