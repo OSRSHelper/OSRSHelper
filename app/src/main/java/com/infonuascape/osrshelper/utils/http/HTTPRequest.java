@@ -64,7 +64,7 @@ public class HTTPRequest {
 			output = future.get();
 		} catch (InterruptedException e) {
 			statusCode = StatusCode.NOT_FOUND;
-			e.printStackTrace();
+			//Don't show interrupted exception, it's user-triggered
 		} catch (ExecutionException e) {
 			statusCode = StatusCode.NOT_FOUND;
 			e.printStackTrace();

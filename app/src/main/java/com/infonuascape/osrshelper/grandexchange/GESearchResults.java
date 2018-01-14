@@ -1,11 +1,12 @@
 package com.infonuascape.osrshelper.grandexchange;
 
-import android.util.Log;
-
 import com.infonuascape.osrshelper.utils.grandexchange.Item;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import org.json.*;
 
 public class GESearchResults {
 	public ArrayList<Item> itemsSearch;
@@ -69,6 +70,7 @@ public class GESearchResults {
 			if(!priceStr.endsWith("k") && !priceStr.endsWith("b") && !priceStr.endsWith("m")) {
 				priceStr += "gp";
 			}
+			priceStr.replace("- ", "-");
 			int price = Integer.parseInt(priceTemp);
 
 			return new Item().new Trend(priceStr, price, Item.getTrendRateEnum((String) jsonObject.get("trend")));

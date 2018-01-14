@@ -2,6 +2,8 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,11 +26,13 @@ import java.util.ArrayList;
 public class SearchAdapter extends ArrayAdapter<Item> {
     private Context mContext;
     private ArrayList<Item> items;
+    private String dailyTrendText;
 
     public SearchAdapter(Context context, ArrayList<Item> map) {
         super(context, R.layout.search_listitem, map);
         this.mContext = context;
         items = map;
+        dailyTrendText = mContext.getResources().getString(R.string.daily_trend);
     }
 
     class ViewHolder {
@@ -67,14 +71,18 @@ public class SearchAdapter extends ArrayAdapter<Item> {
         holder.current.setText(item.current.value);
 
 
+        int trendingColor = R.color.dark_gray;
+
         if(item.today.rate == Item.TrendRate.POSITIVE) {
-            holder.trending.setTextColor(mContext.getResources().getColor(R.color.green));
+            trendingColor = R.color.green;
         } else if(item.today.rate == Item.TrendRate.NEGATIVE) {
-            holder.trending.setTextColor(mContext.getResources().getColor(R.color.red));
-        } else {
-            holder.trending.setTextColor(mContext.getResources().getColor(R.color.dark_gray));
+            trendingColor = R.color.red;
         }
-        holder.trending.setText(item.today.value);
+
+
+        SpannableString text = new SpannableString(item.today.value + " " + dailyTrendText);
+        text.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(trendingColor)), 0, item.today.value.length(), 0);
+        holder.trending.setText(text);
         Picasso.with(mContext).load(item.iconLarge).into(holder.image);
 
         if(item.members) {

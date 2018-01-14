@@ -1,53 +1,32 @@
 package com.infonuascape.osrshelper;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.infonuascape.osrshelper.adapters.EndlessScrollListener;
 import com.infonuascape.osrshelper.adapters.SearchAdapter;
-import com.infonuascape.osrshelper.adapters.StableArrayAdapter;
-import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
-import com.infonuascape.osrshelper.grandexchange.GEHelper;
-import com.infonuascape.osrshelper.grandexchange.GESearchResults;
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
-import com.infonuascape.osrshelper.utils.Utils;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
+import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
+import com.infonuascape.osrshelper.tasks.SearchGEResults;
 import com.infonuascape.osrshelper.utils.grandexchange.Item;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
-import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
 
 import java.util.ArrayList;
 
-public class SearchItemActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener {
+public class SearchItemActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
 	private SearchAdapter adapter;
-	private GEHelper geHelper;
-	private SearchView editText;
-	private PopulateSearchResults runnableSearch;
-	private int pageNum;
+	private SearchView searchView;
 	private String searchText;
-	private boolean isRestartAdapter;
     private boolean isContinueToLoad;
 	private ListView list;
-
+	private SearchGEResults runnableSearch;
 
 	public static void show(final Context context){
 		Intent i = new Intent(context, SearchItemActivity.class);
@@ -62,104 +41,82 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 
 		setContentView(R.layout.search_ge);
 
-		editText = ((SearchView) findViewById(R.id.searchView));
-		editText.setOnQueryTextListener(this);
-		editText.setIconified(false);
+		searchView = findViewById(R.id.searchView);
+		searchView.setOnQueryTextListener(this);
+		searchView.setIconified(false);
 
-		list = (ListView) findViewById(android.R.id.list);
-
-		runnableSearch = new PopulateSearchResults();
-
-		geHelper = new GEHelper(this);
-	}
-
-	public void onResume(){
-		super.onResume();
-
-		ListView list = (ListView) findViewById(android.R.id.list);
-		list.setOnScrollListener(new EndlessScrollListener() {
-			@Override
-			public boolean onLoadMore(int page, int totalItemsCount) {
-                if(isContinueToLoad) {
-                    if (!runnableSearch.isCancelled()) {
-                        runnableSearch.cancel(true);
-                    }
-                    runnableSearch = new PopulateSearchResults();
-                    runnableSearch.execute(searchText);
-                }
-				return true;
-			}
-		});
+		list = findViewById(android.R.id.list);
+		list.setOnScrollListener(endlessScrollListener);
 		list.setOnItemClickListener(this);
 	}
 
 	@Override
-	public boolean onQueryTextSubmit(String s) {
+	public boolean onQueryTextSubmit(String searchTerm) {
+		search(searchTerm);
 		return false;
 	}
 
 	@Override
-	public boolean onQueryTextChange(String s) {
-		if(s.length() > 0) {
-			if(!runnableSearch.isCancelled()) {
-				runnableSearch.cancel(true);
-			}
-			isRestartAdapter = true;
-			isContinueToLoad = true;
-			list.scrollTo(0, 0);
-			runnableSearch = new PopulateSearchResults();
-			searchText = s;
-			pageNum = 1;
-			runnableSearch.execute(searchText);
-		} else if (adapter != null) {
-			adapter.clear();
-			adapter.notifyDataSetChanged();
-		}
+	public boolean onQueryTextChange(String searchTerm) {
+		search(searchTerm);
 		return false;
 	}
-
-	private class PopulateSearchResults extends AsyncTask<String, Void, GESearchResults> {
-
-		@Override
-		protected GESearchResults doInBackground(String... urls) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
-                }
-            });
-			return geHelper.search(urls[0], pageNum);
-		}
-
-		@Override
-		protected void onPostExecute(final GESearchResults searchResults) {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-                    if(searchResults.itemsSearch.size() == 0) {
-                        isContinueToLoad = false;
-                    }
-
-                    findViewById(R.id.progress_loading).setVisibility(View.GONE);
-					if(isRestartAdapter) {
-						adapter = new SearchAdapter(SearchItemActivity.this, searchResults.itemsSearch);
-						list.setAdapter(adapter);
-                        isRestartAdapter = false;
-						isContinueToLoad = true;
-					} else {
-						adapter.addAll(searchResults.itemsSearch);
-						adapter.notifyDataSetChanged();
-					}
-
-					pageNum++;
-				}
-			});
-		}
-	}
-
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		final Item item = adapter.getItem(position);
+		//ToDo add activity to view detailed results for GE
 	}
+
+	@Override
+	public void onSearchResults(final String searchTerm, final int pageNum, ArrayList<Item> searchResults) {
+		if(searchResults.size() == 0) {
+			isContinueToLoad = false;
+		}
+
+		findViewById(R.id.progress_loading).setVisibility(View.GONE);
+
+		if(TextUtils.equals(searchTerm, searchText)) {
+			if (adapter == null) {
+				adapter = new SearchAdapter(this, searchResults);
+				list.setAdapter(adapter);
+			} else {
+				adapter.addAll(searchResults);
+				adapter.notifyDataSetChanged();
+			}
+		}
+	}
+
+	private void search(final String searchText) {
+		this.searchText = searchText;
+
+		if (adapter != null) {
+			adapter.clear();
+			adapter.notifyDataSetChanged();
+		}
+
+		if(searchText.length() > 0) {
+			isContinueToLoad = true;
+			startSearchTask(1);
+		}
+	}
+
+	private void startSearchTask(int page) {
+		if (runnableSearch != null && !runnableSearch.isCancelled()) {
+			runnableSearch.cancel(true);
+		}
+		runnableSearch = new SearchGEResults(this, this, page, searchText);
+		runnableSearch.execute();
+		findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
+	}
+
+	private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
+		@Override
+		public boolean onLoadMore(int page, int totalItemsCount) {
+			if(!TextUtils.isEmpty(searchText)) {
+				startSearchTask(page);
+			}
+			return isContinueToLoad;
+		}
+	};
 }
