@@ -15,9 +15,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "boolean", "FABRIC_ENABLED", "false"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            buildConfigField "boolean", "FABRIC_ENABLED", "true"
         }
     }
 }

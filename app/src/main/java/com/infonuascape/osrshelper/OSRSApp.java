@@ -16,6 +16,8 @@ public class OSRSApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Fabric.with(this, new Crashlytics());
+        if(BuildConfig.FABRIC_ENABLED) {
+            Fabric.with(this, new Crashlytics());
+        }
     }
 }
