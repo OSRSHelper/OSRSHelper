@@ -16,8 +16,8 @@ android {
         applicationId "com.infonuascape.osrshelper"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 24
-        versionName "1.6.3"
+        versionCode 25
+        versionName "1.6.4"
         signingConfig signingConfigs.osrs_release
     }
     buildTypes {
