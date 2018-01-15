@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.infonuascape.osrshelper.adapters.StableArrayAdapter;
 import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
+import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
 import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
 
 public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
@@ -114,36 +115,44 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		if (id == R.id.continue_btn) {
 			String username = ((EditText) findViewById(R.id.username_edit)).getText().toString();
 			if (!username.isEmpty()) {
-				closeActivity(username);
+				closeActivity(username, getSelectedAccountType());
 			} else {
 				Toast.makeText(this, R.string.username_error, Toast.LENGTH_SHORT).show();
 			}
 		} else if (id == R.id.ironman) {
-            clearSelectedIronman();
+			findViewById(R.id.ult_ironman).setSelected(false);
+			findViewById(R.id.hc_ironman).setSelected(false);
+			v.setSelected(!v.isSelected());
+        } else if (id == R.id.ult_ironman) {
+            findViewById(R.id.ironman).setSelected(false);
+		    findViewById(R.id.hc_ironman).setSelected(false);
             v.setSelected(!v.isSelected());
         } else if (id == R.id.hc_ironman) {
-            clearSelectedIronman();
-            v.setSelected(!v.isSelected());
-        } else if (id == R.id.ult_ironman) {
-            clearSelectedIronman();
+            findViewById(R.id.ironman).setSelected(false);
+            findViewById(R.id.ult_ironman).setSelected(false);
             v.setSelected(!v.isSelected());
         }
 	}
 
-	public void clearSelectedIronman() {
-        findViewById(R.id.ironman).setSelected(false);
-        findViewById(R.id.hc_ironman).setSelected(false);
-        findViewById(R.id.ult_ironman).setSelected(false);
+	private HiscoreHelper.AccountType getSelectedAccountType() {
+        if (findViewById(R.id.ironman).isSelected())
+            return HiscoreHelper.AccountType.IRONMAN;
+        else if (findViewById(R.id.ult_ironman).isSelected())
+            return HiscoreHelper.AccountType.ULTIMATE_IRONMAN;
+        else if (findViewById(R.id.hc_ironman).isSelected())
+            return HiscoreHelper.AccountType.HARDCORE_IRONMAN;
+        else
+            return HiscoreHelper.AccountType.REGULAR;
     }
 
-	private void closeActivity(final String username) {
+	private void closeActivity(final String username, HiscoreHelper.AccountType accountType) {
 		// Add the username to the db
 		osrsHelperDataSource.open();
 		osrsHelperDataSource.addUsername(username);
 		osrsHelperDataSource.close();
 
 		if(type == HISCORES){
-			HighScoreActivity.show(this, username);
+			HighScoreActivity.show(this, username, accountType);
 		} else if(type == CONFIGURATION){
 			osrsHelperDataSource.open();
 			osrsHelperDataSource.setUsernameForWidget(mAppWidgetId, username);
@@ -167,7 +176,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		final String username = adapter.getItem(position);
-		closeActivity(username);
+		closeActivity(username, HiscoreHelper.AccountType.REGULAR);
 	}
 
 	@Override

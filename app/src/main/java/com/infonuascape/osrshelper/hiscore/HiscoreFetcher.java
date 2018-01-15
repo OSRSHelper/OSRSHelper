@@ -18,21 +18,25 @@ import java.util.List;
  * Created by maden on 9/9/14.
  */
 public class HiscoreFetcher {
-	final String API_URL = "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws?player=";
-
 	private Context context;
 	private String userName;
+    private HiscoreHelper.AccountType accountType;
 
-	public HiscoreFetcher(final Context context, String userName) {
+	public HiscoreFetcher(final Context context, String userName, HiscoreHelper.AccountType accountType) {
 		this.context = context;
 		this.userName = userName.replace(" ", "%20");
+		this.accountType = accountType;
 	}
 
 	public String getUserName() {
 		return userName;
 	}
 
-	public PlayerSkills getPlayerSkills() throws PlayerNotFoundException {
+    public HiscoreHelper.AccountType getAccountType() {
+        return accountType;
+    }
+
+    public PlayerSkills getPlayerSkills() throws PlayerNotFoundException {
 		String APIOutput = getDataFromAPI();
 		PlayerSkills ps = new PlayerSkills();
 		List<Skill> skillList = new ArrayList<Skill>();
@@ -97,8 +101,22 @@ public class HiscoreFetcher {
 		return new PlayerSkills(); // dummy return
 	}
 
+	private String getAPIEndpoint() {
+	    switch (this.accountType) {
+            case REGULAR:
+                return "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws?player=";
+            case IRONMAN:
+                return "http://services.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=";
+            case ULTIMATE_IRONMAN:
+                return "http://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=";
+            case HARDCORE_IRONMAN:
+                return "http://services.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=";
+        }
+        return "http://services.runescape.com/m=hiscore_oldschool/index_lite.ws?player=";
+    }
+
 	private String getDataFromAPI() throws PlayerNotFoundException {
-		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(API_URL + getUserName(), Request.Method.GET);
+		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(getAPIEndpoint() + getUserName(), Request.Method.GET);
 		if (httpRequest.getStatusCode() == StatusCode.FOUND) {
 			return httpRequest.getOutput();
 		} else {

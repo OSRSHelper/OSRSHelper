@@ -42,9 +42,11 @@ import com.infonuascape.osrshelper.views.RSViewDialog;
 
 public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener {
 	private final static String EXTRA_USERNAME = "extra_username";
+    private final static String EXTRA_ACCOUNT_TYPE = "extra_account_type";
 	private static final int NUM_PAGES = 2;
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
 	private String username;
+    private HiscoreHelper.AccountType accountType;
 	private TextView header;
 	private TextView combatText;
 	private PlayerSkills playerSkills;
@@ -55,11 +57,16 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 	private CheckBox virtualLevelsCB;
 
-	public static void show(final Context context, final String username) {
+    public static void show(final Context context, final String username, final HiscoreHelper.AccountType accountType) {
 		Intent intent = new Intent(context, HighScoreActivity.class);
 		intent.putExtra(EXTRA_USERNAME, username);
+        intent.putExtra(EXTRA_ACCOUNT_TYPE, accountType);
 		context.startActivity(intent);
 	}
+
+    public static void show(final Context context, final String username) {
+        show(context, username, HiscoreHelper.AccountType.REGULAR);
+    }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		setContentView(R.layout.hiscores);
 
 		username = getIntent().getStringExtra(EXTRA_USERNAME);
+        accountType = (HiscoreHelper.AccountType) getIntent().getSerializableExtra(EXTRA_ACCOUNT_TYPE);
 
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_highscores, username));
@@ -156,6 +164,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		protected PlayerSkills doInBackground(String... urls) {
 			HiscoreHelper hiscoreHelper = new HiscoreHelper(getApplicationContext());
 			hiscoreHelper.setUserName(username);
+            hiscoreHelper.setAccountType(accountType);
 
 			try {
 				return hiscoreHelper.getPlayerStats();

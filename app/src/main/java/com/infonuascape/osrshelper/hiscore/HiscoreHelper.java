@@ -8,6 +8,7 @@ import com.infonuascape.osrshelper.utils.players.PlayerSkills;
 public class HiscoreHelper {
     private Context context;
     private String userName;
+    private AccountType accountType;
 
     public HiscoreHelper(final Context context) {
         this.context = context;
@@ -21,8 +22,20 @@ public class HiscoreHelper {
         return this.userName;
     }
 
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
     public PlayerSkills getPlayerStats() throws PlayerNotFoundException {
-        HiscoreFetcher hf = new HiscoreFetcher(context, userName);
+        HiscoreFetcher hf = new HiscoreFetcher(context, userName, accountType);
         return hf.getPlayerSkills();
+    }
+
+    public enum AccountType {
+        REGULAR, IRONMAN, ULTIMATE_IRONMAN, HARDCORE_IRONMAN;
     }
 }
