@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -26,7 +27,10 @@ import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
 import java.util.ArrayList;
 
 public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
+	private static final String TAG = "UsernameActivity";
+
 	private static final String EXTRA_TYPE = "EXTRA_TYPE";
+	private static final String EXTRA_APP_WIDGET_ID = "EXTRA_APP_WIDGET_ID";
 
 	public static final int HISCORES = 0;
 	public static final int RT_XP_TRACKER = 1;
@@ -49,6 +53,13 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		return i;
 	}
 
+	public static Intent getIntent(Context context, int type, final int appWidgetId) {
+		Intent i = new Intent(context, UsernameActivity.class);
+		i.putExtra(EXTRA_TYPE, type);
+		i.putExtra(EXTRA_APP_WIDGET_ID, appWidgetId);
+		return i;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,13 +70,14 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 		type = getIntent().getIntExtra(EXTRA_TYPE, CONFIGURATION);
 
+		Log.i(TAG, "onCreate: type=" + type);
 		checkIfConfiguration();
 
 		findViewById(R.id.username_edit).clearFocus();
 		findViewById(R.id.continue_btn).setOnClickListener(this);
 
         // if hiscore lookup, enable ironman selectors
-        if (type == HISCORES) {
+        if (type == HISCORES || type == CONFIGURATION) {
             for (int id : new int[]{R.id.ironman, R.id.ult_ironman, R.id.hc_ironman}) {
                 View v = findViewById(id);
                 v.setOnClickListener(this);
@@ -76,18 +88,17 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 	private void checkIfConfiguration() {
 		if(type == CONFIGURATION){
-			setResult(RESULT_CANCELED);
-
-			Intent intent = getIntent();
-			Bundle extras = intent.getExtras();
-			if (extras != null) {
-				mAppWidgetId = extras.getInt(
-						AppWidgetManager.EXTRA_APPWIDGET_ID,
-						AppWidgetManager.INVALID_APPWIDGET_ID);
+			mAppWidgetId = getIntent().getIntExtra(EXTRA_APP_WIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+			if(mAppWidgetId == 0) {
+				try {
+					mAppWidgetId = Integer.valueOf(getIntent().getAction());
+				} catch(Exception e) {
+					mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+				}
 			}
-
 			// If they gave us an intent without the widget id, just bail.
 			if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+				setResult(RESULT_CANCELED);
 				finish();
 			}
 		}
@@ -178,7 +189,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		final Account account = adapter.getItem(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.delete_username).setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				DBController.getInstance(getApplicationContext()).deleteAccount(account);

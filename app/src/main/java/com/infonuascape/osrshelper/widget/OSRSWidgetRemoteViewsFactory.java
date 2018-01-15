@@ -57,21 +57,24 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
     public RemoteViews getViewAt(int position) {
         // position will always range from 0 to getCount() - 1.
 
-        // We construct a remote views item based on our widget item xml file,
-        // and set the
-        // text based on the position.
-        RemoteViews rv = new RemoteViews(mContext.getPackageName(),
-                R.layout.rs_view_item);
-
         Skill skill = skills.get(position);
+
+        RemoteViews rv;
+
+        if(skill.getSkillType() != SkillType.Overall) {
+            rv = new RemoteViews(mContext.getPackageName(),
+                    R.layout.rs_view_item);
+        } else {
+            rv = new RemoteViews(mContext.getPackageName(),
+                    R.layout.rs_view_item_no_icon);
+        }
+
 
         // set value into textview
         rv.setTextViewText(R.id.skill_level, (Utils.isShowVirtualLevels(mContext, playerSkills) ? skill.getVirtualLevel() : skill.getLevel()) + "");
 
         if(skill.getSkillType() != SkillType.Overall){
             rv.setImageViewResource(R.id.skill_image, skill.getDrawableInt());
-        } else {
-            rv.setImageViewResource(R.id.skill_image, R.drawable.overall_rsview);
         }
 
         // Return the remote views object.
@@ -83,7 +86,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
     }
 
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
 
     public long getItemId(int position) {

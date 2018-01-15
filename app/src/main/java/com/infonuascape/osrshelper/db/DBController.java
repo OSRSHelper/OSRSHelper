@@ -121,7 +121,7 @@ public class DBController extends SQLiteOpenHelper {
 	}
 
 	public Account getAccountForWidget(final int appWidgetId) {
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = getWritableDatabase();
 		Account account = null;
 		final Cursor cursor = db.query(TABLE_WIDGET, new String[]{COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE}, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null, null, null);
 

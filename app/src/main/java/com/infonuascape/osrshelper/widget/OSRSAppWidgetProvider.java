@@ -15,9 +15,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 public class OSRSAppWidgetProvider extends AppWidgetProvider {
+	private static final String TAG = "OSRSAppWidgetProvider";
+
 	public static String ACTION_WIDGET_CONFIGURE = "ConfigureWidget";
 	
 	
@@ -50,29 +53,32 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			
 			//Username
 			final Account account = DBController.getInstance(context).getAccountForWidget(appWidgetId);
-			views.setTextViewText(R.id.username, account.username);
-
-			switch(account.type) {
-				case REGULAR:
-					views.setImageViewResource(R.id.icon, 0);
-					break;
-				case IRONMAN:
-					views.setImageViewResource(R.id.icon, R.drawable.ironman);
-					break;
-				case ULTIMATE_IRONMAN:
-					views.setImageViewResource(R.id.icon, R.drawable.ult_ironman);
-					break;
-				case HARDCORE_IRONMAN:
-					views.setImageViewResource(R.id.icon, R.drawable.hc_ironman);
-					break;
+			if(account != null) {
+				views.setTextViewText(R.id.username, account.username);
+				views.setViewVisibility(R.id.icon, View.VISIBLE);
+				switch (account.type) {
+					case REGULAR:
+						views.setViewVisibility(R.id.icon, View.GONE);
+						break;
+					case IRONMAN:
+						views.setImageViewResource(R.id.icon, R.drawable.ironman);
+						break;
+					case ULTIMATE_IRONMAN:
+						views.setImageViewResource(R.id.icon, R.drawable.ult_ironman);
+						break;
+					case HARDCORE_IRONMAN:
+						views.setImageViewResource(R.id.icon, R.drawable.hc_ironman);
+						break;
+				}
 			}
-			
+
+			Log.i(TAG, "appWidgetId=" + appWidgetId);
 			//Config
-			Intent configIntent = UsernameActivity.getIntent(context, UsernameActivity.CONFIGURATION);
+			Intent configIntent = UsernameActivity.getIntent(context, UsernameActivity.CONFIGURATION, appWidgetId);
 	        configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-	        PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
-	        views.setOnClickPendingIntent(R.id.username_btn, configPendingIntent);
-	        configIntent.setAction(ACTION_WIDGET_CONFIGURE + Integer.toString(appWidgetId));
+			configIntent.setAction(Integer.toString(appWidgetId));
+			PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
+			views.setOnClickPendingIntent(R.id.username_btn, configPendingIntent);
 
 			views.setRemoteAdapter(R.id.grid_view, intentService);
 			appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.grid_view);

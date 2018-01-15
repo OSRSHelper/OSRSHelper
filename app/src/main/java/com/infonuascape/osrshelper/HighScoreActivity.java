@@ -75,6 +75,9 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		setContentView(R.layout.hiscores);
 
 		account = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+		if(account == null) {
+			finish();
+		}
 
 		header = (TextView) findViewById(R.id.header);
 		header.setText(getString(R.string.loading_highscores, account.username));
