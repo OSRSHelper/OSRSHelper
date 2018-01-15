@@ -28,11 +28,11 @@
     <string name="level">Level</string>
     <string name="ranking">Ranking</string>
     <string name="load">Load</string>
-    <string name="loading_highscores">Loading highscores for: %1$s</string>
+    <string name="loading_highscores">Loading hiscores for: %1$s</string>
     <string name="combat_lvl">Combat lvl: %1$d</string>
     <string name="not_existing_player">%1$s does not exist in the database.</string>
     <string name="not_tracked_player">%1$s is not tracked yet. Press update to track them from now on.</string>
-    <string name="showing_results">Showing highscores for: %1$s</string>
+    <string name="showing_results">Showing hiscores for: %1$s</string>
     <string name="internal_error">Network error</string>
     <string name="not_ranked">Not ranked</string>
     <string name="runescape_view">Runescape View</string>

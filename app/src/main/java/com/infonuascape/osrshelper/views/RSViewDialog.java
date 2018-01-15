@@ -31,8 +31,7 @@ public class RSViewDialog {
             ((TextView) dialogView.findViewById(R.id.skill_name)).setText(skill.getSkillType().getSkillName());
             ((ImageView) dialogView.findViewById(R.id.skill_image)).setImageResource(skill.getDrawableInt());
 
-            boolean isShowVirtualLevels = skill.getVirtualLevel() > 99
-                    && PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+            boolean isShowVirtualLevels = Utils.isShowVirtualLevels(context, skill);
 
             short level = (isShowVirtualLevels ? skill.getVirtualLevel() : skill.getLevel());
             ((TextView) dialogView.findViewById(R.id.skill_lvl)).setText(String.valueOf(level));

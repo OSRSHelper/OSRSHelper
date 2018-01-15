@@ -104,42 +104,8 @@
                 android:id="@+id/table_hiscores"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="1" >
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/skill"
-                        android:textColor="@color/text_normal" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/level"
-                        android:textColor="@color/text_normal" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/xp"
-                        android:textColor="@color/text_normal" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/ranking"
-                        android:textColor="@color/text_normal" />
-                </TableRow>
-            </TableLayout>
+                android:stretchColumns="1" />
         </ScrollView>
-
-
     </android.support.v4.view.ViewPager>
 
     <ProgressBar

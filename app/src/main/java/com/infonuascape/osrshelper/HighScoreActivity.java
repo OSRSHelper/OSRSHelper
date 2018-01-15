@@ -28,20 +28,23 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
+import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
+import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.utils.tablesfiller.HiscoresTableFiller;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener {
+public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private static final int NUM_PAGES = 2;
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
@@ -53,6 +56,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 	private TableLayout table;
 	private ArrayList<ImageView> dots;
 	private ViewPager mViewPager;
+	private HiscoresTableFiller tableFiller;
 
 	private CheckBox virtualLevelsCB;
 
@@ -84,6 +88,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 		rsView = (RSView) findViewById(R.id.rs_view);
 		table = (TableLayout) findViewById(R.id.table_hiscores);
+		tableFiller = new HiscoresTableFiller(this, table);
 
 		WizardPagerAdapter adapter = new WizardPagerAdapter();
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -92,7 +97,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 		findViewById(R.id.share_btn).setOnClickListener(this);
 
-		new PopulateTable().execute();
+		new HiscoresFetcherTask(this, this, account).execute();
 
 	}
 
@@ -124,11 +129,6 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		}
 	}
 
-	private boolean isShowVirtualLevels() {
-		return playerSkills != null && playerSkills.hasOneAbove99
-				&& PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
-	}
-
 	@Override
 	public void onClick(View view) {
 		if(view.getId() == R.id.share_btn) {
@@ -151,104 +151,18 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 	}
 
-	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
-
-		@Override
-		protected PlayerSkills doInBackground(String... urls) {
-			try {
-				return new HiscoreFetcher(getApplicationContext(), account.username, account.type).getPlayerSkills();
-			} catch (PlayerNotFoundException e) {
-				changeHeaderText(getString(R.string.not_existing_player, account.username));
-
-			} catch (Exception uhe) {
-				uhe.printStackTrace();
-				changeHeaderText(getString(R.string.internal_error));
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(PlayerSkills playerSkillsCallback) {
-			playerSkills = playerSkillsCallback;
-			if (playerSkillsCallback != null) {
-				populateTable(playerSkills);
-			}
-		}
-	}
-
 	private void populateTable(PlayerSkills playerSkills) {
 		changeHeaderText(getString(R.string.showing_results, account.username));
 		changeCombatText();
 
-		ArrayList<Skill> skills = PlayerSkills.getSkillsInOrder(playerSkills);
-
-		table.removeAllViews();
-		for (Skill skill : skills) {
-			table.addView(createRow(skill));
-		}
-
         virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 
+        tableFiller.fill(playerSkills);
 		rsView.populateView(playerSkills, this);
 	}
 
-	private TableRow createRow(Skill skill) {
-		TableRow tableRow = new TableRow(this);
-		TableRow.LayoutParams params = new TableRow.LayoutParams();
-		params.weight = 1;
-		params.width = 0;
-		params.topMargin = 10;
-		params.bottomMargin = 10;
-		params.gravity = Gravity.CENTER;
-
-		// Skill image
-		ImageView image = new ImageView(this);
-		image.setImageResource(skill.getDrawableInt());
-		image.setLayoutParams(params);
-		tableRow.addView(image);
-		
-
-		// Lvl
-		TextView text = new TextView(this);
-		if (skill.getRank() != -1) {
-			text.setText((isShowVirtualLevels() ? skill.getVirtualLevel() : skill.getLevel()) + "");
-		}
-		text.setLayoutParams(params);
-		text.setGravity(Gravity.CENTER);
-		text.setTextColor(getResources().getColor(R.color.text_normal));
-		tableRow.addView(text);
-
-		// XP
-		text = new TextView(this);
-		if (skill.getRank() != -1) {
-			text.setText(NumberFormat.getInstance().format(skill.getExperience()));
-		}
-		
-		text.setLayoutParams(params);
-		text.setGravity(Gravity.CENTER);
-		text.setTextColor(getResources().getColor(R.color.text_normal));
-		tableRow.addView(text);
-
-		// Ranking
-		text = new TextView(this);
-
-		if (skill.getRank() != -1) {
-			text.setText(NumberFormat.getInstance().format(skill.getRank()));
-			text.setTextColor(getResources().getColor(R.color.text_normal));
-		} else {
-			text.setText(getString(R.string.not_ranked));
-			text.setTextColor(getResources().getColor(R.color.red));
-		}
-
-		text.setLayoutParams(params);
-		text.setGravity(Gravity.CENTER);
-		tableRow.addView(text);
-
-		return tableRow;
-	}
-
 	public void addDots() {
-		dots = new ArrayList<ImageView>();
+		dots = new ArrayList<>();
 		LinearLayout dotsLayout = (LinearLayout)findViewById(R.id.dots);
 
 		for(int i = 0; i < NUM_PAGES; i++) {
@@ -289,6 +203,19 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 			Drawable drawable = res.getDrawable(drawableId);
 			dots.get(i).setImageDrawable(drawable);
 		}
+	}
+
+	@Override
+	public void onHiscoresFetched(PlayerSkills playerSkills) {
+		this.playerSkills = playerSkills;
+		if (playerSkills != null) {
+			populateTable(playerSkills);
+		}
+	}
+
+	@Override
+	public void onHiscoresError(String errorMessage) {
+		changeHeaderText(errorMessage);
 	}
 
 

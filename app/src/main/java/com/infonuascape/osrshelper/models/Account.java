@@ -9,11 +9,20 @@ import java.io.Serializable;
  */
 
 public class Account implements Serializable{
+    public int id;
     public String username;
     public AccountType type;
+    public long lastTimeUsed;
 
     public Account(final String username, final AccountType type) {
         this.username = username;
         this.type = type;
+    }
+
+    public Account(final int id, final String username, final AccountType type, final long lastTimeUsed) {
+        this.id = id;
+        this.username = username;
+        this.type = type;
+        this.lastTimeUsed = lastTimeUsed;
     }
 }

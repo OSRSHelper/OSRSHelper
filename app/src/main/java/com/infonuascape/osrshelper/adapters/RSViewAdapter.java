@@ -14,6 +14,7 @@ import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -36,8 +37,7 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
         this.context = context;
         this.skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
         this.listener = listener;
-        isShowAbove99 = playerSkills != null && playerSkills.hasOneAbove99
-                && PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+        isShowAbove99 = Utils.isShowVirtualLevels(context, playerSkills);
         isShowLevel = true;
     }
 
@@ -45,8 +45,7 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
         this.context = context;
         this.skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
         this.listener = listener;
-        isShowAbove99 = playerSkills != null && playerSkills.hasOneAbove99
-                && PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+        isShowAbove99 = Utils.isShowVirtualLevels(context, playerSkills);
         this.isShowLevel = isShowLevel;
     }
 

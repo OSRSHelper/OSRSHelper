@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
 import com.infonuascape.osrshelper.db.PreferencesController;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 public class Utils {
@@ -225,6 +226,11 @@ public class Utils {
 
 	public static boolean isShowVirtualLevels(final Context context, final PlayerSkills playerSkills) {
 		return playerSkills != null && playerSkills.hasOneAbove99
+				&& PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+	}
+
+	public static boolean isShowVirtualLevels(final Context context, final Skill skill) {
+		return skill != null && skill.getVirtualLevel() > 99
 				&& PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
 	}
 }
