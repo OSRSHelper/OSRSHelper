@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.PreferencesController;
+import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.Skill;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 import java.util.ArrayList;
 
@@ -52,11 +52,11 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
 
     @Override
     public int getItemViewType(int position) {
-        SkillsEnum.SkillType skillType = skills.get(position).getSkillType();
+        SkillType skillType = skills.get(position).getSkillType();
 
         if(!isShowLevel) {
             return VIEW_TYPE_DONT_SHOW_LEVEL;
-        } else if(skillType == SkillsEnum.SkillType.Overall) {
+        } else if(skillType == SkillType.Overall) {
             return VIEW_TYPE_DONT_SHOW_ICON;
         }
 

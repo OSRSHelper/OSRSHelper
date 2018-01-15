@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.UsernameActivity;
-import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
+import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.models.Account;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -48,11 +49,23 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			views.setOnClickPendingIntent(R.id.update_btn, pendingSync);
 			
 			//Username
-			OSRSHelperDataSource osrsHelperDataSource = new OSRSHelperDataSource(context);
-			osrsHelperDataSource.open();
-			final String username = osrsHelperDataSource.getUsernameForWidget(appWidgetId);
-			osrsHelperDataSource.close();
-			views.setTextViewText(R.id.username, username);
+			final Account account = DBController.getInstance(context).getAccountForWidget(appWidgetId);
+			views.setTextViewText(R.id.username, account.username);
+
+			switch(account.type) {
+				case REGULAR:
+					views.setImageViewResource(R.id.icon, 0);
+					break;
+				case IRONMAN:
+					views.setImageViewResource(R.id.icon, R.drawable.ironman);
+					break;
+				case ULTIMATE_IRONMAN:
+					views.setImageViewResource(R.id.icon, R.drawable.ult_ironman);
+					break;
+				case HARDCORE_IRONMAN:
+					views.setImageViewResource(R.id.icon, R.drawable.hc_ironman);
+					break;
+			}
 			
 			//Config
 			Intent configIntent = UsernameActivity.getIntent(context, UsernameActivity.CONFIGURATION);

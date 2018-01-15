@@ -3,19 +3,18 @@ package com.infonuascape.osrshelper.tracker.rt;
 import android.content.Context;
 
 import com.android.volley.Request;
-import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
+import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.enums.TrackerTime;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +36,7 @@ public class TrackerFetcher {
 		this.lookupTime = lookupTime;
 	}
 
-	public TrackerFetcher(Context context, String userName, TrackerTimeEnum.TrackerTime trackerTime) {
+	public TrackerFetcher(Context context, String userName, TrackerTime trackerTime) {
 		this(context, userName, trackerTime.getSeconds());
 	}
 
@@ -70,7 +69,7 @@ public class TrackerFetcher {
                         if (skillName.equals(skillList.get(i).getSkillType().getSkillName()) ||
 								skillName.equals(skillList.get(i).getSkillType().getAlternativeName())) {
                             skillList.get(i).setExperience(Long.parseLong(tokenizer[2]));
-							if(skillList.get(i).getSkillType() != SkillsEnum.SkillType.Overall) {
+							if(skillList.get(i).getSkillType() != SkillType.Overall) {
 								skillList.get(i).calculateLevels();
 							}
 							break;
@@ -112,7 +111,7 @@ public class TrackerFetcher {
         short totalLevel = 0;
         short totalVirtualLevel = 0;
         for (Skill s : skillList) {
-            if (s.getSkillType() != SkillsEnum.SkillType.Overall) {
+            if (s.getSkillType() != SkillType.Overall) {
                 totalLevel += s.getLevel();
                 totalVirtualLevel += s.getVirtualLevel();
             }

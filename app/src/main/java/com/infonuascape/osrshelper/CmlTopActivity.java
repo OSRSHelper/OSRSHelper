@@ -12,11 +12,11 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.top.TopFetcher;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
-import com.infonuascape.osrshelper.utils.players.PlayerExp;
+import com.infonuascape.osrshelper.models.players.PlayerExp;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class CmlTopActivity extends Activity implements OnClickListener {
         @Override
         protected List<PlayerExp> doInBackground(String... urls) {
             try {
-                TopFetcher tf = new TopFetcher(getApplicationContext(), SkillsEnum.SkillType.Agility, TopFetcher.Period.Day);
+                TopFetcher tf = new TopFetcher(getApplicationContext(), SkillType.Agility, TopFetcher.Period.Day);
                 return tf.processAPI();
             } catch (ParserErrorException e) {
                 e.printStackTrace();

@@ -3,13 +3,14 @@ package com.infonuascape.osrshelper.hiscore;
 import android.content.Context;
 
 import com.android.volley.Request;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
+import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,9 @@ import java.util.List;
 public class HiscoreFetcher {
 	private Context context;
 	private String userName;
-    private HiscoreHelper.AccountType accountType;
+    private AccountType accountType;
 
-	public HiscoreFetcher(final Context context, String userName, HiscoreHelper.AccountType accountType) {
+	public HiscoreFetcher(final Context context, String userName, AccountType accountType) {
 		this.context = context;
 		this.userName = userName.replace(" ", "%20");
 		this.accountType = accountType;
@@ -32,7 +33,7 @@ public class HiscoreFetcher {
 		return userName;
 	}
 
-    public HiscoreHelper.AccountType getAccountType() {
+    public AccountType getAccountType() {
         return accountType;
     }
 
@@ -71,7 +72,7 @@ public class HiscoreFetcher {
 			skillList.get(i).setRank(Integer.parseInt(dataSeparator[0]));
 			skillList.get(i).setLevel(Short.parseShort(dataSeparator[1]));
 			skillList.get(i).setExperience(Long.parseLong(dataSeparator[2]));
-			if(skillList.get(i).getSkillType() != SkillsEnum.SkillType.Overall) {
+			if(skillList.get(i).getSkillType() != SkillType.Overall) {
 				skillList.get(i).calculateLevels();
 			}
 		}
@@ -80,7 +81,7 @@ public class HiscoreFetcher {
 		short totalLevel = 0;
 		short totalVirtualLevel = 0;
 		for (Skill s : skillList) {
-			if (s.getSkillType() != SkillsEnum.SkillType.Overall) {
+			if (s.getSkillType() != SkillType.Overall) {
 				totalLevel += s.getLevel();
 				totalVirtualLevel += s.getVirtualLevel();
 			}

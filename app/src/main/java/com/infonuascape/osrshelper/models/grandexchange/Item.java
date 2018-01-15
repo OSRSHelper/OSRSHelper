@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.utils.grandexchange;
+package com.infonuascape.osrshelper.models.grandexchange;
 
 public class Item {
     public int id;

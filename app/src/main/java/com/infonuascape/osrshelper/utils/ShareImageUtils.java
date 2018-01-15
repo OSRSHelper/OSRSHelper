@@ -11,7 +11,7 @@ import android.provider.MediaStore;
 import android.view.View;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.RSView;
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream;
  * Created by marc-antoinehinse on 2018-01-13.
  */
 
-public class ImageUtils {
+public class ShareImageUtils {
     public static void shareHiscores(final Context context, final String username, final PlayerSkills playerSkills) {
         RSView rsView = new RSView(context);
         rsView.populateViewForImageShare(playerSkills, username, null);

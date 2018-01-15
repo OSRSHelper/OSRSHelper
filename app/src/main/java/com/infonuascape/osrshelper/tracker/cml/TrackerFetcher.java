@@ -3,17 +3,17 @@ package com.infonuascape.osrshelper.tracker.cml;
 import android.content.Context;
 
 import com.android.volley.Request;
-import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
+import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.enums.TrackerTime;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
-import com.infonuascape.osrshelper.utils.players.PlayerSkillsPoint;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkillsPoint;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class TrackerFetcher {
 		processAPI();
 	}
 
-	public TrackerFetcher(Context context, String userName, TrackerTimeEnum.TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
+	public TrackerFetcher(Context context, String userName, TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
 		this(context, userName, trackerTime.getSeconds());
 	}
 
@@ -133,7 +133,7 @@ public class TrackerFetcher {
 					skillList.get(skillId).setRankDiff(-rankDiff); // inverse sign
 					skillList.get(skillId).setExperience(experience);
 					skillList.get(skillId).setRank(experienceDiff);
-                    if(skillList.get(skillId).getSkillType() != SkillsEnum.SkillType.Overall) {
+                    if(skillList.get(skillId).getSkillType() != SkillType.Overall) {
                         skillList.get(skillId).calculateLevels();
                     }
 					skillId++; //pass to next skill in list
@@ -149,7 +149,7 @@ public class TrackerFetcher {
 		short totalLevel = 0;
         short totalVirtualLevel = 0;
 		for (Skill s : skillList) {
-            if (s.getSkillType() != SkillsEnum.SkillType.Overall) {
+            if (s.getSkillType() != SkillType.Overall) {
                 totalLevel += s.getLevel();
                 totalVirtualLevel += s.getVirtualLevel();
             }

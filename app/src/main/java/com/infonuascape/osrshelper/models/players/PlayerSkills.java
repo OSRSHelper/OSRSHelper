@@ -1,11 +1,11 @@
-package com.infonuascape.osrshelper.utils.players;
+package com.infonuascape.osrshelper.models.players;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
+import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.models.Skill;
 
 public class PlayerSkills {
 	public Skill overall = new Skill(SkillType.Overall, R.drawable.overall);

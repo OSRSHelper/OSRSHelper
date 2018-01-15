@@ -22,27 +22,28 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.db.PreferencesController;
-import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
-import com.infonuascape.osrshelper.tracker.cml.TrackerHelper;
+import com.infonuascape.osrshelper.enums.TrackerTime;
+import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.tracker.cml.TrackerFetcher;
 import com.infonuascape.osrshelper.tracker.cml.Updater;
-import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 import java.text.NumberFormat;
 
 public class CMLXPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener, CompoundButton.OnCheckedChangeListener {
-	private final static String EXTRA_USERNAME = "extra_username";
-	private String username;
+	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
+	private Account account;
 	private TextView header;
 	private Spinner spinner;
 	private CheckBox virtualLevelsCB;
 	private PlayerSkills playerSkills;
 
-	public static void show(final Context context, final String username) {
+	public static void show(final Context context, final Account account) {
 		Intent intent = new Intent(context, CMLXPTrackerActivity.class);
-		intent.putExtra(EXTRA_USERNAME, username);
+		intent.putExtra(EXTRA_ACCOUNT, account);
 		context.startActivity(intent);
 	}
 
@@ -54,10 +55,10 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 
 		setContentView(R.layout.xptracker);
 
-		username = getIntent().getStringExtra(EXTRA_USERNAME);
+		account = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
 
 		header = (TextView) findViewById(R.id.header);
-		header.setText(getString(R.string.loading_tracking, username));
+		header.setText(getString(R.string.loading_tracking, account.username));
 
 		virtualLevelsCB = (CheckBox) findViewById(R.id.cb_virtual_levels);
 		virtualLevelsCB.setOnCheckedChangeListener(this);
@@ -99,26 +100,23 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 	}
 
 	private class PopulateTable extends AsyncTask<String, Void, PlayerSkills> {
-		private TrackerTimeEnum.TrackerTime time;
+		private TrackerTime time;
 		private boolean isUpdating;
 
-		public PopulateTable(TrackerTimeEnum.TrackerTime time, boolean isUpdating) {
+		public PopulateTable(TrackerTime time, boolean isUpdating) {
 			this.time = time;
 			this.isUpdating = isUpdating;
 		}
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
-			TrackerHelper trackerHelper = new TrackerHelper(getApplicationContext());
-			trackerHelper.setUserName(username);
-
 			try {
 				if (isUpdating) {
-					Updater.perform(getApplicationContext(), username);
+					Updater.perform(getApplicationContext(), account.username);
 				}
-				return trackerHelper.getPlayerStats(time);
+				return new TrackerFetcher(getApplicationContext(), account.username, time).getPlayerSkills();
 			} catch (PlayerNotTrackedException e) {
-				changeHeaderText(getString(R.string.not_tracked_player, username), View.GONE);
+				changeHeaderText(getString(R.string.not_tracked_player, account.username), View.GONE);
 			} catch (APIError e) {
 				changeHeaderText(e.getMessage(), View.GONE);
 			} catch (Exception uhe) {
@@ -138,7 +136,7 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 	}
 
 	private void populateTable(PlayerSkills playerSkills) {
-		changeHeaderText(getString(R.string.showing_tracking, username), View.GONE);
+		changeHeaderText(getString(R.string.showing_tracking, account.username), View.GONE);
 
 		if (playerSkills.sinceWhen != null)
 			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
@@ -330,24 +328,24 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 	}
 
 	private void createAsyncTaskToPopulate(String selectedTime, boolean isUpdating) {
-		TrackerTimeEnum.TrackerTime time = null;
+		TrackerTime time = null;
 
 		if (selectedTime.equals("Hour")) {
-			time = TrackerTimeEnum.TrackerTime.Hour;
+			time = TrackerTime.Hour;
 		} else if (selectedTime.equals("Day")) {
-			time = TrackerTimeEnum.TrackerTime.Day;
+			time = TrackerTime.Day;
 		} else if (selectedTime.equals("Week")) {
-			time = TrackerTimeEnum.TrackerTime.Week;
+			time = TrackerTime.Week;
 		} else if (selectedTime.equals("Month")) {
-			time = TrackerTimeEnum.TrackerTime.Month;
+			time = TrackerTime.Month;
 		} else if (selectedTime.equals("Year")) {
-			time = TrackerTimeEnum.TrackerTime.Year;
+			time = TrackerTime.Year;
 		}
 
 		if (time != null) {
 			((TableLayout) findViewById(R.id.table_tracking)).removeAllViews();
 			((TextView) findViewById(R.id.track_metadata)).setText("");
-			changeHeaderText(getString(R.string.loading_tracking, username), View.VISIBLE);
+			changeHeaderText(getString(R.string.loading_tracking, account.username), View.VISIBLE);
 			new PopulateTable(time, isUpdating).execute();
 		}
 	}

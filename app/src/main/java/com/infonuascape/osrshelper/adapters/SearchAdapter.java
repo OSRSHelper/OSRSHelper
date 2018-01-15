@@ -1,25 +1,18 @@
 package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.grandexchange.GESearchResults;
-import com.infonuascape.osrshelper.utils.grandexchange.Item;
+import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

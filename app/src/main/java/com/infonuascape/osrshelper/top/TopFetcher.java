@@ -3,25 +3,16 @@ package com.infonuascape.osrshelper.top;
 import android.content.Context;
 
 import com.android.volley.Request;
-import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
+import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
-import com.infonuascape.osrshelper.utils.players.PlayerExp;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
-import com.infonuascape.osrshelper.utils.players.PlayerSkillsPoint;
+import com.infonuascape.osrshelper.models.players.PlayerExp;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by maden on 9/14/14.
@@ -30,14 +21,14 @@ public class TopFetcher {
 	final String API_URL = "https://crystalmathlabs.com/tracker/api.php?type=currenttop";
 
 	private Context context;
-	private SkillsEnum.SkillType skill;
+	private SkillType skill;
     private Period period = Period.Day;
     private List<PlayerExp> playerList;
     public enum Period {
         Day, Week, Month, Year;
     }
 
-	public TopFetcher(Context context, SkillsEnum.SkillType skill, Period period) throws ParserErrorException, APIError {
+	public TopFetcher(Context context, SkillType skill, Period period) throws ParserErrorException, APIError {
 		this.context = context;
 		this.skill = skill;
 		this.period = period;

@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.PreferencesController;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum;
+import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import java.text.NumberFormat;
@@ -39,7 +39,7 @@ public class RSViewDialog {
 
             ((TextView) dialogView.findViewById(R.id.skill_exp)).setText(String.valueOf(NumberFormat.getInstance().format(skill.getExperience())));
 
-            if (skill.getSkillType() != SkillsEnum.SkillType.Overall && (isShowVirtualLevels || skill.getLevel() != 99)) {
+            if (skill.getSkillType() != SkillType.Overall && (isShowVirtualLevels || skill.getLevel() != 99)) {
                 String xpToLevel = NumberFormat.getInstance().format(Utils.getExpFromLevel(level + 1, isShowVirtualLevels) - skill.getExperience());
                 ((TextView) dialogView.findViewById(R.id.skill_exp_to_lvl)).setText(String.valueOf(xpToLevel));
             } else {

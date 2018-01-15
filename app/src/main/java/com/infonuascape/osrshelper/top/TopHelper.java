@@ -2,12 +2,12 @@ package com.infonuascape.osrshelper.top;
 
 import android.content.Context;
 
-import com.infonuascape.osrshelper.tracker.TrackerTimeEnum;
+import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.tracker.cml.TrackerFetcher;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 public class TopHelper {
 	private Context context;
@@ -25,7 +25,7 @@ public class TopHelper {
 		return userName;
 	}
 
-	public PlayerSkills getPlayerStats(TrackerTimeEnum.TrackerTime time) throws PlayerNotTrackedException,
+	public PlayerSkills getPlayerStats(TrackerTime time) throws PlayerNotTrackedException,
 			ParserErrorException, APIError {
 
         //Instanciate a new API fetcher

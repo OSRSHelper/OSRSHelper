@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.utils.players;
+package com.infonuascape.osrshelper.models.players;
 
 /**
  * Created by maden on 9/14/14.

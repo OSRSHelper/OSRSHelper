@@ -12,9 +12,9 @@ import android.widget.TextView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.RSViewAdapter;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
-import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 /**
  * Created by marc-antoinehinse on 2018-01-13.

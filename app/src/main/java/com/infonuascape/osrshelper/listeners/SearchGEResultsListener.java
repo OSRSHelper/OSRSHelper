@@ -1,6 +1,6 @@
 package com.infonuascape.osrshelper.listeners;
 
-import com.infonuascape.osrshelper.utils.grandexchange.Item;
+import com.infonuascape.osrshelper.models.grandexchange.Item;
 
 import java.util.ArrayList;
 

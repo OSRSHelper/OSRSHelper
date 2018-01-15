@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
-import android.net.Uri;
 import android.util.DisplayMetrics;
 
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.db.PreferencesController;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 public class Utils {
 
@@ -221,5 +221,10 @@ public class Utils {
 		DisplayMetrics metrics = resources.getDisplayMetrics();
 		float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
 		return px;
+	}
+
+	public static boolean isShowVirtualLevels(final Context context, final PlayerSkills playerSkills) {
+		return playerSkills != null && playerSkills.hasOneAbove99
+				&& PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
 	}
 }

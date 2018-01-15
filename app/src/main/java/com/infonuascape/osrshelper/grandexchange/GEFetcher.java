@@ -14,7 +14,7 @@ public class GEFetcher {
 
     private Context context;
 
-    protected GEFetcher(Context context) {
+    public GEFetcher(Context context) {
         this.context = context;
     }
 

@@ -15,8 +15,8 @@ import android.widget.SearchView;
 import com.infonuascape.osrshelper.adapters.EndlessScrollListener;
 import com.infonuascape.osrshelper.adapters.SearchAdapter;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
-import com.infonuascape.osrshelper.tasks.SearchGEResults;
-import com.infonuascape.osrshelper.utils.grandexchange.Item;
+import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
+import com.infonuascape.osrshelper.models.grandexchange.Item;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 	private String searchText;
     private boolean isContinueToLoad;
 	private ListView list;
-	private SearchGEResults runnableSearch;
+	private SearchGEResultsTask runnableSearch;
 
 	public static void show(final Context context){
 		Intent i = new Intent(context, SearchItemActivity.class);
@@ -105,7 +105,7 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 		if (runnableSearch != null && !runnableSearch.isCancelled()) {
 			runnableSearch.cancel(true);
 		}
-		runnableSearch = new SearchGEResults(this, this, page, searchText);
+		runnableSearch = new SearchGEResultsTask(this, this, page, searchText);
 		runnableSearch.execute();
 		findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
 	}

@@ -1,9 +1,10 @@
-package com.infonuascape.osrshelper.utils;
+package com.infonuascape.osrshelper.models;
 
-import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
+
+import com.infonuascape.osrshelper.enums.SkillType;
 
 public class Skill {
-	private SkillsEnum.SkillType skillType;
+	private SkillType skillType;
 	private long experience = 0;
 	private int experienceDiff = 0;
 	private short level = 0;
@@ -75,11 +76,11 @@ public class Skill {
 		this.level = level;
 	}
 
-	public SkillsEnum.SkillType getSkillType() {
+	public SkillType getSkillType() {
 		return skillType;
 	}
 
-	public void setSkillType(SkillsEnum.SkillType skillType) {
+	public void setSkillType(SkillType skillType) {
 		this.skillType = skillType;
 	}
 

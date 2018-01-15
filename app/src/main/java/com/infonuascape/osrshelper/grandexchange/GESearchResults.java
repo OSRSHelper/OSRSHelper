@@ -1,6 +1,6 @@
 package com.infonuascape.osrshelper.grandexchange;
 
-import com.infonuascape.osrshelper.utils.grandexchange.Item;
+import com.infonuascape.osrshelper.models.grandexchange.Item;
 
 import org.json.JSONArray;
 import org.json.JSONException;

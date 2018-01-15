@@ -1,7 +1,5 @@
 package com.infonuascape.osrshelper;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
@@ -19,10 +17,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.infonuascape.osrshelper.adapters.StableArrayAdapter;
-import com.infonuascape.osrshelper.db.OSRSHelperDataSource;
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
+import com.infonuascape.osrshelper.adapters.UsernamesAdapter;
+import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
+
+import java.util.ArrayList;
 
 public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
 	private static final String EXTRA_TYPE = "EXTRA_TYPE";
@@ -34,8 +35,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	public static final int COMBAT = 3;
 
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-	private OSRSHelperDataSource osrsHelperDataSource;
-	private StableArrayAdapter adapter;
+	private UsernamesAdapter adapter;
 	private int type;
 
 	public static void show(final Context context, int type){
@@ -72,7 +72,6 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
                 v.setVisibility(View.VISIBLE);
             }
         }
-		osrsHelperDataSource = new OSRSHelperDataSource(this);
 	}
 
 	private void checkIfConfiguration() {
@@ -97,12 +96,10 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	public void onResume(){
 		super.onResume();
 		// Get all usernames
-		osrsHelperDataSource.open();
-		ArrayList<String> usernames = osrsHelperDataSource.getAllUsernames();
-		osrsHelperDataSource.close();
+		ArrayList<Account> accounts = DBController.getInstance(this).getAllAccounts();
 
-		adapter = new StableArrayAdapter(this, R.layout.username_list_item, usernames);
-		ListView list = (ListView) findViewById(android.R.id.list);
+		adapter = new UsernamesAdapter(this, accounts);
+		ListView list = findViewById(android.R.id.list);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
 		list.setOnItemLongClickListener(this);
@@ -115,7 +112,8 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		if (id == R.id.continue_btn) {
 			String username = ((EditText) findViewById(R.id.username_edit)).getText().toString();
 			if (!username.isEmpty()) {
-				closeActivity(username, getSelectedAccountType());
+				Account account = new Account(username, getSelectedAccountType());
+				closeActivity(account);
 			} else {
 				Toast.makeText(this, R.string.username_error, Toast.LENGTH_SHORT).show();
 			}
@@ -134,29 +132,24 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
         }
 	}
 
-	private HiscoreHelper.AccountType getSelectedAccountType() {
+	private AccountType getSelectedAccountType() {
         if (findViewById(R.id.ironman).isSelected())
-            return HiscoreHelper.AccountType.IRONMAN;
+            return AccountType.IRONMAN;
         else if (findViewById(R.id.ult_ironman).isSelected())
-            return HiscoreHelper.AccountType.ULTIMATE_IRONMAN;
+            return AccountType.ULTIMATE_IRONMAN;
         else if (findViewById(R.id.hc_ironman).isSelected())
-            return HiscoreHelper.AccountType.HARDCORE_IRONMAN;
+            return AccountType.HARDCORE_IRONMAN;
         else
-            return HiscoreHelper.AccountType.REGULAR;
+            return AccountType.REGULAR;
     }
 
-	private void closeActivity(final String username, HiscoreHelper.AccountType accountType) {
-		// Add the username to the db
-		osrsHelperDataSource.open();
-		osrsHelperDataSource.addUsername(username);
-		osrsHelperDataSource.close();
+	private void closeActivity(final Account account) {
+		DBController.getInstance(this).addAccount(account);
 
 		if(type == HISCORES){
-			HighScoreActivity.show(this, username, accountType);
+			HighScoreActivity.show(this, account);
 		} else if(type == CONFIGURATION){
-			osrsHelperDataSource.open();
-			osrsHelperDataSource.setUsernameForWidget(mAppWidgetId, username);
-			osrsHelperDataSource.close();
+			DBController.getInstance(this).setAccountForWidget(mAppWidgetId, account);
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			setResult(RESULT_OK, resultValue);
@@ -165,33 +158,31 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 			sendBroadcast(intent);
 			finish();
 		} else if (type == RT_XP_TRACKER) {
-			RTXPTrackerActivity.show(this, username);
+			RTXPTrackerActivity.show(this, account);
 		} else if (type == CML_XP_TRACKER) {
-			CMLXPTrackerActivity.show(this, username);
+			CMLXPTrackerActivity.show(this, account);
 		} else if (type == COMBAT) {
-			CombatCalcActivity.show(this, username);
+			CombatCalcActivity.show(this, account);
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		final String username = adapter.getItem(position);
-		closeActivity(username, HiscoreHelper.AccountType.REGULAR);
+		final Account account = adapter.getItem(position);
+		closeActivity(account);
 	}
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		final String username = adapter.getItem(position);
+		final Account account = adapter.getItem(position);
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.delete_username).setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				osrsHelperDataSource.open();
-				osrsHelperDataSource.deleteUsername(username);
-				osrsHelperDataSource.close();
-				adapter.remove(username);
+				DBController.getInstance(getApplicationContext()).deleteAccount(account);
+				adapter.remove(account);
 			}
 		}).setNegativeButton(R.string.cancel, null).create().show();
 		return true;

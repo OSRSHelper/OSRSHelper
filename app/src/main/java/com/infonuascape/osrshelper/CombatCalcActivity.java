@@ -13,15 +13,16 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
-import com.infonuascape.osrshelper.utils.Skill;
-import com.infonuascape.osrshelper.utils.SkillsEnum.SkillType;
+import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
+import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 public class CombatCalcActivity extends Activity implements TextWatcher {
-	private static final String EXTRA_USERNAME = "EXTRA_USERNAME";
+	private static final String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 
 	private TextView combatText;
 	private TextView lvlNeededText;
@@ -38,11 +39,11 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 	private EditText rangingEdit;
 	private EditText prayerEdit;
 
-	private String username;
+	private Account account;
 	
-	public static void show(final Context context, final String username) {
+	public static void show(final Context context, final Account account) {
 		Intent intent = new Intent(context, CombatCalcActivity.class);
-		intent.putExtra(EXTRA_USERNAME, username);
+		intent.putExtra(EXTRA_ACCOUNT, account);
 		context.startActivity(intent);
 	}
 
@@ -86,8 +87,8 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 		magicEdit.addTextChangedListener(this);
 
 		changeCombatText();
-		username = getIntent().getStringExtra(EXTRA_USERNAME);
-		if(username != null){
+		account = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+		if(account != null){
 			new PopulateTable().execute();
 		}
 	}
@@ -175,15 +176,13 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
-			HiscoreHelper hiscoreHelper = new HiscoreHelper(getApplicationContext());
-			hiscoreHelper.setUserName(username);
 			PlayerSkills playerSkills = null;
 
 			try {
-				playerSkills = hiscoreHelper.getPlayerStats();
+				playerSkills = new HiscoreFetcher(getApplicationContext(), account.username, account.type).getPlayerSkills();
 			} catch (PlayerNotFoundException e) {
 				e.printStackTrace();
-				changeHint(getString(R.string.not_existing_player, username));
+				changeHint(getString(R.string.not_existing_player, account.username));
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
 				changeHint(getString(R.string.internal_error));

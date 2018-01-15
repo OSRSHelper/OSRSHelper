@@ -1,8 +1,5 @@
 package com.infonuascape.osrshelper;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -30,23 +27,25 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.db.PreferencesController;
-import com.infonuascape.osrshelper.hiscore.HiscoreHelper;
+import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
-import com.infonuascape.osrshelper.utils.ImageUtils;
-import com.infonuascape.osrshelper.utils.Skill;
+import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.models.Skill;
+import com.infonuascape.osrshelper.utils.ShareImageUtils;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
-import com.infonuascape.osrshelper.utils.players.PlayerSkills;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
+
 public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener {
-	private final static String EXTRA_USERNAME = "extra_username";
-    private final static String EXTRA_ACCOUNT_TYPE = "extra_account_type";
+	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private static final int NUM_PAGES = 2;
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
-	private String username;
-    private HiscoreHelper.AccountType accountType;
+	private Account account;
 	private TextView header;
 	private TextView combatText;
 	private PlayerSkills playerSkills;
@@ -57,15 +56,10 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 	private CheckBox virtualLevelsCB;
 
-    public static void show(final Context context, final String username, final HiscoreHelper.AccountType accountType) {
+    public static void show(final Context context, final Account account) {
 		Intent intent = new Intent(context, HighScoreActivity.class);
-		intent.putExtra(EXTRA_USERNAME, username);
-        intent.putExtra(EXTRA_ACCOUNT_TYPE, accountType);
+		intent.putExtra(EXTRA_ACCOUNT, account);
 		context.startActivity(intent);
-	}
-
-    public static void show(final Context context, final String username) {
-        show(context, username, HiscoreHelper.AccountType.REGULAR);
     }
 
 	@Override
@@ -76,11 +70,10 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 		setContentView(R.layout.hiscores);
 
-		username = getIntent().getStringExtra(EXTRA_USERNAME);
-        accountType = (HiscoreHelper.AccountType) getIntent().getSerializableExtra(EXTRA_ACCOUNT_TYPE);
+		account = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
 
 		header = (TextView) findViewById(R.id.header);
-		header.setText(getString(R.string.loading_highscores, username));
+		header.setText(getString(R.string.loading_highscores, account.username));
 		
 		combatText = (TextView) findViewById(R.id.combat);
 
@@ -142,7 +135,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
 			} else {
-				ImageUtils.shareHiscores(this, username, playerSkills);
+				ShareImageUtils.shareHiscores(this, account.username, playerSkills);
 			}
 		}
 	}
@@ -162,14 +155,10 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 		@Override
 		protected PlayerSkills doInBackground(String... urls) {
-			HiscoreHelper hiscoreHelper = new HiscoreHelper(getApplicationContext());
-			hiscoreHelper.setUserName(username);
-            hiscoreHelper.setAccountType(accountType);
-
 			try {
-				return hiscoreHelper.getPlayerStats();
+				return new HiscoreFetcher(getApplicationContext(), account.username, account.type).getPlayerSkills();
 			} catch (PlayerNotFoundException e) {
-				changeHeaderText(getString(R.string.not_existing_player, username));
+				changeHeaderText(getString(R.string.not_existing_player, account.username));
 
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
@@ -188,7 +177,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 	}
 
 	private void populateTable(PlayerSkills playerSkills) {
-		changeHeaderText(getString(R.string.showing_results, username));
+		changeHeaderText(getString(R.string.showing_results, account.username));
 		changeCombatText();
 
 		ArrayList<Skill> skills = PlayerSkills.getSkillsInOrder(playerSkills);
@@ -337,7 +326,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 			for(int i=0 ; i < permissions.length; i++) {
 				if(TextUtils.equals(permissions[i], Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 					if(grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-						ImageUtils.shareHiscores(this, username, playerSkills);
+						ShareImageUtils.shareHiscores(this, account.username, playerSkills);
 					}
 				}
 			}
