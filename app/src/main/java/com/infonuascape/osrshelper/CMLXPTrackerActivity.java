@@ -28,6 +28,7 @@ import com.infonuascape.osrshelper.tracker.cml.TrackerFetcher;
 import com.infonuascape.osrshelper.tracker.cml.Updater;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
@@ -115,6 +116,8 @@ public class CMLXPTrackerActivity extends Activity implements OnItemSelectedList
 					Updater.perform(getApplicationContext(), account.username);
 				}
 				return new TrackerFetcher(getApplicationContext(), account.username, time).getPlayerSkills();
+			} catch (PlayerNotFoundException e) {
+				changeHeaderText(getString(R.string.not_existing_player, account.username), View.GONE);
 			} catch (PlayerNotTrackedException e) {
 				changeHeaderText(getString(R.string.not_tracked_player, account.username), View.GONE);
 			} catch (APIError e) {

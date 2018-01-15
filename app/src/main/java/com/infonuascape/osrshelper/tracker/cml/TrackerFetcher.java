@@ -8,6 +8,7 @@ import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
@@ -33,7 +34,7 @@ public class TrackerFetcher {
 	private int lookupTime;
     PlayerSkills playerSkills;
 
-	public TrackerFetcher(Context context, String userName, int lookupTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
+	public TrackerFetcher(Context context, String userName, int lookupTime) throws ParserErrorException, APIError, PlayerNotTrackedException, PlayerNotFoundException {
 		this.context = context;
 		this.userName = userName.replace(" ", "%20");
 		this.lookupTime = lookupTime;
@@ -41,7 +42,7 @@ public class TrackerFetcher {
 		processAPI();
 	}
 
-	public TrackerFetcher(Context context, String userName, TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException {
+	public TrackerFetcher(Context context, String userName, TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException, PlayerNotFoundException {
 		this(context, userName, trackerTime.getSeconds());
 	}
 
@@ -61,7 +62,7 @@ public class TrackerFetcher {
         this.playerSkills = ps;
     }
 
-    private void processAPI() throws PlayerNotTrackedException, APIError, ParserErrorException {
+    private void processAPI() throws PlayerNotTrackedException, APIError, ParserErrorException, PlayerNotFoundException {
         // Fetch the results from the CML API
 		String APIPayload = getDataFromAPI();
 
@@ -77,10 +78,13 @@ public class TrackerFetcher {
             String trackerPayload = APIResponses[0];
             String dataPointPayload = APIResponses[1];
 
-            if (trackerPayload.equals("-1") || dataPointPayload.equals("-1"))
-                throw new PlayerNotTrackedException(getUserName());
+            if (trackerPayload.equals("-1\n") || dataPointPayload.equals("-1\n"))
+                throw new PlayerNotFoundException(getUserName());
+            if (trackerPayload.equals("2\n") || dataPointPayload.equals("-1\n"))
+                throw new PlayerNotFoundException(getUserName());
 
-            if (trackerPayload.equals("-4") || dataPointPayload.equals("-4"))
+
+            if (trackerPayload.equals("-4\n") || dataPointPayload.equals("-4\n"))
                 throw new APIError("API under heavy load");
 
             // Process API payloads respectively
@@ -210,8 +214,8 @@ public class TrackerFetcher {
 
 		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(connectionString, Request.Method.GET);
 		String output = httpRequest.getOutput();
-		if (httpRequest.getStatusCode() != StatusCode.FOUND || output == null) {
-            throw new APIError("Error reaching the API");
+		if ((httpRequest.getStatusCode() != StatusCode.FOUND && httpRequest.getStatusCode() != StatusCode.ERROR) || output == null) {
+            throw new APIError("An unexpected error happened contacting the server.");
 		}
 		return output;
 	}

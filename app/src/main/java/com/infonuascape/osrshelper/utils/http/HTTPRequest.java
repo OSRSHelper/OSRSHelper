@@ -20,7 +20,7 @@ public class HTTPRequest {
 	};
 
 	public enum StatusCode {
-		FOUND(200), NOT_FOUND(404), REQUEST_NOT_SENT(-1);
+		FOUND(200), NOT_FOUND(404), ERROR(404), REQUEST_NOT_SENT(-1);
 		public int value;
 
 		private StatusCode(int value) {
