@@ -62,8 +62,11 @@ public class DBController extends SQLiteOpenHelper {
 	public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
 		Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
 		if(oldVersion < 4) {
-			db.execSQL("ALTER TABLE " + TABLE_USERNAMES_OSRSHELPER + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE_OSRSHELPER + " TEXT DEFAULT '" + AccountType.REGULAR.name() + "'");
-			db.execSQL("ALTER TABLE " + TABLE_WIDGET_OSRSHELPER + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE_OSRSHELPER + " TEXT DEFAULT '" + AccountType.REGULAR.name() + "'");
+			db.execSQL("ALTER TABLE " + TABLE_USERNAMES_OSRSHELPER + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE_OSRSHELPER + " TEXT");
+			db.execSQL("ALTER TABLE " + TABLE_WIDGET_OSRSHELPER + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE_OSRSHELPER + " TEXT");
+
+			db.execSQL("UPDATE TABLE " + TABLE_USERNAMES_OSRSHELPER + " SET " + COLUMN_ACCOUNT_TYPE_OSRSHELPER + "='" + AccountType.REGULAR.name() + "'");
+			db.execSQL("UPDATE TABLE " + TABLE_WIDGET_OSRSHELPER + " SET " + COLUMN_ACCOUNT_TYPE_OSRSHELPER + "='" + AccountType.REGULAR.name() + "'");
 		}
 	}
 

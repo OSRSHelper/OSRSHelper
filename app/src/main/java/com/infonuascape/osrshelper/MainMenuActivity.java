@@ -22,11 +22,20 @@ public class MainMenuActivity extends Activity implements OnClickListener {
 		findViewById(R.id.world_map_btn).setOnClickListener(this);
 		findViewById(R.id.wiki_btn).setOnClickListener(this);
 		findViewById(R.id.rt_xptracker_btn).setOnClickListener(this);
-		findViewById(R.id.cml_xptracker_btn).setOnClickListener(this);
 		findViewById(R.id.combat_btn).setOnClickListener(this);
 		findViewById(R.id.ge_btn).setOnClickListener(this);
-		findViewById(R.id.cml_top_btn).setOnClickListener(this);
 		findViewById(R.id.donate_btn).setOnClickListener(this);
+
+		if(!BuildConfig.DEBUG) {
+			findViewById(R.id.cml_top_btn).setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.cml_top_btn).setOnClickListener(this);
+		}
+		if(!BuildConfig.DEBUG) {
+			findViewById(R.id.cml_xptracker_btn).setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.cml_xptracker_btn).setOnClickListener(this);
+		}
 	}
 
 	@Override

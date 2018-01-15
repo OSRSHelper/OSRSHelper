@@ -51,3 +51,4 @@ gen-external-apklibs
 .DC_Store
 
 app/app.iml
+/app/fabric.properties
