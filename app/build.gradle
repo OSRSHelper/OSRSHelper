@@ -2,23 +2,31 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+        osrs_release {
+            keyAlias System.getenv('OSRS_KEY_ALIAS')
+            keyPassword System.getenv('OSRS_KEY_PWD')
+            storeFile file(System.getenv('OSRS_STORE_LOCATION'))
+            storePassword System.getenv('OSRS_STORE_PWD')
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion '26'
-
     defaultConfig {
         applicationId "com.infonuascape.osrshelper"
         minSdkVersion 14
         targetSdkVersion 26
-
         versionCode 22
         versionName "1.6.2"
+        signingConfig signingConfigs.osrs_release
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+    }
+    productFlavors {
     }
 }
 

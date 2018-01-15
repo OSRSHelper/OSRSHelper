@@ -65,8 +65,8 @@ public class DBController extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE + " TEXT");
 			db.execSQL("ALTER TABLE " + TABLE_WIDGET + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE + " TEXT");
 
-			db.execSQL("UPDATE TABLE " + TABLE_USERNAMES + " SET " + COLUMN_ACCOUNT_TYPE + "='" + AccountType.REGULAR.name() + "'");
-			db.execSQL("UPDATE TABLE " + TABLE_WIDGET + " SET " + COLUMN_ACCOUNT_TYPE + "='" + AccountType.REGULAR.name() + "'");
+			db.execSQL("UPDATE " + TABLE_USERNAMES + " SET " + COLUMN_ACCOUNT_TYPE + "='" + AccountType.REGULAR.name() + "'");
+			db.execSQL("UPDATE " + TABLE_WIDGET + " SET " + COLUMN_ACCOUNT_TYPE + "='" + AccountType.REGULAR.name() + "'");
 		}
 	}
 
