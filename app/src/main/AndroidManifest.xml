@@ -78,12 +78,14 @@
 
         <service
             android:name=".widget.OSRSWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" >
+            android:permission="android.permission.BIND_REMOTEVIEWS">
         </service>
 
         <provider
             android:authorities="com.infonuascape.osrshelper.provider"
-            android:name=".db.OSRSContentProvider" />
+            android:name=".db.OSRSContentProvider"
+            android:enabled="true" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="30779fc3bee2325424ded728ae0b794ac6912afe" />

@@ -44,7 +44,7 @@ public class OSRSContentProvider extends ContentProvider {
 
         switch (sUriMatcher.match(uri)) {
             case ACCOUNTS_URI:
-                return db.query(OSRSDatabase.TABLE_USERNAMES, projection, selection, selectionArgs, null, null, sortOrder);
+                return db.query(OSRSDatabase.TABLE_USERNAMES, projection, selection, selectionArgs, OSRSDatabase.COLUMN_USERNAME, null, sortOrder);
             case WIDGETS_URI:
                 return db.query(OSRSDatabase.TABLE_WIDGET, projection, selection, selectionArgs, null, null, sortOrder);
             default:

@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Binder;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -99,7 +100,9 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
 
     public void onDataSetChanged() {
         Log.i(TAG, "onDataSetChanged");
+        final long identityToken = Binder.clearCallingIdentity();
         final Account account = DBController.getAccountForWidget(mContext, mAppWidgetId);
+        Binder.restoreCallingIdentity(identityToken);
 
         try {
             playerSkills = new HiscoreFetcher(mContext, account.username, account.type).getPlayerSkills();
