@@ -98,6 +98,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		mViewPager.setAdapter(adapter);
 		addDots();
 
+		findViewById(R.id.share_btn).setVisibility(View.GONE);
 		findViewById(R.id.share_btn).setOnClickListener(this);
 
 		new HiscoresFetcherTask(this, this, account).execute();
@@ -135,10 +136,12 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 	@Override
 	public void onClick(View view) {
 		if(view.getId() == R.id.share_btn) {
-			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
-			} else {
-				ShareImageUtils.shareHiscores(this, account.username, playerSkills);
+			if(playerSkills != null) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
+				} else {
+					ShareImageUtils.shareHiscores(this, account.username, playerSkills);
+				}
 			}
 		}
 	}
@@ -158,6 +161,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		changeHeaderText(getString(R.string.showing_results, account.username));
 		changeCombatText();
 
+		findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
         virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 
         tableFiller.fill(playerSkills);

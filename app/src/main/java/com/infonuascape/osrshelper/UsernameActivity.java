@@ -107,7 +107,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	public void onResume(){
 		super.onResume();
 		// Get all usernames
-		ArrayList<Account> accounts = DBController.getInstance(this).getAllAccounts();
+		ArrayList<Account> accounts = DBController.getAllAccounts(this);
 
 		adapter = new UsernamesAdapter(this, accounts);
 		ListView list = findViewById(android.R.id.list);
@@ -155,12 +155,12 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
     }
 
 	private void closeActivity(final Account account) {
-		DBController.getInstance(this).addAccount(account);
+		DBController.addAccount(this, account);
 
 		if(type == HISCORES){
 			HighScoreActivity.show(this, account);
 		} else if(type == CONFIGURATION){
-			DBController.getInstance(this).setAccountForWidget(mAppWidgetId, account);
+			DBController.setAccountForWidget(this, mAppWidgetId, account);
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			setResult(RESULT_OK, resultValue);
@@ -192,7 +192,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				DBController.getInstance(getApplicationContext()).deleteAccount(account);
+				DBController.deleteAccount(getApplicationContext(), account);
 				adapter.remove(account);
 			}
 		}).setNegativeButton(R.string.cancel, null).create().show();

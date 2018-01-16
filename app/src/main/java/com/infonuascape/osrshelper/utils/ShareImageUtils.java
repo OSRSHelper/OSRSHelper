@@ -38,8 +38,6 @@ public class ShareImageUtils {
         Intent i = new Intent(Intent.ACTION_SEND);
 
         i.setType("image/*");
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
 
         i.putExtra(Intent.EXTRA_STREAM, getImageUri(context, getBitmapFromView(view)));
         try {

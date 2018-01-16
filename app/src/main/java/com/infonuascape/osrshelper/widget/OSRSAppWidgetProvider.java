@@ -52,7 +52,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			views.setOnClickPendingIntent(R.id.update_btn, pendingSync);
 			
 			//Username
-			final Account account = DBController.getInstance(context).getAccountForWidget(appWidgetId);
+			final Account account = DBController.getAccountForWidget(context, appWidgetId);
 			if(account != null) {
 				views.setTextViewText(R.id.username, account.username);
 				views.setViewVisibility(R.id.icon, View.VISIBLE);

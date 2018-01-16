@@ -99,7 +99,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
 
     public void onDataSetChanged() {
         Log.i(TAG, "onDataSetChanged");
-        final Account account = DBController.getInstance(mContext).getAccountForWidget(mAppWidgetId);
+        final Account account = DBController.getAccountForWidget(mContext, mAppWidgetId);
 
         try {
             playerSkills = new HiscoreFetcher(mContext, account.username, account.type).getPlayerSkills();
