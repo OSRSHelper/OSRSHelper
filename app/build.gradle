@@ -2,14 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    signingConfigs {
-        osrs_release {
-            keyAlias System.getenv('OSRS_KEY_ALIAS')
-            keyPassword System.getenv('OSRS_KEY_PWD')
-            storeFile file(System.getenv('OSRS_STORE_LOCATION'))
-            storePassword System.getenv('OSRS_STORE_PWD')
-        }
-    }
     compileSdkVersion 26
     buildToolsVersion '26'
     defaultConfig {
@@ -18,7 +10,6 @@ android {
         targetSdkVersion 26
         versionCode 26
         versionName "1.6.5"
-        signingConfig signingConfigs.osrs_release
     }
     buildTypes {
         release {
