@@ -60,6 +60,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
+            android:name=".CmlTopSkillActivity">
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+
+        <activity
             android:name=".DonationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>

@@ -31,7 +31,7 @@ public class TopHelper {
 
         //Instanciate a new API fetcher
         TrackerFetcher tf = new TrackerFetcher(context, userName, time);
-		
+
 		return tf.getPlayerSkills();
 	}
 

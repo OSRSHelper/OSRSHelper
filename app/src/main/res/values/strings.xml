@@ -56,7 +56,8 @@
     <string name="next_page">Next Page</string>
     <string name="back_page">Back Page</string>
 
-    <string name="cml_top_select_skill">Select a skill</string>
+    <string name="cml_top_select_skill">Select a skill:</string>
+    <string name="cml_top_skill_header">We are in a skill</string>
 
     <string-array name="time_array">
         <item>Hour</item>
@@ -75,7 +76,7 @@
     <string name="magic_lvl">Magic</string>
     <string name="ranging_lvl">Ranging</string>
     <string name="prayer_lvl">Prayer</string>
-    
+
     <string name="lvl_need">Number of levels needed until next combat lvl</string>
     <string name="maxed_out">You are currently maxed out</string>
     <string name="attack_strength_lvl_needed">%1$d attack or strength</string>
@@ -93,5 +94,8 @@
     <string name="donate_text5">Thank you for using this app!</string>
     <string name="share_hiscores">Share</string>
     <string name="daily_trend">(last 24hrs)</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
