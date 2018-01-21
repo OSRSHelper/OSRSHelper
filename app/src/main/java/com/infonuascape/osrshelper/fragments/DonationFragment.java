@@ -22,7 +22,7 @@ import java.util.List;
 public class DonationFragment extends OSRSFragment implements View.OnClickListener, PurchasesUpdatedListener, BillingClientStateListener {
     private BillingClient mBillingClient;
     private boolean isConnected;
-    private boolean isTryAgainToBuy;
+    private String isTryAgainToBuy;
 
     public static DonationFragment newInstance() {
         DonationFragment fragment = new DonationFragment();
@@ -38,7 +38,9 @@ public class DonationFragment extends OSRSFragment implements View.OnClickListen
 
         View view = inflater.inflate(R.layout.donation, null);
 
-        view.findViewById(R.id.donate_btn).setOnClickListener(this);
+        view.findViewById(R.id.donate_1_btn).setOnClickListener(this);
+        view.findViewById(R.id.donate_3_btn).setOnClickListener(this);
+        view.findViewById(R.id.donate_10_btn).setOnClickListener(this);
 
         mBillingClient = BillingClient.newBuilder(getContext()).setListener(this).build();
         mBillingClient.startConnection(this);
@@ -50,21 +52,25 @@ public class DonationFragment extends OSRSFragment implements View.OnClickListen
     public void onClick(View view) {
         int id = view.getId();
 
-        if (id == R.id.donate_btn) {
-            buyUsBeer();
+        if (id == R.id.donate_1_btn) {
+            donate("donation_1");
+        } else if (id == R.id.donate_3_btn) {
+            donate("donation_3");
+        } else if (id == R.id.donate_10_btn) {
+            donate("donation_10");
         }
     }
 
-    private void buyUsBeer() {
-        isTryAgainToBuy = false;
+    private void donate(final String product) {
+        isTryAgainToBuy = null;
         if(isConnected) {
             BillingFlowParams flowParams = BillingFlowParams.newBuilder()
-                    .setSku("donation")
+                    .setSku(product)
                     .setType(BillingClient.SkuType.INAPP)
                     .build();
             mBillingClient.launchBillingFlow(getActivity(), flowParams);
         } else {
-            isTryAgainToBuy = true;
+            isTryAgainToBuy = product;
             mBillingClient.startConnection(this);
         }
     }
@@ -78,8 +84,8 @@ public class DonationFragment extends OSRSFragment implements View.OnClickListen
     public void onBillingSetupFinished(@BillingClient.BillingResponse int billingResponseCode) {
         if (billingResponseCode == BillingClient.BillingResponse.OK) {
             isConnected = true;
-            if(isTryAgainToBuy) {
-                buyUsBeer();
+            if(isTryAgainToBuy != null) {
+                donate(isTryAgainToBuy);
             }
         }
     }
