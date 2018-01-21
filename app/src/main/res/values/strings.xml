@@ -131,5 +131,6 @@
     <string name="cml_top_header_1">Rank</string>
     <string name="cml_top_header_2">Username</string>
     <string name="cml_top_header_3">Experience</string>
+    <string name="top_players_for_cml">Top players for %1$s</string>
 
 </resources>

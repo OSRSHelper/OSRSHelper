@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.SkillType;
@@ -34,6 +35,8 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
         View view = inflater.inflate(R.layout.cml_top_skill, null);
 
         skillType = (SkillType) getArguments().getSerializable(EXTRA_SKILLTYPE);
+
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.top_players_for_cml, skillType.getSkillName()));
 
         ViewPager viewPager = view.findViewById(R.id.viewpager);
         adapter = new CmlTopSkillFragmentAdapter(getChildFragmentManager(), getContext(), skillType);

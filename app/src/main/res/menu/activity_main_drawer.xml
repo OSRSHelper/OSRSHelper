@@ -17,7 +17,7 @@
                     android:id="@+id/nav_group_profile" >
                     <item
                         android:id="@+id/nav_hiscores"
-                        android:icon="@drawable/overall"
+                        android:icon="@drawable/hiscore"
                         android:title="@string/highscores" />
                     <item
                         android:id="@+id/nav_cml_tracker"

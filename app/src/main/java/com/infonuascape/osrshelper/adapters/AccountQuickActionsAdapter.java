@@ -40,7 +40,7 @@ public class AccountQuickActionsAdapter extends RecyclerView.Adapter<AccountQuic
         int resId = 0;
         int nameId = 0;
         if(quickAction == QuickAction.HISCORES) {
-            resId = R.drawable.overall;
+            resId = R.drawable.hiscore;
             nameId = R.string.highscores;
         } else if(quickAction == QuickAction.XP_TRACKER) {
             resId = R.drawable.xptrack;

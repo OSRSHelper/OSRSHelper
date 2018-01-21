@@ -82,7 +82,7 @@
                         <ImageView
                             android:layout_width="25dp"
                             android:layout_height="25dp"
-                            android:src="@drawable/overall"
+                            android:src="@drawable/hiscore"
                             android:tint="@color/text_normal"/>
 
                         <TextView
