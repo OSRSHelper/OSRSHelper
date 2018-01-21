@@ -4,10 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/colorAccent" >
 
+    <fragment
+        android:id="@+id/profile_header"
+        class="com.infonuascape.osrshelper.fragments.ProfileHeaderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" >
+        android:layout_below="@id/profile_header">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +58,7 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:selectAllOnFocus="true"
-                    android:text="10"
+                    android:text=""
                     android:textColor="@color/text_normal"
                     android:textCursorDrawable="@drawable/blackcursor" />
             </RelativeLayout>
@@ -83,7 +90,7 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:selectAllOnFocus="true"
-                    android:text="1"
+                    android:text=""
                     android:textColor="@color/text_normal"
                     android:textCursorDrawable="@drawable/blackcursor" />
             </RelativeLayout>
@@ -115,7 +122,7 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:selectAllOnFocus="true"
-                    android:text="1"
+                    android:text=""
                     android:textColor="@color/text_normal"
                     android:textCursorDrawable="@drawable/blackcursor" />
             </RelativeLayout>
@@ -147,7 +154,7 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:selectAllOnFocus="true"
-                    android:text="1"
+                    android:text=""
                     android:textColor="@color/text_normal"
                     android:textCursorDrawable="@drawable/blackcursor" />
             </RelativeLayout>
@@ -179,7 +186,7 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:selectAllOnFocus="true"
-                    android:text="1"
+                    android:text=""
                     android:textColor="@color/text_normal"
                     android:textCursorDrawable="@drawable/blackcursor" />
             </RelativeLayout>
@@ -211,7 +218,7 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:selectAllOnFocus="true"
-                    android:text="1"
+                    android:text=""
                     android:textColor="@color/text_normal"
                     android:textCursorDrawable="@drawable/blackcursor" />
             </RelativeLayout>
@@ -243,7 +250,7 @@
                     android:digits="0123456789"
                     android:maxLength="2"
                     android:selectAllOnFocus="true"
-                    android:text="1"
+                    android:text=""
                     android:textColor="@color/text_normal"
                     android:textCursorDrawable="@drawable/blackcursor" />
             </RelativeLayout>

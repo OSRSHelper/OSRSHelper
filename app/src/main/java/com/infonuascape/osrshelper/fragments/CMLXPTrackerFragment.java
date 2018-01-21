@@ -24,15 +24,18 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CMLTrackerFetcherTask;
 import com.infonuascape.osrshelper.utils.tablesfiller.CMLTrackerTableFiller;
 
+import org.w3c.dom.Text;
+
 public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelectedListener, OnClickListener, CompoundButton.OnCheckedChangeListener, TrackerFetcherListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private Account account;
-	private TextView header;
 	private Spinner spinner;
 	private CheckBox virtualLevelsCB;
 	private PlayerSkills playerSkills;
 	private TableLayout tableLayout;
 	private CMLTrackerTableFiller tableFiller;
+	private ProfileHeaderFragment profileHeaderFragment;
+	private TextView header;
 
 	public static CMLXPTrackerFragment newInstance(final Account account) {
 		CMLXPTrackerFragment fragment = new CMLXPTrackerFragment();
@@ -51,11 +54,14 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 
 		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 
+		profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
+		profileHeaderFragment.refreshProfile(account);
+		profileHeaderFragment.setTitle(R.string.cml_xptracker);
+
+		header = view.findViewById(R.id.header);
+
 		tableLayout = view.findViewById(R.id.table_tracking);
 		tableFiller = new CMLTrackerTableFiller(getContext(), tableLayout);
-
-		header = (TextView) view.findViewById(R.id.header);
-		header.setText(getString(R.string.loading_tracking, account.username));
 
 		virtualLevelsCB = (CheckBox) view.findViewById(R.id.cb_virtual_levels);
 		virtualLevelsCB.setOnCheckedChangeListener(this);
@@ -96,8 +102,9 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 
 
 	private void populateTable() {
-		changeHeaderText(getString(R.string.showing_tracking, account.username), View.GONE);
+		changeHeaderText(getString(R.string.showing_tracking), View.GONE);
 
+		((TextView) getView().findViewById(R.id.track_metadata)).setVisibility(View.VISIBLE);
 		if (playerSkills.sinceWhen != null) {
 			((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
 					playerSkills.sinceWhen));
@@ -131,7 +138,7 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 		if (time != null) {
 			((TableLayout) getView().findViewById(R.id.table_tracking)).removeAllViews();
 			((TextView) getView().findViewById(R.id.track_metadata)).setText("");
-			changeHeaderText(getString(R.string.loading_tracking, account.username), View.VISIBLE);
+			changeHeaderText(getString(R.string.loading_tracking), View.VISIBLE);
 			new CMLTrackerFetcherTask(getContext(), this, account, time, isUpdating).execute();
 		}
 	}

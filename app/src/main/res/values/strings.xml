@@ -32,8 +32,8 @@
     <string name="load">Load</string>
     <string name="loading_highscores">Loading hiscores for: %1$s</string>
     <string name="combat_lvl">Combat lvl: %1$d</string>
-    <string name="not_existing_player">Failed to load hiscores</string>
-    <string name="not_tracked_player">%1$s is not tracked yet. Press update to track them from now on.</string>
+    <string name="not_existing_player">Failed to load account</string>
+    <string name="not_tracked_player">Account is not tracked yet. Press update to track them from now on.</string>
     <string name="showing_results">Showing hiscores for: %1$s</string>
     <string name="internal_error">Network error</string>
     <string name="not_ranked">Not ranked</string>
@@ -41,8 +41,8 @@
     <string name="list_view">List View</string>
     <string name="xp_gain">(XPΔ)</string>
     <string name="rank_diff">(RankΔ)</string>
-    <string name="loading_tracking">Loading tracking for: %1$s</string>
-    <string name="showing_tracking">Showing tracking for: %1$s</string>
+    <string name="loading_tracking">Loading tracking</string>
+    <string name="showing_tracking">Showing tracking</string>
     <string name="gain">(+ %1$dK)</string>
     <string name="gain_small">(+ %1$d)</string>
     <string name="gain_medium">(+ %1$.1fK)</string>

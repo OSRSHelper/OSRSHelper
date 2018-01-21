@@ -39,7 +39,8 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher {
 	private EditText prayerEdit;
 
 	private Account account;
-	
+	private ProfileHeaderFragment profileHeaderFragment;
+
 	public static CombatCalcFragment newInstance(final Account account) {
 		CombatCalcFragment fragment = new CombatCalcFragment();
 		Bundle b = new Bundle();
@@ -54,6 +55,12 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher {
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		View view = inflater.inflate(R.layout.combat_lvl_calc, null);
+
+		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
+
+		profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
+		profileHeaderFragment.refreshProfile(account);
+		profileHeaderFragment.setTitle(R.string.combat_lvl_calculator);
 
 		combatText = (TextView) view.findViewById(R.id.combat_lvl);
 		lvlNeededText = (TextView) view.findViewById(R.id.number_lvl_needed);
@@ -85,7 +92,6 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher {
 		magicEdit.addTextChangedListener(this);
 
 		changeCombatText();
-		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 		if(account != null){
 			new PopulateTable().execute();
 		}

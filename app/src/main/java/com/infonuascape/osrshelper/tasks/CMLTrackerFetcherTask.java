@@ -45,11 +45,11 @@ public class CMLTrackerFetcherTask extends AsyncTask<String, Void, PlayerSkills>
             return new TrackerFetcher(context.get(), account.username, time).getPlayerSkills();
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
-                listener.onTrackingError(context.get().getString(R.string.not_existing_player, account.username));
+                listener.onTrackingError(context.get().getString(R.string.not_existing_player));
             }
         } catch (PlayerNotTrackedException e) {
             if(listener != null) {
-                listener.onTrackingError(context.get().getString(R.string.not_tracked_player, account.username));
+                listener.onTrackingError(context.get().getString(R.string.not_tracked_player));
             }
         } catch (APIError e) {
             if(listener != null) {

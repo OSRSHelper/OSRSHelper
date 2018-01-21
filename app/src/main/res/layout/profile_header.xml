@@ -40,6 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="6dp"
+                android:maxWidth="125dp"
+                android:gravity="right"
                 android:layout_alignParentRight="true"
                 tools:text="@string/highscores"/>
 
