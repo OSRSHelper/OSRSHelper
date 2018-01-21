@@ -7,7 +7,7 @@ package com.infonuascape.osrshelper.enums;
 public enum SkillType {
     Overall("Overall"),
     Attack("Attack"),
-    Defence("Defence"),
+    Defence("Defence", "Defense"),
     Strength("Strength"),
     Hitpoints("Hitpoints", "Constitution"),
     Ranged("Ranged"),
@@ -35,6 +35,10 @@ public enum SkillType {
 
     public String getSkillName() {
         return skillName;
+    }
+
+    public boolean equals(String skillName) {
+        return (getAlternativeName().equals(skillName)) || (getSkillName().equals(skillName));
     }
 
     public String getAlternativeName() {
