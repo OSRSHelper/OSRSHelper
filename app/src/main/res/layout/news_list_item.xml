@@ -2,74 +2,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
         card_view:cardCornerRadius="4dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/news_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gen_white_bt_sel"
-            android:padding="10dp">
-
+            android:orientation="vertical"
+            android:background="@drawable/gen_white_bt_sel">
             <RelativeLayout
-                android:id="@+id/news_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:background="@drawable/gen_white_bt_sel"
+                android:layout_height="140dp">
+
                 <ImageView
                     android:id="@+id/news_image"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@color/gray"
+                    android:src="@drawable/ic_launcher"/>
 
                 <TextView
                     android:id="@+id/news_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_normal"
-                    android:textStyle="bold"
-                    android:layout_toRightOf="@id/news_image"/>
-
-                <TextView
-                    android:id="@+id/news_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="14sp"
-                    android:textStyle="italic"
-                    android:textColor="@color/text_normal"
-                    android:layout_below="@id/news_title"
-                    android:layout_toRightOf="@id/news_image"/>
-
-                <TextView
-                    android:id="@+id/news_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_normal"
-                    android:layout_below="@id/news_category"
-                    android:layout_toRightOf="@id/news_image"/>
-
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/black_semi_transparent"
+                    tools:text="Fossil Island Improvements"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/news_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_normal"
+                tools:text="Game Update News"/>
+
+            <TextView
+                android:id="@+id/news_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="3dp"
+                android:textSize="14sp"
+                android:textColor="@color/text_normal"
+                tools:text="At the end of November we offered an array of changes to content on Fossil Island in the form of a poll. "/>
 
             <TextView
                 android:id="@+id/news_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/news_content"
                 android:textColor="@color/text_light"
                 android:textSize="13sp"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 </LinearLayout>

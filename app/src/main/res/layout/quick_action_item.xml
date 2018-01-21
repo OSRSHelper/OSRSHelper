@@ -23,7 +23,8 @@
             <ImageView
                 android:id="@+id/quick_action_icon"
                 android:layout_width="30dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp"
+                android:tint="@color/text_normal"/>
 
             <TextView
                 android:id="@+id/quick_action_title"

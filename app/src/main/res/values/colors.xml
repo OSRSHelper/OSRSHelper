@@ -5,7 +5,7 @@
  <color name="colorAccent">#f4f4f4</color>
 
  <color name="white_semi_transparent">#66FFFFFF</color>
- <color name="black_semi_transparent">#66000000</color>
+ <color name="black_semi_transparent">#80000000</color>
  <color name="gen_white_btn_over">#10000000</color>
  <color name="white">#FFFFFF</color>
  <color name="light_gray">#F5F5F5</color>
