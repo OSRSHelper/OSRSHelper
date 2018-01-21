@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
@@ -42,6 +44,8 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher {
 	private ProfileHeaderFragment profileHeaderFragment;
 
 	public static CombatCalcFragment newInstance(final Account account) {
+		Answers.getInstance().logContentView(new ContentViewEvent()
+				.putContentName("Combat Calculator"));
 		CombatCalcFragment fragment = new CombatCalcFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(EXTRA_ACCOUNT, account);

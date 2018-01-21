@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
 import com.infonuascape.osrshelper.db.DBController;
@@ -29,6 +31,8 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     private ProfileHeaderFragment profileHeaderFragment;
 
     public static ProfileFragment newInstance(final String username) {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Profile"));
         ProfileFragment fragment = new ProfileFragment();
         Bundle b = new Bundle();
         b.putString(EXTRA_USERNAME, username);

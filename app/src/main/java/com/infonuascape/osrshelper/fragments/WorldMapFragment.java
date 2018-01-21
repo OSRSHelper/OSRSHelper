@@ -15,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.infonuascape.osrshelper.R;
@@ -35,6 +37,8 @@ public class WorldMapFragment extends OSRSFragment implements OnItemClickListene
 	private SubsamplingScaleImageView imageSurfaceView;
 
 	public static WorldMapFragment newInstance(){
+		Answers.getInstance().logContentView(new ContentViewEvent()
+				.putContentName("World Map"));
 		WorldMapFragment fragment = new WorldMapFragment();
 		Bundle b = new Bundle();
 		fragment.setArguments(b);

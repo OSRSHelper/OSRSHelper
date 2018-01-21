@@ -11,6 +11,8 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public class DonationFragment extends OSRSFragment implements View.OnClickListen
     private String isTryAgainToBuy;
 
     public static DonationFragment newInstance() {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Donation"));
         DonationFragment fragment = new DonationFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);

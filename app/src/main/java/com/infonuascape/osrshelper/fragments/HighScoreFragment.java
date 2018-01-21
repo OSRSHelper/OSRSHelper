@@ -14,6 +14,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
@@ -40,6 +42,8 @@ public class HighScoreFragment extends OSRSFragment implements CompoundButton.On
 	private ProfileHeaderFragment profileHeaderFragment;
 
 	public static HighScoreFragment newInstance(final Account account) {
+		Answers.getInstance().logContentView(new ContentViewEvent()
+				.putContentName("Hiscores"));
     	HighScoreFragment fragment = new HighScoreFragment();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(EXTRA_ACCOUNT, account);

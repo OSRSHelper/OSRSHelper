@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.enums.TrackerTime;
@@ -38,6 +40,8 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 	private TextView header;
 
 	public static CMLXPTrackerFragment newInstance(final Account account) {
+		Answers.getInstance().logContentView(new ContentViewEvent()
+				.putContentName("CML XP Tracker"));
 		CMLXPTrackerFragment fragment = new CMLXPTrackerFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(EXTRA_ACCOUNT, account);

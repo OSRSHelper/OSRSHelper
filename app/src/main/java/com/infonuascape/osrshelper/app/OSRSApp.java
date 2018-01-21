@@ -2,6 +2,8 @@ package com.infonuascape.osrshelper.app;
 
 import android.app.Application;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.crashlytics.android.Crashlytics;
@@ -17,8 +19,9 @@ public class OSRSApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(!BuildConfig.DEBUG) {
-            Fabric.with(this, new Crashlytics());
-        }
+        
+        Fabric.with(this, new Crashlytics.Builder().core(
+                new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .answers(new Answers()).build());
     }
 }
