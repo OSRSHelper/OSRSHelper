@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.infonuascape.osrshelper" >
+    package="com.infonuascape.osrshelper">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
+        android:name=".app.OSRSApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".OSRSApp"
-        android:theme="@style/Theme.AppCompat.Light" >
+        android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name=".MainMenuActivity"
-            android:label="@string/app_name" >
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,56 +24,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UsernameActivity"
-            android:label="@string/title_activity_username" >
-             <intent-filter>
+            android:name=".activities.WidgetUsernameActivity"
+            android:label="@string/title_activity_username">
+            <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".HighScoreActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-        <activity
-            android:name=".RTXPTrackerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-        <activity
-            android:name=".CMLXPTrackerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-        <activity
-            android:name=".CombatCalcActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-        <activity
-            android:name=".WorldMapActivity">
-        </activity>
-        <activity
-            android:name=".WebViewActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
-        </activity>
-        <activity
-            android:name=".SearchItemActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-        <activity
-            android:name=".CmlTopActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-        <activity
-            android:name=".CmlTopSkillActivity">
-            android:configChanges="keyboardHidden|orientation|screenSize" >
-        </activity>
-
-        <activity
-            android:name=".DonationActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
 
         <receiver
             android:name=".widget.OSRSAppWidgetProvider"
-            android:label="@string/widget_name" >
+            android:label="@string/widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -83,12 +45,11 @@
 
         <service
             android:name=".widget.OSRSWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS">
-        </service>
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
 
         <provider
-            android:authorities="com.infonuascape.osrshelper.provider"
             android:name=".db.OSRSContentProvider"
+            android:authorities="com.infonuascape.osrshelper.provider"
             android:enabled="true" />
 
         <meta-data

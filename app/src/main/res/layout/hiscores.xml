@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background" >
+    android:background="@color/colorAccent" >
 
     <TextView
         android:id="@+id/header"
@@ -81,7 +81,7 @@
                     android:layout_height="45dp"
                     android:layout_gravity="right"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/greenbt_sel"
+                    android:background="@drawable/bt_sel"
                     android:drawableRight="@android:drawable/ic_menu_share"
                     android:gravity="center"
                     android:paddingBottom="10dp"

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="@string/home" />
+
+        <item
+             android:title="@string/profile" >
+            <menu>
+                <group
+                    android:checkableBehavior="single"
+                    android:id="@+id/nav_group_profile" >
+                    <item
+                        android:id="@+id/nav_hiscores"
+                        android:icon="@drawable/overall"
+                        android:title="@string/highscores" />
+                    <item
+                        android:id="@+id/nav_cml_tracker"
+                        android:icon="@drawable/xptrack"
+                        android:title="@string/cml_xptracker" />
+                    <item
+                        android:id="@+id/nav_combat_lvl"
+                        android:icon="@drawable/calculator"
+                        android:title="@string/combat_lvl_calculator" />
+
+                </group>
+            </menu>
+        </item>
+        <item android:title="@string/tools">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_world_map"
+                        android:icon="@drawable/world_map"
+                        android:title="@string/world_map" />
+                    <item
+                        android:id="@+id/nav_wiki"
+                        android:icon="@drawable/wiki"
+                        android:title="@string/wiki" />
+                    <item
+                        android:id="@+id/nav_news"
+                        android:icon="@drawable/news"
+                        android:title="@string/news" />
+                    <item
+                        android:id="@+id/nav_grand_exchange"
+                        android:icon="@drawable/grandexchange"
+                        android:title="@string/grand_exchange" />
+                    <item
+                        android:id="@+id/nav_top_players"
+                        android:icon="@drawable/top"
+                        android:title="@string/cml_top" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="@string/donate_group">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_donate"
+                        android:icon="@drawable/donation"
+                        android:title="@string/donate" />
+                </group>
+            </menu>
+        </item>
+
+    </group>
+</menu>

@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/colorAccent">
 
     <TextView
         android:layout_width="match_parent"
@@ -63,7 +63,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/greenbt_sel"
+        android:background="@drawable/bt_sel"
         android:gravity="center"
         android:text="@string/donate"
         android:textColor="@color/white"

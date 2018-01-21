@@ -2,13 +2,13 @@ package com.infonuascape.osrshelper.top;
 
 import android.content.Context;
 
+import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.models.players.PlayerExp;
 import com.infonuascape.osrshelper.utils.API;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
-import com.infonuascape.osrshelper.models.players.PlayerExp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,22 +26,11 @@ public class TopFetcher {
 	private SkillType skill;
 	private Period period = Period.Day;
     private List<PlayerExp> playerList;
-    public enum Period {
-        Day, Week, Month, Year;
-    }
 
 	public TopFetcher(Context context, SkillType skill, Period period) throws ParserErrorException, APIError {
 		this.context = context;
 		this.skill = skill;
 		this.period = period;
-	}
-
-	public SkillType getSkill() {
-		return skill;
-	}
-
-	public Period getPeriod() {
-		return period;
 	}
 
     public List<PlayerExp> processAPI() throws APIError, ParserErrorException, JSONException {
@@ -65,7 +54,7 @@ public class TopFetcher {
 
 
 	private String getAPIEndpoint() {
-		return String.format("/track/top/%1$s/%2$s", getSkill(), getPeriod());
+		return String.format("/track/top/%1$s/%2$s", skill, period);
 	}
 
 	private JSONObject getDataFromAPI() throws APIError, JSONException {

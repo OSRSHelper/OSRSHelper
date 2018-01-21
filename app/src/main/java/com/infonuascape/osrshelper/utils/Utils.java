@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.widget.ImageView;
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
 import com.infonuascape.osrshelper.db.PreferencesController;
+import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
@@ -232,5 +235,31 @@ public class Utils {
 	public static boolean isShowVirtualLevels(final Context context, final Skill skill) {
 		return skill != null && skill.getVirtualLevel() > 99
 				&& PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+	}
+
+	public static int getAccountTypeResource(final AccountType type) {
+		switch(type) {
+			case IRONMAN:
+				return R.drawable.ironman;
+			case ULTIMATE_IRONMAN:
+				return R.drawable.ult_ironman;
+			case HARDCORE_IRONMAN:
+				return R.drawable.hc_ironman;
+		}
+
+		return R.drawable.ic_launcher;
+	}
+
+	public static int getAccountTypeString(AccountType type) {
+		switch(type) {
+			case IRONMAN:
+				return R.string.account_type_ironman;
+			case ULTIMATE_IRONMAN:
+				return R.string.account_type_ult_ironman;
+			case HARDCORE_IRONMAN:
+				return R.string.account_type_hc_ironman;
+		}
+
+		return R.string.account_type_regular;
 	}
 }
