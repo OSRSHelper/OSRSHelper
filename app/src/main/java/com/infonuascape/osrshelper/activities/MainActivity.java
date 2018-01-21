@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,7 +34,6 @@ import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.NewsFeedFragment;
 import com.infonuascape.osrshelper.fragments.NewsFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
-import com.infonuascape.osrshelper.fragments.SwitchProfileFragment;
 import com.infonuascape.osrshelper.fragments.WebViewFragment;
 import com.infonuascape.osrshelper.fragments.WorldMapFragment;
 import com.infonuascape.osrshelper.models.Account;
@@ -42,6 +42,7 @@ import com.infonuascape.osrshelper.utils.Utils;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener,
         SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider {
     private static final String TAG = "MainActivity";
+    private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
 
     private SearchView searchView;
     private NavigationView navigationView;
@@ -97,11 +98,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            OSRSFragment fragment = getCurrentFragment();
+            if(fragment != null) {
+                if(!fragment.onBackPressed()) {
+                    if(!(fragment instanceof NewsFeedFragment)){
+                        showFragment(R.id.nav_home, NewsFeedFragment.newInstance());
+                    } else {
+                        super.onBackPressed();
+                    }
+                } else {
+                    super.onBackPressed();
+                }
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -167,7 +180,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void showFragment(final OSRSFragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content, fragment, FRAGMENT_TAG).commit();
+    }
+
+    public OSRSFragment getCurrentFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if(fragment != null) {
+            return (OSRSFragment) fragment;
+        }
+
+        return null;
     }
 
     public void showFragment(final int menuId, final OSRSFragment fragment) {

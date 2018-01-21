@@ -54,6 +54,6 @@ public class WebViewFragment extends OSRSFragment {
             return true;
         }
 
-        return true;
+        return false;
     }
 }
