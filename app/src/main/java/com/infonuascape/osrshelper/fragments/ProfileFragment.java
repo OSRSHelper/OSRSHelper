@@ -48,6 +48,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         view.findViewById(R.id.account_follow_profile).setOnClickListener(this);
 
         profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
+        profileHeaderFragment.forceShowQuickActions();
 
         return view;
     }

@@ -23,11 +23,14 @@ import com.infonuascape.osrshelper.utils.Utils;
 
 public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickListener {
     private static final String TAG = "ProfileHeaderFragment";
+    private static final float QUICK_ACTIONS_HEIGHT = 120f;
+
     private FrameLayout quickActionsContainer;
     private ValueAnimator slideInQuickActions;
     private ValueAnimator slideOutQuickActions;
     private boolean isAnimating;
     private boolean isQuickActionsShown;
+    private Account account;
 
     @Nullable
     @Override
@@ -36,6 +39,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
         View view = inflater.inflate(R.layout.profile_header, null);
 
+        view.findViewById(R.id.profile_header).setOnClickListener(this);
         view.findViewById(R.id.account_username).setOnClickListener(this);
 
         quickActionsContainer = view.findViewById(R.id.quick_actions_container);
@@ -45,7 +49,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
     }
 
     private void initAnimations() {
-        slideInQuickActions = ValueAnimator.ofFloat(0f, Utils.convertDpToPixel(120, getContext()));
+        slideInQuickActions = ValueAnimator.ofFloat(0f, Utils.convertDpToPixel(QUICK_ACTIONS_HEIGHT, getContext()));
         slideInQuickActions.setDuration(300);
         slideInQuickActions.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -80,7 +84,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         });
 
 
-        slideOutQuickActions = ValueAnimator.ofFloat(Utils.convertDpToPixel(120, getContext()), 0f);
+        slideOutQuickActions = ValueAnimator.ofFloat(Utils.convertDpToPixel(QUICK_ACTIONS_HEIGHT, getContext()), 0f);
         slideOutQuickActions.setDuration(300);
         slideOutQuickActions.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -115,7 +119,17 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         });
     }
 
+    public void forceShowQuickActions() {
+        isAnimating = true;
+        isQuickActionsShown = true;
+        ViewGroup.LayoutParams params = quickActionsContainer.getLayoutParams();
+        params.height = (int) Utils.convertDpToPixel(QUICK_ACTIONS_HEIGHT, getContext());
+        quickActionsContainer.setLayoutParams(params);
+        getView().findViewById(R.id.profile_more_btn).setVisibility(View.GONE);
+    }
+
     public void refreshProfile(final Account account) {
+        this.account = account;
         ((TextView) getView().findViewById(R.id.account_username)).setText(account.username);
         ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
         ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
@@ -124,12 +138,24 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.account_username) {
-            if(!isAnimating) {
-                if(isQuickActionsShown) {
-                    slideOutQuickActions.start();
-                } else {
-                    slideInQuickActions.start();
-                }
+            animateQuickActions();
+        } else if(view.getId() == R.id.profile_header) {
+            showProfile();
+        }
+    }
+
+    private void showProfile() {
+        if(getMainActivity() != null && !(getMainActivity().getCurrentFragment() instanceof ProfileFragment)) {
+            getMainActivity().showFragment(ProfileFragment.newInstance(account.username));
+        }
+    }
+
+    private void animateQuickActions() {
+        if(!isAnimating) {
+            if(isQuickActionsShown) {
+                slideOutQuickActions.start();
+            } else {
+                slideInQuickActions.start();
             }
         }
     }

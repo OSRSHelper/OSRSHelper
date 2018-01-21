@@ -12,8 +12,9 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/header"
+            android:id="@+id/profile_header"
             android:layout_width="match_parent"
+            android:background="@drawable/gen_white_bt_sel"
             android:layout_height="120dp">
 
             <ImageView
@@ -26,7 +27,8 @@
                 android:id="@+id/account_username"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:gravity="center"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/black_semi_transparent"
                 tools:text="maybe watson"
@@ -42,12 +44,12 @@
                 tools:text="@string/highscores"/>
 
             <ImageView
+                android:id="@+id/profile_more_btn"
                 android:layout_width="30dp"
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:padding="3dp"
-                android:background="@drawable/gen_bt_sel"
                 android:src="@drawable/more"/>
         </RelativeLayout>
 

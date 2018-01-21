@@ -32,7 +32,7 @@
     <string name="load">Load</string>
     <string name="loading_highscores">Loading hiscores for: %1$s</string>
     <string name="combat_lvl">Combat lvl: %1$d</string>
-    <string name="not_existing_player">%1$s does not exist in the database.</string>
+    <string name="not_existing_player">Failed to load hiscores</string>
     <string name="not_tracked_player">%1$s is not tracked yet. Press update to track them from now on.</string>
     <string name="showing_results">Showing hiscores for: %1$s</string>
     <string name="internal_error">Network error</string>

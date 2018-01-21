@@ -33,7 +33,7 @@ public class HiscoresFetcherTask extends AsyncTask<String, Void, PlayerSkills> {
             return new HiscoreFetcher(context.get(), account.username, account.type).getPlayerSkills();
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
-                listener.onHiscoresError(context.get().getString(R.string.not_existing_player, account.username));
+                listener.onHiscoresError(context.get().getString(R.string.not_existing_player));
             }
 
         } catch (Exception uhe) {

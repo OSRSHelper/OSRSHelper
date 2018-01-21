@@ -1,112 +1,82 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent" >
+    android:orientation="vertical"
+    android:background="@color/colorAccent">
 
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
+    <fragment
+        android:id="@+id/profile_header"
+        class="com.infonuascape.osrshelper.fragments.ProfileHeaderFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/loading_highscores"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_normal" />
-
-    <TextView
-        android:id="@+id/combat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/combat_lvl"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_normal"
-        android:visibility="invisible" />
-
-    <CheckBox
-        android:id="@+id/cb_virtual_levels"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_alignTop="@id/combat"
-        android:layout_alignBottom="@id/combat"
-        android:layout_alignParentRight="true"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        android:text="@string/show_virtual_levels"/>
+        android:layout_margin="10dp" />
 
     <LinearLayout
-        android:id="@+id/dots"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/combat"/>
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+        <TextView
+            android:id="@+id/combat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/combat_lvl"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/text_normal"
+            android:visibility="invisible" />
+
+        <CheckBox
+            android:id="@+id/cb_virtual_levels"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:text="@string/show_virtual_levels" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scroll_table_rs_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/dots">
+        android:layout_centerHorizontal="true"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:visibility="visible" >
 
-        <ScrollView
-            android:id="@+id/scroll_table_rs_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            android:visibility="visible" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <com.infonuascape.osrshelper.views.RSView
+                android:id="@+id/rs_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_height="wrap_content" />
 
-                <com.infonuascape.osrshelper.views.RSView
-                    android:id="@+id/rs_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/share_btn"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bt_sel"
+                android:drawableRight="@android:drawable/ic_menu_share"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
+                android:text="@string/share_hiscores"
+                android:textColor="@android:color/white" />
 
-                <TextView
-                    android:id="@+id/share_btn"
-                    android:layout_width="150dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/bt_sel"
-                    android:drawableRight="@android:drawable/ic_menu_share"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:paddingTop="10dp"
-                    android:text="@string/share_hiscores"
-                    android:textColor="@android:color/white" />
-
-            </LinearLayout>
-        </ScrollView>
-
-        <ScrollView
-            android:id="@+id/scroll_table"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never" >
-
-            <TableLayout
-                android:id="@+id/table_hiscores"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="1" />
-        </ScrollView>
-    </android.support.v4.view.ViewPager>
+        </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressbar"
@@ -115,4 +85,4 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-</RelativeLayout>
+</LinearLayout>
