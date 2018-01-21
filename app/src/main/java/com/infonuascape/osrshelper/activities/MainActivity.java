@@ -25,6 +25,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.fragments.AccountQuickActionsFragment;
 import com.infonuascape.osrshelper.fragments.CMLXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CmlTopFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;

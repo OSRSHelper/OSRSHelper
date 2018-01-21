@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.models.Account;
 
 /**
  * Created by marc_ on 2018-01-20.
@@ -43,7 +44,15 @@ public class NewsFeedFragment extends OSRSFragment {
 
     private void refreshHeader() {
         Log.i(TAG, "refreshHeader");
-        final boolean isProfileSet = DBController.getProfileAccount(getContext()) != null;
-        getView().findViewById(R.id.profile_not_set).setVisibility(isProfileSet ? View.GONE : View.VISIBLE);
+        final Account account = DBController.getProfileAccount(getContext());
+        if (account == null) {
+            getView().findViewById(R.id.profile_not_set).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.osrs_quick_actions).setVisibility(View.GONE);
+        } else {
+            getView().findViewById(R.id.profile_not_set).setVisibility(View.GONE);
+            getView().findViewById(R.id.osrs_quick_actions).setVisibility(View.VISIBLE);
+            ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
+        }
     }
+
 }

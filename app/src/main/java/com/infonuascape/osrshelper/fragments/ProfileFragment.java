@@ -68,6 +68,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         ((TextView) getView().findViewById(R.id.account_username)).setText(account.username);
         ((TextView) getView().findViewById(R.id.account_type)).setText(Utils.getAccountTypeString(account.type));
         ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
+        ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
     }
 
     @Override

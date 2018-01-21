@@ -79,4 +79,10 @@
 
     </android.support.v7.widget.CardView>
 
+    <fragment
+        android:id="@+id/osrs_quick_actions"
+        class="com.infonuascape.osrshelper.fragments.AccountQuickActionsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
