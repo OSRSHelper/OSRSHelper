@@ -70,7 +70,7 @@ public class TrackerFetcher {
 								skillName.equals(skillList.get(i).getSkillType().getAlternativeName())) {
                             skillList.get(i).setExperience(Long.parseLong(tokenizer[2]));
 							if(skillList.get(i).getSkillType() != SkillType.Overall) {
-								skillList.get(i).calculateLevels();
+								skillList.get(i).calculateLevel();
 							}
 							break;
                         }

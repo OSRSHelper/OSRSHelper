@@ -24,6 +24,8 @@ import com.infonuascape.osrshelper.models.players.PlayerExp;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 
+import org.json.JSONException;
+
 import java.util.List;
 
 public class CmlTopActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener {
@@ -55,7 +57,7 @@ public class CmlTopActivity extends Activity implements CompoundButton.OnChecked
         rsView.populateViewForCMLTop(this);
 
 
-        new TopFetcherNetwork().execute();
+
     }
 
     @Override
@@ -68,30 +70,6 @@ public class CmlTopActivity extends Activity implements CompoundButton.OnChecked
 
     }
 
-    private class TopFetcherNetwork extends AsyncTask<String, Void, List<PlayerExp>> {
 
-        @Override
-        protected List<PlayerExp> doInBackground(String... urls) {
-            try {
-                TopFetcher tf = new TopFetcher(getApplicationContext(), SkillType.Agility, TopFetcher.Period.Day);
-                return tf.processAPI();
-            } catch (ParserErrorException e) {
-                e.printStackTrace();
-            } catch (APIError apiError) {
-                apiError.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<PlayerExp> playerList) {
-            if (playerList != null) {
-                for (PlayerExp pe : playerList) {
-                    Log.i(TAG, pe.playerName + " : " + pe.experience);
-                }
-            }
-        }
-    }
 
 }

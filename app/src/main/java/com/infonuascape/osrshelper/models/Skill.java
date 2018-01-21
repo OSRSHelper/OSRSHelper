@@ -90,6 +90,7 @@ public class Skill {
 
 	public void setExperience(Long experience) {
 		this.experience = experience;
+		this.calculateLevel();
 	}
 
     public short getVirtualLevel() {
@@ -117,7 +118,7 @@ public class Skill {
 		return skillType.toString();
 	}
 
-	public void calculateLevels() {
+	public void calculateLevel() {
 		short level=0;
 		Long curr_xp = 0L;
 		double points = 0;

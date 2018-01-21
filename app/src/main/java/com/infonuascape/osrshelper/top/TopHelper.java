@@ -10,6 +10,8 @@ import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
+import org.json.JSONException;
+
 public class TopHelper {
 	private Context context;
 	private String userName;
@@ -27,7 +29,7 @@ public class TopHelper {
 	}
 
 	public PlayerSkills getPlayerStats(TrackerTime time) throws PlayerNotTrackedException,
-			ParserErrorException, APIError, PlayerNotFoundException {
+			ParserErrorException, APIError, PlayerNotFoundException, JSONException {
 
         //Instanciate a new API fetcher
         TrackerFetcher tf = new TrackerFetcher(context, userName, time);

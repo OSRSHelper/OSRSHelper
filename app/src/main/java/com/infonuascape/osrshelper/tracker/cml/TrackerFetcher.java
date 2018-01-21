@@ -2,23 +2,24 @@ package com.infonuascape.osrshelper.tracker.cml;
 
 import android.content.Context;
 
-import com.android.volley.Request;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.models.Skill;
+import com.infonuascape.osrshelper.utils.API;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
-import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
-import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.models.players.PlayerSkillsPoint;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -27,14 +28,15 @@ import java.util.TimeZone;
  * Created by maden on 9/14/14.
  */
 public class TrackerFetcher {
-	final String API_URL = "https://crystalmathlabs.com/tracker/api.php?multiquery=";
+	final String API_URL = "https://crystalmathlabs.com/tracker/API.php?multiquery=";
 
 	private Context context;
 	private String userName;
 	private int lookupTime;
     PlayerSkills playerSkills;
+	private long lastUpdate;
 
-	public TrackerFetcher(Context context, String userName, int lookupTime) throws ParserErrorException, APIError, PlayerNotTrackedException, PlayerNotFoundException {
+	public TrackerFetcher(Context context, String userName, int lookupTime) throws ParserErrorException, APIError, PlayerNotTrackedException, PlayerNotFoundException, JSONException {
 		this.context = context;
 		this.userName = userName.replace(" ", "%20");
 		this.lookupTime = lookupTime;
@@ -42,7 +44,7 @@ public class TrackerFetcher {
 		processAPI();
 	}
 
-	public TrackerFetcher(Context context, String userName, TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException, PlayerNotFoundException {
+	public TrackerFetcher(Context context, String userName, TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException, PlayerNotFoundException, JSONException {
 		this(context, userName, trackerTime.getSeconds());
 	}
 
@@ -62,161 +64,75 @@ public class TrackerFetcher {
         this.playerSkills = ps;
     }
 
-    private void processAPI() throws PlayerNotTrackedException, APIError, ParserErrorException, PlayerNotFoundException {
-        // Fetch the results from the CML API
-		String APIPayload = getDataFromAPI();
-
-        // Split payload by "~~" which is response delimiter for CML
-        String[] APIResponses = APIPayload.split("~~\n");
-
-        // disregard last, always empty, payload
-        if (APIResponses.length == 2) {
-
-            // Order should be:
-            // - Tracker
-            // - Datapoints
-            String trackerPayload = APIResponses[0];
-            String dataPointPayload = APIResponses[1];
-
-            if (trackerPayload.equals("-1\n") || dataPointPayload.equals("-1\n"))
-                throw new PlayerNotFoundException(getUserName());
-            if (trackerPayload.equals("2\n") || dataPointPayload.equals("-1\n"))
-                throw new PlayerNotFoundException(getUserName());
-
-
-            if (trackerPayload.equals("-4\n") || dataPointPayload.equals("-4\n"))
-                throw new APIError("API under heavy load");
-
-            // Process API payloads respectively
-            processTrackerPayload(trackerPayload);
-            processDataPointPayload(dataPointPayload);
-
-        } else {
-            throw new ParserErrorException("Error parsing API");
-        }
-    }
-
-    public void processTrackerPayload(String payload) throws ParserErrorException, APIError, PlayerNotTrackedException {
-        PlayerSkills ps = getPlayerSkills();
-		List<Skill> skillList = ps.skillList;
-
-		String[] APILine = payload.split("\n");
-		String[] tokenizer;
-
-		int skillId = 0;
-		int lastUpdate = 0;
-
-		for (String line : APILine) {
-			tokenizer = line.split(",");
-
-			//last track time
-			if (tokenizer.length == 1) {
-				long seconds = Long.parseLong(tokenizer[0]);
-				long millis = seconds * 1000;
-				Date date = new Date(System.currentTimeMillis() - millis);
-				SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, yyyy h:mm a", Locale.ENGLISH);
-				sdf.setTimeZone(TimeZone.getDefault());
-				String formattedDate = sdf.format(date);
-				ps.setLastUpdate(formattedDate);
-			}
-			// total EHP
-			else if (tokenizer.length == 3) {
-
-			}
-			// skill entry
-			else if (tokenizer.length == 5) {
-				try {
-					//parse data
-					int expDiff = Integer.parseInt(tokenizer[0]);
-					int rankDiff = Integer.parseInt(tokenizer[1]);
-					Long experience = Long.parseLong(tokenizer[2]);
-					int experienceDiff = Integer.parseInt(tokenizer[3]);
-
-					//fill skill list with parsed data
-					skillList.get(skillId).setExperienceDiff(expDiff);
-					skillList.get(skillId).setRankDiff(-rankDiff); // inverse sign
-					skillList.get(skillId).setExperience(experience);
-					skillList.get(skillId).setRank(experienceDiff);
-                    if(skillList.get(skillId).getSkillType() != SkillType.Overall) {
-                        skillList.get(skillId).calculateLevels();
-                    }
-					skillId++; //pass to next skill in list
-				} catch (Exception e) {
-					throw new ParserErrorException("API format error");
-				}
-			} else {
-				throw new ParserErrorException("API format error");
-			}
-		}
-
-		//compute total level
-		short totalLevel = 0;
-        short totalVirtualLevel = 0;
-		for (Skill s : skillList) {
-            if (s.getSkillType() != SkillType.Overall) {
-                totalLevel += s.getLevel();
-                totalVirtualLevel += s.getVirtualLevel();
-            }
-        }
-
-        //add total level to appropriate Skill entry
-        Skill overallSkill = skillList.get(0); //always first indexed
-        overallSkill.setLevel(totalLevel);
-        overallSkill.setVirtualLevel(totalVirtualLevel);
-
-        ps.calculateIfVirtualLevelsNecessary();
-        setPlayerSkills(ps);
+	public long getLastUpdate() {
+		return lastUpdate;
 	}
 
-    public void processDataPointPayload(String payload) throws ParserErrorException, APIError, PlayerNotTrackedException {
-		List<PlayerSkillsPoint> playerSkillsPointList = new ArrayList<>();
+	public void setLastUpdate(long lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-		String[] APILine = payload.split("\n");
-		String[] tokenizer;
+    private void processAPI() throws PlayerNotTrackedException, APIError, ParserErrorException, PlayerNotFoundException, JSONException {
+		PlayerSkills ps = getPlayerSkills();
+		List<Skill> skillList = ps.skillList;
+		JSONObject APIOutput = getDataFromAPI();
+		JSONObject ehp = APIOutput.getJSONObject("ehp");
 
-		try {
-			for (String skillsPointEntry : APILine) {
-				// initiate entry at point in time
-				PlayerSkillsPoint playerSkillsPoint = new PlayerSkillsPoint();
+		long seconds = ehp.getLong("lastupdated");
+		long millis = seconds * 1000;
+		Date date = new Date(System.currentTimeMillis() - millis);
+		SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(date);
 
-				tokenizer = skillsPointEntry.split(" ");
+		JSONObject skills = ehp.getJSONObject("skills");
+		for (Iterator<String> it = skills.keys(); it.hasNext(); ) {
+			String skill = it.next();
+			JSONObject skillJson = skills.getJSONObject(skill);
 
-				//store epoch to represent skills at point in time
-				int pointEpoch = Integer.parseInt(tokenizer[0]);
-				playerSkillsPoint.setEpoch(pointEpoch);
-
-				String skillsEntries = tokenizer[1];
-				String[] skillsTokenizer = skillsEntries.split(",");
-
-                String ranksEntries = tokenizer[2];
-                String[] ranksTokenizer = ranksEntries.split(",");
-
-				for (int skillId = 0; skillId < skillsTokenizer.length; skillId++) {
-					// Extract experience at point in time
-					Long experienceAtPoint = Long.parseLong(skillsTokenizer[skillId]);
-                    int rankAtPoint = Integer.parseInt(ranksTokenizer[skillId]);
-
-					// Store experience at point in time
-					playerSkillsPoint.skillList.get(skillId).setExperience(experienceAtPoint);
-                    playerSkillsPoint.skillList.get(skillId).setRank(rankAtPoint);
+			for (Skill s : skillList) {
+				if (s.getSkillType().equals(skill)) {
+					s.setExperienceDiff(skillJson.getInt("ExperienceDiff"));
+					s.setRankDiff(skillJson.getInt("RankDiff"));
+					s.setExperience(skillJson.getLong("Experience"));
+					s.setExperienceDiff(skillJson.getInt("ExperienceDiff"));
+					s.setEHP(skillJson.getDouble("EHP"));
 				}
-				playerSkillsPointList.add(playerSkillsPoint);
 			}
-		} catch (Exception e) {
-			throw new ParserErrorException("Error parsing the API");
 		}
-    }
 
-	private String getDataFromAPI() throws PlayerNotTrackedException, APIError {
-		//String connectionString = API_URL + "&player=" + userName + "&time=" + lookupTime;
-		String connectionString = String.format("%s[{\"type\":\"trackehp\",\"player\":\"%s\",\"time\":\"%d\"},{\"type\":\"datapoints\",\"player\":\"%s\",\"time\":\"%d\"}]",
-				API_URL, userName, lookupTime, userName, lookupTime);
-
-		HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(connectionString, Request.Method.GET);
-		String output = httpRequest.getOutput();
-		if ((httpRequest.getStatusCode() != StatusCode.FOUND && httpRequest.getStatusCode() != StatusCode.ERROR) || output == null) {
-            throw new APIError("An unexpected error happened contacting the server.");
+		short totalLevel = 0;
+		short totalVirtualLevel = 0;
+		for (Skill s : skillList) {
+			if (s.getSkillType() != SkillType.Overall) {
+				totalLevel += s.getLevel();
+				totalVirtualLevel += s.getVirtualLevel();
+			}
 		}
-		return output;
+
+		for (Skill s : skillList) {
+			if (s.getSkillType().equals(SkillType.Overall)) {
+				s.setLevel(totalLevel);
+				s.setVirtualLevel(totalVirtualLevel);
+			}
+		}
+
+
+		ps.calculateIfVirtualLevelsNecessary();
+		setPlayerSkills(ps);
+	}
+
+	private String getAPIEndpoint() {
+		return String.format("/track/ehp/%1$s/%2$s", getUserName(), getLookupTime());
+	}
+
+	private JSONObject getDataFromAPI() throws PlayerNotFoundException, JSONException, APIError {
+		API api = new API(context, getAPIEndpoint());
+
+		if (api.getStatusCode() == StatusCode.FOUND) {
+			return api.getJson();
+		} else if (api.getStatusCode() == StatusCode.NOT_FOUND) {
+			throw new PlayerNotFoundException(getUserName());
+		} else {
+			throw new APIError("Unexpected response from the server.");
+		}
 	}
 }
