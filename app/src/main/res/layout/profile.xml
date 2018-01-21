@@ -1,52 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <fragment
+        android:id="@+id/profile_header"
+        class="com.infonuascape.osrshelper.fragments.ProfileHeaderFragment"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="10dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
 
-        <RelativeLayout
-            android:id="@+id/header"
+    <android.support.v7.widget.CardView
+        android:id="@+id/account_type_edit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp">
-
+            android:layout_height="match_parent">
             <ImageView
-                android:id="@+id/account_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_launcher"/>
-
-            <TextView
-                android:id="@+id/account_username"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center_vertical"
-                android:text="maybe watson"
-                android:textColor="@color/text_normal"
-                android:textSize="15sp"
-                android:layout_toRightOf="@id/account_icon"
-                android:layout_marginLeft="6dp" />
-
-            <TextView
-                android:id="@+id/account_type"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_toLeftOf="@+id/account_type_edit"
-                android:gravity="center_vertical"
-                android:text="Regular"
-                android:textColor="@color/text_normal"/>
-
-            <ImageView
-                android:id="@+id/account_type_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
                 android:padding="4dp"
                 android:background="@drawable/gen_bt_sel"
                 android:tint="@color/text_normal"
@@ -54,35 +35,97 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_below="@id/account_type"
-                android:layout_toLeftOf="@+id/account_set_profile"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:text="@string/set_as_my_profile"
-                android:textColor="@color/text_light"
-                android:textSize="13sp"/>
+                android:text="Account Type: "
+                android:textColor="@color/text_normal"
+                android:textStyle="bold"/>
 
-            <ImageView
-                android:id="@+id/account_set_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/account_type"
-                android:layout_marginTop="10dp"
-                android:layout_alignParentRight="true"
-                android:padding="1dp"
-                android:background="@drawable/gen_bt_sel"
-                android:tint="@color/text_light"
-                android:src="@drawable/account"/>
+            <TextView
+                android:id="@+id/account_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="Regular"
+                android:textColor="@color/text_light"/>
 
-        </RelativeLayout>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
-    <fragment
-        android:id="@+id/osrs_quick_actions"
-        class="com.infonuascape.osrshelper.fragments.AccountQuickActionsFragment"
+    <android.support.v7.widget.CardView
+        android:id="@+id/account_follow_profile"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/account_follow_profile_image"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:padding="1dp"
+                android:background="@drawable/gen_bt_sel"
+                android:tint="@color/text_normal"
+                android:src="@drawable/follow_empty"/>
+
+
+            <TextView
+                android:id="@+id/account_follow_profile_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="@string/follow"
+                android:textColor="@color/text_normal"
+                android:textSize="13sp"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/account_set_profile"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:padding="1dp"
+                android:background="@drawable/gen_bt_sel"
+                android:tint="@color/text_normal"
+                android:src="@drawable/account"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="@string/set_as_my_profile"
+                android:textColor="@color/text_normal"
+                android:textSize="13sp"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

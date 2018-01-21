@@ -1,5 +1,6 @@
 package com.infonuascape.osrshelper.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private SuggestionsAdapter suggestionsAdapter;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setOnSuggestionListener(this);
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint(getResources().getString(R.string.lookup_user));
+        View searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        if(searchAutoComplete instanceof SearchView.SearchAutoComplete) {
+            ((SearchView.SearchAutoComplete) searchAutoComplete).setThreshold(0);
+        }
 
         suggestionsAdapter = new SuggestionsAdapter(this, DBController.searchAccountsByUsername(this, null));
         searchView.setSuggestionsAdapter(suggestionsAdapter);
@@ -226,6 +232,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onSuggestionClick(int position) {
         Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
         showFragment(-1, ProfileFragment.newInstance(account.username));
+        searchView.setQuery(null, false);
+        searchView.clearFocus();
         return false;
     }
 
@@ -233,6 +241,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onQueryTextSubmit(String query) {
         Log.i(TAG, "onQueryTextSubmit: query=" + query);
         showFragment(-1, ProfileFragment.newInstance(query));
+        searchView.setQuery(null, false);
+        searchView.clearFocus();
         return false;
     }
 

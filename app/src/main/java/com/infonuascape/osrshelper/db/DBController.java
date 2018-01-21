@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ACCOUNT_TYPE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ID;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_FOLLOWING;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_PROFILE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_TIME_USED;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_USERNAME;
@@ -20,12 +21,15 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
 
 public class DBController {
 	private static final String TAG = "DBController";
+	private static final String[] ACCOUNTS_PROJECTION = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE};
 
 	public static void addOrUpdateAccount(final Context context, final Account account) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_USERNAME, account.username);
 		values.put(COLUMN_ACCOUNT_TYPE, account.type.name());
 		values.put(COLUMN_TIME_USED, System.currentTimeMillis());
+		values.put(COLUMN_IS_PROFILE, account.isProfile ? 1 : 0);
+		values.put(COLUMN_IS_FOLLOWING, account.isFollowing ? 1 : 0);
 
 		final Account existingAccount = getAccountByUsername(context, account.username);
 		if(existingAccount != null) {
@@ -57,7 +61,7 @@ public class DBController {
 
 	public static Account getAccountByUsername(final Context context, final String username) {
 		Account account = null;
-		final String[] projection = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED};
+		final String[] projection = ACCOUNTS_PROJECTION;
 		final String where = COLUMN_USERNAME + "=?";
 		final String[] whereArgs = new String[]{username};
 
@@ -87,7 +91,7 @@ public class DBController {
 
 	public static Account getProfileAccount(final Context context) {
 		Account account = null;
-		final String[] projection = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED};
+		final String[] projection = ACCOUNTS_PROJECTION;
 		final String where = COLUMN_IS_PROFILE + "=?";
 		final String[] whereArgs = new String[]{String.valueOf(1)};
 
@@ -129,21 +133,43 @@ public class DBController {
 		final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
 		final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
 		final long lastTimeUsed = cursor.getInt(cursor.getColumnIndex(COLUMN_TIME_USED));
-		return new Account(id, username, AccountType.valueOf(accountType), lastTimeUsed);
+		final boolean isProfile = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_PROFILE)) == 1;
+		final boolean isFollowing = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_FOLLOWING)) == 1;
+		return new Account(id, username, AccountType.valueOf(accountType), lastTimeUsed, isProfile, isFollowing);
 	}
 
 	public static ArrayList<Account> getAllAccounts(final Context context) {
 		final ArrayList<Account> accounts = new ArrayList<>();
-		final String[] projection = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED};
+		final String[] projection = ACCOUNTS_PROJECTION;
 
 		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, null, null,
 				COLUMN_TIME_USED + " DESC");
 		try {
 			if (cursor.moveToFirst()) {
 				do {
-					final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
-					final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
-					accounts.add(new Account(username, AccountType.valueOf(accountType)));
+					accounts.add(createAccountFromCursor(cursor));
+				} while (cursor.moveToNext());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			cursor.close();
+		}
+		return accounts;
+	}
+
+	public static ArrayList<Account> getAllFollowingAccounts(final Context context) {
+		final ArrayList<Account> accounts = new ArrayList<>();
+		final String[] projection = ACCOUNTS_PROJECTION;
+		final String where = COLUMN_IS_FOLLOWING + "=?";
+		final String[] whereArgs = new String[]{String.valueOf(1)};
+
+		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs,
+				COLUMN_TIME_USED + " DESC");
+		try {
+			if (cursor.moveToFirst()) {
+				do {
+					accounts.add(createAccountFromCursor(cursor));
 				} while (cursor.moveToNext());
 			}
 		} catch (Exception e) {
@@ -166,7 +192,7 @@ public class DBController {
 	}
 
 	public static Cursor searchAccountsByUsername(final Context context, CharSequence query) {
-		final String[] projection = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED};
+		final String[] projection = ACCOUNTS_PROJECTION;
 
 
 		String where = null;

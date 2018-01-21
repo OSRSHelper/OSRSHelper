@@ -126,5 +126,7 @@
     <string name="cml_top_month">Month</string>
     <string name="cml_top_year">Year</string>
     <string name="donate">Donate</string>
+    <string name="follow">Follow</string>
+    <string name="following">Following</string>
 
 </resources>

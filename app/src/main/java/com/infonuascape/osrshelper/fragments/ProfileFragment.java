@@ -26,6 +26,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     private static final String TAG = "ProfileFragment";
     private static final String EXTRA_USERNAME = "EXTRA_USERNAME";
     private Account account;
+    private ProfileHeaderFragment profileHeaderFragment;
 
     public static ProfileFragment newInstance(final String username) {
         ProfileFragment fragment = new ProfileFragment();
@@ -44,8 +45,10 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
 
         view.findViewById(R.id.account_type_edit).setOnClickListener(this);
         view.findViewById(R.id.account_set_profile).setOnClickListener(this);
+        view.findViewById(R.id.account_follow_profile).setOnClickListener(this);
 
-        initProfile();
+        profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
+
         return view;
     }
 
@@ -61,15 +64,29 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        refreshProfile();
+        refreshScreen();
     }
 
-    private void refreshProfile() {
-        ((TextView) getView().findViewById(R.id.account_username)).setText(account.username);
+    private void refreshScreen() {
+        initProfile();
         ((TextView) getView().findViewById(R.id.account_type)).setText(Utils.getAccountTypeString(account.type));
-        ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
-        ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
+        //Is profile
+        getView().findViewById(R.id.account_set_profile).setVisibility(account.isProfile ? View.GONE : View.VISIBLE);
+        //Is following
+        if(account.isFollowing) {
+            ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_full);
+            ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.following);
+        } else {
+            ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_empty);
+            ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.follow);
+        }
+        profileHeaderFragment.setTitle(R.string.profile);
+        profileHeaderFragment.refreshProfile(account);
+        if(getMainActivity() != null) {
+            getMainActivity().refreshProfileAccount();
+        }
     }
+
 
     @Override
     public void onClick(View view) {
@@ -77,7 +94,16 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
             switchAccountType();
         } else if(view.getId() == R.id.account_set_profile) {
             setUserAsMyProfile();
+        } else if(view.getId() == R.id.account_follow_profile) {
+            followThisAccount();
         }
+    }
+
+    private void followThisAccount() {
+        account.isFollowing = !account.isFollowing;
+        DBController.addOrUpdateAccount(getContext(), account);
+        profileHeaderFragment.refreshProfile(account);
+        refreshScreen();
     }
 
     private void switchAccountType() {
@@ -88,10 +114,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
                         AccountType accountType = adapter.getItem(item);
                         account.type = accountType;
                         DBController.addOrUpdateAccount(getContext(), account);
-                        refreshProfile();
-                        if(getMainActivity() != null) {
-                            getMainActivity().refreshProfileAccount();
-                        }
+                        refreshScreen();
                     }
                 }).show();
     }
@@ -103,9 +126,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DBController.setProfileAccount(getContext(), account);
-                        if(getMainActivity() != null) {
-                            getMainActivity().refreshProfileAccount();
-                        }
+                        refreshScreen();
                     }
                 })
                 .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
