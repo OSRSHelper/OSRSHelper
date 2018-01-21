@@ -98,8 +98,8 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     @Override
     public void onItemClicked(int position) {
         OSRSNews news = newsAdapter.getItem(position);
-        if(getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).showFragment(R.id.nav_news, WebViewFragment.newInstance(news.url));
+        if(getMainActivity() != null) {
+            getMainActivity().showFragment(R.id.nav_news, WebViewFragment.newInstance(news.url, true));
         }
     }
 

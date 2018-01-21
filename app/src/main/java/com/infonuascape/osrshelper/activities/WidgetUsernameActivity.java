@@ -125,7 +125,7 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
     }
 
 	private void closeActivity(final Account account) {
-		DBController.addAccount(this, account);
+		DBController.addOrUpdateAccount(this, account);
 
 		DBController.setAccountForWidget(this, mAppWidgetId, account);
 		Intent resultValue = new Intent();

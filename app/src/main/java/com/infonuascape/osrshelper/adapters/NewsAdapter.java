@@ -50,6 +50,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         OSRSNews news = getItem(position);
         holder.title.setText(news.title);
         holder.description.setText(news.description);
+        holder.category.setText(news.category);
         Glide.with(holder.image).load(news.imageUrl).into(holder.image);
         holder.publicationDate.setText(dateFormat.format(new Date(news.publicationDate)));
     }
@@ -67,6 +68,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         ImageView image;
         TextView title;
         TextView description;
+        TextView category;
         TextView publicationDate;
 
         public NewsViewHolder(View itemView) {
@@ -75,6 +77,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             image = itemView.findViewById(R.id.news_image);
             title = itemView.findViewById(R.id.news_title);
             description = itemView.findViewById(R.id.news_description);
+            category = itemView.findViewById(R.id.news_category);
             publicationDate = itemView.findViewById(R.id.news_date);
 
             itemView.findViewById(R.id.news_container).setOnClickListener(new View.OnClickListener() {

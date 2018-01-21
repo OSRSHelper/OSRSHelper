@@ -249,4 +249,17 @@ public class Utils {
 
 		return R.drawable.ic_launcher;
 	}
+
+	public static int getAccountTypeString(AccountType type) {
+		switch(type) {
+			case IRONMAN:
+				return R.string.account_type_ironman;
+			case ULTIMATE_IRONMAN:
+				return R.string.account_type_ult_ironman;
+			case HARDCORE_IRONMAN:
+				return R.string.account_type_hc_ironman;
+		}
+
+		return R.string.account_type_regular;
+	}
 }

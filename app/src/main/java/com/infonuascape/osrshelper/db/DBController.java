@@ -21,7 +21,7 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
 public class DBController {
 	private static final String TAG = "DBController";
 
-	public static void addAccount(final Context context, final Account account) {
+	public static void addOrUpdateAccount(final Context context, final Account account) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_USERNAME, account.username);
 		values.put(COLUMN_ACCOUNT_TYPE, account.type.name());

@@ -36,13 +36,24 @@
                     android:layout_toRightOf="@id/news_image"/>
 
                 <TextView
+                    android:id="@+id/news_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    android:textColor="@color/text_normal"
+                    android:layout_below="@id/news_title"
+                    android:layout_toRightOf="@id/news_image"/>
+
+                <TextView
                     android:id="@+id/news_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:textSize="14sp"
                     android:textColor="@color/text_normal"
-                    android:layout_below="@id/news_title"
+                    android:layout_below="@id/news_category"
                     android:layout_toRightOf="@id/news_image"/>
 
             </RelativeLayout>

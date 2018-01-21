@@ -34,6 +34,7 @@ import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.NewsFeedFragment;
 import com.infonuascape.osrshelper.fragments.NewsFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
+import com.infonuascape.osrshelper.fragments.ProfileFragment;
 import com.infonuascape.osrshelper.fragments.WebViewFragment;
 import com.infonuascape.osrshelper.fragments.WorldMapFragment;
 import com.infonuascape.osrshelper.models.Account;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SearchView searchView;
     private NavigationView navigationView;
     private DrawerLayout drawer;
+    private SuggestionsAdapter suggestionsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint(getResources().getString(R.string.lookup_user));
 
-        SuggestionsAdapter suggestionsAdapter = new SuggestionsAdapter(this, DBController.searchAccountsByUsername(this, null));
+        suggestionsAdapter = new SuggestionsAdapter(this, DBController.searchAccountsByUsername(this, null));
         searchView.setSuggestionsAdapter(suggestionsAdapter);
         suggestionsAdapter.setFilterQueryProvider(this);
 
@@ -80,13 +82,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         showFragment(R.id.nav_home, NewsFeedFragment.newInstance());
     }
 
-    private void refreshProfileAccount() {
+    public void refreshProfileAccount() {
         Log.i(TAG, "refreshProfileAccount");
         Account account = DBController.getProfileAccount(this);
         navigationView.getMenu().getItem(1).getSubMenu().setGroupEnabled(R.id.nav_group_profile, account != null);
         if(account != null) {
-            ((ImageView) findViewById(R.id.profile_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
-            ((TextView) findViewById(R.id.profile_name)).setText(account.username);
+            ((ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
+            ((TextView) navigationView.getHeaderView(0).findViewById(R.id.profile_name)).setText(account.username);
         }
     }
 
@@ -109,8 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     } else {
                         super.onBackPressed();
                     }
-                } else {
-                    super.onBackPressed();
                 }
             } else {
                 super.onBackPressed();
@@ -223,14 +223,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onSuggestionClick(int position) {
+        Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
+        showFragment(-1, ProfileFragment.newInstance(account.username));
         return false;
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
         Log.i(TAG, "onQueryTextSubmit: query=" + query);
-        Account account = new Account(query, AccountType.REGULAR);
-        DBController.addAccount(this, account);
+        showFragment(-1, ProfileFragment.newInstance(query));
         return false;
     }
 

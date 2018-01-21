@@ -109,5 +109,15 @@
     <string name="home">Home</string>
     <string name="failed_load_osrs_news">Failed to load the news</string>
     <string name="grand_exchange_lookup_hint">Lookup item</string>
+    <string name="set_as_my_profile">Set as my profile</string>
+    <string name="account_type_ironman">Ironman</string>
+    <string name="account_type_ult_ironman">Ultimate Ironman</string>
+    <string name="account_type_hc_ironman">Hardcore Ironman</string>
+    <string name="account_type_regular">Regular</string>
+    <string name="select_account_type">Select Account Type</string>
+    <string name="set_profile_title">Profile</string>
+    <string name="set_profile_desc">Are you sure you want to select this user as your profile?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
 
 </resources>
