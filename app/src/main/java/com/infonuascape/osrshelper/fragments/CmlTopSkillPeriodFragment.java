@@ -3,13 +3,17 @@ package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.adapters.CmlTopSkillPeriodAdapter;
 import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.TopPlayersListener;
@@ -18,7 +22,7 @@ import com.infonuascape.osrshelper.tasks.CMLTopFetcherTask;
 
 import java.util.List;
 
-public class CmlTopSkillPeriodFragment extends Fragment implements TopPlayersListener {
+public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayersListener {
     private static final String TAG = "CmlTopSkillPeriodFragme";
 
     public static final String ARG_SKILL = "ARG_SKILL";
@@ -27,47 +31,69 @@ public class CmlTopSkillPeriodFragment extends Fragment implements TopPlayersLis
     private SkillType skillType;
     private List<PlayerExp> playerExp;
     private CMLTopFetcherTask fetcherTask;
+    private ProgressBar progressBar;
 
-    //constructor, sort of
+    private RecyclerView recyclerView;
+    private CmlTopSkillPeriodAdapter adapter;
+
     public static CmlTopSkillPeriodFragment newInstance(SkillType skillType, Period period) {
+        CmlTopSkillPeriodFragment fragment = new CmlTopSkillPeriodFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_SKILL, skillType);
         args.putSerializable(ARG_POSITION, period);
-        CmlTopSkillPeriodFragment fragment = new CmlTopSkillPeriodFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        skillType = (SkillType) getArguments().getSerializable(ARG_SKILL);
-        period = (Period) getArguments().getSerializable(ARG_POSITION);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.cml_top_skill_period, container, false);
-        TextView textView = (TextView) view;
-        textView.setText("Fragment #" + period.name() + " for skill " + skillType.name());
+        Log.i(TAG, "onCreateView");
+        View view = inflater.inflate(R.layout.cml_top_skill_period, null);
+
+        progressBar = view.findViewById(R.id.progress_bar);
+        recyclerView = view.findViewById(R.id.cml_top_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        skillType = (SkillType) getArguments().getSerializable(ARG_SKILL);
+        period = (Period) getArguments().getSerializable(ARG_POSITION);
+
+        if(period == Period.Day) {
+            //First tab
+            onPageVisible();
+        }
+
         return view;
     }
 
     public void onPageVisible() {
-        Log.i(TAG, "onPageVisible");
-        if(playerExp == null && fetcherTask == null) {
-            fetcherTask = new CMLTopFetcherTask(getContext(), this, skillType, period);
-            fetcherTask.execute();
+        Log.i(TAG, "onPageVisible: adapter=" + adapter + " playerExp=" + playerExp);
+        if(playerExp == null) {
+            if(fetcherTask == null) {
+                fetcherTask = new CMLTopFetcherTask(getContext(), this, skillType, period);
+                fetcherTask.execute();
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if(recyclerView.getAdapter() == null) {
+                if(adapter == null) {
+                    adapter = new CmlTopSkillPeriodAdapter(this, playerExp);
+                }
+                recyclerView.setAdapter(adapter);
+            }
         }
     }
 
     @Override
     public void onPlayersFetched(List<PlayerExp> playerList) {
         Log.i(TAG, "onPlayersFetched");
+        progressBar.setVisibility(View.GONE);
         this.playerExp = playerList;
         fetcherTask = null;
-
-        //ToDo fill table
+        if(playerList != null) {
+            adapter = new CmlTopSkillPeriodAdapter(this, playerList);
+            recyclerView.setAdapter(adapter);
+        }
     }
 }

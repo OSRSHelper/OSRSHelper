@@ -39,10 +39,17 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
         adapter = new CmlTopSkillFragmentAdapter(getChildFragmentManager(), getContext(), skillType);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
+        viewPager.setOffscreenPageLimit(3);
         TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         return view;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        getParentFragment().getChildFragmentManager().beginTransaction().remove(this).commit();
+        return true;
     }
 
     @Override

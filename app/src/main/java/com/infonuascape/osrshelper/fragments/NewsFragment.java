@@ -65,33 +65,39 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
 
     @Override
     public void onNewsFetchingStarted() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-        });
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     @Override
     public void onNewsFetchingError() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-                emptyText.setVisibility(View.VISIBLE);
-            }
-        });
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE);
+                    emptyText.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     @Override
     public void onNewsFetched(List<OSRSNews> news) {
-        progressBar.setVisibility(View.GONE);
-        if(news != null && news.size() > 0) {
-            newsAdapter = new NewsAdapter(getContext(), news, this);
-            recyclerView.setAdapter(newsAdapter);
-        } else {
-            emptyText.setVisibility(View.VISIBLE);
+        if(getActivity() != null) {
+            progressBar.setVisibility(View.GONE);
+            if (news != null && news.size() > 0) {
+                newsAdapter = new NewsAdapter(getContext(), news, this);
+                recyclerView.setAdapter(newsAdapter);
+            } else {
+                emptyText.setVisibility(View.VISIBLE);
+            }
         }
     }
 

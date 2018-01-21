@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.fragments;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.Period;
@@ -10,7 +11,7 @@ import com.infonuascape.osrshelper.enums.SkillType;
 
 import java.util.ArrayList;
 
-public class CmlTopSkillFragmentAdapter extends FragmentPagerAdapter {
+public class CmlTopSkillFragmentAdapter extends FragmentStatePagerAdapter{
 
     private Context context;
     private ArrayList<CmlTopSkillPeriodFragment> fragments;

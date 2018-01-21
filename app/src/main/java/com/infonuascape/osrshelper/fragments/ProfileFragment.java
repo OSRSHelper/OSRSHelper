@@ -102,7 +102,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
 
     private void followThisAccount() {
         account.isFollowing = !account.isFollowing;
-        DBController.addOrUpdateAccount(getContext(), account);
+        DBController.updateAccount(getContext(), account);
         profileHeaderFragment.refreshProfile(account);
         refreshScreen();
     }
@@ -114,7 +114,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
                     public void onClick(DialogInterface dialog, int item ) {
                         AccountType accountType = adapter.getItem(item);
                         account.type = accountType;
-                        DBController.addOrUpdateAccount(getContext(), account);
+                        DBController.updateAccount(getContext(), account);
                         refreshScreen();
                     }
                 }).show();

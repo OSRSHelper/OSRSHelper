@@ -2,6 +2,8 @@ package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.infonuascape.osrshelper.views.RSView;
 
 public class CmlTopFragment extends OSRSFragment implements RecyclerItemClickListener {
     private static final String TAG = "CmlTopFragment";
+    private static final String FRAGMENT_TAG = "CML_TOP_FRAGMENT";
     private RSView rsView;
 
     public static CmlTopFragment newInstance() {
@@ -36,11 +39,23 @@ public class CmlTopFragment extends OSRSFragment implements RecyclerItemClickLis
     }
 
     @Override
+    public boolean onBackPressed() {
+        Fragment fragmentTopDetail = getChildFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if(fragmentTopDetail != null) {
+            return ((OSRSFragment) fragmentTopDetail).onBackPressed();
+        }
+        return super.onBackPressed();
+    }
+
+    public void showFragment(final OSRSFragment fragment) {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.cml_top_fragment, fragment, FRAGMENT_TAG).commit();
+    }
+
+    @Override
     public void onItemClicked(int position) {
         Skill skill = rsView.getItem(position);
-        if(getMainActivity() != null) {
-            getMainActivity().showFragment(CmlTopSkillFragment.newInstance(skill.getSkillType()));
-        }
+        showFragment(CmlTopSkillFragment.newInstance(skill.getSkillType()));
     }
 
     @Override

@@ -82,13 +82,15 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 	}
 
 	private void changeHeaderText(final String text, final int progressBarVisibility) {
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getView().findViewById(R.id.progressbar).setVisibility(progressBarVisibility);
-				header.setText(text);
-			}
-		});
+		if(getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					getView().findViewById(R.id.progressbar).setVisibility(progressBarVisibility);
+					header.setText(text);
+				}
+			});
+		}
 	}
 
 	@Override

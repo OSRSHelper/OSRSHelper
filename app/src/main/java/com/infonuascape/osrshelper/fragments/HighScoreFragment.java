@@ -82,24 +82,28 @@ public class HighScoreFragment extends OSRSFragment implements CompoundButton.On
 
 
 	private void changeHeaderText(final String text) {
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
-				combatText.setVisibility(View.VISIBLE);
-				combatText.setText(text);
-			}
-		});
+		if(getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
+					combatText.setVisibility(View.VISIBLE);
+					combatText.setText(text);
+				}
+			});
+		}
 	}
 	
 	private void changeCombatText(){
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				combatText.setVisibility(View.VISIBLE);
-				combatText.setText(getString(R.string.combat_lvl, Utils.getCombatLvl(playerSkills)));
-			}
-		});
+		if(getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					combatText.setVisibility(View.VISIBLE);
+					combatText.setText(getString(R.string.combat_lvl, Utils.getCombatLvl(playerSkills)));
+				}
+			});
+		}
 	}
 
 	@Override

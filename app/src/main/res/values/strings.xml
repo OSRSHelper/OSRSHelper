@@ -128,5 +128,8 @@
     <string name="donate">Donate</string>
     <string name="follow">Follow</string>
     <string name="following">Following</string>
+    <string name="cml_top_header_1">Rank</string>
+    <string name="cml_top_header_2">Username</string>
+    <string name="cml_top_header_3">Experience</string>
 
 </resources>

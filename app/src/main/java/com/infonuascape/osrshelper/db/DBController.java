@@ -39,6 +39,16 @@ public class DBController {
 		}
 	}
 
+	public static void updateAccount(final Context context, final Account account) {
+		final ContentValues values = new ContentValues();
+		values.put(COLUMN_USERNAME, account.username);
+		values.put(COLUMN_ACCOUNT_TYPE, account.type.name());
+		values.put(COLUMN_IS_PROFILE, account.isProfile ? 1 : 0);
+		values.put(COLUMN_IS_FOLLOWING, account.isFollowing ? 1 : 0);
+
+		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+	}
+
 	public static void setAccountForWidget(final Context context, final int appWidgetId, final Account account) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_USERNAME, account.username);
