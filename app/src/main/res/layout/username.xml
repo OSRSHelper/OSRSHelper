@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
-    android:background="@color/background"
+    android:background="@color/colorAccent"
     android:focusableInTouchMode="true">
 
     <LinearLayout
@@ -90,7 +90,7 @@
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/greenbt_sel"
+                android:background="@drawable/bt_sel"
                 android:gravity="center"
                 android:paddingBottom="10dp"
                 android:paddingLeft="32dp"

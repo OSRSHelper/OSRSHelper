@@ -4,6 +4,7 @@
     android:layout_height="48dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:background="@color/white"
     android:orientation="horizontal">
     
     <ImageView

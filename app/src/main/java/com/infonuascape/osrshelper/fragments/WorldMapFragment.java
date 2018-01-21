@@ -1,28 +1,28 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PoIAdapter;
 import com.infonuascape.osrshelper.utils.Utils;
 
-public class WorldMapActivity extends Activity implements OnItemClickListener, OnClickListener {
-	private static final String TAG = "WorldMapActivity";
+public class WorldMapFragment extends OSRSFragment implements OnItemClickListener, OnClickListener {
+	private static final String TAG = "WorldMapFragment";
 	private static final String KEY_X = "X";
 	private static final String KEY_Y = "Y";
 	private static final String MAP_FILE_NAME = "osrs.jpg";
@@ -34,26 +34,30 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 
 	private SubsamplingScaleImageView imageSurfaceView;
 
-	public static void show(final Context context){
-		Intent i = new Intent(context, WorldMapActivity.class);
-		context.startActivity(i);
+	public static WorldMapFragment newInstance(){
+		WorldMapFragment fragment = new WorldMapFragment();
+		Bundle b = new Bundle();
+		fragment.setArguments(b);
+		return fragment;
 	}
 
+	@Nullable
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.world_map);
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 
-		imageSurfaceView = (SubsamplingScaleImageView) findViewById(R.id.world_map_image);
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		poICitiesListView = (ListView) findViewById(R.id.poi_cities);
-		navigationView = (NavigationView) findViewById(R.id.navigation);
-		
-		findViewById(R.id.world_map_open).setOnClickListener(this);
+		View view = inflater.inflate(R.layout.world_map, null);
+
+		imageSurfaceView = (SubsamplingScaleImageView) view.findViewById(R.id.world_map_image);
+		drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_map_layout);
+		poICitiesListView = (ListView) view.findViewById(R.id.poi_cities);
+		navigationView = (NavigationView) view.findViewById(R.id.navigation);
+
+		view.findViewById(R.id.world_map_open).setOnClickListener(this);
 
 		initWorldMap(savedInstanceState);
 		initPoT();
+		return view;
 	}
 
 	private void initWorldMap(final Bundle savedInstanceState) {
@@ -78,17 +82,17 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 
 				@Override
 				public void onPreviewLoadError(Exception e) {
-					finish();
+					showError();
 				}
 
 				@Override
 				public void onImageLoadError(Exception e) {
-					finish();
+					showError();
 				}
 
 				@Override
 				public void onTileLoadError(Exception e) {
-					finish();
+					showError();
 				}
 
 				@Override
@@ -98,8 +102,12 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
-			finish();
+			showError();
 		}
+	}
+
+	private void showError() {
+
 	}
 
 	private void animateMap(final float x, final float y) {
@@ -109,12 +117,13 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	}
 
 	@Override
-	public void onBackPressed() {
+	public boolean onBackPressed() {
 		if(drawerLayout.isDrawerOpen(navigationView)){
 			drawerLayout.closeDrawers();
-		} else{
-			super.onBackPressed();
+			return true;
 		}
+
+		return false;
 	}
 
 	private void initPoT() {
@@ -129,13 +138,13 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	}
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
 		imageSurfaceView.animateCenter(new PointF(Utils.VARROCK_POINT.x, Utils.VARROCK_POINT.y));
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		super.onDestroy();
 		if(imageSurfaceView != null && imageSurfaceView.isReady()) {
 			imageSurfaceView.recycle();
@@ -143,7 +152,7 @@ public class WorldMapActivity extends Activity implements OnItemClickListener, O
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) {
 		if(imageSurfaceView != null) {
 			PointF p = imageSurfaceView.getCenter();
 			if(p != null) {

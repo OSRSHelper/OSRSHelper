@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -76,7 +76,7 @@ public class SearchAdapter extends ArrayAdapter<Item> {
         SpannableString text = new SpannableString(item.today.value + " " + dailyTrendText);
         text.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(trendingColor)), 0, item.today.value.length(), 0);
         holder.trending.setText(text);
-        Picasso.with(mContext).load(item.iconLarge).into(holder.image);
+        Glide.with(mContext).load(item.iconLarge).into(holder.image);
 
         if(item.members) {
             holder.member.setVisibility(View.VISIBLE);

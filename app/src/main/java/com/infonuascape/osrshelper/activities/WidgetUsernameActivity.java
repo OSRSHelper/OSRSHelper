@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.UsernamesAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
@@ -26,35 +27,15 @@ import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
 
 import java.util.ArrayList;
 
-public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
-	private static final String TAG = "UsernameActivity";
-
-	private static final String EXTRA_TYPE = "EXTRA_TYPE";
-
-	public static final int HISCORES = 0;
-	public static final int RT_XP_TRACKER = 1;
-	public static final int CML_XP_TRACKER = 4;
-	public static final int CONFIGURATION = 2;
-	public static final int COMBAT = 3;
+public class WidgetUsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
+	private static final String TAG = "WidgetUsernameActivity";
 
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private UsernamesAdapter adapter;
 	private int type;
 
-	public static void show(final Context context, int type){
-		Intent i = getIntent(context, type);
-		context.startActivity(i);
-	}
-
-	public static Intent getIntent(Context context, int type) {
-		Intent i = new Intent(context, UsernameActivity.class);
-		i.putExtra(EXTRA_TYPE, type);
-		return i;
-	}
-
-	public static Intent getIntent(Context context, int type, final int appWidgetId) {
-		Intent i = new Intent(context, UsernameActivity.class);
-		i.putExtra(EXTRA_TYPE, type);
+	public static Intent getIntent(Context context, final int appWidgetId) {
+		Intent i = new Intent(context, WidgetUsernameActivity.class);
 		i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		return i;
 	}
@@ -67,8 +48,6 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 		setContentView(R.layout.username);
 
-		type = getIntent().getIntExtra(EXTRA_TYPE, CONFIGURATION);
-
 		Log.i(TAG, "onCreate: type=" + type);
 		checkIfConfiguration();
 
@@ -76,17 +55,15 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		findViewById(R.id.continue_btn).setOnClickListener(this);
 
         // if hiscore lookup, enable ironman selectors
-        if (type == HISCORES || type == CONFIGURATION) {
-            for (int id : new int[]{R.id.ironman, R.id.ult_ironman, R.id.hc_ironman}) {
-                View v = findViewById(id);
-                v.setOnClickListener(this);
-                v.setVisibility(View.VISIBLE);
-            }
-        }
+		for (int id : new int[]{R.id.ironman, R.id.ult_ironman, R.id.hc_ironman}) {
+			View v = findViewById(id);
+			v.setOnClickListener(this);
+			v.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void checkIfConfiguration() {
-		if(type == CONFIGURATION && getIntent() != null){
+		if(getIntent() != null){
 			mAppWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
 			// If they gave us an intent without the widget id, just bail.
@@ -150,24 +127,14 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	private void closeActivity(final Account account) {
 		DBController.addAccount(this, account);
 
-		if(type == HISCORES){
-			HighScoreActivity.show(this, account);
-		} else if(type == CONFIGURATION){
-			DBController.setAccountForWidget(this, mAppWidgetId, account);
-			Intent resultValue = new Intent();
-			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-			setResult(RESULT_OK, resultValue);
-			Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this, OSRSAppWidgetProvider.class);
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {mAppWidgetId});
-			sendBroadcast(intent);
-			finish();
-		} else if (type == RT_XP_TRACKER) {
-			RTXPTrackerActivity.show(this, account);
-		} else if (type == CML_XP_TRACKER) {
-			CMLXPTrackerActivity.show(this, account);
-		} else if (type == COMBAT) {
-			CombatCalcActivity.show(this, account);
-		}
+		DBController.setAccountForWidget(this, mAppWidgetId, account);
+		Intent resultValue = new Intent();
+		resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+		setResult(RESULT_OK, resultValue);
+		Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this, OSRSAppWidgetProvider.class);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {mAppWidgetId});
+		sendBroadcast(intent);
+		finish();
 	}
 
 	@Override

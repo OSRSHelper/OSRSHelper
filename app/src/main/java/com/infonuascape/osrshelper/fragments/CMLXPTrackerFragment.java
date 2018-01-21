@@ -1,12 +1,11 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -16,69 +15,71 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.tasks.RuneTrackerFetcherTask;
-import com.infonuascape.osrshelper.utils.tablesfiller.RuneTrackerTableFiller;
+import com.infonuascape.osrshelper.tasks.CMLTrackerFetcherTask;
+import com.infonuascape.osrshelper.utils.tablesfiller.CMLTrackerTableFiller;
 
-public class RTXPTrackerActivity extends Activity implements OnItemSelectedListener, OnClickListener, CompoundButton.OnCheckedChangeListener, TrackerFetcherListener {
+public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelectedListener, OnClickListener, CompoundButton.OnCheckedChangeListener, TrackerFetcherListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private Account account;
 	private TextView header;
 	private Spinner spinner;
-	private TableLayout tableLayout;
-	private RuneTrackerTableFiller tableFiller;
-
 	private CheckBox virtualLevelsCB;
 	private PlayerSkills playerSkills;
+	private TableLayout tableLayout;
+	private CMLTrackerTableFiller tableFiller;
 
-	public static void show(final Context context, final Account account) {
-		Intent intent = new Intent(context, RTXPTrackerActivity.class);
-		intent.putExtra(EXTRA_ACCOUNT, account);
-		context.startActivity(intent);
+	public static CMLXPTrackerFragment newInstance(final Account account) {
+		CMLXPTrackerFragment fragment = new CMLXPTrackerFragment();
+		Bundle b = new Bundle();
+		b.putSerializable(EXTRA_ACCOUNT, account);
+		fragment.setArguments(b);
+		return fragment;
 	}
 
+	@Nullable
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		View view = inflater.inflate(R.layout.xptracker, null);
 
-		setContentView(R.layout.xptracker);
+		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 
-		account = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+		tableLayout = view.findViewById(R.id.table_tracking);
+		tableFiller = new CMLTrackerTableFiller(getContext(), tableLayout);
 
-		tableLayout = findViewById(R.id.table_tracking);
-		tableFiller = new RuneTrackerTableFiller(this, tableLayout);
-
-		header = (TextView) findViewById(R.id.header);
+		header = (TextView) view.findViewById(R.id.header);
 		header.setText(getString(R.string.loading_tracking, account.username));
 
-		virtualLevelsCB = (CheckBox) findViewById(R.id.cb_virtual_levels);
+		virtualLevelsCB = (CheckBox) view.findViewById(R.id.cb_virtual_levels);
 		virtualLevelsCB.setOnCheckedChangeListener(this);
-		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
+		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
 		virtualLevelsCB.setVisibility(View.GONE);
 
-		spinner = (Spinner) findViewById(R.id.time_spinner);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.time_array,
+		spinner = (Spinner) view.findViewById(R.id.time_spinner);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.time_array,
 				R.layout.spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 		spinner.setSelection(3);
 		spinner.setOnItemSelectedListener(this);
 
-		findViewById(R.id.update).setOnClickListener(this);
+		view.findViewById(R.id.update).setOnClickListener(this);
 
+		return view;
 	}
 
-	private void changeHeaderText(final String text, final int visibility) {
-		runOnUiThread(new Runnable() {
+	private void changeHeaderText(final String text, final int progressBarVisibility) {
+		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				findViewById(R.id.progressbar).setVisibility(visibility);
+				getView().findViewById(R.id.progressbar).setVisibility(progressBarVisibility);
 				header.setText(text);
 			}
 		});
@@ -86,24 +87,30 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		PreferencesController.setPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
+		PreferencesController.setPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
 		if(playerSkills != null) {
 			populateTable();
 		}
 	}
 
+
+
 	private void populateTable() {
 		changeHeaderText(getString(R.string.showing_tracking, account.username), View.GONE);
+
 		if (playerSkills.sinceWhen != null) {
-			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
+			((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
 					playerSkills.sinceWhen));
+		} else if (playerSkills.lastUpdate != null) {
+			((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.last_update,
+					playerSkills.lastUpdate));
 		} else {
-			((TextView) findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
+			((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
 		}
 
 		tableFiller.fill(playerSkills);
 
-        virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
+		virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 	}
 
 	private void createAsyncTaskToPopulate(String selectedTime, boolean isUpdating) {
@@ -122,10 +129,10 @@ public class RTXPTrackerActivity extends Activity implements OnItemSelectedListe
 		}
 
 		if (time != null) {
-			((TableLayout) findViewById(R.id.table_tracking)).removeAllViews();
-			((TextView) findViewById(R.id.track_metadata)).setText("");
+			((TableLayout) getView().findViewById(R.id.table_tracking)).removeAllViews();
+			((TextView) getView().findViewById(R.id.track_metadata)).setText("");
 			changeHeaderText(getString(R.string.loading_tracking, account.username), View.VISIBLE);
-			new RuneTrackerFetcherTask(this, this, account, time, isUpdating).execute();
+			new CMLTrackerFetcherTask(getContext(), this, account, time, isUpdating).execute();
 		}
 	}
 

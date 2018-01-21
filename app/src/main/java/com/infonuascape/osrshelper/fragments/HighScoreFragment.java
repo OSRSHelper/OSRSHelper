@@ -1,33 +1,28 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.fragments;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.PreferencesController;
-import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -35,16 +30,14 @@ import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
 import com.infonuascape.osrshelper.utils.Utils;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.utils.tablesfiller.HiscoresTableFiller;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class HighScoreActivity extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener {
+public class HighScoreFragment extends OSRSFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private static final int NUM_PAGES = 2;
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
@@ -60,63 +53,66 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 	private CheckBox virtualLevelsCB;
 
-    public static void show(final Context context, final Account account) {
-		Intent intent = new Intent(context, HighScoreActivity.class);
-		intent.putExtra(EXTRA_ACCOUNT, account);
-		context.startActivity(intent);
+    public static HighScoreFragment newInstance(final Account account) {
+    	HighScoreFragment fragment = new HighScoreFragment();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(EXTRA_ACCOUNT, account);
+		fragment.setArguments(bundle);
+		return fragment;
     }
 
+	@Nullable
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		View view = inflater.inflate(R.layout.hiscores, null);
 
-		setContentView(R.layout.hiscores);
-
-		account = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 		if(account == null) {
-			finish();
+			return view;
 		}
 
-		header = (TextView) findViewById(R.id.header);
+		header = (TextView) view.findViewById(R.id.header);
 		header.setText(getString(R.string.loading_highscores, account.username));
-		
-		combatText = (TextView) findViewById(R.id.combat);
 
-		virtualLevelsCB = (CheckBox) findViewById(R.id.cb_virtual_levels);
+		combatText = (TextView) view.findViewById(R.id.combat);
+
+		virtualLevelsCB = (CheckBox) view.findViewById(R.id.cb_virtual_levels);
 		virtualLevelsCB.setOnCheckedChangeListener(this);
-		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
+		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
 		virtualLevelsCB.setVisibility(View.GONE);
 
-		rsView = (RSView) findViewById(R.id.rs_view);
-		table = (TableLayout) findViewById(R.id.table_hiscores);
-		tableFiller = new HiscoresTableFiller(this, table);
+		rsView = (RSView) view.findViewById(R.id.rs_view);
+		table = (TableLayout) view.findViewById(R.id.table_hiscores);
+		tableFiller = new HiscoresTableFiller(getContext(), table);
 
 		WizardPagerAdapter adapter = new WizardPagerAdapter();
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager = (ViewPager) view.findViewById(R.id.pager);
 		mViewPager.setAdapter(adapter);
-		addDots();
+		addDots(view);
 
-		findViewById(R.id.share_btn).setVisibility(View.GONE);
-		findViewById(R.id.share_btn).setOnClickListener(this);
+		view.findViewById(R.id.share_btn).setVisibility(View.GONE);
+		view.findViewById(R.id.share_btn).setOnClickListener(this);
 
-		new HiscoresFetcherTask(this, this, account).execute();
+		new HiscoresFetcherTask(getContext(), this, account).execute();
 
+		return view;
 	}
 
+
 	private void changeHeaderText(final String text) {
-		runOnUiThread(new Runnable() {
+		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				findViewById(R.id.progressbar).setVisibility(View.GONE);
+				getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
 				header.setText(text);
 			}
 		});
 	}
 	
 	private void changeCombatText(){
-		runOnUiThread(new Runnable() {
+		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				combatText.setVisibility(View.VISIBLE);
@@ -127,7 +123,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		PreferencesController.setPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
+		PreferencesController.setPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
 		if(playerSkills != null) {
 			populateTable(playerSkills);
 		}
@@ -137,10 +133,10 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 	public void onClick(View view) {
 		if(view.getId() == R.id.share_btn) {
 			if(playerSkills != null) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
 				} else {
-					ShareImageUtils.shareHiscores(this, account.username, playerSkills);
+					ShareImageUtils.shareHiscores(getContext(), account.username, playerSkills);
 				}
 			}
 		}
@@ -149,7 +145,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 	@Override
 	public void onItemClicked(int position) {
 		Skill skill = rsView.getItem(position);
-		RSViewDialog.showDialog(this, skill);
+		RSViewDialog.showDialog(getContext(), skill);
 	}
 
 	@Override
@@ -161,19 +157,19 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 		changeHeaderText(getString(R.string.showing_results, account.username));
 		changeCombatText();
 
-		findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
+		getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
         virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 
         tableFiller.fill(playerSkills);
 		rsView.populateView(playerSkills, this);
 	}
 
-	public void addDots() {
+	public void addDots(final View view) {
 		dots = new ArrayList<>();
-		LinearLayout dotsLayout = (LinearLayout)findViewById(R.id.dots);
+		LinearLayout dotsLayout = (LinearLayout)view.findViewById(R.id.dots);
 
 		for(int i = 0; i < NUM_PAGES; i++) {
-			ImageView dot = new ImageView(this);
+			ImageView dot = new ImageView(getContext());
 			dot.setImageDrawable(getResources().getDrawable(R.drawable.pager_dot_not_selected));
 
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -233,13 +229,13 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 			int resId = 0;
 			switch (position) {
 				case 0:
-					resId = R.id.scroll_table;
-					break;
-				case 1:
 					resId = R.id.scroll_table_rs_view;
 					break;
+				case 1:
+					resId = R.id.scroll_table;
+					break;
 			}
-			return findViewById(resId);
+			return getView().findViewById(resId);
 		}
 
 		@Override
@@ -260,7 +256,7 @@ public class HighScoreActivity extends Activity implements CompoundButton.OnChec
 			for(int i=0 ; i < permissions.length; i++) {
 				if(TextUtils.equals(permissions[i], Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 					if(grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-						ShareImageUtils.shareHiscores(this, account.username, playerSkills);
+						ShareImageUtils.shareHiscores(getContext(), account.username, playerSkills);
 					}
 				}
 			}

@@ -3,7 +3,7 @@ package com.infonuascape.osrshelper.widget;
 import java.util.Arrays;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.UsernameActivity;
+import com.infonuascape.osrshelper.activities.WidgetUsernameActivity;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
 
@@ -74,7 +74,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 
 			Log.i(TAG, "appWidgetId=" + appWidgetId);
 			//Config
-			Intent configIntent = UsernameActivity.getIntent(context, UsernameActivity.CONFIGURATION, appWidgetId);
+			Intent configIntent = WidgetUsernameActivity.getIntent(context, appWidgetId);
 	        configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 	        configIntent.setAction(ACTION_WIDGET_CONFIGURE + Integer.toString(appWidgetId));

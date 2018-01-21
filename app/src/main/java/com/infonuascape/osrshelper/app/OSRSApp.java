@@ -1,7 +1,8 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.app;
 
 import android.app.Application;
 
+import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;

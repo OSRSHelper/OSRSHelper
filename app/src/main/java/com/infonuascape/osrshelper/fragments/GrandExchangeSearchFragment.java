@@ -1,26 +1,26 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.SearchView;
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.EndlessScrollListener;
 import com.infonuascape.osrshelper.adapters.SearchAdapter;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
-import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
+import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
 
 import java.util.ArrayList;
 
-public class SearchItemActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
+public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
 	private SearchAdapter adapter;
 	private SearchView searchView;
 	private String searchText;
@@ -28,26 +28,30 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 	private ListView list;
 	private SearchGEResultsTask runnableSearch;
 
-	public static void show(final Context context){
-		Intent i = new Intent(context, SearchItemActivity.class);
-		context.startActivity(i);
+	public static GrandExchangeSearchFragment newInstance(){
+		GrandExchangeSearchFragment fragment = new GrandExchangeSearchFragment();
+		Bundle bundle = new Bundle();
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
+	@Nullable
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		View view = inflater.inflate(R.layout.search_ge, null);
 
-		setContentView(R.layout.search_ge);
-
-		searchView = findViewById(R.id.searchView);
+		searchView = view.findViewById(R.id.searchView);
 		searchView.setOnQueryTextListener(this);
-		searchView.setIconified(false);
+		searchView.setIconifiedByDefault(false);
+		searchView.setQueryHint(getResources().getString(R.string.grand_exchange_lookup_hint));
 
-		list = findViewById(android.R.id.list);
+		list = view.findViewById(android.R.id.list);
 		list.setOnScrollListener(endlessScrollListener);
 		list.setOnItemClickListener(this);
+
+		return view;
 	}
 
 	@Override
@@ -74,11 +78,11 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 			isContinueToLoad = false;
 		}
 
-		findViewById(R.id.progress_loading).setVisibility(View.GONE);
+		getView().findViewById(R.id.progress_loading).setVisibility(View.GONE);
 
 		if(TextUtils.equals(searchTerm, searchText)) {
 			if (adapter == null) {
-				adapter = new SearchAdapter(this, searchResults);
+				adapter = new SearchAdapter(getContext(), searchResults);
 				list.setAdapter(adapter);
 			} else {
 				adapter.addAll(searchResults);
@@ -105,9 +109,9 @@ public class SearchItemActivity extends Activity implements OnItemClickListener,
 		if (runnableSearch != null && !runnableSearch.isCancelled()) {
 			runnableSearch.cancel(true);
 		}
-		runnableSearch = new SearchGEResultsTask(this, this, page, searchText);
+		runnableSearch = new SearchGEResultsTask(getContext(), this, page, searchText);
 		runnableSearch.execute();
-		findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
+		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
 	}
 
 	private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {

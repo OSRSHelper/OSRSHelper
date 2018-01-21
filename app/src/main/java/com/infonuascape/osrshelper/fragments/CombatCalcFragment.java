@@ -1,18 +1,17 @@
-package com.infonuascape.osrshelper;
+package com.infonuascape.osrshelper.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
 import com.infonuascape.osrshelper.models.Account;
@@ -21,7 +20,7 @@ import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
-public class CombatCalcActivity extends Activity implements TextWatcher {
+public class CombatCalcFragment extends OSRSFragment implements TextWatcher {
 	private static final String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 
 	private TextView combatText;
@@ -41,60 +40,61 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 
 	private Account account;
 	
-	public static void show(final Context context, final Account account) {
-		Intent intent = new Intent(context, CombatCalcActivity.class);
-		intent.putExtra(EXTRA_ACCOUNT, account);
-		context.startActivity(intent);
+	public static CombatCalcFragment newInstance(final Account account) {
+		CombatCalcFragment fragment = new CombatCalcFragment();
+		Bundle b = new Bundle();
+		b.putSerializable(EXTRA_ACCOUNT, account);
+		fragment.setArguments(b);
+		return fragment;
 	}
 
+	@Nullable
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		View view = inflater.inflate(R.layout.combat_lvl_calc, null);
 
-		setContentView(R.layout.combat_lvl_calc);
-		
-		combatText = (TextView) findViewById(R.id.combat_lvl);
-		lvlNeededText = (TextView) findViewById(R.id.number_lvl_needed);
-		attStrText = (TextView) findViewById(R.id.attack_strength_needed);
-		hpDefText = (TextView) findViewById(R.id.hitpoint_defence_needed);
-		rangeText = (TextView) findViewById(R.id.ranging_needed);
-		mageText = (TextView) findViewById(R.id.magic_needed);
-		prayerText = (TextView) findViewById(R.id.prayer_needed);
+		combatText = (TextView) view.findViewById(R.id.combat_lvl);
+		lvlNeededText = (TextView) view.findViewById(R.id.number_lvl_needed);
+		attStrText = (TextView) view.findViewById(R.id.attack_strength_needed);
+		hpDefText = (TextView) view.findViewById(R.id.hitpoint_defence_needed);
+		rangeText = (TextView) view.findViewById(R.id.ranging_needed);
+		mageText = (TextView) view.findViewById(R.id.magic_needed);
+		prayerText = (TextView) view.findViewById(R.id.prayer_needed);
 
-		hitpointEdit = ((EditText) findViewById(R.id.edit_hitpoints));
+		hitpointEdit = ((EditText) view.findViewById(R.id.edit_hitpoints));
 		hitpointEdit.addTextChangedListener(this);
-		
-		attackEdit = ((EditText) findViewById(R.id.edit_attack));
+
+		attackEdit = ((EditText) view.findViewById(R.id.edit_attack));
 		attackEdit.addTextChangedListener(this);
-		
-		strengthEdit = ((EditText) findViewById(R.id.edit_strength));
+
+		strengthEdit = ((EditText) view.findViewById(R.id.edit_strength));
 		strengthEdit.addTextChangedListener(this);
-		
-		defenceEdit = ((EditText) findViewById(R.id.edit_defence));
+
+		defenceEdit = ((EditText) view.findViewById(R.id.edit_defence));
 		defenceEdit.addTextChangedListener(this);
-		
-		rangingEdit = ((EditText) findViewById(R.id.edit_ranging));
+
+		rangingEdit = ((EditText) view.findViewById(R.id.edit_ranging));
 		rangingEdit.addTextChangedListener(this);
-		
-		prayerEdit = ((EditText) findViewById(R.id.edit_prayer));
+
+		prayerEdit = ((EditText) view.findViewById(R.id.edit_prayer));
 		prayerEdit.addTextChangedListener(this);
-		
-		magicEdit = ((EditText) findViewById(R.id.edit_magic));
+
+		magicEdit = ((EditText) view.findViewById(R.id.edit_magic));
 		magicEdit.addTextChangedListener(this);
 
 		changeCombatText();
-		account = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 		if(account != null){
 			new PopulateTable().execute();
 		}
+
+		return view;
 	}
 	
 	private void changeCombatText(){
-		runOnUiThread(new Runnable() {
+		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				PlayerSkills playerSkills = new PlayerSkills();
@@ -179,7 +179,7 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 			PlayerSkills playerSkills = null;
 
 			try {
-				playerSkills = new HiscoreFetcher(getApplicationContext(), account.username, account.type).getPlayerSkills();
+				playerSkills = new HiscoreFetcher(getContext(), account.username, account.type).getPlayerSkills();
 			} catch (PlayerNotFoundException e) {
 				e.printStackTrace();
 				changeHint(getString(R.string.not_existing_player, account.username));
@@ -206,7 +206,7 @@ public class CombatCalcActivity extends Activity implements TextWatcher {
 	}
 
 	private void changeHint(final String text) {
-		runOnUiThread(new Runnable() {
+		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				combatText.setText(text);

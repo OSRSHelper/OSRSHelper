@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.infonuascape.osrshelper.enums.AccountType;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ACCOUNT_TYPE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ID;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_PROFILE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_TIME_USED;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_USERNAME;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
@@ -74,6 +76,36 @@ public class DBController {
 		return account;
 	}
 
+	public static void setProfileAccount(final Context context, final Account account) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_IS_PROFILE, 0);
+		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, null, null);
+
+		values.put(COLUMN_IS_PROFILE, 1);
+		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+	}
+
+	public static Account getProfileAccount(final Context context) {
+		Account account = null;
+		final String[] projection = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED};
+		final String where = COLUMN_IS_PROFILE + "=?";
+		final String[] whereArgs = new String[]{String.valueOf(1)};
+
+		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, null);
+
+		try {
+			if (cursor.moveToFirst()) {
+				account = createAccountFromCursor(cursor);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			cursor.close();
+		}
+		Log.i(TAG, "getProfileAccount: account=" + account);
+		return account;
+	}
+
 	public static Account getAccountForWidget(final Context context, final int appWidgetId) {
 		Account account = null;
 		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, new String[]{COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE}, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null);
@@ -92,7 +124,7 @@ public class DBController {
 		return account;
 	}
 
-	private static Account createAccountFromCursor(final Cursor cursor) {
+	public static Account createAccountFromCursor(final Cursor cursor) {
 		final int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
 		final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
 		final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
@@ -133,4 +165,18 @@ public class DBController {
 		context.getContentResolver().delete(OSRSDatabase.ACCOUNTS_CONTENT_URI, null, null);
 	}
 
+	public static Cursor searchAccountsByUsername(final Context context, CharSequence query) {
+		final String[] projection = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED};
+
+
+		String where = null;
+		String[] whereArgs = null;
+
+		if(!TextUtils.isEmpty(query)) {
+			where = COLUMN_USERNAME + " LIKE ?";
+			whereArgs = new String[]{"%" + query + "%"};
+		}
+
+		return context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, COLUMN_TIME_USED + " DESC");
+	}
 }

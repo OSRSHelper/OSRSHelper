@@ -11,23 +11,24 @@ import com.infonuascape.osrshelper.enums.AccountType;
 public class OSRSDatabase extends SQLiteOpenHelper {
 	private static final String TAG = "DBController";
 
+	public static final String TABLE_USERNAMES = "osrshelper_usernames";
+	public static final String TABLE_WIDGET = "osrshelper_widgets";
+
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_USERNAME = "username";
 	public static final String COLUMN_ACCOUNT_TYPE = "account_type";
-
-	public static final String TABLE_USERNAMES = "osrshelper_usernames";
 	public static final String COLUMN_TIME_USED = "lastused";
+	public static final String COLUMN_IS_PROFILE = "is_profile";
 
-	public static final String TABLE_WIDGET = "osrshelper_widgets";
 	public static final String COLUMN_WIDGET_ID = "widgetid";
 
 	private static final String DATABASE_NAME = "osrshelper.db";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE_USERNAMES = "CREATE TABLE " + TABLE_USERNAMES + "("
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERNAME + " TEXT, "
-			+ COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_TIME_USED + " INTEGER);";
+			+ COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_TIME_USED + " INTEGER, " + COLUMN_IS_PROFILE + " INTEGER DEFAULT 0);";
 
 	private static final String DATABASE_CREATE_WIDGET = "CREATE TABLE " + TABLE_WIDGET + "("
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_WIDGET_ID + " TEXT, "
@@ -59,6 +60,10 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 			db.execSQL("UPDATE " + TABLE_USERNAMES + " SET " + COLUMN_ACCOUNT_TYPE + "='" + AccountType.REGULAR.name() + "'");
 			db.execSQL("UPDATE " + TABLE_WIDGET + " SET " + COLUMN_ACCOUNT_TYPE + "='" + AccountType.REGULAR.name() + "'");
+		}
+
+		if(oldVersion < 5) {
+			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_IS_PROFILE + " INTEGER DEFAULT 0");
 		}
 	}
 

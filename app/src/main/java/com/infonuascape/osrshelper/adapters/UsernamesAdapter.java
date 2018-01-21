@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.List;
 
@@ -45,21 +46,7 @@ public class UsernamesAdapter extends ArrayAdapter<Account> {
 		Account account = accounts.get(position);
 
 		holder.username.setText(account.username);
-
-		switch(account.type) {
-			case REGULAR:
-				holder.image.setImageResource(0);
-				break;
-			case IRONMAN:
-				holder.image.setImageResource(R.drawable.ironman);
-				break;
-			case ULTIMATE_IRONMAN:
-				holder.image.setImageResource(R.drawable.ult_ironman);
-				break;
-			case HARDCORE_IRONMAN:
-				holder.image.setImageResource(R.drawable.hc_ironman);
-				break;
-		}
+		holder.image.setImageResource(Utils.getAccountTypeResource(account.type));
 
 		return result;
 	}
