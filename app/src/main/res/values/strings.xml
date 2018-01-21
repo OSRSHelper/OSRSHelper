@@ -119,5 +119,9 @@
     <string name="set_profile_desc">Are you sure you want to select this user as your profile?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+    <string name="cml_top_day">Day</string>
+    <string name="cml_top_week">Week</string>
+    <string name="cml_top_month">Month</string>
+    <string name="cml_top_year">Year</string>
 
 </resources>

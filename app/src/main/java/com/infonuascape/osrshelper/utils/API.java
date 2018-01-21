@@ -30,7 +30,9 @@ public class API {
     private void fetch() throws JSONException {
         HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(endpoint + args, Request.Method.GET);
         statusCode = httpRequest.getStatusCode();
-        json = new JSONObject(httpRequest.getOutput());
+        if(statusCode == HTTPRequest.StatusCode.FOUND) {
+            json = new JSONObject(httpRequest.getOutput());
+        }
     }
 
     public JSONObject getJson() {
