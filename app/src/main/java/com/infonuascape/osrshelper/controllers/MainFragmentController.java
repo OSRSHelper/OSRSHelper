@@ -47,7 +47,7 @@ public class MainFragmentController {
 
         FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        fragmentManager.beginTransaction().replace(R.id.content, fragment, ROOT_FRAGMENT_TAG).commit();
+        fragmentManager.beginTransaction().replace(R.id.content, fragment, ROOT_FRAGMENT_TAG).commitAllowingStateLoss();
     }
 
     public void showFragment(final OSRSFragment fragment) {
@@ -55,7 +55,7 @@ public class MainFragmentController {
         if(!isAlreadyInBackStack(fragment)) {
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             final String tag = getTag(fragment);
-            fragmentManager.beginTransaction().replace(R.id.content, fragment, tag).addToBackStack(tag).commit();
+            fragmentManager.beginTransaction().replace(R.id.content, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
         }
     }
 
