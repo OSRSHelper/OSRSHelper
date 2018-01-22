@@ -110,20 +110,21 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 	private void populateTable() {
 		changeHeaderText(getString(R.string.showing_tracking), View.GONE);
 
-		((TextView) getView().findViewById(R.id.track_metadata)).setVisibility(View.VISIBLE);
-		if (playerSkills.sinceWhen != null) {
-			((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
-					playerSkills.sinceWhen));
-		} else if (playerSkills.lastUpdate != null) {
-			((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.last_update,
-					playerSkills.lastUpdate));
-		} else {
-			((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
+		if (getView() != null) {
+			((TextView) getView().findViewById(R.id.track_metadata)).setVisibility(View.VISIBLE);
+			if (playerSkills.sinceWhen != null) {
+				((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
+						playerSkills.sinceWhen));
+			} else if (playerSkills.lastUpdate != null) {
+				((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.last_update,
+						playerSkills.lastUpdate));
+			} else {
+				((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
+			}
+
+			tableFiller.fill(playerSkills);
+			virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 		}
-
-		tableFiller.fill(playerSkills);
-
-		virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 	}
 
 	private void createAsyncTaskToPopulate(String selectedTime, boolean isUpdating) {

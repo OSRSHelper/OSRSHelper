@@ -145,10 +145,12 @@ public class HighScoreFragment extends OSRSFragment implements CompoundButton.On
 	private void populateTable(PlayerSkills playerSkills) {
 		changeCombatText();
 
-		getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
-        virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
+		if(getView() != null) {
+			getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
+			virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 
-		rsView.populateView(playerSkills, this);
+			rsView.populateView(playerSkills, this);
+		}
 	}
 
 	@Override

@@ -28,9 +28,11 @@ public class ShareImageUtils {
         int height = context.getResources().getDimensionPixelSize(R.dimen.rs_view_header_height)
                 + (8 * context.getResources().getDimensionPixelSize(R.dimen.rs_view_item_height))
                 + (2 * context.getResources().getDimensionPixelSize(R.dimen.rs_view_padding));
-        rsView.measure(width, height);
-        rsView.layout(0, 0, width, height);
-        shareViewAsBitmap(context, rsView);
+        if(rsView != null) {
+            rsView.measure(width, height);
+            rsView.layout(0, 0, width, height);
+            shareViewAsBitmap(context, rsView);
+        }
     }
 
     private static void shareViewAsBitmap(final Context context, final View view) {

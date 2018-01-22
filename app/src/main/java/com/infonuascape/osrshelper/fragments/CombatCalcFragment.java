@@ -194,7 +194,7 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher {
 				playerSkills = new HiscoreFetcher(getContext(), account.username, account.type).getPlayerSkills();
 			} catch (PlayerNotFoundException e) {
 				e.printStackTrace();
-				changeHint(getString(R.string.not_existing_player, account.username));
+				changeHint(getString(R.string.not_existing_player));
 			} catch (Exception uhe) {
 				uhe.printStackTrace();
 				changeHint(getString(R.string.internal_error));
@@ -204,7 +204,7 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher {
 
 		@Override
 		protected void onPostExecute(final PlayerSkills playerSkillsCallback) {
-			if (playerSkillsCallback != null) {
+			if (playerSkillsCallback != null && getView() != null) {
 				hitpointEdit.setText(playerSkillsCallback.hitpoints.getLevel()+"");
 				attackEdit.setText(playerSkillsCallback.attack.getLevel()+"");
 				strengthEdit.setText(playerSkillsCallback.strength.getLevel()+"");
