@@ -81,7 +81,7 @@ public class TrackerFetcher {
 		long seconds = ehp.getLong("lastupdated");
 		long millis = seconds * 1000;
 		Date date = new Date(System.currentTimeMillis() - millis);
-		SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(date);
+		ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(date);
 
 		JSONObject skills = ehp.getJSONObject("skills");
 		for (Iterator<String> it = skills.keys(); it.hasNext(); ) {

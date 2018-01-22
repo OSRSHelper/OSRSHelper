@@ -129,10 +129,7 @@ public class CMLTrackerTableFiller {
         text.setText(NumberFormat.getInstance().format(s.getExperience()));
         text.setGravity(Gravity.CENTER);
         text.setTextColor(context.getResources().getColor(R.color.text_normal));
-        TableRow.LayoutParams p = new TableRow.LayoutParams();
-        p.width = 80;
-        p.gravity = Gravity.CENTER;
-        text.setLayoutParams(p);
+        text.setLayoutParams(params);
         tableRow.addView(text);
 
         // XP Gain

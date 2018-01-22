@@ -15,7 +15,7 @@ import org.json.JSONObject;
  */
 
 public class API {
-    private String endpoint = "http://192.168.0.117:8080";
+    private String endpoint = "https://api.buying-gf.com";
     private Context context;
     private String args;
     private HTTPRequest.StatusCode statusCode;

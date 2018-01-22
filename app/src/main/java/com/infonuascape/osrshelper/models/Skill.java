@@ -84,7 +84,7 @@ public class Skill {
 		this.skillType = skillType;
 	}
 
-	public Long getExperience() {
+	public long getExperience() {
 		return experience;
 	}
 
