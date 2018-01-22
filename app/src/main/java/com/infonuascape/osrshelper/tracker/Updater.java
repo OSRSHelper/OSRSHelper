@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.tracker.cml;
+package com.infonuascape.osrshelper.tracker;
 
 import android.content.Context;
 import android.util.Log;

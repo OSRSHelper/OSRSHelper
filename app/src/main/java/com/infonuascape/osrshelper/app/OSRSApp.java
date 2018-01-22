@@ -19,7 +19,7 @@ public class OSRSApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        
+
         Fabric.with(this, new Crashlytics.Builder().core(
                 new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .answers(new Answers()).build());

@@ -2,15 +2,14 @@ package com.infonuascape.osrshelper.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.tracker.cml.TrackerFetcher;
-import com.infonuascape.osrshelper.tracker.cml.Updater;
+import com.infonuascape.osrshelper.tracker.TrackerFetcher;
+import com.infonuascape.osrshelper.tracker.Updater;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
