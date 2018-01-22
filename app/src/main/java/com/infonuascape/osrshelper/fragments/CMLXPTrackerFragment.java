@@ -54,7 +54,7 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 		profileHeaderFragment.refreshProfile(account);
 		profileHeaderFragment.setTitle(R.string.cml_xptracker);
 
-		header = view.findViewById(R.id.header);
+		header = view.findViewById(R.id.track_metadata);
 
 		TableLayout tableLayout = view.findViewById(R.id.table_tracking);
 		tableFiller = new CMLTrackerTableFiller(getContext(), tableLayout);
@@ -72,18 +72,6 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 		return view;
 	}
 
-	private void changeHeaderText(final String text, final int progressBarVisibility) {
-		if(getActivity() != null) {
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					getView().findViewById(R.id.progressbar).setVisibility(progressBarVisibility);
-					header.setText(text);
-				}
-			});
-		}
-	}
-
 	@Override
 	public void refreshDataOnPreferencesChanged() {
 		super.refreshDataOnPreferencesChanged();
@@ -93,18 +81,17 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 	}
 
 	private void populateTable() {
-		changeHeaderText(getString(R.string.showing_tracking), View.GONE);
-
 		if (getView() != null) {
-			((TextView) getView().findViewById(R.id.track_metadata)).setVisibility(View.VISIBLE);
+			getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
+			header.setVisibility(View.VISIBLE);
 			if (playerSkills.sinceWhen != null) {
-				((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_since,
+				header.setText(getString(R.string.tracking_since,
 						playerSkills.sinceWhen));
 			} else if (playerSkills.lastUpdate != null) {
-				((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.last_update,
+				header.setText(getString(R.string.last_update,
 						playerSkills.lastUpdate));
 			} else {
-				((TextView) getView().findViewById(R.id.track_metadata)).setText(getString(R.string.tracking_starting));
+				header.setText(getString(R.string.tracking_starting));
 			}
 
 			tableFiller.fill(playerSkills);
@@ -128,8 +115,8 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 
 		if (time != null) {
 			((TableLayout) getView().findViewById(R.id.table_tracking)).removeAllViews();
-			((TextView) getView().findViewById(R.id.track_metadata)).setText("");
-			changeHeaderText(getString(R.string.loading_tracking), View.VISIBLE);
+			header.setText(R.string.loading_tracking);
+			getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
 			new CMLTrackerFetcherTask(getContext(), this, account, time, isUpdating).execute();
 		}
 	}
@@ -161,7 +148,15 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 	}
 
 	@Override
-	public void onTrackingError(String errorMessage) {
-		changeHeaderText(errorMessage, View.GONE);
+	public void onTrackingError(final String errorMessage) {
+		if(getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
+					header.setText(errorMessage);
+				}
+			});
+		}
 	}
 }

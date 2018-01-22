@@ -12,35 +12,25 @@
         android:layout_margin="10dp" />
 
     <TextView
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@id/profile_header"
-        android:text="@string/loading_tracking"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/text_normal" />
-
-    <TextView
         android:id="@+id/track_metadata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header"
+        android:layout_below="@id/profile_header"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:lines="2"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_normal"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
     <Spinner
         android:id="@+id/time_spinner"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/track_metadata"
-        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/profile_header"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:padding="10dp" />
 
