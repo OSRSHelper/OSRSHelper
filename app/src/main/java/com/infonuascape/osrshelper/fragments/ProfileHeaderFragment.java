@@ -1,7 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Utils;
 
@@ -29,7 +29,6 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
     private ValueAnimator slideInQuickActions;
     private ValueAnimator slideOutQuickActions;
     private boolean isAnimating;
-    private boolean isQuickActionsShown;
     private Account account;
 
     @Nullable
@@ -69,7 +68,6 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
             @Override
             public void onAnimationEnd(Animator animator) {
                 isAnimating = false;
-                isQuickActionsShown = true;
             }
 
             @Override
@@ -104,7 +102,6 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
             @Override
             public void onAnimationEnd(Animator animator) {
                 isAnimating = false;
-                isQuickActionsShown = false;
             }
 
             @Override
@@ -121,7 +118,6 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
     public void forceShowQuickActions() {
         isAnimating = true;
-        isQuickActionsShown = true;
         ViewGroup.LayoutParams params = quickActionsContainer.getLayoutParams();
         params.height = (int) Utils.convertDpToPixel(QUICK_ACTIONS_HEIGHT, getContext());
         quickActionsContainer.setLayoutParams(params);
@@ -145,14 +141,12 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
     }
 
     private void showProfile() {
-        if(getMainActivity() != null && !(getMainActivity().getCurrentFragment() instanceof ProfileFragment)) {
-            getMainActivity().showFragment(ProfileFragment.newInstance(account.username));
-        }
+        MainFragmentController.getInstance().showFragment(ProfileFragment.newInstance(account.username));
     }
 
     private void animateQuickActions() {
         if(!isAnimating) {
-            if(isQuickActionsShown) {
+            if(quickActionsContainer.getHeight() != 0) {
                 slideOutQuickActions.start();
             } else {
                 slideInQuickActions.start();

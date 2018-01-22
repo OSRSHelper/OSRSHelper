@@ -7,17 +7,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -29,17 +27,15 @@ import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 
-public class HighScoreFragment extends OSRSFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener {
+public class HighScoreFragment extends OSRSFragment implements View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener {
+	private static final String TAG = "HighScoreFragment";
+
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
-	private static final int NUM_PAGES = 2;
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
 	private Account account;
 	private TextView combatText;
 	private PlayerSkills playerSkills;
 	private RSView rsView;
-
-	private CheckBox virtualLevelsCB;
-	private ProfileHeaderFragment profileHeaderFragment;
 
 	public static HighScoreFragment newInstance(final Account account) {
 		Answers.getInstance().logContentView(new ContentViewEvent()
@@ -55,7 +51,7 @@ public class HighScoreFragment extends OSRSFragment implements CompoundButton.On
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-
+		Log.i(TAG, "onCreateView");
 		View view = inflater.inflate(R.layout.hiscores, null);
 
 		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
@@ -63,20 +59,14 @@ public class HighScoreFragment extends OSRSFragment implements CompoundButton.On
 			return view;
 		}
 
-		profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
+		ProfileHeaderFragment profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
 		profileHeaderFragment.refreshProfile(account);
 		profileHeaderFragment.setTitle(R.string.highscores);
 
-		combatText = (TextView) view.findViewById(R.id.combat);
+		combatText = view.findViewById(R.id.combat);
+		rsView = view.findViewById(R.id.rs_view);
 
-		virtualLevelsCB = (CheckBox) view.findViewById(R.id.cb_virtual_levels);
-		virtualLevelsCB.setOnCheckedChangeListener(this);
-		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
-		virtualLevelsCB.setVisibility(View.GONE);
-
-		rsView = (RSView) view.findViewById(R.id.rs_view);
-
-		view.findViewById(R.id.share_btn).setVisibility(View.GONE);
+		view.findViewById(R.id.share_btn).setVisibility(View.INVISIBLE);
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
 
 		new HiscoresFetcherTask(getContext(), this, account).execute();
@@ -111,8 +101,8 @@ public class HighScoreFragment extends OSRSFragment implements CompoundButton.On
 	}
 
 	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		PreferencesController.setPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
+	public void refreshDataOnPreferencesChanged() {
+		super.refreshDataOnPreferencesChanged();
 		if(playerSkills != null) {
 			populateTable(playerSkills);
 		}
@@ -147,8 +137,6 @@ public class HighScoreFragment extends OSRSFragment implements CompoundButton.On
 
 		if(getView() != null) {
 			getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
-			virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
-
 			rsView.populateView(playerSkills, this);
 		}
 	}

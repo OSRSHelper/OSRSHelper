@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
@@ -87,8 +88,8 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         }
         profileHeaderFragment.setTitle(R.string.profile);
         profileHeaderFragment.refreshProfile(account);
-        if(getMainActivity() != null) {
-            getMainActivity().refreshProfileAccount();
+        if(getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).refreshProfileAccount();
         }
     }
 

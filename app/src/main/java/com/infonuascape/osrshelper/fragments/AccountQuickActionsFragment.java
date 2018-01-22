@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.AccountQuickActionsAdapter;
+import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.enums.QuickAction;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -70,14 +71,14 @@ public class AccountQuickActionsFragment extends OSRSFragment implements Recycle
 
     @Override
     public void onItemClicked(int position) {
-        if(account != null && getMainActivity() != null) {
+        if(account != null) {
             QuickAction quickAction = adapter.getItem(position);
             if(quickAction == QuickAction.HISCORES) {
-                getMainActivity().showFragment(R.id.nav_hiscores, HighScoreFragment.newInstance(account));
+                MainFragmentController.getInstance().showFragment(HighScoreFragment.newInstance(account));
             } else if(quickAction == QuickAction.XP_TRACKER) {
-                getMainActivity().showFragment(R.id.nav_cml_tracker, CMLXPTrackerFragment.newInstance(account));
+                MainFragmentController.getInstance().showFragment(CMLXPTrackerFragment.newInstance(account));
             } else if(quickAction == QuickAction.COMBAT_CALC) {
-                getMainActivity().showFragment(R.id.nav_combat_lvl, CombatCalcFragment.newInstance(account));
+                MainFragmentController.getInstance().showFragment(CombatCalcFragment.newInstance(account));
             }
         }
     }

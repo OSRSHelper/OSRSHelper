@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,9 +22,9 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
+import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
-import com.infonuascape.osrshelper.enums.AccountType;
-import com.infonuascape.osrshelper.fragments.AccountQuickActionsFragment;
+import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.fragments.CMLXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CmlTopFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
@@ -45,7 +43,6 @@ import com.infonuascape.osrshelper.utils.Utils;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener,
         SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider {
     private static final String TAG = "MainActivity";
-    private static final String FRAGMENT_TAG = "FRAGMENT_TAG";
 
     private SearchView searchView;
     private NavigationView navigationView;
@@ -57,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -86,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        showFragment(R.id.nav_home, NewsFeedFragment.newInstance());
+        MainFragmentController.init(this, navigationView);
+        MainFragmentController.getInstance().showRootFragment(R.id.nav_home, NewsFeedFragment.newInstance());
     }
 
     public void refreshProfileAccount() {
@@ -109,19 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            OSRSFragment fragment = getCurrentFragment();
-            if(fragment != null) {
-                if(!fragment.onBackPressed()) {
-                    if(!(fragment instanceof NewsFeedFragment)){
-                        showFragment(R.id.nav_home, NewsFeedFragment.newInstance());
-                    } else {
-                        super.onBackPressed();
-                    }
-                }
-            } else {
-                super.onBackPressed();
-            }
+        } else if(!MainFragmentController.getInstance().onBackPressed()) {
+            super.onBackPressed();
         }
     }
 
@@ -132,10 +120,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        final boolean isShowVirtualLevels = PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+        menu.getItem(0).setTitle(isShowVirtualLevels ? R.string.hide_virtual_levels : R.string.show_virtual_levels);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_show_virtual_levels) {
+            final boolean isShowVirtualLevels = PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+            PreferencesController.setPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, !isShowVirtualLevels);
+            OSRSFragment fragment = MainFragmentController.getInstance().getCurrentFragment();
+            if(fragment != null) {
+                fragment.refreshDataOnPreferencesChanged();
+            }
             return true;
         }
 
@@ -177,35 +181,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(fragment != null) {
             drawer.closeDrawer(GravityCompat.START);
 
-            item.setChecked(true);
-            showFragment(fragment);
+            MainFragmentController.getInstance().showRootFragment(id, fragment);
             drawer.closeDrawers();
         }
 
         return true;
-    }
-
-    public void showFragment(final OSRSFragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content, fragment, FRAGMENT_TAG).commit();
-    }
-
-    public OSRSFragment getCurrentFragment() {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
-        if(fragment != null) {
-            return (OSRSFragment) fragment;
-        }
-
-        return null;
-    }
-
-    public void showFragment(final int menuId, final OSRSFragment fragment) {
-        for (int i = 0; i < navigationView.getMenu().size(); i++) {
-            MenuItem menuItem = navigationView.getMenu().getItem(i);
-            menuItem.setChecked(menuItem.getItemId() == menuId);
-        }
-
-        showFragment(fragment);
     }
 
     @Override
@@ -231,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onSuggestionClick(int position) {
         Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
-        showFragment(-1, ProfileFragment.newInstance(account.username));
+        MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
         searchView.setQuery(null, false);
         searchView.clearFocus();
         return false;
@@ -240,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onQueryTextSubmit(String query) {
         Log.i(TAG, "onQueryTextSubmit: query=" + query);
-        showFragment(-1, ProfileFragment.newInstance(query));
+        MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(query));
         searchView.setQuery(null, false);
         searchView.clearFocus();
         return false;

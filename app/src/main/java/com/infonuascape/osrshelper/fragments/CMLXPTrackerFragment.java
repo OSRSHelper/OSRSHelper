@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import android.widget.TextView;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -26,17 +23,12 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CMLTrackerFetcherTask;
 import com.infonuascape.osrshelper.utils.tablesfiller.CMLTrackerTableFiller;
 
-import org.w3c.dom.Text;
-
-public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelectedListener, OnClickListener, CompoundButton.OnCheckedChangeListener, TrackerFetcherListener {
+public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelectedListener, OnClickListener, TrackerFetcherListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private Account account;
 	private Spinner spinner;
-	private CheckBox virtualLevelsCB;
 	private PlayerSkills playerSkills;
-	private TableLayout tableLayout;
 	private CMLTrackerTableFiller tableFiller;
-	private ProfileHeaderFragment profileHeaderFragment;
 	private TextView header;
 
 	public static CMLXPTrackerFragment newInstance(final Account account) {
@@ -58,19 +50,14 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 
 		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 
-		profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
+		ProfileHeaderFragment profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
 		profileHeaderFragment.refreshProfile(account);
 		profileHeaderFragment.setTitle(R.string.cml_xptracker);
 
 		header = view.findViewById(R.id.header);
 
-		tableLayout = view.findViewById(R.id.table_tracking);
+		TableLayout tableLayout = view.findViewById(R.id.table_tracking);
 		tableFiller = new CMLTrackerTableFiller(getContext(), tableLayout);
-
-		virtualLevelsCB = (CheckBox) view.findViewById(R.id.cb_virtual_levels);
-		virtualLevelsCB.setOnCheckedChangeListener(this);
-		virtualLevelsCB.setChecked(PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false));
-		virtualLevelsCB.setVisibility(View.GONE);
 
 		spinner = (Spinner) view.findViewById(R.id.time_spinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.time_array,
@@ -98,14 +85,12 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 	}
 
 	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		PreferencesController.setPreference(getContext(), PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, isChecked);
+	public void refreshDataOnPreferencesChanged() {
+		super.refreshDataOnPreferencesChanged();
 		if(playerSkills != null) {
 			populateTable();
 		}
 	}
-
-
 
 	private void populateTable() {
 		changeHeaderText(getString(R.string.showing_tracking), View.GONE);
@@ -123,7 +108,6 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 			}
 
 			tableFiller.fill(playerSkills);
-			virtualLevelsCB.setVisibility(playerSkills.hasOneAbove99 ? View.VISIBLE : View.GONE);
 		}
 	}
 

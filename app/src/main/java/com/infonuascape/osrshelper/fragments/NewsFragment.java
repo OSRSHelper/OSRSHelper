@@ -13,14 +13,13 @@ import android.widget.TextView;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.adapters.NewsAdapter;
+import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.listeners.NewsFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.OSRSNews;
 import com.infonuascape.osrshelper.tasks.OSRSNewsTask;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,9 +107,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     @Override
     public void onItemClicked(int position) {
         OSRSNews news = newsAdapter.getItem(position);
-        if(getMainActivity() != null) {
-            getMainActivity().showFragment(R.id.nav_news, WebViewFragment.newInstance(news.url, true));
-        }
+        MainFragmentController.getInstance().showFragment(WebViewFragment.newInstance(news.url, true));
     }
 
     @Override

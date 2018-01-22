@@ -14,11 +14,7 @@ public abstract class OSRSFragment extends Fragment {
         return false;
     }
 
-    public MainActivity getMainActivity() {
-        if(getActivity() instanceof MainActivity) {
-            return (MainActivity) getActivity();
-        }
+    public void refreshDataOnPreferencesChanged() {
 
-        return null;
     }
 }
