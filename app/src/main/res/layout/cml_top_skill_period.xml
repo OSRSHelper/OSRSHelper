@@ -18,6 +18,7 @@
             android:layout_weight="4"
             android:text="@string/cml_top_header_1"
             android:textColor="@color/text_normal"
+            android:textStyle="bold"
             android:textSize="16sp"
             android:gravity="center"/>
 
@@ -28,6 +29,7 @@
             android:layout_weight="3"
             android:text="@string/cml_top_header_2"
             android:textColor="@color/text_normal"
+            android:textStyle="bold"
             android:textSize="16sp" />
 
         <TextView
@@ -38,6 +40,7 @@
             android:layout_weight="3"
             android:text="@string/cml_top_header_3"
             android:textColor="@color/text_normal"
+            android:textStyle="bold"
             android:textSize="16sp"/>
     </LinearLayout>
 

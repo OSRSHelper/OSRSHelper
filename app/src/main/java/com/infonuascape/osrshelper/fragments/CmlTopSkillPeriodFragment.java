@@ -73,7 +73,9 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
             if(fetcherTask == null) {
                 fetcherTask = new CMLTopFetcherTask(getContext(), this, skillType, period);
                 fetcherTask.execute();
-                progressBar.setVisibility(View.VISIBLE);
+                if(progressBar != null) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
             }
         } else {
             if(recyclerView.getAdapter() == null) {

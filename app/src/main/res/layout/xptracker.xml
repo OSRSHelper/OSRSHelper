@@ -29,7 +29,7 @@
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_below="@+id/profile_header"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/update"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:padding="10dp" />
@@ -40,20 +40,70 @@
         android:layout_height="40dp"
         android:layout_alignTop="@id/time_spinner"
         android:layout_alignBottom="@id/time_spinner"
-        android:layout_toRightOf="@id/time_spinner"
+        android:layout_alignParentRight="true"
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:padding="8dp"
         android:tint="@color/rs_view_bg"
         android:src="@drawable/refresh"/>
 
+    <LinearLayout
+        android:id="@+id/table_headers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/update"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/text_normal"
+            android:textStyle="bold"
+            android:text="@string/skill"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/text_normal"
+            android:textStyle="bold"
+            android:text="@string/xp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/text_normal"
+            android:textStyle="bold"
+            android:text="@string/xp_gain"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/text_normal"
+            android:textStyle="bold"
+            android:text="@string/rank_diff"/>
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/scroll_table"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/time_spinner"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_below="@id/table_headers"
         android:layout_marginTop="20dp"
         android:overScrollMode="never" >
 
@@ -62,7 +112,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:shrinkColumns="0"
-            android:stretchColumns="1,2,3,4,5,6,7,8,9,10">
+            android:stretchColumns="*">
 
         </TableLayout>
     </ScrollView>

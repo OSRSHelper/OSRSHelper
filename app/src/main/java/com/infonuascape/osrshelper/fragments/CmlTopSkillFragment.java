@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.SkillType;
 
@@ -24,10 +22,6 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
 
     public static CmlTopSkillFragment newInstance(SkillType skillType) {
         CmlTopSkillFragment fragment = new CmlTopSkillFragment();
-        Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("CML Top Skill")
-                .putContentType(skillType.getSkillName()));
-
         Bundle b = new Bundle();
         b.putSerializable(EXTRA_SKILLTYPE, skillType);
         fragment.setArguments(b);
@@ -48,7 +42,7 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
         adapter = new CmlTopSkillFragmentAdapter(getChildFragmentManager(), getContext(), skillType);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
         TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 

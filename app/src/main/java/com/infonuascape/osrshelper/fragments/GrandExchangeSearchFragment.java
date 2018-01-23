@@ -11,8 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.EndlessScrollListener;
 import com.infonuascape.osrshelper.adapters.SearchAdapter;
@@ -31,8 +29,6 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 	private SearchGEResultsTask runnableSearch;
 
 	public static GrandExchangeSearchFragment newInstance(){
-		Answers.getInstance().logContentView(new ContentViewEvent()
-				.putContentName("Grand Exchange"));
 		GrandExchangeSearchFragment fragment = new GrandExchangeSearchFragment();
 		Bundle bundle = new Bundle();
 		fragment.setArguments(bundle);

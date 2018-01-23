@@ -13,27 +13,23 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CMLTrackerFetcherTask;
-import com.infonuascape.osrshelper.utils.tablesfiller.CMLTrackerTableFiller;
+import com.infonuascape.osrshelper.adapters.CMLTrackerTableAdapter;
 
 public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelectedListener, OnClickListener, TrackerFetcherListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private Account account;
 	private Spinner spinner;
 	private PlayerSkills playerSkills;
-	private CMLTrackerTableFiller tableFiller;
+	private CMLTrackerTableAdapter tableFiller;
 	private TextView header;
 
 	public static CMLXPTrackerFragment newInstance(final Account account) {
-		Answers.getInstance().logContentView(new ContentViewEvent()
-				.putContentName("CML XP Tracker"));
 		CMLXPTrackerFragment fragment = new CMLXPTrackerFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(EXTRA_ACCOUNT, account);
@@ -57,7 +53,7 @@ public class CMLXPTrackerFragment extends OSRSFragment implements OnItemSelected
 		header = view.findViewById(R.id.track_metadata);
 
 		TableLayout tableLayout = view.findViewById(R.id.table_tracking);
-		tableFiller = new CMLTrackerTableFiller(getContext(), tableLayout);
+		tableFiller = new CMLTrackerTableAdapter(getContext(), tableLayout);
 
 		spinner = (Spinner) view.findViewById(R.id.time_spinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.time_array,

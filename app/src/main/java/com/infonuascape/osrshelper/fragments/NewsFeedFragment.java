@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
@@ -21,8 +19,6 @@ public class NewsFeedFragment extends OSRSFragment {
     private static final String TAG = "NewsFeedFragment";
 
     public static NewsFeedFragment newInstance() {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("News feed"));
         NewsFeedFragment fragment = new NewsFeedFragment();
         Bundle b = new Bundle();
         fragment.setArguments(b);

@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.NewsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
@@ -36,8 +34,6 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     private LinearLayoutManager linearLayoutManager;
 
     public static NewsFragment newInstance() {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("OSRS News"));
         NewsFragment fragment = new NewsFragment();
         Bundle b = new Bundle();
         fragment.setArguments(b);

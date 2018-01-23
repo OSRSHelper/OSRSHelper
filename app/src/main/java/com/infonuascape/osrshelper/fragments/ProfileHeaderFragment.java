@@ -28,6 +28,9 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
     private FrameLayout quickActionsContainer;
     private ValueAnimator slideInQuickActions;
     private ValueAnimator slideOutQuickActions;
+    private ValueAnimator rotateExpandQuickActions;
+    private ValueAnimator rotateCollapseQuickActions;
+    private View expandView;
     private boolean isAnimating;
     private Account account;
 
@@ -40,6 +43,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
         view.findViewById(R.id.profile_header).setOnClickListener(this);
         view.findViewById(R.id.account_username).setOnClickListener(this);
+        expandView = view.findViewById(R.id.profile_more_btn);
 
         quickActionsContainer = view.findViewById(R.id.quick_actions_container);
 
@@ -63,6 +67,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
             @Override
             public void onAnimationStart(Animator animator) {
                 isAnimating = true;
+                rotateExpandQuickActions.start();
             }
 
             @Override
@@ -78,6 +83,16 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
             @Override
             public void onAnimationRepeat(Animator animator) {
 
+            }
+        });
+
+        rotateExpandQuickActions = ValueAnimator.ofFloat(0f, 180f);
+        rotateExpandQuickActions.setDuration(300);
+        rotateExpandQuickActions.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float value = (float) valueAnimator.getAnimatedValue();
+                expandView.setRotation(value);
             }
         });
 
@@ -97,6 +112,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
             @Override
             public void onAnimationStart(Animator animator) {
                 isAnimating = true;
+                rotateCollapseQuickActions.start();
             }
 
             @Override
@@ -114,6 +130,16 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
             }
         });
+
+        rotateCollapseQuickActions = ValueAnimator.ofFloat(180f, 0f);
+        rotateCollapseQuickActions.setDuration(300);
+        rotateCollapseQuickActions.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float value = (float) valueAnimator.getAnimatedValue();
+                expandView.setRotation(value);
+            }
+        });
     }
 
     public void forceShowQuickActions() {
@@ -121,7 +147,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         ViewGroup.LayoutParams params = quickActionsContainer.getLayoutParams();
         params.height = (int) Utils.convertDpToPixel(QUICK_ACTIONS_HEIGHT, getContext());
         quickActionsContainer.setLayoutParams(params);
-        getView().findViewById(R.id.profile_more_btn).setVisibility(View.GONE);
+        expandView.setVisibility(View.GONE);
     }
 
     public void refreshProfile(final Account account) {

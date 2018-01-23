@@ -41,7 +41,7 @@ import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener,
-        SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider {
+        SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider, View.OnClickListener {
     private static final String TAG = "MainActivity";
 
     private SearchView searchView;
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         searchView = findViewById(R.id.search_view);
@@ -81,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(this);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getHeaderView(0).setOnClickListener(this);
 
         MainFragmentController.init(this, navigationView);
         MainFragmentController.getInstance().showRootFragment(R.id.nav_home, NewsFeedFragment.newInstance());
@@ -179,9 +179,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if(fragment != null) {
-            drawer.closeDrawer(GravityCompat.START);
-
             MainFragmentController.getInstance().showRootFragment(id, fragment);
+            drawer.closeDrawer(GravityCompat.START);
             drawer.closeDrawers();
         }
 
@@ -238,5 +237,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Cursor c = DBController.searchAccountsByUsername(this, query);
         return c;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.nav_header_container) {
+            Account account = DBController.getProfileAccount(this);
+            if(account != null) {
+                MainFragmentController.getInstance().showRootFragment(R.id.nav_home, ProfileFragment.newInstance(account.username));
+                drawer.closeDrawer(GravityCompat.START);
+                drawer.closeDrawers();
+            }
+        }
     }
 }

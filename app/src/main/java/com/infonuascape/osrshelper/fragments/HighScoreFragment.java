@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
@@ -38,8 +36,6 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	private RSView rsView;
 
 	public static HighScoreFragment newInstance(final Account account) {
-		Answers.getInstance().logContentView(new ContentViewEvent()
-				.putContentName("Hiscores"));
     	HighScoreFragment fragment = new HighScoreFragment();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(EXTRA_ACCOUNT, account);

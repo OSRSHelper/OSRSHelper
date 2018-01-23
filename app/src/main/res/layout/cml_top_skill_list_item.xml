@@ -23,7 +23,8 @@
                 android:id="@+id/cml_top_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/gen_white_bt_sel">
 
                 <TextView
                     android:id="@+id/account_number"

@@ -1,6 +1,5 @@
 package com.infonuascape.osrshelper.fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 
 /**
@@ -28,14 +25,10 @@ public class WebViewFragment extends OSRSFragment {
     private ProgressBar progressBar;
 
     public static WebViewFragment newInstance(final String url) {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Wiki"));
         return newInstance(url, false);
     }
 
     public static WebViewFragment newInstance(final String url, final boolean isNews) {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("Looking at news"));
         WebViewFragment fragment = new WebViewFragment();
         Bundle b = new Bundle();
         b.putString(EXTRA_URL, url);

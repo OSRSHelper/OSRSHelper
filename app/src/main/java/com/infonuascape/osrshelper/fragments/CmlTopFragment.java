@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
@@ -20,8 +18,6 @@ public class CmlTopFragment extends OSRSFragment implements RecyclerItemClickLis
     private RSView rsView;
 
     public static CmlTopFragment newInstance() {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-                .putContentName("CML Top Main"));
         CmlTopFragment fragment = new CmlTopFragment();
         Bundle b = new Bundle();
         fragment.setArguments(b);

@@ -21,7 +21,6 @@ import java.util.List;
 
 public class NewsRSSParser {
 
-    // Constants indicting XML element names that we're interested in
     private static final int TAG_TITLE = 1;
     private static final int TAG_DESCRIPTION = 2;
     private static final int TAG_PUBLISHED = 3;
@@ -104,13 +103,8 @@ public class NewsRSSParser {
         return news;
     }
 
-    /**
-     * Process an incoming tag and read the selected value from it.
-     */
     private String readTag(XmlPullParser parser, int tagType)
             throws IOException, XmlPullParserException {
-        String tag = null;
-        String endTag = null;
 
         switch (tagType) {
             case TAG_LINK:
@@ -130,17 +124,6 @@ public class NewsRSSParser {
         }
     }
 
-    /**
-     * Reads the body of a basic XML tag, which is guaranteed not to contain any nested elements.
-     *
-     * <p>You probably want to call readTag().
-     *
-     * @param parser Current parser object
-     * @param tag XML element tag name to parse
-     * @return Body of the specified tag
-     * @throws java.io.IOException
-     * @throws org.xmlpull.v1.XmlPullParserException
-     */
     private String readBasicTag(XmlPullParser parser, String tag)
             throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, tag);
@@ -152,9 +135,6 @@ public class NewsRSSParser {
         return result;
     }
 
-    /**
-     * Processes link tags in the feed.
-     */
     private String readEnclosureImage(XmlPullParser parser)
             throws IOException, XmlPullParserException {
         String link = null;
@@ -169,9 +149,6 @@ public class NewsRSSParser {
         return link;
     }
 
-    /**
-     * For the tags title and summary, extracts their text values.
-     */
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = null;
         if (parser.next() == XmlPullParser.TEXT) {

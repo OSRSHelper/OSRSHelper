@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.fragments.NewsFeedFragment;
@@ -45,18 +47,28 @@ public class MainFragmentController {
             menuItem.setChecked(menuItem.getItemId() == menuId);
         }
 
-        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        fragmentManager.beginTransaction().replace(R.id.content, fragment, ROOT_FRAGMENT_TAG).commitAllowingStateLoss();
+        if(fragment != null) {
+            Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
+            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.beginTransaction().replace(R.id.content, fragment, ROOT_FRAGMENT_TAG).commitAllowingStateLoss();
+        }
     }
 
     public void showFragment(final OSRSFragment fragment) {
         Log.i(TAG, "showFragment:");
-        if(!isAlreadyInBackStack(fragment)) {
+        if(fragment != null && !isAlreadyInBackStack(fragment)) {
+            Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             final String tag = getTag(fragment);
             fragmentManager.beginTransaction().replace(R.id.content, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
         }
+    }
+
+    private String getCleanName(OSRSFragment fragment) {
+        //Removes Fragment and add a space between capital letters
+        return fragment.getClass().getSimpleName().replace("Fragment", "")
+                .replaceAll("(.)([A-Z])", "$1 $2");
     }
 
     private boolean isAlreadyInBackStack(OSRSFragment fragment) {
