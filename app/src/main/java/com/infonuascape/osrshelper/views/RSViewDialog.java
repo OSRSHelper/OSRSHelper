@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
@@ -36,7 +35,7 @@ public class RSViewDialog {
             short level = (isShowVirtualLevels ? skill.getVirtualLevel() : skill.getLevel());
             ((TextView) dialogView.findViewById(R.id.skill_lvl)).setText(String.valueOf(level));
 
-            ((TextView) dialogView.findViewById(R.id.skill_exp)).setText(String.valueOf(NumberFormat.getInstance().format(skill.getExperience())));
+            ((TextView) dialogView.findViewById(R.id.skill_exp)).setText(NumberFormat.getInstance().format(skill.getExperience()));
 
             if (skill.getSkillType() != SkillType.Overall && (isShowVirtualLevels || skill.getLevel() != 99)) {
                 String xpToLevel = NumberFormat.getInstance().format(Utils.getExpFromLevel(level + 1, isShowVirtualLevels) - skill.getExperience());
@@ -45,6 +44,8 @@ public class RSViewDialog {
                 dialogView.findViewById(R.id.skill_exp_to_lvl_title).setVisibility(View.GONE);
                 dialogView.findViewById(R.id.skill_exp_to_lvl).setVisibility(View.GONE);
             }
+
+            ((TextView) dialogView.findViewById(R.id.skill_rank)).setText(NumberFormat.getInstance().format(skill.getRank()));
 
             builder.setView(dialogView);
             final AlertDialog dialog = builder.create();

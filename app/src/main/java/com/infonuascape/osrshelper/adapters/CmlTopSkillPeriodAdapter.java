@@ -12,7 +12,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
-import com.infonuascape.osrshelper.fragments.CMLXPTrackerFragment;
+import com.infonuascape.osrshelper.fragments.CmlXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
@@ -107,7 +107,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
             itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MainFragmentController.getInstance().showFragment(CMLXPTrackerFragment.newInstance(getAccount(getAdapterPosition())));
+                    MainFragmentController.getInstance().showFragment(CmlXPTrackerFragment.newInstance(getAccount(getAdapterPosition())));
                 }
             });
 

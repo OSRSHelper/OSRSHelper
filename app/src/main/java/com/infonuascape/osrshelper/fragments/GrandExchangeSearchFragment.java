@@ -26,7 +26,6 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 	private String searchText;
     private boolean isContinueToLoad;
 	private ListView list;
-	private SearchGEResultsTask runnableSearch;
 
 	public static GrandExchangeSearchFragment newInstance(){
 		GrandExchangeSearchFragment fragment = new GrandExchangeSearchFragment();
@@ -106,11 +105,11 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 	}
 
 	private void startSearchTask(int page) {
-		if (runnableSearch != null && !runnableSearch.isCancelled()) {
-			runnableSearch.cancel(true);
+		if (asyncTask != null && !asyncTask.isCancelled()) {
+			asyncTask.cancel(true);
 		}
-		runnableSearch = new SearchGEResultsTask(getContext(), this, page, searchText);
-		runnableSearch.execute();
+		asyncTask = new SearchGEResultsTask(getContext(), this, page, searchText);
+		asyncTask.execute();
 		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
 	}
 

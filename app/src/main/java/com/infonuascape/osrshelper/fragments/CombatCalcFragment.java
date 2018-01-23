@@ -90,8 +90,10 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 		magicEdit = view.findViewById(R.id.edit_magic);
 		magicEdit.addTextChangedListener(this);
 
+		changeCombatText();
 		if (account != null) {
-			new HiscoresFetcherTask(getContext(), this, account).execute();
+			asyncTask = new HiscoresFetcherTask(getContext(), this, account);
+			asyncTask.execute();
 		}
 
 		return view;

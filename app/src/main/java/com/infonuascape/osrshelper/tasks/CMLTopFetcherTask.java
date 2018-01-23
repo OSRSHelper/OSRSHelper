@@ -20,13 +20,14 @@ import java.util.List;
  * Created by marc_ on 2018-01-20.
  */
 
-public class CMLTopFetcherTask extends AsyncTask<String, Void, List<PlayerExp>> {
+public class CMLTopFetcherTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "CMLTopFetcherTask";
 
     private WeakReference<Context> context;
     private WeakReference<TopPlayersListener> listener;
     private SkillType skillType;
     private Period period;
+    private List<PlayerExp> playerExps;
 
     public CMLTopFetcherTask(final Context context, final TopPlayersListener listener, final SkillType skillType, final Period period) {
         this.context = new WeakReference<>(context);
@@ -36,10 +37,10 @@ public class CMLTopFetcherTask extends AsyncTask<String, Void, List<PlayerExp>> 
     }
 
     @Override
-    protected List<PlayerExp> doInBackground(String... urls) {
+    protected Void doInBackground(Void... params) {
         try {
             TopFetcher tf = new TopFetcher(context.get(), skillType, period);
-            return tf.processAPI();
+            playerExps = tf.processAPI();
         } catch (ParserErrorException e) {
             e.printStackTrace();
         } catch (APIError apiError) {
@@ -52,9 +53,9 @@ public class CMLTopFetcherTask extends AsyncTask<String, Void, List<PlayerExp>> 
     }
 
     @Override
-    protected void onPostExecute(List<PlayerExp> playerList) {
+    protected void onPostExecute(Void result) {
         if(listener.get() != null) {
-            listener.get().onPlayersFetched(playerList);
+            listener.get().onPlayersFetched(playerExps);
         }
     }
 }

@@ -17,11 +17,11 @@ import java.text.NumberFormat;
  * Created by marc_ on 2018-01-14.
  */
 
-public class CMLTrackerTableAdapter {
+public class CmlTrackerTableAdapter {
     private Context context;
     private TableLayout tableLayout;
 
-    public CMLTrackerTableAdapter(final Context context, final TableLayout tableLayout) {
+    public CmlTrackerTableAdapter(final Context context, final TableLayout tableLayout) {
         this.context = context;
         this.tableLayout = tableLayout;
     }

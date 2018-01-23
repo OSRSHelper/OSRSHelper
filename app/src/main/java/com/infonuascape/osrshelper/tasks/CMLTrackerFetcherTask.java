@@ -20,12 +20,13 @@ import java.lang.ref.WeakReference;
  * Created by marc_ on 2018-01-14.
  */
 
-public class CMLTrackerFetcherTask extends AsyncTask<String, Void, PlayerSkills> {
+public class CMLTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     private WeakReference<Context> context;
     private Account account;
     private TrackerTime time;
     private boolean isUpdating;
     private TrackerFetcherListener listener;
+    private PlayerSkills playerSkills;
 
     public CMLTrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account, final TrackerTime time, final boolean isUpdating) {
         this.context = new WeakReference<>(context);
@@ -36,12 +37,12 @@ public class CMLTrackerFetcherTask extends AsyncTask<String, Void, PlayerSkills>
     }
 
     @Override
-    protected PlayerSkills doInBackground(String... urls) {
+    protected Void doInBackground(Void... params) {
         try {
             if (isUpdating) {
                 Updater.perform(context.get(), account.username);
             }
-            return new TrackerFetcher(context.get(), account.username, time).getPlayerSkills();
+            playerSkills = new TrackerFetcher(context.get(), account.username, time).getPlayerSkills();
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
                 listener.onTrackingError(context.get().getString(R.string.not_existing_player));
@@ -64,7 +65,7 @@ public class CMLTrackerFetcherTask extends AsyncTask<String, Void, PlayerSkills>
     }
 
     @Override
-    protected void onPostExecute(PlayerSkills playerSkills) {
+    protected void onPostExecute(Void result) {
         if(listener != null) {
             listener.onTrackingFetched(playerSkills);
         }

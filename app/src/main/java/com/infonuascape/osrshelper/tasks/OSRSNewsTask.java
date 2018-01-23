@@ -22,17 +22,18 @@ import java.util.List;
  * Created by marc_ on 2018-01-20.
  */
 
-public class OSRSNewsTask extends AsyncTask<Void, Void, List<OSRSNews>> {
+public class OSRSNewsTask extends AsyncTask<Void, Void, Void> {
     private final static String API_ENDPOINT = "http://services.runescape.com/m=news/latest_news.rss?oldschool=true";
     private WeakReference<Context> context;
     private WeakReference<NewsFetcherListener> listener;
+    private List<OSRSNews> osrsNews;
 
     public OSRSNewsTask(final Context context, final NewsFetcherListener listener) {
         this.context = new WeakReference<>(context);
         this.listener = new WeakReference<>(listener);
     }
     @Override
-    protected List<OSRSNews> doInBackground(Void... voids) {
+    protected Void doInBackground(Void... voids) {
         if(listener.get() != null) {
             listener.get().onNewsFetchingStarted();
         }
@@ -41,7 +42,7 @@ public class OSRSNewsTask extends AsyncTask<Void, Void, List<OSRSNews>> {
         if(httpRequest.getStatusCode() == HTTPRequest.StatusCode.FOUND) {
             NewsRSSParser parser = new NewsRSSParser();
             try {
-                return parser.parse(httpRequest.getOutput());
+                osrsNews = parser.parse(httpRequest.getOutput());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -55,10 +56,10 @@ public class OSRSNewsTask extends AsyncTask<Void, Void, List<OSRSNews>> {
     }
 
     @Override
-    protected void onPostExecute(List<OSRSNews> news) {
-        super.onPostExecute(news);
+    protected void onPostExecute(Void result) {
+        super.onPostExecute(result);
         if(listener.get() != null) {
-            listener.get().onNewsFetched(news);
+            listener.get().onNewsFetched(osrsNews);
         }
     }
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.adapters.CmlTopSkillFragmentAdapter;
 import com.infonuascape.osrshelper.enums.SkillType;
 
 public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPageChangeListener {
@@ -47,12 +48,6 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
         tabLayout.setupWithViewPager(viewPager);
 
         return view;
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        getParentFragment().getChildFragmentManager().beginTransaction().remove(this).commit();
-        return true;
     }
 
     @Override

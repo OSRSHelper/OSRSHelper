@@ -65,20 +65,22 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		view.findViewById(R.id.share_btn).setVisibility(View.INVISIBLE);
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
 
-		new HiscoresFetcherTask(getContext(), this, account).execute();
+		asyncTask = new HiscoresFetcherTask(getContext(), this, account);
+		asyncTask.execute();
 
 		return view;
 	}
-
 
 	private void changeHeaderText(final String text) {
 		if(getActivity() != null) {
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
-					combatText.setVisibility(View.VISIBLE);
-					combatText.setText(text);
+					if(getView() != null) {
+						getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
+						combatText.setVisibility(View.VISIBLE);
+						combatText.setText(text);
+					}
 				}
 			});
 		}

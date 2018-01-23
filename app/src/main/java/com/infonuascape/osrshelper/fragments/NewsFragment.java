@@ -59,7 +59,8 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     @Override
     public void onStart() {
         super.onStart();
-        new OSRSNewsTask(getContext(), this).execute();
+        asyncTask = new OSRSNewsTask(getContext(), this);
+        asyncTask.execute();
     }
 
     @Override
@@ -92,6 +93,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
         if(getActivity() != null) {
             progressBar.setVisibility(View.GONE);
             if (news != null && news.size() > 0) {
+                emptyText.setVisibility(View.GONE);
                 newsAdapter = new NewsAdapter(getContext(), news, this);
                 recyclerView.setAdapter(newsAdapter);
             } else {

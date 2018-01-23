@@ -16,10 +16,11 @@ import java.lang.ref.WeakReference;
  * Created by marc_ on 2018-01-14.
  */
 
-public class HiscoresFetcherTask extends AsyncTask<String, Void, PlayerSkills> {
+public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
     private WeakReference<Context> context;
     private HiscoresFetcherListener listener;
     private Account account;
+    private PlayerSkills playerSkills;
 
     public HiscoresFetcherTask(final Context context, final HiscoresFetcherListener listener, final Account account) {
         this.context = new WeakReference<>(context);
@@ -28,9 +29,9 @@ public class HiscoresFetcherTask extends AsyncTask<String, Void, PlayerSkills> {
     }
 
     @Override
-    protected PlayerSkills doInBackground(String... urls) {
+    protected Void doInBackground(Void... params) {
         try {
-            return new HiscoreFetcher(context.get(), account.username, account.type).getPlayerSkills();
+            playerSkills = new HiscoreFetcher(context.get(), account.username, account.type).getPlayerSkills();
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
                 listener.onHiscoresError(context.get().getString(R.string.not_existing_player));
@@ -46,7 +47,7 @@ public class HiscoresFetcherTask extends AsyncTask<String, Void, PlayerSkills> {
     }
 
     @Override
-    protected void onPostExecute(PlayerSkills playerSkills) {
+    protected void onPostExecute(Void result) {
         if(listener != null) {
             listener.onHiscoresFetched(playerSkills);
         }

@@ -1,13 +1,13 @@
-package com.infonuascape.osrshelper.fragments;
+package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.fragments.CmlTopSkillPeriodFragment;
 
 import java.util.ArrayList;
 
@@ -41,16 +41,16 @@ public class CmlTopSkillFragmentAdapter extends FragmentStatePagerAdapter{
         int textResId;
         switch (position) {
             case 0:
-                textResId = R.string.cml_top_day;
+                textResId = R.string.day;
                 break;
             case 1:
-                textResId = R.string.cml_top_week;
+                textResId = R.string.week;
                 break;
             case 2:
-                textResId = R.string.cml_top_month;
+                textResId = R.string.month;
                 break;
             default:
-                textResId = R.string.cml_top_year;
+                textResId = R.string.year;
                 break;
         }
 

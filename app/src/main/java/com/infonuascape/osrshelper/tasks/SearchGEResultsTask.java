@@ -11,11 +11,12 @@ import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
  * Created by marc_ on 2018-01-14.
  */
 
-public class SearchGEResultsTask extends AsyncTask<Void, Void, GESearchResults> {
+public class SearchGEResultsTask extends AsyncTask<Void, Void, Void> {
     private GEFetcher geFetcher;
     private SearchGEResultsListener listener;
     private int pageNum;
     private String searchTerm;
+    private GESearchResults searchResults;
 
     public SearchGEResultsTask(final Context context, final SearchGEResultsListener listener, final int pageNum, final String searchTerm) {
         geFetcher = new GEFetcher(context);
@@ -25,15 +26,15 @@ public class SearchGEResultsTask extends AsyncTask<Void, Void, GESearchResults> 
     }
 
     @Override
-    protected GESearchResults doInBackground(Void... params) {
+    protected Void doInBackground(Void... params) {
         String output = geFetcher.search(searchTerm, pageNum);
-        GESearchResults geSearchResults = new GESearchResults(output);
+        searchResults = new GESearchResults(output);
 
-        return geSearchResults;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(final GESearchResults searchResults) {
+    protected void onPostExecute(final Void result) {
         if(searchResults != null && searchResults.itemsSearch != null) {
             if(listener != null) {
                 listener.onSearchResults(searchTerm, pageNum, searchResults.itemsSearch);

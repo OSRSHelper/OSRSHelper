@@ -83,4 +83,23 @@
         android:text="16 000"
         android:textColor="@color/text_normal"
         android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="3dp"
+        android:text="@string/ranking"
+        android:textColor="@color/dialog_text"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/skill_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:gravity="center_vertical"
+        android:text="16 300"
+        android:textColor="@color/text_normal"
+        android:textSize="18sp" />
 </LinearLayout>

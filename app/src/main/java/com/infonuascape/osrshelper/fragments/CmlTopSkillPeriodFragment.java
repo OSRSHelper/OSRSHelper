@@ -2,7 +2,6 @@ package com.infonuascape.osrshelper.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlTopSkillPeriodAdapter;
@@ -30,7 +28,6 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
     private Period period;
     private SkillType skillType;
     private List<PlayerExp> playerExp;
-    private CMLTopFetcherTask fetcherTask;
     private ProgressBar progressBar;
 
     private RecyclerView recyclerView;
@@ -68,11 +65,10 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
     }
 
     public void onPageVisible() {
-        Log.i(TAG, "onPageVisible: adapter=" + adapter + " playerExp=" + playerExp);
         if(playerExp == null) {
-            if(fetcherTask == null) {
-                fetcherTask = new CMLTopFetcherTask(getContext(), this, skillType, period);
-                fetcherTask.execute();
+            if(asyncTask== null) {
+                asyncTask = new CMLTopFetcherTask(getContext(), this, skillType, period);
+                asyncTask.execute();
                 if(progressBar != null) {
                     progressBar.setVisibility(View.VISIBLE);
                 }
@@ -92,7 +88,7 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
         Log.i(TAG, "onPlayersFetched");
         progressBar.setVisibility(View.GONE);
         this.playerExp = playerList;
-        fetcherTask = null;
+        asyncTask = null;
         if(playerList != null) {
             adapter = new CmlTopSkillPeriodAdapter(this, playerList);
             recyclerView.setAdapter(adapter);

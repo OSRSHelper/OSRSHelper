@@ -25,7 +25,7 @@ import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.db.PreferencesController;
-import com.infonuascape.osrshelper.fragments.CMLXPTrackerFragment;
+import com.infonuascape.osrshelper.fragments.CmlXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CmlTopFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
 import com.infonuascape.osrshelper.fragments.DonationFragment;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = HighScoreFragment.newInstance(account);
         } else if (id == R.id.nav_cml_tracker) {
             Account account = DBController.getProfileAccount(this);
-            fragment = CMLXPTrackerFragment.newInstance(account);
+            fragment = CmlXPTrackerFragment.newInstance(account);
         } else if (id == R.id.nav_combat_lvl) {
             Account account = DBController.getProfileAccount(this);
             fragment = CombatCalcFragment.newInstance(account);
