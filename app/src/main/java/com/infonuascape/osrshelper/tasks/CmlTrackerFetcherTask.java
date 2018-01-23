@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
  * Created by marc_ on 2018-01-14.
  */
 
-public class CMLTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
+public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     private WeakReference<Context> context;
     private Account account;
     private TrackerTime time;
@@ -28,7 +28,7 @@ public class CMLTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     private TrackerFetcherListener listener;
     private PlayerSkills playerSkills;
 
-    public CMLTrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account, final TrackerTime time, final boolean isUpdating) {
+    public CmlTrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account, final TrackerTime time, final boolean isUpdating) {
         this.context = new WeakReference<>(context);
         this.listener = listener;
         this.account = account;

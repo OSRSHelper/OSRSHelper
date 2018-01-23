@@ -16,7 +16,7 @@ import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.TopPlayersListener;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
-import com.infonuascape.osrshelper.tasks.CMLTopFetcherTask;
+import com.infonuascape.osrshelper.tasks.CmlTopFetcherTask;
 
 import java.util.List;
 
@@ -67,7 +67,7 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
     public void onPageVisible() {
         if(playerExp == null) {
             if(asyncTask== null) {
-                asyncTask = new CMLTopFetcherTask(getContext(), this, skillType, period);
+                asyncTask = new CmlTopFetcherTask(getContext(), this, skillType, period);
                 asyncTask.execute();
                 if(progressBar != null) {
                     progressBar.setVisibility(View.VISIBLE);

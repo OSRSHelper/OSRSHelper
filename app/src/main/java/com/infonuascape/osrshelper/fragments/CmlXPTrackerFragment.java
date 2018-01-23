@@ -16,7 +16,7 @@ import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.tasks.CMLTrackerFetcherTask;
+import com.infonuascape.osrshelper.tasks.CmlTrackerFetcherTask;
 
 public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListener, TrackerFetcherListener, ViewPager.OnPageChangeListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
@@ -72,7 +72,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 		if (time != null) {
 			header.setText(R.string.loading_tracking);
-			asyncTask = new CMLTrackerFetcherTask(getContext(), this, account, time, isUpdating);
+			asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time, isUpdating);
 			asyncTask.execute();
 		}
 	}

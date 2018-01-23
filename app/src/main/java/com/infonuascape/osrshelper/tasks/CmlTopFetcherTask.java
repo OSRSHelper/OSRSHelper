@@ -20,8 +20,8 @@ import java.util.List;
  * Created by marc_ on 2018-01-20.
  */
 
-public class CMLTopFetcherTask extends AsyncTask<Void, Void, Void> {
-    private static final String TAG = "CMLTopFetcherTask";
+public class CmlTopFetcherTask extends AsyncTask<Void, Void, Void> {
+    private static final String TAG = "CmlTopFetcherTask";
 
     private WeakReference<Context> context;
     private WeakReference<TopPlayersListener> listener;
@@ -29,7 +29,7 @@ public class CMLTopFetcherTask extends AsyncTask<Void, Void, Void> {
     private Period period;
     private List<PlayerExp> playerExps;
 
-    public CMLTopFetcherTask(final Context context, final TopPlayersListener listener, final SkillType skillType, final Period period) {
+    public CmlTopFetcherTask(final Context context, final TopPlayersListener listener, final SkillType skillType, final Period period) {
         this.context = new WeakReference<>(context);
         this.listener = new WeakReference<>(listener);
         this.skillType = skillType;

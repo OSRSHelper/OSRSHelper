@@ -9,12 +9,11 @@ import android.widget.TableLayout;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlTrackerTableAdapter;
-import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.tasks.CMLTrackerFetcherTask;
+import com.infonuascape.osrshelper.tasks.CmlTrackerFetcherTask;
 
 public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerFetcherListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
@@ -73,18 +72,20 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 	private void populateTable() {
 		if (getView() != null) {
 			progressBar.setVisibility(View.GONE);
-
 			tableFiller.fill(playerSkills);
 		}
 	}
 
 	private void createAsyncTaskToPopulate(boolean isUpdating) {
-		if (time != null) {
-			tableLayout.removeAllViews();
-			progressBar.setVisibility(View.VISIBLE);
-			killAsyncTaskIfStillRunning();
-			asyncTask = new CMLTrackerFetcherTask(getContext(), this, account, time, isUpdating);
-			asyncTask.execute();
+		if(playerSkills == null) {
+			if(time != null) {
+				progressBar.setVisibility(View.VISIBLE);
+				killAsyncTaskIfStillRunning();
+				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time, isUpdating);
+				asyncTask.execute();
+			}
+		} else {
+			populateTable();
 		}
 	}
 
