@@ -7,6 +7,6 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
  */
 
 public interface TrackerFetcherListener {
-    void onTrackingFetched(final PlayerSkills playerSkills);
+    void onTrackingFetched(final PlayerSkills playerSkills, final boolean isUpdated);
     void onTrackingError(final String errorMessage);
 }

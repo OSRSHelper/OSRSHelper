@@ -24,6 +24,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 	private CmlTrackerTableAdapter tableFiller;
 	private TableLayout tableLayout;
 	private View progressBar;
+	private boolean forceRepopulate;
 
 	public static CmlXPTrackerPeriodFragment newInstance(final Account account, final TrackerTime period) {
 		CmlXPTrackerPeriodFragment fragment = new CmlXPTrackerPeriodFragment();
@@ -58,7 +59,12 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 	}
 
 	public void onPageVisible() {
-		createAsyncTaskToPopulate(false);
+		createAsyncTaskToPopulate();
+	}
+
+	public void onForceRepopulate() {
+		forceRepopulate = true;
+		createAsyncTaskToPopulate();
 	}
 
 	@Override
@@ -76,12 +82,14 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 		}
 	}
 
-	private void createAsyncTaskToPopulate(boolean isUpdating) {
-		if(playerSkills == null) {
+	private void createAsyncTaskToPopulate() {
+		if(forceRepopulate || playerSkills == null) {
 			if(time != null) {
+				forceRepopulate = false;
+				tableLayout.removeAllViews();
 				progressBar.setVisibility(View.VISIBLE);
 				killAsyncTaskIfStillRunning();
-				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time, isUpdating);
+				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time, false);
 				asyncTask.execute();
 			}
 		} else {
@@ -90,7 +98,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 	}
 
 	@Override
-	public void onTrackingFetched(PlayerSkills playerSkills) {
+	public void onTrackingFetched(final PlayerSkills playerSkills, final boolean isUpdated) {
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();

@@ -85,8 +85,13 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	}
 
 	@Override
-	public void onTrackingFetched(PlayerSkills playerSkills) {
+	public void onTrackingFetched(final PlayerSkills playerSkills, final boolean isUpdated) {
 		this.playerSkills = playerSkills;
+		if(isUpdated) {
+			for(int i=0; i < adapter.getCount(); i++) {
+				adapter.getItem(i).onForceRepopulate();
+			}
+		}
 		if (playerSkills != null) {
 			if (getView() != null) {
 				header.setVisibility(View.VISIBLE);

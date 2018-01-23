@@ -67,7 +67,7 @@ public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         if(listener != null) {
-            listener.onTrackingFetched(playerSkills);
+            listener.onTrackingFetched(playerSkills, isUpdating);
         }
     }
 }
