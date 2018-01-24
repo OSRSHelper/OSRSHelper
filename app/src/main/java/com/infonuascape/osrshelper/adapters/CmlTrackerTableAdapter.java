@@ -29,7 +29,7 @@ public class CmlTrackerTableAdapter {
     public void fill(final PlayerSkills playerSkills) {
         tableLayout.removeAllViews();
 
-        final boolean isShowVirtualLevels = Utils.isShowVirtualLevels(context, playerSkills);
+        final boolean isShowVirtualLevels = Utils.isShowVirtualLevels(context);
 
         //Add skills individually to the table
         for (Skill s : playerSkills.skillList) {

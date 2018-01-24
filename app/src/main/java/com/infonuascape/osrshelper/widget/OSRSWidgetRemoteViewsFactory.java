@@ -72,7 +72,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
 
 
         // set value into textview
-        rv.setTextViewText(R.id.skill_level, (Utils.isShowVirtualLevels(mContext, playerSkills) ? skill.getVirtualLevel() : skill.getLevel()) + "");
+        rv.setTextViewText(R.id.skill_level, (Utils.isShowVirtualLevels(mContext) ? skill.getVirtualLevel() : skill.getLevel()) + "");
 
         if(skill.getSkillType() != SkillType.Overall){
             rv.setImageViewResource(R.id.skill_image, skill.getDrawableInt());

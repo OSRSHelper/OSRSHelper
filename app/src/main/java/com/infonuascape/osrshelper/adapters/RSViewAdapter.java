@@ -37,7 +37,7 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
         this.context = context;
         this.skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
         this.listener = listener;
-        isShowAbove99 = Utils.isShowVirtualLevels(context, playerSkills);
+        isShowAbove99 = Utils.isShowVirtualLevels(context);
         isShowLevel = true;
     }
 
@@ -45,7 +45,7 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
         this.context = context;
         this.skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
         this.listener = listener;
-        isShowAbove99 = Utils.isShowVirtualLevels(context, playerSkills);
+        isShowAbove99 = Utils.isShowVirtualLevels(context);
         this.isShowLevel = isShowLevel;
     }
 

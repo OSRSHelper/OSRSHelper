@@ -52,19 +52,16 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 		adapter = new CmlXpTrackerFragmentAdapter(getChildFragmentManager(), getContext(), account);
 		viewPager.setAdapter(adapter);
 		viewPager.addOnPageChangeListener(this);
-		viewPager.setOffscreenPageLimit(4);
+		viewPager.setOffscreenPageLimit(5);
 		TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
 		tabLayout.setupWithViewPager(viewPager);
 
 		view.findViewById(R.id.update).setOnClickListener(this);
 
-		return view;
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
 		createAsyncTaskToPopulate(false);
+		viewPager.setCurrentItem(1, true);
+
+		return view;
 	}
 
 	private void createAsyncTaskToPopulate(boolean isUpdating) {
@@ -74,6 +71,14 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 			header.setText(R.string.loading_tracking);
 			asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time, isUpdating);
 			asyncTask.execute();
+		}
+	}
+
+	@Override
+	public void refreshDataOnPreferencesChanged() {
+		super.refreshDataOnPreferencesChanged();
+		for(int i=0; i < adapter.getCount(); i++) {
+			adapter.getItem(i).reloadData();
 		}
 	}
 

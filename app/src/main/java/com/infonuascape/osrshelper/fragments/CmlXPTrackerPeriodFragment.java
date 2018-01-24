@@ -50,7 +50,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 		tableLayout = view.findViewById(R.id.table_tracking);
 		tableFiller = new CmlTrackerTableAdapter(getContext(), tableLayout);
 
-		if(time == TrackerTime.Hour) {
+		if(time == TrackerTime.Day) {
 			//First tab
 			onPageVisible();
 		}
@@ -116,6 +116,12 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 					}
 				}
 			});
+		}
+	}
+
+	public void reloadData() {
+		if(playerSkills != null) {
+			populateTable();
 		}
 	}
 }

@@ -142,14 +142,4 @@ public class PlayerSkills {
 
 		return skills;
 	}
-
-	public void calculateIfVirtualLevelsNecessary() {
-		hasOneAbove99 = false;
-		for(Skill s : skillList) {
-			if(s.getVirtualLevel() > 99) {
-				hasOneAbove99 = true;
-				return;
-			}
-		}
-	}
 }

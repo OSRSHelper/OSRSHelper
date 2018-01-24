@@ -25,6 +25,7 @@ public class CmlXpTrackerFragmentAdapter extends FragmentStatePagerAdapter{
         fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Week));
         fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Month));
         fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Year));
+        fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.All));
     }
 
     @Override
@@ -53,8 +54,11 @@ public class CmlXpTrackerFragmentAdapter extends FragmentStatePagerAdapter{
             case 3:
                 textResId = R.string.month;
                 break;
-            default:
+            case 4:
                 textResId = R.string.year;
+                break;
+            default:
+                textResId = R.string.all;
                 break;
         }
 

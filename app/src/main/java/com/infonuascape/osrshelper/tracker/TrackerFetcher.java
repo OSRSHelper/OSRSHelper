@@ -115,8 +115,6 @@ public class TrackerFetcher {
 			}
 		}
 
-
-		ps.calculateIfVirtualLevelsNecessary();
 		setPlayerSkills(ps);
 	}
 

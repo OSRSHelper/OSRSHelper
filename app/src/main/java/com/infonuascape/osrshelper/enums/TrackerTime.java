@@ -9,7 +9,8 @@ public enum TrackerTime {
     Day(86400),
     Week(604800),
     Month(2592000),
-    Year(31557600);
+    Year(31557600),
+    All(0);
 
     public int getSeconds() {
         return seconds;

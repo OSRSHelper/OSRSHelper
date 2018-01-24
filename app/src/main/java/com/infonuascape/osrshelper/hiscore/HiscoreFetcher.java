@@ -75,8 +75,6 @@ public class HiscoreFetcher {
 		overallSkill.setLevel(totalLevel);
 		overallSkill.setVirtualLevel(totalVirtualLevel);
 
-        ps.calculateIfVirtualLevelsNecessary();
-
 		return ps;
 	}
 

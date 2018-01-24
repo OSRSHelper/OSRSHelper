@@ -227,14 +227,8 @@ public class Utils {
 		return px;
 	}
 
-	public static boolean isShowVirtualLevels(final Context context, final PlayerSkills playerSkills) {
-		return playerSkills != null && playerSkills.hasOneAbove99
-				&& PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
-	}
-
-	public static boolean isShowVirtualLevels(final Context context, final Skill skill) {
-		return skill != null && skill.getVirtualLevel() > 99
-				&& PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
+	public static boolean isShowVirtualLevels(final Context context) {
+		return PreferencesController.getBooleanPreference(context, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
 	}
 
 	public static int getAccountTypeResource(final AccountType type) {

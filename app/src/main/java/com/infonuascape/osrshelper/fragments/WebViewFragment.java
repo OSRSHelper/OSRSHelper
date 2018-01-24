@@ -2,6 +2,7 @@ package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,14 @@ import com.infonuascape.osrshelper.R;
  */
 
 public class WebViewFragment extends OSRSFragment {
+    private static final String TAG = "WebViewFragment";
     private final static String EXTRA_URL = "EXTRA_URL";
     private final static String EXTRA_IS_NEWS = "EXTRA_IS_NEWS";
 
     private String url;
     private WebView webView;
     private ProgressBar progressBar;
+    private ViewGroup webViewContainer;
 
     public static WebViewFragment newInstance(final String url) {
         return newInstance(url, false);
@@ -48,6 +51,7 @@ public class WebViewFragment extends OSRSFragment {
 
         progressBar = view.findViewById(R.id.progress_bar);
 
+        webViewContainer = view.findViewById(R.id.container);
         webView = view.findViewById(R.id.web_view);
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
@@ -67,6 +71,28 @@ public class WebViewFragment extends OSRSFragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        destroyWebView();
+    }
+
+    public void destroyWebView() {
+        Log.i(TAG, "destroyWebView");
+        if(webViewContainer != null && webView != null) {
+            webViewContainer.removeAllViews();
+            webView.clearHistory();
+            webView.clearCache(true);
+            webView.loadUrl("about:blank");
+            webView.onPause();
+            webView.removeAllViews();
+            webView.destroyDrawingCache();
+            webView.pauseTimers();
+            webView.destroy();
+            webView = null;
+        }
     }
 
     @Override
