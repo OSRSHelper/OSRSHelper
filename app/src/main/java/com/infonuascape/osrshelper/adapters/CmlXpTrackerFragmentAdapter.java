@@ -20,7 +20,6 @@ public class CmlXpTrackerFragmentAdapter extends FragmentStatePagerAdapter{
         super(fm);
         this.context = context;
         fragments = new ArrayList<>();
-        fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Hour));
         fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Day));
         fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Week));
         fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Month));
@@ -43,18 +42,15 @@ public class CmlXpTrackerFragmentAdapter extends FragmentStatePagerAdapter{
         int textResId;
         switch (position) {
             case 0:
-                textResId = R.string.hour;
-                break;
-            case 1:
                 textResId = R.string.day;
                 break;
-            case 2:
+            case 1:
                 textResId = R.string.week;
                 break;
-            case 3:
+            case 2:
                 textResId = R.string.month;
                 break;
-            case 4:
+            case 3:
                 textResId = R.string.year;
                 break;
             default:

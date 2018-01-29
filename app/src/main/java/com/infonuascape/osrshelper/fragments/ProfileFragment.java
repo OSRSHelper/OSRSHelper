@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
@@ -47,6 +48,10 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         view.findViewById(R.id.account_type_edit).setOnClickListener(this);
         view.findViewById(R.id.account_set_profile).setOnClickListener(this);
         view.findViewById(R.id.account_follow_profile).setOnClickListener(this);
+
+        if(!BuildConfig.DEBUG) {
+            view.findViewById(R.id.account_follow_profile).setVisibility(View.GONE);
+        }
 
         profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
         profileHeaderFragment.forceShowQuickActions();

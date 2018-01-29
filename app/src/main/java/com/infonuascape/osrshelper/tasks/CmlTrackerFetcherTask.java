@@ -24,24 +24,19 @@ public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     private WeakReference<Context> context;
     private Account account;
     private TrackerTime time;
-    private boolean isUpdating;
     private TrackerFetcherListener listener;
     private PlayerSkills playerSkills;
 
-    public CmlTrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account, final TrackerTime time, final boolean isUpdating) {
+    public CmlTrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account, final TrackerTime time) {
         this.context = new WeakReference<>(context);
         this.listener = listener;
         this.account = account;
         this.time = time;
-        this.isUpdating = isUpdating;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            if (isUpdating) {
-                Updater.perform(context.get(), account.username);
-            }
             playerSkills = new TrackerFetcher(context.get(), account.username, time).getPlayerSkills();
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
@@ -67,7 +62,7 @@ public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         if(listener != null) {
-            listener.onTrackingFetched(playerSkills, isUpdating);
+            listener.onTrackingFetched(playerSkills);
         }
     }
 }

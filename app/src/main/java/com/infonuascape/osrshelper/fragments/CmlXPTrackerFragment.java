@@ -14,16 +14,19 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlXpTrackerFragmentAdapter;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
+import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CmlTrackerFetcherTask;
+import com.infonuascape.osrshelper.tasks.CmlTrackerUpdateTask;
 
-public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListener, TrackerFetcherListener, ViewPager.OnPageChangeListener {
+public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListener, TrackerUpdateListener, ViewPager.OnPageChangeListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private Account account;
 	private PlayerSkills playerSkills;
 	private TextView header;
 	private CmlXpTrackerFragmentAdapter adapter;
+	private ViewPager viewPager;
 
 	public static CmlXPTrackerFragment newInstance(final Account account) {
 		CmlXPTrackerFragment fragment = new CmlXPTrackerFragment();
@@ -48,7 +51,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 		header = view.findViewById(R.id.track_metadata);
 
-		ViewPager viewPager = view.findViewById(R.id.viewpager);
+		viewPager = view.findViewById(R.id.viewpager);
 		adapter = new CmlXpTrackerFragmentAdapter(getChildFragmentManager(), getContext(), account);
 		viewPager.setAdapter(adapter);
 		viewPager.addOnPageChangeListener(this);
@@ -59,7 +62,6 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 		view.findViewById(R.id.update).setOnClickListener(this);
 
 		createAsyncTaskToPopulate(false);
-		viewPager.setCurrentItem(1, true);
 
 		return view;
 	}
@@ -69,7 +71,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 		if (time != null) {
 			header.setText(R.string.loading_tracking);
-			asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time, isUpdating);
+			asyncTask = new CmlTrackerUpdateTask(getContext(), this, account);
 			asyncTask.execute();
 		}
 	}
@@ -89,14 +91,9 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 		}
 	}
 
-	@Override
-	public void onTrackingFetched(final PlayerSkills playerSkills, final boolean isUpdated) {
+	public void onTrackingFetched(final PlayerSkills playerSkills) {
 		this.playerSkills = playerSkills;
-		if(isUpdated) {
-			for(int i=0; i < adapter.getCount(); i++) {
-				adapter.getItem(i).onForceRepopulate();
-			}
-		}
+
 		if (playerSkills != null) {
 			if (getView() != null) {
 				header.setVisibility(View.VISIBLE);
@@ -113,7 +110,6 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 		}
 	}
 
-	@Override
 	public void onTrackingError(final String errorMessage) {
 		if(getActivity() != null) {
 			getActivity().runOnUiThread(new Runnable() {
@@ -141,5 +137,13 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	@Override
 	public void onPageScrollStateChanged(int state) {
 
+	}
+
+	@Override
+	public void onUpdatingDone(boolean isSuccess) {
+		for(int i=0; i < adapter.getCount(); i++) {
+			adapter.getItem(i).onForceRepopulate();
+		}
+		adapter.getItem(viewPager.getCurrentItem()).onPageVisible();
 	}
 }

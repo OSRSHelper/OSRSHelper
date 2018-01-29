@@ -84,7 +84,9 @@ public class DBController {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			cursor.close();
+			if(cursor != null) {
+				cursor.close();
+			}
 		}
 		Log.i(TAG, "getAccountByUsername: account=" + account + " username=" + username);
 		return account;
@@ -114,7 +116,9 @@ public class DBController {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			cursor.close();
+			if(cursor != null) {
+				cursor.close();
+			}
 		}
 		Log.i(TAG, "getProfileAccount: account=" + account);
 		return account;
@@ -132,7 +136,9 @@ public class DBController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			cursor.close();
+			if(cursor != null) {
+				cursor.close();
+			}
 		}
 		Log.i(TAG, "getAccountForWidget: account=" + account + " appWidgetId=" + appWidgetId);
 		return account;
@@ -163,7 +169,9 @@ public class DBController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			cursor.close();
+			if(cursor != null) {
+				cursor.close();
+			}
 		}
 		return accounts;
 	}
@@ -185,7 +193,9 @@ public class DBController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			cursor.close();
+			if(cursor != null) {
+				cursor.close();
+			}
 		}
 		return accounts;
 	}

@@ -9,6 +9,7 @@ import android.widget.TableLayout;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlTrackerTableAdapter;
+import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -64,7 +65,6 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 
 	public void onForceRepopulate() {
 		forceRepopulate = true;
-		createAsyncTaskToPopulate();
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 				tableLayout.removeAllViews();
 				progressBar.setVisibility(View.VISIBLE);
 				killAsyncTaskIfStillRunning();
-				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time, false);
+				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time);
 				asyncTask.execute();
 			}
 		} else {
@@ -98,10 +98,13 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 	}
 
 	@Override
-	public void onTrackingFetched(final PlayerSkills playerSkills, final boolean isUpdated) {
+	public void onTrackingFetched(final PlayerSkills playerSkills) {
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();
+		}
+		if(MainFragmentController.getInstance().getCurrentFragment() instanceof CmlXPTrackerFragment) {
+			((CmlXPTrackerFragment) MainFragmentController.getInstance().getCurrentFragment()).onTrackingFetched(playerSkills);
 		}
 	}
 
@@ -116,6 +119,9 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 					}
 				}
 			});
+		}
+		if(MainFragmentController.getInstance().getCurrentFragment() instanceof CmlXPTrackerFragment) {
+			((CmlXPTrackerFragment) MainFragmentController.getInstance().getCurrentFragment()).onTrackingError(errorMessage);
 		}
 	}
 

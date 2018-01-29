@@ -87,7 +87,6 @@ public class MainFragmentController {
     }
 
     public OSRSFragment getCurrentFragment() {
-        Log.i(TAG, "getCurrentFragment:");
         FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
 
         Fragment fragment = null;
@@ -104,6 +103,7 @@ public class MainFragmentController {
 
         //Only cast if not null
         if(fragment != null) {
+            Log.i(TAG, "getCurrentFragment: name=" + fragment.getClass().getSimpleName());
             return (OSRSFragment) fragment;
         }
 
