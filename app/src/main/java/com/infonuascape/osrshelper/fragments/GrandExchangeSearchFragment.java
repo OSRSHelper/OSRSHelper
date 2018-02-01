@@ -12,7 +12,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.adapters.EndlessScrollListener;
 import com.infonuascape.osrshelper.adapters.SearchAdapter;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
@@ -24,7 +23,6 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 	private SearchAdapter adapter;
 	private SearchView searchView;
 	private String searchText;
-    private boolean isContinueToLoad;
 	private ListView list;
 
 	public static GrandExchangeSearchFragment newInstance(){
@@ -47,7 +45,6 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 		searchView.setQueryHint(getResources().getString(R.string.grand_exchange_lookup_hint));
 
 		list = view.findViewById(android.R.id.list);
-		list.setOnScrollListener(endlessScrollListener);
 		list.setOnItemClickListener(this);
 
 		return view;
@@ -72,11 +69,7 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 	}
 
 	@Override
-	public void onSearchResults(final String searchTerm, final int pageNum, ArrayList<Item> searchResults) {
-		if(searchResults.size() == 0) {
-			isContinueToLoad = false;
-		}
-
+	public void onSearchResults(final String searchTerm, ArrayList<Item> searchResults) {
 		getView().findViewById(R.id.progress_loading).setVisibility(View.GONE);
 
 		if(TextUtils.equals(searchTerm, searchText)) {
@@ -98,28 +91,17 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 			adapter.notifyDataSetChanged();
 		}
 
-		if(searchText.length() > 0) {
-			isContinueToLoad = true;
-			startSearchTask(1);
+		if(searchText.length() >= 3) {
+			startSearchTask();
 		}
 	}
 
-	private void startSearchTask(int page) {
+	private void startSearchTask() {
 		if (asyncTask != null && !asyncTask.isCancelled()) {
 			asyncTask.cancel(true);
 		}
-		asyncTask = new SearchGEResultsTask(getContext(), this, page, searchText);
+		asyncTask = new SearchGEResultsTask(getContext(), this, searchText);
 		asyncTask.execute();
 		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
 	}
-
-	private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
-		@Override
-		public boolean onLoadMore(int page, int totalItemsCount) {
-			if(!TextUtils.isEmpty(searchText)) {
-				startSearchTask(page);
-			}
-			return isContinueToLoad;
-		}
-	};
 }

@@ -96,7 +96,6 @@
     <string name="donate_text4">We added features that require servers (ie. Crystal Math Labs support, and more) that requires some monthly costs. Donating would definitely help towards this.</string>
     <string name="donate_text5">Thank you for using this app!</string>
     <string name="share_hiscores">Share</string>
-    <string name="daily_trend">(last 24hrs)</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

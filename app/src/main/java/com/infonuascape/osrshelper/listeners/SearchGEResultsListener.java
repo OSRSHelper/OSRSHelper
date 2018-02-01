@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface SearchGEResultsListener {
-    void onSearchResults(final String searchTerm, final int pageNum, final ArrayList<Item> results);
+    void onSearchResults(final String searchTerm, final ArrayList<Item> results);
 }

@@ -10,7 +10,7 @@ import android.net.Uri;
 import java.util.ArrayList;
 
 public class GEFetcher {
-    final String API_URL = "http://services.runescape.com/m=itemdb_oldschool/api/catalogue/";
+    final String API_URL = "https://api.buying-gf.com/ge/search/%s";
 
     private Context context;
 
@@ -18,8 +18,8 @@ public class GEFetcher {
         this.context = context;
     }
 
-    public String search(String itemName, int pageNum) {
-        HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(API_URL + "items.json?category=1&alpha=" + itemName.replace(" ", "%20") + "&page=" + pageNum, Request.Method.GET);
+    public String search(String itemName) {
+        HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(String.format(API_URL, itemName), Request.Method.GET);
         if (httpRequest.getStatusCode() == StatusCode.FOUND) { // got 200,
             return httpRequest.getOutput();
         }

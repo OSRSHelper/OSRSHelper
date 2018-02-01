@@ -1,83 +1,42 @@
 package com.infonuascape.osrshelper.grandexchange;
 
+import android.text.TextUtils;
+
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GESearchResults {
 	public ArrayList<Item> itemsSearch;
 
     public GESearchResults(String jsonObject) {
 
-		itemsSearch = new ArrayList<Item>();
+		itemsSearch = new ArrayList<>();
 
-		if(jsonObject != null) {
-			JSONObject json = null;
+		if(!TextUtils.isEmpty(jsonObject)) {
 			try {
-				json = new JSONObject(jsonObject);
+				JSONObject json = new JSONObject(jsonObject).getJSONObject("matches");
 
-				JSONArray items = (JSONArray) json.get("items");
-
-				if (items != null) {
-					for (int i = 0; i < items.length(); i++) {
-						Item iterItem = new Item();
-						JSONObject currItem = (JSONObject) items.get(i);
-						iterItem.id = (Integer) currItem.get("id");
-						iterItem.type = (String) currItem.get("type");
-						iterItem.description = (String) currItem.get("description");
-						iterItem.name = (String) currItem.get("name");
-						iterItem.icon = (String) currItem.get("icon");
-						iterItem.iconLarge = (String) currItem.get("icon_large");
-
-						if (currItem.get("members").equals("true")) {
-							iterItem.members = true;
-						}
-
-						//Trends
-						iterItem.today = parseTrend((JSONObject) currItem.get("today"));
-						iterItem.current = parseTrend((JSONObject) currItem.get("current"));
-
-						itemsSearch.add(iterItem);
-					}
+				Iterator<String> keys = json.keys();
+				while(keys.hasNext()) {
+					String itemId = keys.next();
+					JSONObject item = json.getJSONObject(itemId);
+					Item iterItem = new Item();
+					iterItem.id = Integer.valueOf(itemId);
+					iterItem.description = item.getString("description");
+					iterItem.name = item.getString("name");
+					iterItem.members = TextUtils.equals(item.getString("members"), "true");
+					iterItem.icon = "http://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=" + itemId;
+					itemsSearch.add(iterItem);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-    }
-
-    private Item.Trend parseTrend(JSONObject jsonObject) {
-		try {
-			Object priceObj = jsonObject.get("price");
-			String priceStr = "";
-			if (priceObj instanceof Integer) {
-				priceStr = String.valueOf(priceObj);
-			} else {
-				priceStr = (String) priceObj;
-			}
-
-			String priceTemp = priceStr;
-			priceTemp = priceTemp.replaceAll("[- ,.]", "");
-			priceTemp = priceTemp.replace("+", "");
-			priceTemp = priceTemp.replace("k", "00");
-			priceTemp = priceTemp.replace("m", "00000");
-			priceTemp = priceTemp.replace("b", "00000000");
-
-			if(!priceStr.endsWith("k") && !priceStr.endsWith("b") && !priceStr.endsWith("m")) {
-				priceStr += "gp";
-			}
-			priceStr.replace("- ", "-");
-			int price = Integer.parseInt(priceTemp);
-
-			return new Item().new Trend(priceStr, price, Item.getTrendRateEnum((String) jsonObject.get("trend")));
-		} catch(JSONException e) {
-			e.printStackTrace();
-		}
-		return null;
     }
 }
 

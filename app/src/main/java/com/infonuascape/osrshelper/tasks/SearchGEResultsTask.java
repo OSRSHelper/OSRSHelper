@@ -14,20 +14,18 @@ import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 public class SearchGEResultsTask extends AsyncTask<Void, Void, Void> {
     private GEFetcher geFetcher;
     private SearchGEResultsListener listener;
-    private int pageNum;
     private String searchTerm;
     private GESearchResults searchResults;
 
-    public SearchGEResultsTask(final Context context, final SearchGEResultsListener listener, final int pageNum, final String searchTerm) {
+    public SearchGEResultsTask(final Context context, final SearchGEResultsListener listener, final String searchTerm) {
         geFetcher = new GEFetcher(context);
         this.listener = listener;
-        this.pageNum = pageNum;
         this.searchTerm = searchTerm;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        String output = geFetcher.search(searchTerm, pageNum);
+        String output = geFetcher.search(searchTerm);
         searchResults = new GESearchResults(output);
 
         return null;
@@ -37,7 +35,7 @@ public class SearchGEResultsTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(final Void result) {
         if(searchResults != null && searchResults.itemsSearch != null) {
             if(listener != null) {
-                listener.onSearchResults(searchTerm, pageNum, searchResults.itemsSearch);
+                listener.onSearchResults(searchTerm, searchResults.itemsSearch);
             }
         }
     }
