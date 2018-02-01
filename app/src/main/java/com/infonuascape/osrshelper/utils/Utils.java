@@ -138,34 +138,35 @@ public class Utils {
 		
 		return needed;
 	}
-	
+
 	public static final int getMissingMagicUntilNextCombatLvl(final PlayerSkills skills){
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
-		
+
 		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
-		
-		
+
+
 		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
 		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
-		
+
 		double max = Math.max(melee, Math.max(range, mage));
-		
+
 		int combatLvl = (int) Math.floor(base + max);
-		
+
 		int needed = 0;
 		double start = skills.magic.getLevel();
 		double initial = start;
 		start = Math.floor(initial * 1.5) * 0.325;
-		
+
 		while((start + base) < (combatLvl + 1)){
 			start = Math.floor((initial + ++needed) * 1.5) * 0.325;
 		}
-		
+
 		return needed;
 	}
 
+	private static final int FOSSIL_ISLAND_OFFSET_Y = -190;
 	private static final int ZEAH_OFFSET_X = 2534;
-	private static final int ZEAH_OFFSET_Y = -167;
+	private static final int ZEAH_OFFSET_Y = -167 + FOSSIL_ISLAND_OFFSET_Y;
 
 	public static Point VARROCK_POINT = new Point(ZEAH_OFFSET_X + 3685, 2355 + ZEAH_OFFSET_Y);
 	
@@ -203,19 +204,22 @@ public class Utils {
 		poi.add(new PointOfInterest("Sophanem", new Point(ZEAH_OFFSET_X + 3945, 4325 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Tai Bwo Wannai", new Point(ZEAH_OFFSET_X + 2430, 3470 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Taverley", new Point(ZEAH_OFFSET_X + 2750, 2335 + ZEAH_OFFSET_Y)));
-		poi.add(new PointOfInterest("Tirannwn", new Point(2551, 2725)));
+		poi.add(new PointOfInterest("Tirannwn", new Point(2551, 2725 + FOSSIL_ISLAND_OFFSET_Y)));
 		poi.add(new PointOfInterest("Tutorial Island", new Point(ZEAH_OFFSET_X + 3370, 3370 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Varrock", VARROCK_POINT));
 		poi.add(new PointOfInterest("Waterbirth Island", new Point(ZEAH_OFFSET_X + 1645, 1440 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Yanille", new Point(ZEAH_OFFSET_X + 1780, 3395 + ZEAH_OFFSET_Y)));
 
-		poi.add(new PointOfInterest("Zeah's Arceuus House", new Point(1583, 1215)));
-		poi.add(new PointOfInterest("Zeah's Hosidius House", new Point(1750, 1825)));
-		poi.add(new PointOfInterest("Zeah's Lovakengj House", new Point(1000, 1165)));
-		poi.add(new PointOfInterest("Zeah's Piscarilius House", new Point(1986, 1261)));
-		poi.add(new PointOfInterest("Zeah's Shayzien House", new Point(1130, 1752)));
-		poi.add(new PointOfInterest("Zeah's Wintertodt", new Point(1470, 477)));
-		poi.add(new PointOfInterest("Zeah's Mount Quidamortem", new Point(315, 1825)));
+		poi.add(new PointOfInterest("Zeah's Arceuus House", new Point(1583, 1215 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Zeah's Hosidius House", new Point(1750, 1825 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Zeah's Lovakengj House", new Point(1000, 1165 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Zeah's Piscarilius House", new Point(1986, 1261 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Zeah's Shayzien House", new Point(1130, 1752 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Zeah's Wintertodt", new Point(1470, 477 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Zeah's Mount Quidamortem", new Point(315, 1825 + FOSSIL_ISLAND_OFFSET_Y)));
+
+		poi.add(new PointOfInterest("Lithkren", new Point(7266, 303)));
+		poi.add(new PointOfInterest("Fossil Island", new Point(7751, 892)));
 
 		return poi;
 	}
