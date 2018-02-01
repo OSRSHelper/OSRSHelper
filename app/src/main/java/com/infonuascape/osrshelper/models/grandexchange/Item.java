@@ -1,10 +1,11 @@
 package com.infonuascape.osrshelper.models.grandexchange;
 
 public class Item {
-    public int id;
+    public String id;
     public String description;
     public String name;
     public String icon;
+    public String iconLarge;
     public boolean members;
 
     public Item() {

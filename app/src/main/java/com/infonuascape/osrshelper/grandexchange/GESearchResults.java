@@ -26,11 +26,12 @@ public class GESearchResults {
 					String itemId = keys.next();
 					JSONObject item = json.getJSONObject(itemId);
 					Item iterItem = new Item();
-					iterItem.id = Integer.valueOf(itemId);
+					iterItem.id = itemId;
 					iterItem.description = item.getString("description");
 					iterItem.name = item.getString("name");
 					iterItem.members = TextUtils.equals(item.getString("members"), "true");
 					iterItem.icon = "http://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=" + itemId;
+					iterItem.iconLarge = "http://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=" + itemId;
 					itemsSearch.add(iterItem);
 				}
 			} catch (JSONException e) {

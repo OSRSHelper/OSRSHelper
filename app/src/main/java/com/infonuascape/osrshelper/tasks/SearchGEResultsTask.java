@@ -3,7 +3,7 @@ package com.infonuascape.osrshelper.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.infonuascape.osrshelper.grandexchange.GEFetcher;
+import com.infonuascape.osrshelper.grandexchange.GESearchFetcher;
 import com.infonuascape.osrshelper.grandexchange.GESearchResults;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 
@@ -12,20 +12,20 @@ import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
  */
 
 public class SearchGEResultsTask extends AsyncTask<Void, Void, Void> {
-    private GEFetcher geFetcher;
+    private GESearchFetcher geSearchFetcher;
     private SearchGEResultsListener listener;
     private String searchTerm;
     private GESearchResults searchResults;
 
     public SearchGEResultsTask(final Context context, final SearchGEResultsListener listener, final String searchTerm) {
-        geFetcher = new GEFetcher(context);
+        geSearchFetcher = new GESearchFetcher(context);
         this.listener = listener;
         this.searchTerm = searchTerm;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        String output = geFetcher.search(searchTerm);
+        String output = geSearchFetcher.search(searchTerm);
         searchResults = new GESearchResults(output);
 
         return null;

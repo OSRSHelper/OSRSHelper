@@ -54,7 +54,7 @@ public class SearchAdapter extends ArrayAdapter<Item> {
         holder.name.setText(item.name);
         holder.description.setText(item.description);
 
-        Glide.with(mContext).asBitmap().load(item.icon).into(holder.image);
+        Glide.with(mContext).asBitmap().load(item.iconLarge).into(holder.image);
 
         if(item.members) {
             holder.member.setVisibility(View.VISIBLE);

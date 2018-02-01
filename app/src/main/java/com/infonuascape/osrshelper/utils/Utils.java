@@ -1,19 +1,20 @@
 package com.infonuascape.osrshelper.utils;
 
-import java.util.ArrayList;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
-import android.widget.ImageView;
+import android.view.inputmethod.InputMethodManager;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.enums.AccountType;
-import com.infonuascape.osrshelper.models.Skill;
+import com.infonuascape.osrshelper.enums.TrendRate;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+
+import java.util.ArrayList;
 
 public class Utils {
 
@@ -259,5 +260,19 @@ public class Utils {
 		}
 
 		return R.string.account_type_regular;
+	}
+
+	public static TrendRate getTrendRateEnum(String trend) {
+		if (trend.equals("positive")) return TrendRate.POSITIVE;
+		if (trend.equals("negative")) return TrendRate.NEGATIVE;
+		if (trend.equals("neutral")) return TrendRate.NEUTRAL;
+		return TrendRate.POSITIVE;
+	}
+
+	public static void hideKeyboard(Activity activity) {
+		if (activity.getCurrentFocus() != null) {
+			InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+		}
 	}
 }

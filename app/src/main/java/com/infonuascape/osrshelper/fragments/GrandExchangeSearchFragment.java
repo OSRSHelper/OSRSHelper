@@ -1,5 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
@@ -7,15 +8,18 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.SearchAdapter;
+import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
+import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -64,8 +68,9 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Utils.hideKeyboard(getActivity());
 		final Item item = adapter.getItem(position);
-		//ToDo add activity to view detailed results for GE
+		MainFragmentController.getInstance().showFragment(GrandExchangeDetailFragment.newInstance(item.id));
 	}
 
 	@Override
@@ -73,13 +78,8 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 		getView().findViewById(R.id.progress_loading).setVisibility(View.GONE);
 
 		if(TextUtils.equals(searchTerm, searchText)) {
-			if (adapter == null) {
-				adapter = new SearchAdapter(getContext(), searchResults);
-				list.setAdapter(adapter);
-			} else {
-				adapter.addAll(searchResults);
-				adapter.notifyDataSetChanged();
-			}
+			adapter = new SearchAdapter(getContext(), searchResults);
+			list.setAdapter(adapter);
 		}
 	}
 
@@ -91,15 +91,13 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 			adapter.notifyDataSetChanged();
 		}
 
-		if(searchText.length() >= 3) {
+		if(searchText != null && searchText.length() >= 3) {
 			startSearchTask();
 		}
 	}
 
 	private void startSearchTask() {
-		if (asyncTask != null && !asyncTask.isCancelled()) {
-			asyncTask.cancel(true);
-		}
+		killAsyncTaskIfStillRunning();
 		asyncTask = new SearchGEResultsTask(getContext(), this, searchText);
 		asyncTask.execute();
 		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);

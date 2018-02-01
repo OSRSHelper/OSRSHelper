@@ -31,6 +31,7 @@
     <string name="ranking">Ranking</string>
     <string name="load">Load</string>
     <string name="loading_highscores">Loading hiscores for: %1$s</string>
+    <string name="loading_ge_details">Loading Details</string>
     <string name="combat_lvl">Combat lvl: %1$d</string>
     <string name="not_existing_player">Failed to load account</string>
     <string name="not_tracked_player">Account is not tracked yet. Press update to track them from now on.</string>
@@ -126,6 +127,8 @@
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
+    <string name="three_months">3 Months</string>
+    <string name="six_months">6 Months</string>
     <string name="all">All</string>
     <string name="donate">Donate</string>
     <string name="follow">Follow</string>
@@ -134,5 +137,10 @@
     <string name="cml_top_header_2">Username</string>
     <string name="cml_top_header_3">Experience</string>
     <string name="top_players_for_cml">Top players for %1$s</string>
+    <string name="ge_item_current_price">Current price</string>
+    <string name="ge_item_today_change">Today\'s Change</string>
+    <string name="ge_item_one_month_change">1 Month Change</string>
+    <string name="ge_item_three_month_change">3 Month Change</string>
+    <string name="ge_item_six_month_change">6 Month Change</string>
 
 </resources>

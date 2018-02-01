@@ -22,6 +22,7 @@ android {
 }
 
 dependencies {
+    compile(name: 'graphview', ext:'aar')
     compile 'com.android.support:support-v4:27.0.2'
     compile 'com.android.support:design:27.0.2'
     compile 'com.android.support:cardview-v7:27.0.2'

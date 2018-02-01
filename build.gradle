@@ -21,6 +21,9 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
+        flatDir {
+            dirs 'src/main/libs'
+        }
         maven { url 'https://maven.fabric.io/public' }
     }
 }
