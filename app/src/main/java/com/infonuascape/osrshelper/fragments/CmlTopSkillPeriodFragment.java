@@ -86,14 +86,15 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
     @Override
     public void onPlayersFetched(List<PlayerExp> playerList) {
         Log.i(TAG, "onPlayersFetched");
-        if(progressBar != null) {
+        if(getView() != null) {
             progressBar.setVisibility(View.GONE);
-        }
-        this.playerExp = playerList;
-        asyncTask = null;
-        if(playerList != null) {
-            adapter = new CmlTopSkillPeriodAdapter(this, playerList);
-            recyclerView.setAdapter(adapter);
+
+            this.playerExp = playerList;
+            asyncTask = null;
+            if (playerList != null) {
+                adapter = new CmlTopSkillPeriodAdapter(this, playerList);
+                recyclerView.setAdapter(adapter);
+            }
         }
     }
 }
