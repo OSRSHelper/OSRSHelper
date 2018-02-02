@@ -14,11 +14,11 @@ import com.infonuascape.osrshelper.models.grandexchange.Item;
 
 import java.util.ArrayList;
 
-public class SearchAdapter extends ArrayAdapter<Item> {
+public class GrandExchangeSearchAdapter extends ArrayAdapter<Item> {
     private Context mContext;
     private ArrayList<Item> items;
 
-    public SearchAdapter(Context context, ArrayList<Item> map) {
+    public GrandExchangeSearchAdapter(Context context, ArrayList<Item> map) {
         super(context, R.layout.search_listitem, map);
         this.mContext = context;
         items = map;

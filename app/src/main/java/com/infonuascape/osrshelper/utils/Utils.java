@@ -269,6 +269,11 @@ public class Utils {
 		return TrendRate.POSITIVE;
 	}
 
+	public static void showKeyboard(final Context context) {
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+	}
+
 	public static void hideKeyboard(Activity activity) {
 		if (activity.getCurrentFocus() != null) {
 			InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);

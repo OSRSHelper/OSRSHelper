@@ -32,6 +32,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     private TextView emptyText;
     private ProgressBar progressBar;
     private LinearLayoutManager linearLayoutManager;
+    private List<OSRSNews> news;
 
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
@@ -59,8 +60,14 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     @Override
     public void onStart() {
         super.onStart();
-        asyncTask = new OSRSNewsTask(getContext(), this);
-        asyncTask.execute();
+        killAsyncTaskIfStillRunning();
+        if(news != null) {
+            newsAdapter = new NewsAdapter(getContext(), news, this);
+            recyclerView.setAdapter(newsAdapter);
+        } else {
+            asyncTask = new OSRSNewsTask(getContext(), this);
+            asyncTask.execute();
+        }
     }
 
     @Override
@@ -90,9 +97,10 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
 
     @Override
     public void onNewsFetched(List<OSRSNews> news) {
-        if(getActivity() != null) {
+        if(getView() != null) {
             progressBar.setVisibility(View.GONE);
             if (news != null && news.size() > 0) {
+                this.news = news;
                 emptyText.setVisibility(View.GONE);
                 newsAdapter = new NewsAdapter(getContext(), news, this);
                 recyclerView.setAdapter(newsAdapter);

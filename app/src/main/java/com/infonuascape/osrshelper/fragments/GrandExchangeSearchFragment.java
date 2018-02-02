@@ -1,20 +1,19 @@
 package com.infonuascape.osrshelper.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.adapters.SearchAdapter;
+import com.infonuascape.osrshelper.adapters.GrandExchangeSearchAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
@@ -23,11 +22,12 @@ import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
 
-public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
-	private SearchAdapter adapter;
+public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener, View.OnFocusChangeListener {
+	private GrandExchangeSearchAdapter adapter;
 	private SearchView searchView;
 	private String searchText;
 	private ListView list;
+	private Handler handler;
 
 	public static GrandExchangeSearchFragment newInstance(){
 		GrandExchangeSearchFragment fragment = new GrandExchangeSearchFragment();
@@ -43,10 +43,14 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 
 		View view = inflater.inflate(R.layout.search_ge, null);
 
+		handler = new Handler();
+
 		searchView = view.findViewById(R.id.searchView);
 		searchView.setOnQueryTextListener(this);
 		searchView.setIconifiedByDefault(false);
 		searchView.setQueryHint(getResources().getString(R.string.grand_exchange_lookup_hint));
+		searchView.setOnQueryTextFocusChangeListener(this);
+		searchView.requestFocus();
 
 		list = view.findViewById(android.R.id.list);
 		list.setOnItemClickListener(this);
@@ -56,13 +60,17 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 
 	@Override
 	public boolean onQueryTextSubmit(String searchTerm) {
-		search(searchTerm);
+		this.searchText = searchTerm;
+		handler.removeCallbacks(waitForSearchRunnable);
+		handler.postDelayed(waitForSearchRunnable, 300);
 		return false;
 	}
 
 	@Override
 	public boolean onQueryTextChange(String searchTerm) {
-		search(searchTerm);
+		this.searchText = searchTerm;
+		handler.removeCallbacks(waitForSearchRunnable);
+		handler.postDelayed(waitForSearchRunnable, 300);
 		return false;
 	}
 
@@ -78,21 +86,28 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 		getView().findViewById(R.id.progress_loading).setVisibility(View.GONE);
 
 		if(TextUtils.equals(searchTerm, searchText)) {
-			adapter = new SearchAdapter(getContext(), searchResults);
+			adapter = new GrandExchangeSearchAdapter(getContext(), searchResults);
 			list.setAdapter(adapter);
 		}
 	}
 
-	private void search(final String searchText) {
-		this.searchText = searchText;
-
-		if (adapter != null) {
-			adapter.clear();
-			adapter.notifyDataSetChanged();
+	private Runnable waitForSearchRunnable = new Runnable() {
+		@Override
+		public void run() {
+			search();
 		}
+	};
 
-		if(searchText != null && searchText.length() >= 3) {
-			startSearchTask();
+	private void search() {
+		if(getView() != null) {
+			if (adapter != null) {
+				adapter.clear();
+				adapter.notifyDataSetChanged();
+			}
+
+			if (searchText != null && searchText.length() >= 3) {
+				startSearchTask();
+			}
 		}
 	}
 
@@ -101,5 +116,12 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 		asyncTask = new SearchGEResultsTask(getContext(), this, searchText);
 		asyncTask.execute();
 		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onFocusChange(View view, boolean hasFocus) {
+		if(hasFocus) {
+			Utils.showKeyboard(getContext());
+		}
 	}
 }

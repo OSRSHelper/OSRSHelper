@@ -142,5 +142,9 @@
     <string name="ge_item_one_month_change">1 Month Change</string>
     <string name="ge_item_three_month_change">3 Month Change</string>
     <string name="ge_item_six_month_change">6 Month Change</string>
+    <string name="daily_average">Daily Average</string>
+    <string name="trend">Trend</string>
+    <string name="date">Date</string>
+    <string name="price">Price</string>
 
 </resources>

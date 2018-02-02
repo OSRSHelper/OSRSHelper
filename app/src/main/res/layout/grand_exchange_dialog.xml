@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/serie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Construction"
+        android:textColor="@color/text_normal"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="3dp"
+        android:text="@string/date"
+        android:textColor="@color/dialog_text"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="3dp"
+        android:text="Jan 01 2018"
+        android:textColor="@color/text_normal"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="3dp"
+        android:text="@string/price"
+        android:textColor="@color/dialog_text"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="3dp"
+        android:text="16 000 gp"
+        android:textColor="@color/text_normal"
+        android:textSize="18sp" />
+</LinearLayout>

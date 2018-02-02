@@ -15,6 +15,8 @@
             android:id="@+id/item_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:visibility="gone"
+            android:layout_marginRight="5dp"
             android:layout_centerVertical="true"/>
 
         <ImageView
@@ -32,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/item_image"
             android:textSize="16sp"
-            android:layout_marginLeft="5dp"
             android:text="@string/loading_ge_details"/>
 
         <TextView
@@ -41,7 +42,6 @@
             android:layout_height="wrap_content"
             tools:text="A powerful axe."
             android:layout_below="@id/item_name"
-            android:layout_marginLeft="5dp"
             android:layout_marginRight="15dp"
             android:layout_toRightOf="@id/item_image" />
 
@@ -152,13 +152,14 @@
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:layout_weight="1" />
 
 </LinearLayout>

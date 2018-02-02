@@ -72,10 +72,13 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
         ((TextView) getView().findViewById(R.id.item_desc)).setText(itemInfo.description);
         ((TextView) getView().findViewById(R.id.item_price)).setText(itemInfo.current.value);
         ((TextView) getView().findViewById(R.id.item_today_change_price)).setText(itemInfo.today.value);
+
         ((TextView) getView().findViewById(R.id.item_one_month_price_variation)).setText(itemInfo.day30.change);
         ((TextView) getView().findViewById(R.id.item_three_month_price_variation)).setText(itemInfo.day90.change);
         ((TextView) getView().findViewById(R.id.item_six_month_price_variation)).setText(itemInfo.day180.change);
+
         getView().findViewById(R.id.item_member).setVisibility(itemInfo.members ? View.VISIBLE : View.GONE);
+        getView().findViewById(R.id.item_image).setVisibility(View.VISIBLE);
         Glide.with(getContext()).asBitmap().load(itemInfo.iconLarge).into((ImageView) getView().findViewById(R.id.item_image));
     }
 

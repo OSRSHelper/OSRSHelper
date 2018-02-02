@@ -3,7 +3,7 @@
  <color name="colorPrimary">#555555</color>
  <color name="colorPrimaryDark">#404040</color>
  <color name="colorAccent">#f4f4f4</color>
- <color name="colorAccentSemiTransparent">#80f4f4f4</color>
+ <color name="grand_exchange_legend">#40aaaaaa</color>
 
  <color name="white_semi_transparent">#66FFFFFF</color>
  <color name="black_semi_transparent">#80000000</color>
@@ -13,6 +13,7 @@
  <color name="dark_gray">#A9A9A9</color>
  <color name="gray">#808080</color>
  <color name="green">#008000</color>
+ <color name="orange">#ffa500</color>
  <color name="black">#000000</color>
 
  <color name="menu_checked_item">#808080</color>

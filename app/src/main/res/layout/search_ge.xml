@@ -11,17 +11,16 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/editbox"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@id/searchView"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/gray" />
 
     <ListView
