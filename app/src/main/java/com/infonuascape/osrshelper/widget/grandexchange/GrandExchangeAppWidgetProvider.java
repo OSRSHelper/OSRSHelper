@@ -57,6 +57,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 		if(item != null) {
 			views.setTextViewText(R.id.item_name, item.name);
 			views.setTextViewText(R.id.item_price, "");
+			views.setViewVisibility(R.id.item_progress_bar, View.VISIBLE);
 			views.setViewVisibility(R.id.item_member, item.members ? View.VISIBLE : View.GONE);
 
 			AppWidgetTarget appWidgetTarget = new AppWidgetTarget(context, R.id.item_image, views, appWidgetId) {
@@ -76,6 +77,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 				@Override
 				public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GEItemInfo itemInfo) {
 					Log.i(TAG, "onInfoFetched: price=" + itemInfo.current.value);
+					views.setViewVisibility(R.id.item_progress_bar, View.GONE);
 					views.setTextViewText(R.id.item_price, itemInfo.current.value + " (" + itemInfo.today.value + ")");
 					appWidgetManager.updateAppWidget(appWidgetId, views);
 				}

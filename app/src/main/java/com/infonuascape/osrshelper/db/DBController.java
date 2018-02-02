@@ -284,11 +284,16 @@ public class DBController {
 	}
 
 	public static void setGrandExchangeWidgetIdToItem(final Context context, String itemId, final String widgetId) {
-		final ContentValues values = new ContentValues();
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_WIDGET_ID, "");
+
+		context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_WIDGET_ID + "=?", new String[]{widgetId});
+
+		values = new ContentValues();
 		values.put(COLUMN_WIDGET_ID, widgetId);
 
-		final int affectedRows = context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
-		Log.i(TAG, "setGrandExchangeWidgetIdToItem: affectedRows=" + affectedRows);
+		context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
+		Log.i(TAG, "setGrandExchangeWidgetIdToItem:");
 	}
 
 
