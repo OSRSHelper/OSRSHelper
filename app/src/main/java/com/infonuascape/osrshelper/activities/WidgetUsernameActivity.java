@@ -23,7 +23,7 @@ import com.infonuascape.osrshelper.adapters.UsernamesAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
-import com.infonuascape.osrshelper.widget.OSRSAppWidgetProvider;
+import com.infonuascape.osrshelper.widget.hiscores.OSRSAppWidgetProvider;
 
 import java.util.ArrayList;
 
@@ -49,7 +49,7 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
 		setContentView(R.layout.username);
 
 		Log.i(TAG, "onCreate: type=" + type);
-		checkIfConfiguration();
+		initWidgetId();
 
 		findViewById(R.id.username_edit).clearFocus();
 		findViewById(R.id.continue_btn).setOnClickListener(this);
@@ -62,7 +62,7 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
 		}
 	}
 
-	private void checkIfConfiguration() {
+	private void initWidgetId() {
 		if(getIntent() != null){
 			mAppWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 

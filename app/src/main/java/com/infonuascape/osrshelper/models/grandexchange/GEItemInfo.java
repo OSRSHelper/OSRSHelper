@@ -4,15 +4,8 @@ package com.infonuascape.osrshelper.models.grandexchange;
  * Created by marc_ on 2018-01-31.
  */
 
-public class GEItemInfo {
-    public String id;
-    public String name;
-    public String description;
+public class GEItemInfo extends Item {
     public String type;
-    public String typeIcon;
-    public String icon;
-    public boolean members;
-    public String iconLarge;
     public Trend current;
     public Trend today;
     public TrendChange day30;

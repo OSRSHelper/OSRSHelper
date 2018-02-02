@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.widget;
+package com.infonuascape.osrshelper.widget.hiscores;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 
 public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private final String TAG = "OSRSWidgetService";
+    private final String TAG = "GrandExchangeWidgetService";
     private ArrayList<Skill> skills;
     private Context mContext;
     private PlayerSkills playerSkills;

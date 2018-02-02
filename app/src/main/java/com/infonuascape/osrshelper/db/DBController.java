@@ -8,13 +8,20 @@ import android.util.Log;
 
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.models.grandexchange.Item;
 
 import java.util.ArrayList;
 
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ACCOUNT_TYPE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ID;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_FOLLOWING;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_MEMBERS;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_PROFILE;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_STARRED;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_DESCRIPTION;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_ID;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_IMAGE;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_NAME;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_TIME_USED;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_USERNAME;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
@@ -22,6 +29,7 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
 public class DBController {
 	private static final String TAG = "DBController";
 	private static final String[] ACCOUNTS_PROJECTION = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE};
+	private static final String[] GRAND_EXCHANGE_PROJECTION = new String[]{COLUMN_ID, COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_DESCRIPTION, COLUMN_ITEM_IMAGE, COLUMN_IS_MEMBERS, COLUMN_IS_STARRED, COLUMN_WIDGET_ID};
 
 	public static void addOrUpdateAccount(final Context context, final Account account) {
 		final ContentValues values = new ContentValues();
@@ -213,8 +221,6 @@ public class DBController {
 
 	public static Cursor searchAccountsByUsername(final Context context, CharSequence query) {
 		final String[] projection = ACCOUNTS_PROJECTION;
-
-
 		String where = null;
 		String[] whereArgs = null;
 
@@ -224,5 +230,114 @@ public class DBController {
 		}
 
 		return context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, COLUMN_TIME_USED + " DESC");
+	}
+
+	/****
+	 * GRAND EXCHANGE
+	 */
+
+	public static Item createGrandExchangeItemFromCursor(final Cursor cursor) {
+		final Item item = new Item();
+		item.id = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_ID));
+		item.name = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_NAME));
+		item.description = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_DESCRIPTION));
+		item.iconLarge = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_IMAGE));
+		item.widgetId = cursor.getString(cursor.getColumnIndex(COLUMN_WIDGET_ID));
+		item.members = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_MEMBERS)) == 1;
+		return item;
+	}
+
+	public static void addGrandExchangeItem(final Context context, Item item) {
+		final boolean isExist = doesGrandExchangeItemExist(context, item.id);
+		if(!isExist) {
+			final ContentValues values = new ContentValues();
+			values.put(COLUMN_ITEM_ID, item.id);
+			values.put(COLUMN_ITEM_NAME, item.name);
+			values.put(COLUMN_ITEM_DESCRIPTION, item.description);
+			values.put(COLUMN_ITEM_IMAGE, item.iconLarge);
+			values.put(COLUMN_IS_MEMBERS, item.members ? 1 : 0);
+			context.getContentResolver().insert(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values);
+		}
+	}
+
+	public static ArrayList<Item> getGrandExchangeItems(final Context context) {
+		final ArrayList<Item> items = new ArrayList<>();
+		final String[] projection = GRAND_EXCHANGE_PROJECTION;
+		final String sortOrder = COLUMN_IS_STARRED + " DESC, " + COLUMN_ITEM_NAME + " ASC";
+
+		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, projection, null, null,
+				sortOrder);
+		try {
+			if (cursor.moveToFirst()) {
+				do {
+					items.add(createGrandExchangeItemFromCursor(cursor));
+				} while (cursor.moveToNext());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+		return items;
+	}
+
+	public static void setGrandExchangeWidgetIdToItem(final Context context, String itemId, final String widgetId) {
+		final ContentValues values = new ContentValues();
+		values.put(COLUMN_WIDGET_ID, widgetId);
+
+		final int affectedRows = context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
+		Log.i(TAG, "setGrandExchangeWidgetIdToItem: affectedRows=" + affectedRows);
+	}
+
+
+	public static void setGrandExchangeStarred(final Context context, String itemId, final boolean isStarred) {
+		final ContentValues values = new ContentValues();
+		values.put(COLUMN_IS_STARRED, isStarred ? 1 : 0);
+
+		context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
+	}
+
+	private static boolean doesGrandExchangeItemExist(Context context, String itemId) {
+		final String where = COLUMN_ITEM_ID + "=?";
+		final String[] whereArgs = new String[]{itemId};
+		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, new String[]{"COUNT(*)"}, where, whereArgs, null);
+		boolean isExist = false;
+		try {
+			if (cursor.moveToFirst()) {
+				isExist = cursor.getInt(0) > 0;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+		Log.i(TAG, "doesGrandExchangeItemExist: isExist=" + isExist + " itemId=" + itemId);
+		return isExist;
+	}
+
+	public static Item getGrandExchangeByWidgetId(Context context, int appWidgetId) {
+		Item item = null;
+		final String[] projection = GRAND_EXCHANGE_PROJECTION;
+		final String where = COLUMN_WIDGET_ID + "=?";
+		final String[] whereArgs = new String[]{String.valueOf(appWidgetId)};
+
+		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, projection, where, whereArgs,
+				null);
+		try {
+			if (cursor.moveToFirst()) {
+				item = createGrandExchangeItemFromCursor(cursor);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+		return item;
 	}
 }

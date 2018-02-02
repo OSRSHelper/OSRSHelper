@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/rs_view_frame"
+    android:padding="10dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+    <ImageView
+        android:id="@+id/item_member"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/member"
+        android:visibility="gone"
+        android:layout_alignBottom="@id/item_image"
+        android:layout_alignRight="@id/item_image"/>
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_image"
+        android:layout_toLeftOf="@+id/buttons_container"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="5dp"
+        tools:text="Adamant Axe"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/item_name"
+        android:layout_toLeftOf="@+id/buttons_container"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/item_image">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ge_item_current_price"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            tools:text="2.0M"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/change_item_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/edit"
+            android:background="@drawable/gen_bt_sel"
+            android:padding="13dp"
+            android:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/update_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/refresh"
+            android:background="@drawable/gen_bt_sel"
+            android:padding="14dp"
+            android:tint="@color/white" />
+    </LinearLayout>
+</RelativeLayout>

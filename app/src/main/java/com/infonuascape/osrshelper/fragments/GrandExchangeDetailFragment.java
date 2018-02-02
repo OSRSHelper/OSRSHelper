@@ -14,12 +14,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeDetailFragmentAdapter;
+import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.GEDetailListener;
 import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
 import com.infonuascape.osrshelper.tasks.GEDetailPlotTask;
 import com.jjoe64.graphview.series.DataPoint;
-
-import java.util.ArrayList;
 
 public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPager.OnPageChangeListener, GEDetailListener {
     private static final String TAG = "GrandExchangeDetailFragment";
@@ -99,6 +98,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
 
     @Override
     public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GEItemInfo itemInfo) {
+        DBController.addGrandExchangeItem(getContext(), itemInfo);
         this.datapoints = datapoints;
         this.averages = averages;
         this.itemInfo = itemInfo;

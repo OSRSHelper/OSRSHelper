@@ -30,7 +30,6 @@ public class GESearchResults {
 					iterItem.description = item.getString("description");
 					iterItem.name = item.getString("name");
 					iterItem.members = TextUtils.equals(item.getString("members"), "true");
-					iterItem.icon = "http://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=" + itemId;
 					iterItem.iconLarge = "http://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=" + itemId;
 					itemsSearch.add(iterItem);
 				}

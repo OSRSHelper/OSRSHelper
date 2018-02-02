@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.widget;
+package com.infonuascape.osrshelper.widget.hiscores;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;

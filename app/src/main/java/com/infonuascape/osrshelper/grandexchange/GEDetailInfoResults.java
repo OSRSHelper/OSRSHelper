@@ -28,7 +28,6 @@ public class GEDetailInfoResults {
 				itemInfo.type = json.getString("type");
 				itemInfo.description = json.getString("description");
 				itemInfo.name = json.getString("name");
-				itemInfo.icon = "http://services.runescape.com/m=itemdb_oldschool/obj_sprite.gif?id=" + itemInfo.id;
 				itemInfo.iconLarge = "http://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=" + itemInfo.id;
 
 				if (TextUtils.equals(json.getString("members"), "true")) {

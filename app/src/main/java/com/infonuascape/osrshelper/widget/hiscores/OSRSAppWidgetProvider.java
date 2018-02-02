@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.widget;
+package com.infonuascape.osrshelper.widget.hiscores;
 
 import java.util.Arrays;
 
@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 public class OSRSAppWidgetProvider extends AppWidgetProvider {
-	private static final String TAG = "OSRSAppWidgetProvider";
+	private static final String TAG = "GrandExchangeAppWidgetProvider";
 
 	public static String ACTION_WIDGET_CONFIGURE = "ConfigureWidget";
 	
@@ -28,7 +28,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		final int N = appWidgetIds.length;
 
-		Log.i("OSRSAppWidgetProvider",  "Updating widgets " + Arrays.asList(appWidgetIds));
+		Log.i("GrandExchangeAppWidgetProvider",  "Updating widgets " + Arrays.asList(appWidgetIds));
 
 		// Perform this loop procedure for each App Widget that belongs to this
 		// provider
@@ -48,7 +48,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 
 			// Get the layout for the App Widget and attach an on-click listener
 			// to the button
-			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_username_layout);
 			views.setOnClickPendingIntent(R.id.update_btn, pendingSync);
 			
 			//Username

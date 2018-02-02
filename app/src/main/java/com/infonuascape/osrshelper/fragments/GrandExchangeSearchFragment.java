@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeSearchAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
+import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
@@ -56,6 +57,12 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 		list.setOnItemClickListener(this);
 
 		return view;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		search();
 	}
 
 	@Override
@@ -107,6 +114,9 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 
 			if (searchText != null && searchText.length() >= 3) {
 				startSearchTask();
+			} else {
+				adapter = new GrandExchangeSearchAdapter(getContext(), DBController.getGrandExchangeItems(getContext()));
+				list.setAdapter(adapter);
 			}
 		}
 	}

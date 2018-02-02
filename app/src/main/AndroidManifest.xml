@@ -23,28 +23,50 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Hiscores widget -->
         <activity
-            android:name=".activities.WidgetUsernameActivity"
-            android:label="@string/title_activity_username">
+            android:name=".activities.WidgetUsernameActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <receiver
-            android:name=".widget.OSRSAppWidgetProvider"
-            android:label="@string/widget_name">
+            android:name=".widget.hiscores.OSRSAppWidgetProvider"
+            android:label="@string/widget_username_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info" />
+                android:resource="@xml/widget_username_info" />
+        </receiver>
+
+        <!-- Grand Exchange widget -->
+
+        <activity
+            android:name=".activities.WidgetGrandExchangeSearchActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".widget.grandexchange.GrandExchangeAppWidgetProvider"
+            android:label="@string/widget_grand_exchange_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_grand_exchange_info" />
         </receiver>
 
         <service
-            android:name=".widget.OSRSWidgetService"
+            android:name=".widget.hiscores.OSRSWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"></service>
 
         <provider
