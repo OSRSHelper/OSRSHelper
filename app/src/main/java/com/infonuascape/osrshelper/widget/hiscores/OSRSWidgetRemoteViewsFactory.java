@@ -11,7 +11,7 @@ import android.widget.RemoteViewsService;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.SkillType;
-import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
+import com.infonuascape.osrshelper.fetchers.hiscore.HiscoreFetcher;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;

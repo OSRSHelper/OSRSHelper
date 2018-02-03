@@ -2,6 +2,7 @@ package com.infonuascape.osrshelper.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,10 +27,11 @@ import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.db.PreferencesController;
-import com.infonuascape.osrshelper.fragments.CmlXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CmlTopFragment;
+import com.infonuascape.osrshelper.fragments.CmlXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
 import com.infonuascape.osrshelper.fragments.DonationFragment;
+import com.infonuascape.osrshelper.fragments.GrandExchangeDetailFragment;
 import com.infonuascape.osrshelper.fragments.GrandExchangeSearchFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.NewsFeedFragment;
@@ -43,6 +46,14 @@ import com.infonuascape.osrshelper.utils.Utils;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener,
         SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider, View.OnClickListener {
     private static final String TAG = "MainActivity";
+    private static final String EXTRA_FRAGMENT_TO_OPEN = "EXTRA_FRAGMENT_TO_OPEN";
+
+    public static Intent getGrandExchangeDetailIntent(Context context, String itemId) {
+        Intent i = new Intent(context, MainActivity.class);
+        i.putExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID, itemId);
+        i.putExtra(EXTRA_FRAGMENT_TO_OPEN, GrandExchangeDetailFragment.class.getSimpleName());
+        return i;
+    }
 
     private SearchView searchView;
     private NavigationView navigationView;
@@ -86,6 +97,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         MainFragmentController.init(this, navigationView);
         MainFragmentController.getInstance().showRootFragment(R.id.nav_home, NewsFeedFragment.newInstance());
+
+        handleIntent(getIntent());
+    }
+
+    private void handleIntent(Intent intent) {
+        final String fragmentToOpen = intent.getStringExtra(EXTRA_FRAGMENT_TO_OPEN);
+        if(fragmentToOpen != null) {
+            if(TextUtils.equals(GrandExchangeDetailFragment.class.getSimpleName(), fragmentToOpen)) {
+                OSRSFragment fragment = GrandExchangeDetailFragment.newInstance(intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID));
+                MainFragmentController.getInstance().showFragment(fragment);
+            }
+
+            intent.removeExtra(EXTRA_FRAGMENT_TO_OPEN);
+        }
     }
 
     public void refreshProfileAccount() {

@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.grandexchange;
+package com.infonuascape.osrshelper.fetchers.grandexchange;
 
 import android.content.Context;
 

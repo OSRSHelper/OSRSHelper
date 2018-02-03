@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.top;
+package com.infonuascape.osrshelper.fetchers.top;
 
 import android.content.Context;
 

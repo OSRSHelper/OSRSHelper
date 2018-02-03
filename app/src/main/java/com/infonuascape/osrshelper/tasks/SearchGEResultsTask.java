@@ -3,8 +3,8 @@ package com.infonuascape.osrshelper.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.infonuascape.osrshelper.grandexchange.GESearchFetcher;
-import com.infonuascape.osrshelper.grandexchange.GESearchResults;
+import com.infonuascape.osrshelper.fetchers.grandexchange.GESearchFetcher;
+import com.infonuascape.osrshelper.fetchers.grandexchange.GESearchResults;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 
 /**

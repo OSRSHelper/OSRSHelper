@@ -1,20 +1,15 @@
-package com.infonuascape.osrshelper.tracker;
+package com.infonuascape.osrshelper.fetchers.tracker;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.android.volley.Request;
 import com.infonuascape.osrshelper.utils.API;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
-import com.infonuascape.osrshelper.utils.http.NetworkStack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 
 public class Updater {
 

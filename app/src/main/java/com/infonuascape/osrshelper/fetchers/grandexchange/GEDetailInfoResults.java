@@ -1,17 +1,14 @@
-package com.infonuascape.osrshelper.grandexchange;
+package com.infonuascape.osrshelper.fetchers.grandexchange;
 
 import android.text.TextUtils;
 
 import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
-import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.models.grandexchange.Trend;
 import com.infonuascape.osrshelper.models.grandexchange.TrendChange;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class GEDetailInfoResults {
 	public GEItemInfo itemInfo = null;

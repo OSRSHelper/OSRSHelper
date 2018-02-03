@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.hiscore;
+package com.infonuascape.osrshelper.fetchers.hiscore;
 
 import android.content.Context;
 

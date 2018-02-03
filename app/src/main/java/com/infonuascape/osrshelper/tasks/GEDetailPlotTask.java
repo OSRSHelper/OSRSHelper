@@ -3,10 +3,10 @@ package com.infonuascape.osrshelper.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.infonuascape.osrshelper.grandexchange.GEDetailInfoFetcher;
-import com.infonuascape.osrshelper.grandexchange.GEDetailInfoResults;
-import com.infonuascape.osrshelper.grandexchange.GEDetailPlotFetcher;
-import com.infonuascape.osrshelper.grandexchange.GEDetailPlotResults;
+import com.infonuascape.osrshelper.fetchers.grandexchange.GEDetailInfoFetcher;
+import com.infonuascape.osrshelper.fetchers.grandexchange.GEDetailInfoResults;
+import com.infonuascape.osrshelper.fetchers.grandexchange.GEDetailPlotFetcher;
+import com.infonuascape.osrshelper.fetchers.grandexchange.GEDetailPlotResults;
 import com.infonuascape.osrshelper.listeners.GEDetailListener;
 import com.jjoe64.graphview.series.DataPoint;
 

@@ -16,14 +16,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.activities.WidgetGrandExchangeSearchActivity;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.GEDetailListener;
+import com.infonuascape.osrshelper.listeners.RSBuddyPriceListener;
+import com.infonuascape.osrshelper.models.RSBuddyPrice;
 import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.GrandExchangeWidgetTask;
 import com.jjoe64.graphview.series.DataPoint;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 
 public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
@@ -68,17 +72,24 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 			};
 
 			Glide
-					.with(context.getApplicationContext())
-					.asBitmap()
-					.load(item.iconLarge)
-					.into(appWidgetTarget);
+				.with(context.getApplicationContext())
+				.asBitmap()
+				.load(item.iconLarge)
+				.into(appWidgetTarget);
 
-			new GrandExchangeWidgetTask(context, new GEDetailListener() {
+			new GrandExchangeWidgetTask(context, new RSBuddyPriceListener() {
 				@Override
-				public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GEItemInfo itemInfo) {
-					Log.i(TAG, "onInfoFetched: price=" + itemInfo.current.value);
+				public void onPriceFound(RSBuddyPrice rsBuddyPrice) {
+					Log.i(TAG, "onInfoFetched: price=" + rsBuddyPrice.buying);
 					views.setViewVisibility(R.id.item_progress_bar, View.GONE);
-					views.setTextViewText(R.id.item_price, itemInfo.current.value + " (" + itemInfo.today.value + ")");
+					views.setTextViewText(R.id.item_price, NumberFormat.getInstance().format(rsBuddyPrice.buying) + "gp");
+					appWidgetManager.updateAppWidget(appWidgetId, views);
+				}
+
+				@Override
+				public void onPriceError() {
+					views.setViewVisibility(R.id.item_progress_bar, View.GONE);
+					views.setTextViewText(R.id.item_price, context.getString(R.string.error));
 					appWidgetManager.updateAppWidget(appWidgetId, views);
 				}
 			}, item.id).execute();
@@ -93,8 +104,17 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 		PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
 		views.setOnClickPendingIntent(R.id.change_item_btn, configPendingIntent);
 
-		// Tell the AppWidgetManager to perform an update on the current app
-		// widget
+		//Info
+		if(item != null) {
+			views.setViewVisibility(R.id.info_item_btn, View.VISIBLE);
+			Intent infoIntent = MainActivity.getGrandExchangeDetailIntent(context, item.id);
+			infoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			PendingIntent infoPendingIntent = PendingIntent.getActivity(context, appWidgetId, infoIntent, 0);
+			views.setOnClickPendingIntent(R.id.info_item_btn, infoPendingIntent);
+		} else {
+			views.setViewVisibility(R.id.info_item_btn, View.GONE);
+		}
+
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 

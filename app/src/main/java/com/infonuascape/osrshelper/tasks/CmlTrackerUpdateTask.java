@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
-import com.infonuascape.osrshelper.tracker.Updater;
+import com.infonuascape.osrshelper.fetchers.tracker.Updater;
 
 import org.json.JSONObject;
 

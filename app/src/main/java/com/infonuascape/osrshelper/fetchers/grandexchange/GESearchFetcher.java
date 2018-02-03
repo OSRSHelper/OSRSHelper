@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.grandexchange;
+package com.infonuascape.osrshelper.fetchers.grandexchange;
 
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
@@ -6,8 +6,6 @@ import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
 
 import android.content.Context;
-import android.net.Uri;
-import java.util.ArrayList;
 
 public class GESearchFetcher {
     final String API_URL = "https://api.buying-gf.com/ge/search/%s";

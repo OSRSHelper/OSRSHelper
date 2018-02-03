@@ -1,9 +1,9 @@
-package com.infonuascape.osrshelper.top;
+package com.infonuascape.osrshelper.fetchers.top;
 
 import android.content.Context;
 
 import com.infonuascape.osrshelper.enums.TrackerTime;
-import com.infonuascape.osrshelper.tracker.TrackerFetcher;
+import com.infonuascape.osrshelper.fetchers.tracker.TrackerFetcher;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;

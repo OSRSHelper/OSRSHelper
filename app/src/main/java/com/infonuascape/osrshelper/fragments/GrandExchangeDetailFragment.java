@@ -22,7 +22,7 @@ import com.jjoe64.graphview.series.DataPoint;
 
 public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPager.OnPageChangeListener, GEDetailListener {
     private static final String TAG = "GrandExchangeDetailFragment";
-    private final static String EXTRA_ITEM_ID = "EXTRA_ITEM_ID";
+    public final static String EXTRA_ITEM_ID = "EXTRA_ITEM_ID";
 
     private ViewPager viewPager;
     private GrandExchangeDetailFragmentAdapter adapter;

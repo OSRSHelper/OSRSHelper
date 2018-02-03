@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="60dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/rs_view_frame"
-    android:padding="10dp"
+    android:background="@drawable/widget_bg"
+    android:padding="3dp"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/item_image"
         android:layout_toLeftOf="@+id/buttons_container"
+        android:layout_marginTop="6dp"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:layout_marginLeft="5dp"
@@ -63,31 +64,45 @@
             android:textColor="@color/white"/>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/buttons_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:orientation="horizontal" >
+        android:layout_alignParentRight="true" >
+
+        <ImageView
+            android:id="@+id/info_item_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/grandexchange"
+            android:background="@drawable/gen_bt_sel"
+            android:padding="3dp"
+            android:tint="@color/white" />
 
         <ImageView
             android:id="@+id/change_item_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/info_item_btn"
             android:src="@drawable/edit"
             android:background="@drawable/gen_bt_sel"
-            android:padding="13dp"
+            android:padding="3dp"
             android:tint="@color/white" />
 
         <ImageView
             android:id="@+id/update_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/refresh"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_below="@id/change_item_btn"
             android:background="@drawable/gen_bt_sel"
-            android:padding="14dp"
+            android:padding="2dp"
             android:tint="@color/white" />
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

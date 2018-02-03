@@ -54,8 +54,8 @@
     <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
     <string name="virtual_levels">Virtual Levels</string>
     <string name="update">Update</string>
-    <string name="widget_username_name">OSRS Stats</string>
-    <string name="widget_grand_exchange_name">Grand Exchange Lookup</string>
+    <string name="widget_username_name">Hiscores</string>
+    <string name="widget_grand_exchange_name">Grand Exchange Price</string>
     <string name="next_page">Next Page</string>
     <string name="back_page">Back Page</string>
 
@@ -146,5 +146,6 @@
     <string name="trend">Trend</string>
     <string name="date">Date</string>
     <string name="price">Price</string>
+    <string name="error">Error</string>
 
 </resources>

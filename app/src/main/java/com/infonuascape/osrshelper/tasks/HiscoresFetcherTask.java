@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.hiscore.HiscoreFetcher;
+import com.infonuascape.osrshelper.fetchers.hiscore.HiscoreFetcher;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;

@@ -7,7 +7,7 @@ import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.TopPlayersListener;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
-import com.infonuascape.osrshelper.top.TopFetcher;
+import com.infonuascape.osrshelper.fetchers.top.TopFetcher;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 

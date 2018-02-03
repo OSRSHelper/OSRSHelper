@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.tracker;
+package com.infonuascape.osrshelper.fetchers.tracker;
 
 import android.content.Context;
 
@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by maden on 9/14/14.
