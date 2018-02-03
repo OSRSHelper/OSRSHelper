@@ -2,57 +2,41 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.GrandExchangePeriods;
 import com.infonuascape.osrshelper.fragments.GrandExchangePeriodFragment;
+import com.infonuascape.osrshelper.fragments.OSRSFragment;
+import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
 
-import java.util.ArrayList;
-
-public class GrandExchangeDetailFragmentAdapter extends FragmentStatePagerAdapter{
-
-    private Context context;
-    private ArrayList<GrandExchangePeriodFragment> fragments;
+public class GrandExchangeDetailFragmentAdapter extends OSRSNestedViewPagerAdapter{
 
     public GrandExchangeDetailFragmentAdapter(final FragmentManager fm, final Context context) {
-        super(fm);
-        this.context = context;
-        fragments = new ArrayList<>();
-        fragments.add(GrandExchangePeriodFragment.newInstance(GrandExchangePeriods.WEEK));
-        fragments.add(GrandExchangePeriodFragment.newInstance(GrandExchangePeriods.MONTH));
-        fragments.add(GrandExchangePeriodFragment.newInstance(GrandExchangePeriods.THREE_MONTHS));
-        fragments.add(GrandExchangePeriodFragment.newInstance(GrandExchangePeriods.SIX_MONTHS));
+        super(fm, context);
     }
 
     @Override
     public int getCount() {
-        return fragments.size();
+        return GrandExchangePeriods.values().length;
     }
 
     @Override
-    public GrandExchangePeriodFragment getItem(int position) {
-        return fragments.get(position);
+    public OSRSPagerFragment createFragment(int position) {
+        return GrandExchangePeriodFragment.newInstance(GrandExchangePeriods.values()[position]);
     }
 
     @Override
-    public CharSequence getPageTitle(int position) {
-        int textResId;
+    public int getTitle(int position) {
         switch (position) {
             case 0:
-                textResId = R.string.week;
-                break;
+                return R.string.week;
             case 1:
-                textResId = R.string.month;
-                break;
+                return R.string.month;
             case 2:
-                textResId = R.string.three_months;
-                break;
+                return R.string.three_months;
             default:
-                textResId = R.string.six_months;
-                break;
-        }
+                return R.string.six_months;
 
-        return context.getResources().getString(textResId);
+        }
     }
 }

@@ -7,8 +7,8 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="8dp"
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
         card_view:cardCornerRadius="4dp">
 
         <LinearLayout
@@ -18,21 +18,23 @@
             android:padding="10dp"
             android:gravity="center"
             android:background="@drawable/gen_white_bt_sel"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/quick_action_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/xptrack"
                 android:tint="@color/text_normal"/>
 
             <TextView
                 android:id="@+id/quick_action_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:gravity="left"
                 android:textColor="@color/text_normal"
-                android:textSize="14sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

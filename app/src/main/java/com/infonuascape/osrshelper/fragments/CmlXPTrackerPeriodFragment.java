@@ -2,6 +2,7 @@ package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CmlTrackerFetcherTask;
 
-public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerFetcherListener {
+public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements TrackerFetcherListener {
+	private static final String TAG = "CmlXPTrackerPeriodFragm";
+
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private final static String EXTRA_TRACKER_TIME = "EXTRA_TRACKER_TIME";
 	private Account account;
@@ -59,6 +62,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 		return view;
 	}
 
+	@Override
 	public void onPageVisible() {
 		createAsyncTaskToPopulate();
 	}
@@ -99,17 +103,21 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 
 	@Override
 	public void onTrackingFetched(final PlayerSkills playerSkills) {
+		Log.i(TAG, "onTrackingFetched");
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();
 		}
-		if(MainFragmentController.getInstance().getCurrentFragment() instanceof CmlXPTrackerFragment) {
-			((CmlXPTrackerFragment) MainFragmentController.getInstance().getCurrentFragment()).onTrackingFetched(playerSkills);
+
+		final OSRSFragment currentFragment = MainFragmentController.getInstance().getCurrentFragment();
+		if(currentFragment instanceof CmlXPTrackerFragment) {
+			((CmlXPTrackerFragment) currentFragment).onTrackingFetched(playerSkills);
 		}
 	}
 
 	@Override
 	public void onTrackingError(final String errorMessage) {
+		Log.i(TAG, "onTrackingError: errorMessage=" + errorMessage);
 		if(getActivity() != null) {
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
@@ -117,11 +125,14 @@ public class CmlXPTrackerPeriodFragment extends OSRSFragment implements TrackerF
 					if(getView() != null) {
 						progressBar.setVisibility(View.GONE);
 					}
+
 				}
 			});
 		}
-		if(MainFragmentController.getInstance().getCurrentFragment() instanceof CmlXPTrackerFragment) {
-			((CmlXPTrackerFragment) MainFragmentController.getInstance().getCurrentFragment()).onTrackingError(errorMessage);
+
+		final OSRSFragment currentFragment = MainFragmentController.getInstance().getCurrentFragment();
+		if(currentFragment instanceof CmlXPTrackerFragment) {
+			((CmlXPTrackerFragment) currentFragment).onTrackingError(errorMessage);
 		}
 	}
 

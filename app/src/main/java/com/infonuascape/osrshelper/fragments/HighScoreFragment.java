@@ -62,7 +62,6 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		combatText = view.findViewById(R.id.combat);
 		rsView = view.findViewById(R.id.rs_view);
 
-		view.findViewById(R.id.share_btn).setVisibility(View.INVISIBLE);
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
 
 		asyncTask = new HiscoresFetcherTask(getContext(), this, account);

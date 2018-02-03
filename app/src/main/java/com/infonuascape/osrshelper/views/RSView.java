@@ -59,7 +59,7 @@ public class RSView extends RelativeLayout {
         gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        populateViewForCMLTop(null);
+        populateViewWithZeros(null);
     }
 
     public void populateView(final PlayerSkills playerSkills, final RecyclerItemClickListener listener) {
@@ -75,7 +75,7 @@ public class RSView extends RelativeLayout {
         headerLayout.setVisibility(View.VISIBLE);
     }
 
-    public void populateViewForCMLTop(final RecyclerItemClickListener listener) {
+    public void populateViewWithZeros(final RecyclerItemClickListener listener) {
         adapter = new RSViewAdapter(getContext(), new PlayerSkills(), listener, false);
         recyclerView.setAdapter(adapter);
     }

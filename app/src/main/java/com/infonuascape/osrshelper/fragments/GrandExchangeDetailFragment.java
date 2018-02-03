@@ -54,6 +54,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(4);
         TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
+        tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         tabLayout.setupWithViewPager(viewPager);
 
         return view;
@@ -88,7 +89,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
 
     @Override
     public void onPageSelected(int position) {
-        adapter.getItem(position).onPageVisible(datapoints, averages);
+        ((GrandExchangePeriodFragment) adapter.getItem(position)).onPageVisible(datapoints, averages);
     }
 
     @Override
@@ -103,6 +104,6 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
         this.averages = averages;
         this.itemInfo = itemInfo;
         refreshItemInfo();
-        adapter.getItem(viewPager.getCurrentItem()).onPageVisible(datapoints, averages);
+        ((GrandExchangePeriodFragment) adapter.getItem(viewPager.getCurrentItem())).onPageVisible(datapoints, averages);
     }
 }

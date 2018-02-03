@@ -5,7 +5,6 @@ package com.infonuascape.osrshelper.enums;
  */
 
 public enum TrackerTime {
-    Hour(3600),
     Day(86400),
     Week(604800),
     Month(2592000),

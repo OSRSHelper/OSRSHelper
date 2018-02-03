@@ -24,7 +24,7 @@ import com.jjoe64.graphview.series.Series;
 
 import java.util.Arrays;
 
-public class GrandExchangePeriodFragment extends OSRSFragment implements OnDataPointTapListener {
+public class GrandExchangePeriodFragment extends OSRSPagerFragment implements OnDataPointTapListener {
 	private static final String TAG = "GrandExchangePeriodFrag";
 
 	private final static String EXTRA_GE_PERIOD = "EXTRA_GE_PERIOD";
@@ -104,5 +104,10 @@ public class GrandExchangePeriodFragment extends OSRSFragment implements OnDataP
 		if(dialog == null || !dialog.isShowing()) {
 			dialog = GrandExchangePointDialog.showDialog(getContext(), series.getTitle(), dataPointInterface);
 		}
+	}
+
+	@Override
+	public void onPageVisible() {
+
 	}
 }

@@ -5,23 +5,27 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/cml_top_select_skill"
-        android:layout_margin="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/cml_top_select_skill_title"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:textColor="@color/text_normal" />
 
-
-
-    <com.infonuascape.osrshelper.views.RSView
-        android:id="@+id/rs_view"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:text="@string/cml_top_select_skill_desc"
+        android:layout_marginLeft="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/text_normal" />
 
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_rs_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>

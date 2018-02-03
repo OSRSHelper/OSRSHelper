@@ -8,19 +8,29 @@
         android:id="@+id/profile_header"
         class="com.infonuascape.osrshelper.fragments.ProfileHeaderFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/track_metadata"
+        android:id="@+id/track_metadata_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/profile_header"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:lines="2"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/loading"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_normal"/>
+
+    <TextView
+        android:id="@+id/track_metadata_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/track_metadata_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
         android:textColor="@color/text_normal"
         android:visibility="invisible"/>
 
@@ -40,7 +50,10 @@
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/update" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/track_metadata_desc" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

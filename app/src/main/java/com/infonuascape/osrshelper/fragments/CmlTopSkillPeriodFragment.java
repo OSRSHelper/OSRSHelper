@@ -20,7 +20,7 @@ import com.infonuascape.osrshelper.tasks.CmlTopFetcherTask;
 
 import java.util.List;
 
-public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayersListener {
+public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopPlayersListener {
     private static final String TAG = "CmlTopSkillPeriodFragme";
 
     public static final String ARG_SKILL = "ARG_SKILL";
@@ -34,6 +34,7 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
     private CmlTopSkillPeriodAdapter adapter;
 
     public static CmlTopSkillPeriodFragment newInstance(SkillType skillType, Period period) {
+        Log.i(TAG, "newInstance");
         CmlTopSkillPeriodFragment fragment = new CmlTopSkillPeriodFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_SKILL, skillType);
@@ -45,7 +46,7 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
+        Log.i(TAG, "onCreateView: arguments=" + getArguments());
         View view = inflater.inflate(R.layout.cml_top_skill_period, null);
 
         progressBar = view.findViewById(R.id.progress_bar);
@@ -64,6 +65,7 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
         return view;
     }
 
+    @Override
     public void onPageVisible() {
         if(playerExp == null) {
             if(asyncTask== null) {
@@ -86,11 +88,11 @@ public class CmlTopSkillPeriodFragment extends OSRSFragment implements TopPlayer
     @Override
     public void onPlayersFetched(List<PlayerExp> playerList) {
         Log.i(TAG, "onPlayersFetched");
+        asyncTask = null;
+        this.playerExp = playerList;
         if(getView() != null) {
             progressBar.setVisibility(View.GONE);
 
-            this.playerExp = playerList;
-            asyncTask = null;
             if (playerList != null) {
                 adapter = new CmlTopSkillPeriodAdapter(this, playerList);
                 recyclerView.setAdapter(adapter);

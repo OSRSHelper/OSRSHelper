@@ -89,7 +89,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="left"
                             android:text="@string/highscores"
                             android:textColor="@color/text_normal"
                             android:textSize="12sp"/>
@@ -122,7 +123,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="left"
                             android:text="@string/cml_xptracker"
                             android:textColor="@color/text_normal"
                             android:textSize="12sp"/>
@@ -155,7 +157,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:gravity="left"
                             android:text="@string/combat_lvl_calculator"
                             android:textColor="@color/text_normal"
                             android:textSize="12sp"/>

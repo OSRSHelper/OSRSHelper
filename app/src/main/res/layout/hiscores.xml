@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/colorAccent">
 
@@ -8,8 +9,7 @@
         android:id="@+id/profile_header"
         class="com.infonuascape.osrshelper.fragments.ProfileHeaderFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:id="@+id/scroll_table_rs_view"
@@ -30,33 +30,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/combat"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="@string/combat_lvl"
+                    android:text="@string/loading"
                     android:textColor="@color/text_normal"
-                    android:textSize="16sp"
-                    android:visibility="invisible" />
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
 
-                <TextView
+                <ImageView
                     android:id="@+id/share_btn"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/bt_sel"
+                    android:background="@drawable/gen_white_bt_sel"
+                    android:src="@drawable/ic_menu_share"
                     android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:text="@string/share_hiscores"
-                    android:textColor="@color/white"
-                    android:visibility="invisible"/>
+                    android:tint="@color/text_normal"
+                    android:padding="8dp"
+                    android:visibility="invisible"
+                    tools:visibility="visible"/>
 
             </LinearLayout>
 

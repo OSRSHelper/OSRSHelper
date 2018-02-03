@@ -1,45 +1,70 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
     android:background="@color/colorAccent"
+    android:orientation="vertical"
     android:focusableInTouchMode="true">
 
-    <android.support.v7.widget.SearchView
-        android:id="@+id/searchView"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/grand_exchange_search_title"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_normal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/grand_exchange_search_desc"
+        android:layout_marginLeft="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/text_normal" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
+        android:layout_marginTop="10dp">
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <ProgressBar
+            android:id="@+id/progress_loading"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignRight="@id/searchView"
+            android:layout_alignTop="@id/searchView"
+            android:layout_alignBottom="@id/searchView"
+            android:layout_marginRight="13dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+    </RelativeLayout>
+
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@id/searchView"
         android:layout_marginTop="5dp"
-        android:background="@color/gray" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/black_semi_transparent" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@id/line" />
+        android:layout_marginRight="10dp" />
 
-    <ProgressBar
-        android:id="@+id/progress_loading"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignRight="@id/searchView"
-        android:layout_alignTop="@id/searchView"
-        android:layout_alignBottom="@id/searchView"
-        android:layout_marginRight="13dp"
-        android:visibility="gone"
-        tools:visibility="visible"/>
-
-</RelativeLayout>
+</LinearLayout>

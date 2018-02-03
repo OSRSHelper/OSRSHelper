@@ -2,62 +2,45 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.fragments.CmlXPTrackerPeriodFragment;
+import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
 import com.infonuascape.osrshelper.models.Account;
 
-import java.util.ArrayList;
+public class CmlXpTrackerFragmentAdapter extends OSRSNestedViewPagerAdapter {
 
-public class CmlXpTrackerFragmentAdapter extends FragmentStatePagerAdapter{
-
-    private Context context;
-    private ArrayList<CmlXPTrackerPeriodFragment> fragments;
+    private Account account;
 
     public CmlXpTrackerFragmentAdapter(final FragmentManager fm, final Context context, final Account account) {
-        super(fm);
-        this.context = context;
-        fragments = new ArrayList<>();
-        fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Day));
-        fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Week));
-        fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Month));
-        fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.Year));
-        fragments.add(CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.All));
+        super(fm, context);
+        this.account = account;
     }
 
     @Override
     public int getCount() {
-        return fragments.size();
+        return TrackerTime.values().length;
     }
 
     @Override
-    public CmlXPTrackerPeriodFragment getItem(int position) {
-        return fragments.get(position);
+    public OSRSPagerFragment createFragment(int position) {
+        return CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.values()[position]);
     }
 
     @Override
-    public CharSequence getPageTitle(int position) {
-        int textResId;
+    public int getTitle(int position) {
         switch (position) {
             case 0:
-                textResId = R.string.day;
-                break;
+                return R.string.day;
             case 1:
-                textResId = R.string.week;
-                break;
+                return R.string.week;
             case 2:
-                textResId = R.string.month;
-                break;
+                return R.string.month;
             case 3:
-                textResId = R.string.year;
-                break;
+                return R.string.year;
             default:
-                textResId = R.string.all;
-                break;
+                return R.string.all;
         }
-
-        return context.getResources().getString(textResId);
     }
 }
