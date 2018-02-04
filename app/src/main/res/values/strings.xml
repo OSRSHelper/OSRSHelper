@@ -156,7 +156,7 @@
     <string name="error">Error</string>
     <string name="ehp">EHP</string>
 
-    <string name="skill_diff_xp">Experience:</string>
+    <string name="skill_diff_xp">XP:</string>
     <string name="skill_diff_rank">Rank:</string>
     <string name="profile_recent_gains">Recent Gains</string>
     <string name="profile_delta_on">%1$s &#x2192; %2$s</string>

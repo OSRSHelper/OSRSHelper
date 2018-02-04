@@ -57,6 +57,7 @@ public class NotificationController {
         builder.setContentIntent(resultPendingIntent);
         builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         builder.setVibrate(new long[]{0,100,50,100});
+        builder.setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle(title).bigText(description));
 
         Notification notification = builder.build();
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(title.hashCode(), notification);
