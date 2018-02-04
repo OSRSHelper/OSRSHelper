@@ -8,8 +8,8 @@ android {
         applicationId "com.infonuascape.osrshelper"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 27
-        versionName "2.0"
+        versionCode 28
+        versionName "2.0.1"
     }
     buildTypes {
         release {
