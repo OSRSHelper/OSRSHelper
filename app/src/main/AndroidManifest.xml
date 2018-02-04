@@ -44,6 +44,10 @@
                 android:resource="@xml/widget_username_info" />
         </receiver>
 
+        <service
+            android:name=".widget.hiscores.OSRSWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+
         <!-- Grand Exchange widget -->
 
         <activity
@@ -66,8 +70,10 @@
         </receiver>
 
         <service
-            android:name=".widget.hiscores.OSRSWidgetService"
+            android:name=".widget.grandexchange.GrandExchangeWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+
+        <!-- Providers -->
 
         <provider
             android:name=".db.OSRSContentProvider"

@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 public class OSRSAppWidgetProvider extends AppWidgetProvider {
-	private static final String TAG = "GrandExchangeAppWidgetProvider";
+	private static final String TAG = "GrandExchangeAppWidget";
 
 	public static String ACTION_WIDGET_CONFIGURE = "ConfigureWidget";
 	
@@ -28,7 +28,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		final int N = appWidgetIds.length;
 
-		Log.i("GrandExchangeAppWidgetProvider",  "Updating widgets " + Arrays.asList(appWidgetIds));
+		Log.i(TAG,  "Updating widgets " + Arrays.asList(appWidgetIds));
 
 		// Perform this loop procedure for each App Widget that belongs to this
 		// provider

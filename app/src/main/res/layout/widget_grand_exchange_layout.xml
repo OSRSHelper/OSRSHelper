@@ -49,19 +49,10 @@
             android:textColor="@color/white"
             android:textStyle="bold"/>
 
-        <ProgressBar
-            android:id="@+id/item_progress_bar"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="5dp" />
-
-        <TextView
-            android:id="@+id/item_price"
+        <GridView
+            android:id="@+id/grid_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            tools:text="2.0M"
-            android:textColor="@color/white"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <RelativeLayout

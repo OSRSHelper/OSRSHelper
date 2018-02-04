@@ -19,16 +19,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.activities.WidgetGrandExchangeSearchActivity;
 import com.infonuascape.osrshelper.db.DBController;
-import com.infonuascape.osrshelper.listeners.GEDetailListener;
-import com.infonuascape.osrshelper.listeners.RSBuddyPriceListener;
-import com.infonuascape.osrshelper.models.RSBuddyPrice;
-import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
-import com.infonuascape.osrshelper.tasks.GrandExchangeWidgetTask;
-import com.jjoe64.graphview.series.DataPoint;
-
-import java.text.NumberFormat;
-import java.util.Arrays;
 
 public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 	private static final String TAG = "GrandExchangeAppWidget";
@@ -61,7 +52,6 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 		if(item != null) {
 			views.setTextViewText(R.id.item_name, item.name);
 			views.setTextViewText(R.id.item_price, "");
-			views.setViewVisibility(R.id.item_progress_bar, View.VISIBLE);
 			views.setViewVisibility(R.id.item_member, item.members ? View.VISIBLE : View.GONE);
 
 			AppWidgetTarget appWidgetTarget = new AppWidgetTarget(context, R.id.item_image, views, appWidgetId) {
@@ -76,23 +66,6 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 				.asBitmap()
 				.load(item.iconLarge)
 				.into(appWidgetTarget);
-
-			new GrandExchangeWidgetTask(context, new RSBuddyPriceListener() {
-				@Override
-				public void onPriceFound(RSBuddyPrice rsBuddyPrice) {
-					Log.i(TAG, "onInfoFetched: price=" + rsBuddyPrice.buying);
-					views.setViewVisibility(R.id.item_progress_bar, View.GONE);
-					views.setTextViewText(R.id.item_price, NumberFormat.getInstance().format(rsBuddyPrice.buying) + "gp");
-					appWidgetManager.updateAppWidget(appWidgetId, views);
-				}
-
-				@Override
-				public void onPriceError() {
-					views.setViewVisibility(R.id.item_progress_bar, View.GONE);
-					views.setTextViewText(R.id.item_price, context.getString(R.string.error));
-					appWidgetManager.updateAppWidget(appWidgetId, views);
-				}
-			}, item.id).execute();
 		}
 
 		Log.i(TAG, "appWidgetId=" + appWidgetId);
@@ -113,6 +86,16 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 			views.setOnClickPendingIntent(R.id.info_item_btn, infoPendingIntent);
 		} else {
 			views.setViewVisibility(R.id.info_item_btn, View.GONE);
+		}
+
+		if(item != null) {
+			Intent intentService = new Intent(context, GrandExchangeWidgetService.class);
+			// Add the app widget ID to the intent extras.
+			intentService.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+			intentService.putExtra(GrandExchangeWidgetRemoteViewsFactory.EXTRA_ITEM_ID, item.id);
+			intentService.setData(Uri.parse(intentService.toUri(Intent.URI_INTENT_SCHEME)));
+			views.setRemoteAdapter(R.id.grid_view, intentService);
+			appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.grid_view);
 		}
 
 		appWidgetManager.updateAppWidget(appWidgetId, views);
