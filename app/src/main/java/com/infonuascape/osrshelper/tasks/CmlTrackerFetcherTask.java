@@ -39,20 +39,36 @@ public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
             playerSkills = new TrackerFetcher(context.get(), account.username, time).getPlayerSkills();
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
-                listener.onTrackingError(context.get().getString(R.string.not_existing_player));
+                if(context.get() != null) {
+                    listener.onTrackingError(context.get().getString(R.string.not_existing_player));
+                } else {
+                    listener.onTrackingError("Error");
+                }
             }
         } catch (PlayerNotTrackedException e) {
             if(listener != null) {
-                listener.onTrackingError(context.get().getString(R.string.not_tracked_player));
+                if(context.get() != null) {
+                    listener.onTrackingError(context.get().getString(R.string.not_tracked_player));
+                } else {
+                    listener.onTrackingError("Error");
+                }
             }
         } catch (APIError e) {
             if(listener != null) {
-                listener.onTrackingError(e.getMessage());
+                if(context.get() != null) {
+                    listener.onTrackingError(e.getMessage());
+                } else {
+                    listener.onTrackingError("Error");
+                }
             }
         } catch (Exception uhe) {
             uhe.printStackTrace();
             if(listener != null) {
-                listener.onTrackingError(uhe.getMessage());
+                if(context.get() != null) {
+                    listener.onTrackingError(uhe.getMessage());
+                } else {
+                    listener.onTrackingError("Error");
+                }
             }
         }
         return null;

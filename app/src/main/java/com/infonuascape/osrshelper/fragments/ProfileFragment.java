@@ -191,10 +191,12 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
 
     @Override
     public void onHiscoresFetched(PlayerSkills playerSkills) {
-        account.combatLvl = Utils.getCombatLvl(playerSkills);
-        DBController.setCombatLvlForAccount(getActivity(), account);
-        if(getView() != null) {
-            profileHeaderFragment.showCombatLvl(account.combatLvl);
+        if(playerSkills != null) {
+            account.combatLvl = Utils.getCombatLvl(playerSkills);
+            DBController.setCombatLvlForAccount(getActivity(), account);
+            if (getView() != null) {
+                profileHeaderFragment.showCombatLvl(account.combatLvl);
+            }
         }
     }
 

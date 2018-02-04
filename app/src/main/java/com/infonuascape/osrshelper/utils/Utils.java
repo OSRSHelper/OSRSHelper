@@ -33,6 +33,10 @@ public class Utils {
 	}
 
 	public static final int getCombatLvl(final PlayerSkills skills){
+		if(skills == null) {
+			return 0;
+		}
+
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
 		
 		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());

@@ -88,10 +88,10 @@ public class TrackerFetcher {
 
 			for (Skill s : skillList) {
 				if (s.getSkillType().equals(skill)) {
-					s.setExperienceDiff(skillJson.getInt("ExperienceDiff"));
-					s.setRankDiff(skillJson.getInt("RankDiff"));
+					s.setExperienceDiff(skillJson.getLong("ExperienceDiff"));
+					s.setRankDiff(skillJson.getLong("RankDiff"));
 					s.setExperience(skillJson.getLong("Experience"));
-					s.setExperienceDiff(skillJson.getInt("ExperienceDiff"));
+					s.setExperienceDiff(skillJson.getLong("ExperienceDiff"));
 					s.setEHP(skillJson.getDouble("EHP"));
 				}
 			}

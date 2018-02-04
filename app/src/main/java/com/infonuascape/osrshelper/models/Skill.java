@@ -6,11 +6,11 @@ import com.infonuascape.osrshelper.enums.SkillType;
 public class Skill {
 	private SkillType skillType;
 	private long experience = 0;
-	private int experienceDiff = 0;
+	private long experienceDiff = 0;
 	private short level = 0;
     private short virtualLevel = 0;
-	private int rank = 0;
-	private int rankDiff = 0;
+	private long rank = 0;
+	private long rankDiff = 0;
 	private double EHP = 0.0;
 
 	public Skill(SkillType skillType) {
@@ -23,15 +23,15 @@ public class Skill {
 		this.level = level;
 	}
 
-	public Skill(SkillType skillType, long experience, short level, int rank) {
+	public Skill(SkillType skillType, long experience, short level, long rank) {
 		this.skillType = skillType;
 		this.experience = experience;
 		this.level = level;
 		this.rank = rank;
 	}
 
-	public Skill(SkillType skillType, long experience, int experienceDiff, short level, int rank,
-				 int rankDiff, int EHP) {
+	public Skill(SkillType skillType, long experience, long experienceDiff, short level, long rank,
+				 long rankDiff, double EHP) {
 		this.skillType = skillType;
 		this.experience = experience;
 		this.experienceDiff = experienceDiff;
@@ -42,19 +42,19 @@ public class Skill {
 	}
 
 
-    public int getExperienceDiff() {
+    public long getExperienceDiff() {
         return experienceDiff;
     }
 
-    public void setExperienceDiff(int experienceDiff) {
+    public void setExperienceDiff(long experienceDiff) {
         this.experienceDiff = experienceDiff;
     }
 
-    public int getRankDiff() {
+    public long getRankDiff() {
         return rankDiff;
     }
 
-    public void setRankDiff(int rankDiff) {
+    public void setRankDiff(long rankDiff) {
         this.rankDiff = rankDiff;
     }
 
@@ -86,7 +86,7 @@ public class Skill {
 		return experience;
 	}
 
-	public void setExperience(Long experience) {
+	public void setExperience(long experience) {
 		this.experience = experience;
 		this.calculateLevel();
 	}
@@ -99,11 +99,11 @@ public class Skill {
         this.virtualLevel = virtualLevel;
     }
 
-    public int getRank() {
+    public long getRank() {
 		return rank;
 	}
 
-	public void setRank(int rank) {
+	public void setRank(long rank) {
 		this.rank = rank;
 	}
 

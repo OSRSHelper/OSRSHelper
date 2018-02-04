@@ -44,7 +44,7 @@ public class CmlTrackerTableAdapter {
         ((TextView) view.findViewById(R.id.cml_table_item_lvl)).setText(String.valueOf(isShowVirtualLevels ? s.getVirtualLevel() : s.getLevel()));
         ((TextView) view.findViewById(R.id.cml_table_item_ehp)).setText(NumberFormat.getInstance().format(s.getEHP()));
 
-        int expDiff = s.getExperienceDiff();
+        long expDiff = s.getExperienceDiff();
         int textColorResId;
         String text;
         if (expDiff == 0) {
@@ -53,14 +53,14 @@ public class CmlTrackerTableAdapter {
             textColorResId = R.color.green;
         }
         ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setTextColor(context.getResources().getColor(textColorResId));
-        ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setText(context.getString(R.string.gain_small, NumberFormat.getInstance().format(expDiff)));
+        ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setText(NumberFormat.getInstance().format(expDiff));
 
 
-        int rankDiff = s.getRankDiff();
+        long rankDiff = s.getRankDiff();
 
         if (rankDiff == 0) {
             textColorResId = R.color.dark_gray;
-            text = context.getString(R.string.gain_small, rankDiff);
+            text = context.getString(R.string.gain_small, NumberFormat.getInstance().format(rankDiff));
         } else {
 
             //set appropriate gain color
@@ -73,7 +73,7 @@ public class CmlTrackerTableAdapter {
 
             //ranks "lost" AKA progress were made
             if (rankDiff > 0 && rankDiff < 1000) {
-                text = context.getString(R.string.gain_small, rankDiff);
+                text = context.getString(R.string.gain_small, NumberFormat.getInstance().format(rankDiff));
             } else if (rankDiff >= 1000 && rankDiff < 10000) {
                 text = context.getString(R.string.gain_medium, rankDiff / 1000.0f);
             } else if (rankDiff > 10000) {
