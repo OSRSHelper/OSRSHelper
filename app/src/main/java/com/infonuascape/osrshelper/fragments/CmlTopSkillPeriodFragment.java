@@ -1,7 +1,9 @@
 package com.infonuascape.osrshelper.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,15 +55,16 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
         recyclerView = view.findViewById(R.id.cml_top_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
-        skillType = (SkillType) getArguments().getSerializable(ARG_SKILL);
-        period = (TrackerTime) getArguments().getSerializable(ARG_POSITION);
-
         return view;
     }
 
     @Override
     public void onPageVisible() {
+        if(skillType == null) {
+            skillType = (SkillType) getArguments().getSerializable(ARG_SKILL);
+            period = (TrackerTime) getArguments().getSerializable(ARG_POSITION);
+        }
+        Log.i(TAG, "onPageVisible: period=" + period.name());
         if(playerExp == null) {
             if(asyncTask== null) {
                 asyncTask = new CmlTopFetcherTask(getContext(), this, skillType, period);

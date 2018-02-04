@@ -1,9 +1,11 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,6 +23,8 @@ import com.infonuascape.osrshelper.tasks.CmlTrackerUpdateTask;
 import com.infonuascape.osrshelper.utils.Utils;
 
 public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListener, TrackerUpdateListener, ViewPager.OnPageChangeListener {
+	private static final String TAG = "CmlXPTrackerFragment";
+
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private final static String EXTRA_TRACKER_TIME = "EXTRA_TRACKER_TIME";
 	private Account account;
@@ -78,7 +82,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 		if(defaultTime != null) {
 			viewPager.setCurrentItem(defaultTime.ordinal(), true);
 		} else {
-			viewPager.setCurrentItem(0);
+			adapter.getItem(0).onPageVisible();
 		}
 
 		return view;

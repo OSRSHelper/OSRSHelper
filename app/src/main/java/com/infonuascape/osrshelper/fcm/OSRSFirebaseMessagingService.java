@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.infonuascape.osrshelper.controllers.NotificationController;
 
 /**
  * Created by marc_ on 2018-02-03.
@@ -20,7 +21,14 @@ public class OSRSFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            try {
+                final String title = remoteMessage.getData().get("title");
+                final String description = remoteMessage.getData().get("description");
 
+                NotificationController.showOSRSNews(this, title, description);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
 
         if (remoteMessage.getNotification() != null) {

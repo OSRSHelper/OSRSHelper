@@ -46,25 +46,34 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 
 		View view = inflater.inflate(R.layout.cml_xp_tracker_period, null);
 
-		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
-		time = (TrackerTime) getArguments().getSerializable(EXTRA_TRACKER_TIME);
-
 		progressBar = view.findViewById(R.id.progressbar);
 
 		tableLayout = view.findViewById(R.id.table_tracking);
 		tableFiller = new CmlTrackerTableAdapter(getContext(), tableLayout);
-
-		if(time == TrackerTime.Day) {
-			//First tab
-			onPageVisible();
-		}
 
 		return view;
 	}
 
 	@Override
 	public void onPageVisible() {
-		createAsyncTaskToPopulate();
+		if(time == null) {
+			account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
+			time = (TrackerTime) getArguments().getSerializable(EXTRA_TRACKER_TIME);
+		}
+		if(forceRepopulate || playerSkills == null) {
+			if(time != null) {
+				forceRepopulate = false;
+				if(getView() != null) {
+					tableLayout.removeAllViews();
+					progressBar.setVisibility(View.VISIBLE);
+				}
+				killAsyncTaskIfStillRunning();
+				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time);
+				asyncTask.execute();
+			}
+		} else {
+			populateTable();
+		}
 	}
 
 	public void onForceRepopulate() {
@@ -83,21 +92,6 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 		if (getView() != null) {
 			progressBar.setVisibility(View.GONE);
 			tableFiller.fill(playerSkills);
-		}
-	}
-
-	private void createAsyncTaskToPopulate() {
-		if(forceRepopulate || playerSkills == null) {
-			if(time != null) {
-				forceRepopulate = false;
-				tableLayout.removeAllViews();
-				progressBar.setVisibility(View.VISIBLE);
-				killAsyncTaskIfStillRunning();
-				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time);
-				asyncTask.execute();
-			}
-		} else {
-			populateTable();
 		}
 	}
 

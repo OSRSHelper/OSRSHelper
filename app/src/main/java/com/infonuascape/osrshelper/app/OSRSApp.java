@@ -1,10 +1,12 @@
 package com.infonuascape.osrshelper.app;
 
 import android.app.Application;
+import android.app.NotificationManager;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.infonuascape.osrshelper.BuildConfig;
+import com.infonuascape.osrshelper.controllers.NotificationController;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
@@ -23,5 +25,7 @@ public class OSRSApp extends Application {
         Fabric.with(this, new Crashlytics.Builder().core(
                 new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .answers(new Answers()).build());
+
+        NotificationController.initNotificationChannels(this);
     }
 }

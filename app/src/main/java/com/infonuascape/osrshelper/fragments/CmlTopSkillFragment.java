@@ -20,6 +20,7 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
 
     private SkillType skillType;
     private CmlTopSkillFragmentAdapter adapter;
+    private ViewPager viewPager;
 
     public static CmlTopSkillFragment newInstance(SkillType skillType) {
         CmlTopSkillFragment fragment = new CmlTopSkillFragment();
@@ -39,7 +40,7 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
 
         ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.top_players_for_cml, skillType.getSkillName()));
 
-        ViewPager viewPager = view.findViewById(R.id.viewpager);
+        viewPager = view.findViewById(R.id.viewpager);
         adapter = new CmlTopSkillFragmentAdapter(getChildFragmentManager(), getContext(), skillType);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
@@ -48,9 +49,13 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
         tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         tabLayout.setupWithViewPager(viewPager);
 
-        adapter.getItem(viewPager.getCurrentItem()).onPageVisible();
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adapter.getItem(viewPager.getCurrentItem()).onPageVisible();
     }
 
     @Override
