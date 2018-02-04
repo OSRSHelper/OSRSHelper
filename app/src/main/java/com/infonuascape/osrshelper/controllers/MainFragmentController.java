@@ -13,6 +13,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.fragments.NewsFeedFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
+import com.infonuascape.osrshelper.utils.Utils;
 
 /**
  * Created by marc_ on 2018-01-21.
@@ -42,6 +43,7 @@ public class MainFragmentController {
 
     public void showRootFragment(final int menuId, final OSRSFragment fragment) {
         Log.i(TAG, "showRootFragment:");
+        Utils.hideKeyboard(mainActivity);
         for (int i = 0; i < navigationView.getMenu().size(); i++) {
             MenuItem menuItem = navigationView.getMenu().getItem(i);
             menuItem.setChecked(menuItem.getItemId() == menuId);
@@ -57,6 +59,7 @@ public class MainFragmentController {
 
     public void showFragment(final OSRSFragment fragment) {
         Log.i(TAG, "showFragment:");
+        Utils.hideKeyboard(mainActivity);
         if(fragment != null && !isAlreadyInBackStack(fragment)) {
             Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();

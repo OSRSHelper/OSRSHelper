@@ -23,7 +23,7 @@ import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
 
-public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener, View.OnFocusChangeListener {
+public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
 	private GrandExchangeSearchAdapter adapter;
 	private SearchView searchView;
 	private String searchText;
@@ -50,8 +50,6 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 		searchView.setOnQueryTextListener(this);
 		searchView.setIconifiedByDefault(false);
 		searchView.setQueryHint(getResources().getString(R.string.grand_exchange_lookup_hint));
-		searchView.setOnQueryTextFocusChangeListener(this);
-		searchView.requestFocus();
 
 		list = view.findViewById(android.R.id.list);
 		list.setOnItemClickListener(this);
@@ -83,7 +81,6 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Utils.hideKeyboard(getActivity());
 		final Item item = adapter.getItem(position);
 		MainFragmentController.getInstance().showFragment(GrandExchangeDetailFragment.newInstance(item.id));
 	}
@@ -126,12 +123,5 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 		asyncTask = new SearchGEResultsTask(getContext(), this, searchText);
 		asyncTask.execute();
 		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void onFocusChange(View view, boolean hasFocus) {
-		if(hasFocus) {
-			Utils.showKeyboard(getContext());
-		}
 	}
 }
