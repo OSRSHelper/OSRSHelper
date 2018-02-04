@@ -71,7 +71,7 @@ public class RSView extends RelativeLayout {
         populateView(playerSkills, listener);
 
         usernameTextView.setText(username);
-        combatLvlTextView.setText(getResources().getString(R.string.combat_lvl, Utils.getCombatLvl(playerSkills)));
+        combatLvlTextView.setText(getResources().getString(R.string.combat_lvl_for_share, Utils.getCombatLvl(playerSkills)));
         headerLayout.setVisibility(View.VISIBLE);
     }
 

@@ -13,6 +13,7 @@ import com.infonuascape.osrshelper.models.grandexchange.Item;
 import java.util.ArrayList;
 
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ACCOUNT_TYPE;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_COMBAT_LVL;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ID;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_FOLLOWING;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_MEMBERS;
@@ -28,7 +29,7 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
 
 public class DBController {
 	private static final String TAG = "DBController";
-	private static final String[] ACCOUNTS_PROJECTION = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE};
+	private static final String[] ACCOUNTS_PROJECTION = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE, COLUMN_COMBAT_LVL};
 	private static final String[] GRAND_EXCHANGE_PROJECTION = new String[]{COLUMN_ID, COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_DESCRIPTION, COLUMN_ITEM_IMAGE, COLUMN_IS_MEMBERS, COLUMN_IS_STARRED, COLUMN_WIDGET_ID};
 
 	public static void addOrUpdateAccount(final Context context, final Account account) {
@@ -109,6 +110,12 @@ public class DBController {
 		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
 	}
 
+	public static void setCombatLvlForAccount(final Context context, final Account account) {
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_COMBAT_LVL, account.combatLvl);
+		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+	}
+
 	public static Account getProfileAccount(final Context context) {
 		Account account = null;
 		final String[] projection = ACCOUNTS_PROJECTION;
@@ -159,7 +166,8 @@ public class DBController {
 		final long lastTimeUsed = cursor.getInt(cursor.getColumnIndex(COLUMN_TIME_USED));
 		final boolean isProfile = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_PROFILE)) == 1;
 		final boolean isFollowing = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_FOLLOWING)) == 1;
-		return new Account(id, username, AccountType.valueOf(accountType), lastTimeUsed, isProfile, isFollowing);
+		final int combatLvl = cursor.getInt(cursor.getColumnIndex(COLUMN_COMBAT_LVL));
+		return new Account(id, username, AccountType.valueOf(accountType), lastTimeUsed, isProfile, isFollowing, combatLvl);
 	}
 
 	public static ArrayList<Account> getAllAccounts(final Context context) {

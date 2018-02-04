@@ -2,8 +2,8 @@ package com.infonuascape.osrshelper.fetchers.top;
 
 import android.content.Context;
 
-import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
 import com.infonuascape.osrshelper.utils.API;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
@@ -24,10 +24,9 @@ public class TopFetcher {
 	final String API_URL = "https://crystalmathlabs.com/tracker/API.php?type=currenttop";
 	private Context context;
 	private SkillType skill;
-	private Period period = Period.Day;
-    private List<PlayerExp> playerList;
+	private TrackerTime period;
 
-	public TopFetcher(Context context, SkillType skill, Period period) throws ParserErrorException, APIError {
+	public TopFetcher(Context context, SkillType skill, TrackerTime period) throws ParserErrorException, APIError {
 		this.context = context;
 		this.skill = skill;
 		this.period = period;
@@ -42,11 +41,6 @@ public class TopFetcher {
 			JSONObject userEntry = top.getJSONObject(i);
 
 			playerList.add(new PlayerExp(userEntry.getString("username"), userEntry.getLong("ExperienceDiff")));
-		}
-
-		for (PlayerExp p : playerList) {
-			System.out.println("foobar");
-			System.out.println("foobar");
 		}
 
 		return playerList;

@@ -31,7 +31,8 @@
     <string name="load">Load</string>
     <string name="loading">Loading</string>
     <string name="loading_ge_details">Loading Details</string>
-    <string name="combat_lvl">Combat lvl: %1$d</string>
+    <string name="combat_lvl_for_share">Combat lvl: %1$d</string>
+    <string name="combat_lvl">(level-%1$d)</string>
     <string name="not_existing_player">Failed to load account</string>
     <string name="not_tracked_player">Account is not tracked yet. Press update to track them from now on.</string>
     <string name="showing_results">Showing hiscores for: %1$s</string>
@@ -153,5 +154,6 @@
     <string name="date">Date</string>
     <string name="price">Price</string>
     <string name="error">Error</string>
+    <string name="ehp">EHP</string>
 
 </resources>

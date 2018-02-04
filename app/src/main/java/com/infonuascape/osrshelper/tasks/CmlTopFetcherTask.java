@@ -3,8 +3,8 @@ package com.infonuascape.osrshelper.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TopPlayersListener;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
 import com.infonuascape.osrshelper.fetchers.top.TopFetcher;
@@ -26,10 +26,10 @@ public class CmlTopFetcherTask extends AsyncTask<Void, Void, Void> {
     private WeakReference<Context> context;
     private WeakReference<TopPlayersListener> listener;
     private SkillType skillType;
-    private Period period;
+    private TrackerTime period;
     private List<PlayerExp> playerExps;
 
-    public CmlTopFetcherTask(final Context context, final TopPlayersListener listener, final SkillType skillType, final Period period) {
+    public CmlTopFetcherTask(final Context context, final TopPlayersListener listener, final SkillType skillType, final TrackerTime period) {
         this.context = new WeakReference<>(context);
         this.listener = new WeakReference<>(listener);
         this.skillType = skillType;

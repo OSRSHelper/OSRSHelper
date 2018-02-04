@@ -31,17 +31,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/cml_table_item_xp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:textColor="@color/text_normal"
-        android:text="@string/xp"/>
-
-    <TextView
         android:id="@+id/cml_table_item_diff_xp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -62,4 +51,15 @@
         android:gravity="center"
         android:textColor="@color/text_normal"
         android:text="@string/rank_diff"/>
+
+    <TextView
+        android:id="@+id/cml_table_item_ehp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textColor="@color/text_normal"
+        android:text="@string/xp"/>
 </TableRow>

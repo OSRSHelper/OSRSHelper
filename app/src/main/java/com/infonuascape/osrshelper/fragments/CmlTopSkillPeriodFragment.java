@@ -12,8 +12,8 @@ import android.widget.ProgressBar;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlTopSkillPeriodAdapter;
-import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TopPlayersListener;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
 import com.infonuascape.osrshelper.tasks.CmlTopFetcherTask;
@@ -25,7 +25,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
 
     public static final String ARG_SKILL = "ARG_SKILL";
     public static final String ARG_POSITION = "ARG_POSITION";
-    private Period period;
+    private TrackerTime period;
     private SkillType skillType;
     private List<PlayerExp> playerExp;
     private ProgressBar progressBar;
@@ -33,7 +33,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
     private RecyclerView recyclerView;
     private CmlTopSkillPeriodAdapter adapter;
 
-    public static CmlTopSkillPeriodFragment newInstance(SkillType skillType, Period period) {
+    public static CmlTopSkillPeriodFragment newInstance(SkillType skillType, TrackerTime period) {
         Log.i(TAG, "newInstance");
         CmlTopSkillPeriodFragment fragment = new CmlTopSkillPeriodFragment();
         Bundle args = new Bundle();
@@ -55,12 +55,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
         recyclerView.setLayoutManager(layoutManager);
 
         skillType = (SkillType) getArguments().getSerializable(ARG_SKILL);
-        period = (Period) getArguments().getSerializable(ARG_POSITION);
-
-        if(period == Period.Day) {
-            //First tab
-            onPageVisible();
-        }
+        period = (TrackerTime) getArguments().getSerializable(ARG_POSITION);
 
         return view;
     }
@@ -78,7 +73,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
         } else {
             if(recyclerView.getAdapter() == null) {
                 if(adapter == null) {
-                    adapter = new CmlTopSkillPeriodAdapter(this, playerExp);
+                    adapter = new CmlTopSkillPeriodAdapter(this, playerExp, period);
                 }
                 recyclerView.setAdapter(adapter);
             }
@@ -94,7 +89,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
             progressBar.setVisibility(View.GONE);
 
             if (playerList != null) {
-                adapter = new CmlTopSkillPeriodAdapter(this, playerList);
+                adapter = new CmlTopSkillPeriodAdapter(this, playerList, period);
                 recyclerView.setAdapter(adapter);
             }
         }

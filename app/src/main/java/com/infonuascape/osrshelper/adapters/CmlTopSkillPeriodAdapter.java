@@ -12,6 +12,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.fragments.CmlXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
@@ -32,10 +33,12 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
 
     private OSRSFragment fragment;
     private List<PlayerExp> playerExps;
+    private TrackerTime period;
 
-    public CmlTopSkillPeriodAdapter(final OSRSFragment fragment, final List<PlayerExp> playerExps) {
+    public CmlTopSkillPeriodAdapter(final OSRSFragment fragment, final List<PlayerExp> playerExps, final TrackerTime period) {
         this.fragment = fragment;
         this.playerExps = playerExps;
+        this.period = period;
     }
 
     @Override
@@ -107,7 +110,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
             itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MainFragmentController.getInstance().showFragment(CmlXPTrackerFragment.newInstance(getAccount(getAdapterPosition())));
+                    MainFragmentController.getInstance().showFragment(CmlXPTrackerFragment.newInstance(getAccount(getAdapterPosition()), period));
                 }
             });
 

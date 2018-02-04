@@ -6,10 +6,4 @@
         android:orderInCategory="100"
         android:title="@string/show_virtual_levels"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_subscribe_news"
-        android:orderInCategory="200"
-        android:title="@string/subscribe_news"
-        app:showAsAction="never" />
 </menu>

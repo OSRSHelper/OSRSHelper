@@ -4,10 +4,9 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.enums.Period;
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.fragments.CmlTopSkillPeriodFragment;
-import com.infonuascape.osrshelper.fragments.OSRSFragment;
 import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
 
 public class CmlTopSkillFragmentAdapter extends OSRSNestedViewPagerAdapter {
@@ -20,12 +19,12 @@ public class CmlTopSkillFragmentAdapter extends OSRSNestedViewPagerAdapter {
 
     @Override
     public int getCount() {
-        return Period.values().length;
+        return TrackerTime.values().length -1;
     }
 
     @Override
     public OSRSPagerFragment createFragment(int position) {
-        return CmlTopSkillPeriodFragment.newInstance(skillType, Period.values()[position]);
+        return CmlTopSkillPeriodFragment.newInstance(skillType, TrackerTime.values()[position]);
     }
 
     @Override

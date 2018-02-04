@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:overScrollMode="never"
         android:scrollbars="none"
         android:visibility="visible" >
@@ -24,44 +25,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="5dp">
-
-                <TextView
-                    android:id="@+id/combat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/loading"
-                    android:textColor="@color/text_normal"
-                    android:textSize="18sp"
-                    android:textStyle="bold"/>
-
-                <ImageView
-                    android:id="@+id/share_btn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/gen_white_bt_sel"
-                    android:src="@drawable/ic_menu_share"
-                    android:gravity="center"
-                    android:tint="@color/text_normal"
-                    android:padding="8dp"
-                    android:visibility="invisible"
-                    tools:visibility="visible"/>
-
-            </LinearLayout>
 
             <com.infonuascape.osrshelper.views.RSView
                 android:id="@+id/rs_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/share_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:background="@drawable/btn_white_sel"
+                android:drawableRight="@drawable/ic_menu_share"
+                android:drawableTint="@color/text_normal"
+                android:text="@string/share_hiscores"
+                android:gravity="center"
+                android:visibility="invisible"
+                tools:visibility="visible"/>
 
         </LinearLayout>
     </ScrollView>

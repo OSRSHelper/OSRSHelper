@@ -31,16 +31,6 @@
             android:textColor="@color/text_normal"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="@string/xp"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/text_normal"
-            android:textStyle="bold"
-            android:textSize="16sp"
             android:text="@string/xp_gain"/>
 
         <TextView
@@ -52,6 +42,16 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:text="@string/rank_diff"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/text_normal"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/ehp"/>
     </LinearLayout>
 
     <ScrollView

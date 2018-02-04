@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.NewsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
+import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.listeners.NewsFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.OSRSNews;
@@ -25,7 +27,7 @@ import java.util.List;
  * Fragment that shows only the news from OSRS website
  */
 
-public class NewsFragment extends OSRSFragment implements NewsFetcherListener, RecyclerItemClickListener {
+public class NewsFragment extends OSRSFragment implements NewsFetcherListener, RecyclerItemClickListener, View.OnClickListener {
     private static final String TAG = "NewsFragment";
     private RecyclerView recyclerView;
     private NewsAdapter newsAdapter;
@@ -33,6 +35,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     private ProgressBar progressBar;
     private LinearLayoutManager linearLayoutManager;
     private List<OSRSNews> news;
+    private TextView subscribeBtn;
 
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
@@ -54,7 +57,22 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
         progressBar = view.findViewById(R.id.progress_bar);
         emptyText = view.findViewById(R.id.empty_view);
 
+        subscribeBtn = view.findViewById(R.id.subscribe_btn);
+        subscribeBtn.setOnClickListener(this);
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshSubscribeBtn();
+    }
+
+    private void refreshSubscribeBtn() {
+        final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
+        subscribeBtn.setText(isSubscribedToNews ? R.string.unsubscribe_news: R.string.subscribe_news);
+        subscribeBtn.setSelected(isSubscribedToNews);
     }
 
     @Override
@@ -119,5 +137,19 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     @Override
     public void onItemLongClicked(int position) {
         //Listener not set
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.subscribe_btn) {
+            final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
+            PreferencesController.setPreference(getContext(), PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, !isSubscribedToNews);
+            if (isSubscribedToNews) {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+            } else {
+                FirebaseMessaging.getInstance().subscribeToTopic("news");
+            }
+            refreshSubscribeBtn();
+        }
     }
 }

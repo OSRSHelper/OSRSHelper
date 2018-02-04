@@ -47,7 +47,7 @@
             android:layout_below="@id/username_rs_view"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:text="@string/combat_lvl"
+            android:text="@string/combat_lvl_for_share"
             android:textColor="@color/white"
             android:textSize="13sp"/>
 

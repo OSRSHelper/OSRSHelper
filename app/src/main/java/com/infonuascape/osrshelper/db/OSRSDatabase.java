@@ -21,6 +21,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 	public static final String COLUMN_TIME_USED = "lastused";
 	public static final String COLUMN_IS_PROFILE = "is_profile";
 	public static final String COLUMN_IS_FOLLOWING = "is_following";
+	public static final String COLUMN_COMBAT_LVL = "combat_lvl";
 
 
 	public static final String COLUMN_WIDGET_ID = "widgetid";
@@ -34,12 +35,13 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 	public static final String COLUMN_PRICE_WANTED = "price_wanted";
 
 	private static final String DATABASE_NAME = "osrshelper.db";
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 8;
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE_USERNAMES = "CREATE TABLE " + TABLE_USERNAMES + "("
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERNAME + " TEXT, "
-			+ COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_TIME_USED + " INTEGER, " + COLUMN_IS_PROFILE + " INTEGER DEFAULT 0, " + COLUMN_IS_FOLLOWING + " INTEGER DEFAULT 0);";
+			+ COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_TIME_USED + " INTEGER, " + COLUMN_COMBAT_LVL
+			+ " INTEGER, " + COLUMN_IS_PROFILE + " INTEGER DEFAULT 0, " + COLUMN_IS_FOLLOWING + " INTEGER DEFAULT 0);";
 
 	private static final String DATABASE_CREATE_WIDGET = "CREATE TABLE " + TABLE_WIDGET + "("
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_WIDGET_ID + " TEXT, "
@@ -91,6 +93,10 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 		if(oldVersion < 7) {
 			db.execSQL(DATABASE_CREATE_GRAND_EXCHANGE);
+		}
+
+		if(oldVersion < 8) {
+			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_COMBAT_LVL + " INTEGER");
 		}
 	}
 

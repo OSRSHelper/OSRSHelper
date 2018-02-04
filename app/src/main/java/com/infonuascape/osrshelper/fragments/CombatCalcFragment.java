@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -22,7 +23,6 @@ import com.infonuascape.osrshelper.utils.Utils;
 public class CombatCalcFragment extends OSRSFragment implements TextWatcher, HiscoresFetcherListener {
 	private static final String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 
-	private TextView combatText;
 	private TextView lvlNeededText;
 	private TextView attStrText;
 	private TextView hpDefText;
@@ -61,7 +61,6 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 		profileHeaderFragment.refreshProfile(account);
 		profileHeaderFragment.setTitle(R.string.combat_lvl_calculator);
 
-		combatText = view.findViewById(R.id.combat_lvl);
 		lvlNeededText = view.findViewById(R.id.number_lvl_needed);
 		attStrText = view.findViewById(R.id.attack_strength_needed);
 		hpDefText = view.findViewById(R.id.hitpoint_defence_needed);
@@ -119,7 +118,7 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 			playerSkills.magic = magic.isEmpty() ? new Skill(SkillType.Magic, 0, (short) 0) : new Skill(SkillType.Magic, 0, Short.valueOf(magic));
 
 			boolean isOneShown = false;
-			combatText.setText(getString(R.string.combat_lvl, Utils.getCombatLvl(playerSkills)));
+			profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
 
 			int missingAttStr = Utils.getMissingAttackStrengthUntilNextCombatLvl(playerSkills);
 			if (playerSkills.attack.getLevel() + playerSkills.strength.getLevel() + missingAttStr < 199) {
@@ -178,6 +177,8 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 	@Override
 	public void onHiscoresFetched(PlayerSkills playerSkills) {
 		if (playerSkills != null && getView() != null) {
+			account.combatLvl = Utils.getCombatLvl(playerSkills);
+			DBController.setCombatLvlForAccount(getContext(), account);
 			hitpointEdit.setText(String.valueOf(playerSkills.hitpoints.getLevel()));
 			attackEdit.setText(String.valueOf(playerSkills.attack.getLevel()));
 			strengthEdit.setText(String.valueOf(playerSkills.strength.getLevel()));
@@ -191,19 +192,9 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 
 	@Override
 	public void onHiscoresError(String errorMessage) {
-		changeHint(errorMessage);
+
 	}
 
-	private void changeHint(final String text) {
-		if(getActivity() != null) {
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					combatText.setText(text);
-				}
-			});
-		}
-	}
 
 	@Override
 	public void afterTextChanged(Editable arg0) {

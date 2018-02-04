@@ -12,24 +12,37 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlXpTrackerFragmentAdapter;
+import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CmlTrackerUpdateTask;
+import com.infonuascape.osrshelper.utils.Utils;
 
 public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListener, TrackerUpdateListener, ViewPager.OnPageChangeListener {
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
+	private final static String EXTRA_TRACKER_TIME = "EXTRA_TRACKER_TIME";
 	private Account account;
-	private PlayerSkills playerSkills;
 	private TextView title;
 	private TextView description;
 	private CmlXpTrackerFragmentAdapter adapter;
 	private ViewPager viewPager;
+	private ProfileHeaderFragment profileHeaderFragment;
 
 	public static CmlXPTrackerFragment newInstance(final Account account) {
 		CmlXPTrackerFragment fragment = new CmlXPTrackerFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(EXTRA_ACCOUNT, account);
+		fragment.setArguments(b);
+		return fragment;
+	}
+
+	public static CmlXPTrackerFragment newInstance(final Account account, final TrackerTime trackerTime) {
+		CmlXPTrackerFragment fragment = new CmlXPTrackerFragment();
+		Bundle b = new Bundle();
+		b.putSerializable(EXTRA_ACCOUNT, account);
+		b.putSerializable(EXTRA_TRACKER_TIME, trackerTime);
 		fragment.setArguments(b);
 		return fragment;
 	}
@@ -43,7 +56,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 
-		ProfileHeaderFragment profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
+		profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
 		profileHeaderFragment.refreshProfile(account);
 		profileHeaderFragment.setTitle(R.string.cml_xptracker);
 
@@ -61,7 +74,12 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 		view.findViewById(R.id.update).setOnClickListener(this);
 
-		updateAccount();
+		TrackerTime defaultTime = (TrackerTime) getArguments().getSerializable(EXTRA_TRACKER_TIME);
+		if(defaultTime != null) {
+			viewPager.setCurrentItem(defaultTime.ordinal(), true);
+		} else {
+			viewPager.setCurrentItem(0);
+		}
 
 		return view;
 	}
@@ -89,10 +107,11 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	}
 
 	public void onTrackingFetched(final PlayerSkills playerSkills) {
-		this.playerSkills = playerSkills;
-
 		if (playerSkills != null) {
+			account.combatLvl = Utils.getCombatLvl(playerSkills);
+			DBController.setCombatLvlForAccount(getContext(), account);
 			if (getView() != null) {
+				profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
 				description.setVisibility(View.VISIBLE);
 				if (playerSkills.sinceWhen != null) {
 					title.setText(R.string.tracking_since);

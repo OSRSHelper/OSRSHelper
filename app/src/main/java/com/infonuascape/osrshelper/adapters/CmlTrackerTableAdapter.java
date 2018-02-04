@@ -42,7 +42,7 @@ public class CmlTrackerTableAdapter {
 
         ((ImageView) view.findViewById(R.id.cml_table_item_icon)).setImageResource(s.getDrawableInt());
         ((TextView) view.findViewById(R.id.cml_table_item_lvl)).setText(String.valueOf(isShowVirtualLevels ? s.getVirtualLevel() : s.getLevel()));
-        ((TextView) view.findViewById(R.id.cml_table_item_xp)).setText(NumberFormat.getInstance().format(s.getExperience()));
+        ((TextView) view.findViewById(R.id.cml_table_item_ehp)).setText(NumberFormat.getInstance().format(s.getEHP()));
 
         int expDiff = s.getExperienceDiff();
         int textColorResId;

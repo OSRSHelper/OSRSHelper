@@ -29,4 +29,10 @@
  <color name="red">#800000</color>
  <color name="transparent">#00000000</color>
     <color name="text_light">#808080</color>
+
+ <color name="combat_lvl_lower">#008000</color>
+ <color name="combat_lvl_slightly_lower">#bfdc00</color>
+ <color name="combat_lvl_equal">#e7e700</color>
+ <color name="combat_lvl_slightly_over">#ffa500</color>
+ <color name="combat_lvl_over">#ff0000</color>
 </resources>

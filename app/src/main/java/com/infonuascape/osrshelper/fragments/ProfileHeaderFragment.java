@@ -2,6 +2,7 @@ package com.infonuascape.osrshelper.fragments;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
+import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Utils;
 
@@ -23,11 +25,9 @@ import com.infonuascape.osrshelper.utils.Utils;
 
 public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickListener {
     private static final String TAG = "ProfileHeaderFragment";
-    private static final float QUICK_ACTIONS_HEIGHT = 62f;
 
-    private FrameLayout quickActionsContainer;
-    private boolean isAnimating;
     private Account account;
+    private TextView combatText;
 
     @Nullable
     @Override
@@ -37,8 +37,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         View view = inflater.inflate(R.layout.profile_header, null);
 
         view.findViewById(R.id.profile_header).setOnClickListener(this);
-
-        quickActionsContainer = view.findViewById(R.id.quick_actions_container);
+        combatText = view.findViewById(R.id.account_combat);
 
         return view;
     }
@@ -48,6 +47,9 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         ((TextView) getView().findViewById(R.id.account_username)).setText(account.username);
         ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
         ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
+        if(account.combatLvl != 0) {
+            showCombatLvl(account.combatLvl);
+        }
     }
 
     @Override
@@ -63,5 +65,29 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
     public void setTitle(int textResId) {
         ((TextView) getView().findViewById(R.id.page_name)).setText(textResId);
+    }
+
+    public void showCombatLvl(final int combatLvl) {
+        final Account myProfile = DBController.getProfileAccount(getContext());
+        if(myProfile != null && myProfile.combatLvl != 0) {
+            if(myProfile.combatLvl > combatLvl) {
+                if(myProfile.combatLvl + 10 > combatLvl) {
+                    combatText.setTextColor(getResources().getColor(R.color.combat_lvl_lower));
+                } else {
+                    combatText.setTextColor(getResources().getColor(R.color.combat_lvl_slightly_lower));
+                }
+            } else if(myProfile.combatLvl == combatLvl) {
+                combatText.setTextColor(getResources().getColor(R.color.combat_lvl_equal));
+            } else {
+                if(myProfile.combatLvl - 10 < combatLvl) {
+                    combatText.setTextColor(getResources().getColor(R.color.combat_lvl_over));
+                } else {
+                    combatText.setTextColor(getResources().getColor(R.color.combat_lvl_slightly_over));
+                }
+            }
+        } else {
+            combatText.setTextColor(getResources().getColor(R.color.white));
+        }
+        combatText.setText(getContext().getResources().getString(R.string.combat_lvl, combatLvl));
     }
 }
