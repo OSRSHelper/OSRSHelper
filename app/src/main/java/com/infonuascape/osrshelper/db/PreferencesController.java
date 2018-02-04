@@ -7,6 +7,7 @@ public class PreferencesController {
     private static final String PREF_NAME = "preferencescontroller";
 
     public static final String USER_PREF_SHOW_VIRTUAL_LEVELS = "USER_PREF_SHOW_VIRTUAL_LEVELS";
+    public static final String USER_PREF_IS_SUBSCRIBED_TO_NEWS = "USER_PREF_IS_SUBSCRIBED_TO_NEWS";
     // ADD CONSTANT KEYS HERE
 
     public static void setPreference(final Context context, final String preference, final String value) {

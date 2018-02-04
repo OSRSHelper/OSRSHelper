@@ -22,6 +22,8 @@ import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
@@ -151,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         final boolean isShowVirtualLevels = PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
         menu.getItem(0).setTitle(isShowVirtualLevels ? R.string.hide_virtual_levels : R.string.show_virtual_levels);
 
+        final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
+        menu.getItem(1).setTitle(isSubscribedToNews ? R.string.unsubscribe_news: R.string.subscribe_news);
+
         return true;
     }
 
@@ -164,6 +169,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             OSRSFragment fragment = MainFragmentController.getInstance().getCurrentFragment();
             if(fragment != null) {
                 fragment.refreshDataOnPreferencesChanged();
+            }
+            return true;
+        } else if (id == R.id.action_subscribe_news) {
+            final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
+            PreferencesController.setPreference(this, PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, !isSubscribedToNews);
+            if(isSubscribedToNews) {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+            } else {
+                FirebaseMessaging.getInstance().subscribeToTopic("news");
             }
             return true;
         }
