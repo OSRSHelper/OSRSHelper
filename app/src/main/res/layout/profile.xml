@@ -127,4 +127,19 @@
 
     </android.support.v7.widget.CardView>
 
+    <TextView
+        android:id="@+id/profile_gains"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_recent_gains"
+        android:layout_margin="10dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_normal" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/profile_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

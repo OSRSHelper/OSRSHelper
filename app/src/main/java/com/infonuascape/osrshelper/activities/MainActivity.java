@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.activities;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -47,11 +48,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider, View.OnClickListener {
     private static final String TAG = "MainActivity";
     private static final String EXTRA_FRAGMENT_TO_OPEN = "EXTRA_FRAGMENT_TO_OPEN";
+    private static final String EXTRA_FRAGMENT_TO_OPEN_BUNDLE = "EXTRA_FRAGMENT_TO_OPEN_BUNDLE";
 
     public static Intent getGrandExchangeDetailIntent(Context context, String itemId) {
         Intent i = new Intent(context, MainActivity.class);
         i.putExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID, itemId);
         i.putExtra(EXTRA_FRAGMENT_TO_OPEN, GrandExchangeDetailFragment.class.getSimpleName());
+        return i;
+    }
+
+    public static Intent getNewsIntent(Context context, String url) {
+        Intent i = new Intent(context, MainActivity.class);
+        i.putExtra(EXTRA_FRAGMENT_TO_OPEN_BUNDLE, WebViewFragment.getBundle(url, true));
+        i.putExtra(EXTRA_FRAGMENT_TO_OPEN, WebViewFragment.class.getSimpleName());
         return i;
     }
 
@@ -104,8 +113,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void handleIntent(Intent intent) {
         final String fragmentToOpen = intent.getStringExtra(EXTRA_FRAGMENT_TO_OPEN);
         if(fragmentToOpen != null) {
+            final Bundle bundle = intent.getBundleExtra(EXTRA_FRAGMENT_TO_OPEN_BUNDLE);
             if(TextUtils.equals(GrandExchangeDetailFragment.class.getSimpleName(), fragmentToOpen)) {
                 OSRSFragment fragment = GrandExchangeDetailFragment.newInstance(intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID));
+                MainFragmentController.getInstance().showFragment(fragment);
+            } else if(TextUtils.equals(WebViewFragment.class.getSimpleName(), fragmentToOpen)) {
+                OSRSFragment fragment = WebViewFragment.newInstance(bundle);
                 MainFragmentController.getInstance().showFragment(fragment);
             }
 
@@ -121,6 +134,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ((ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
             ((TextView) navigationView.getHeaderView(0).findViewById(R.id.profile_name)).setText(account.username);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancelAll();
     }
 
     @Override

@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -40,7 +37,7 @@ public class CMLTopAdapter extends RecyclerView.Adapter<CMLTopAdapter.CMLTopHold
     @Override
     public void onBindViewHolder(CMLTopHolder holder, int position) {
         Skill skill = skills.get(position);
-        holder.icon.setImageResource(skill.getDrawableInt());
+        holder.icon.setImageResource(skill.getSkillType().getDrawableInt());
     }
 
     @Override

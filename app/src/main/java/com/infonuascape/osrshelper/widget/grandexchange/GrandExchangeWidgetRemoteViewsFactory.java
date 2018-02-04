@@ -3,16 +3,13 @@ package com.infonuascape.osrshelper.widget.grandexchange;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.fetchers.grandexchange.RSBuddyPriceFetcher;
-import com.infonuascape.osrshelper.models.Account;
-import com.infonuascape.osrshelper.models.RSBuddyPrice;
+import com.infonuascape.osrshelper.models.grandexchange.RSBuddyPrice;
 
 import java.text.NumberFormat;
 

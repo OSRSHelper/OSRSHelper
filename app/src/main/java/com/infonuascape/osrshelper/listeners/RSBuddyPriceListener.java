@@ -1,8 +1,6 @@
 package com.infonuascape.osrshelper.listeners;
 
-import com.infonuascape.osrshelper.models.RSBuddyPrice;
-import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
-import com.jjoe64.graphview.series.DataPoint;
+import com.infonuascape.osrshelper.models.grandexchange.RSBuddyPrice;
 
 /**
  * Created by marc_ on 2018-01-14.

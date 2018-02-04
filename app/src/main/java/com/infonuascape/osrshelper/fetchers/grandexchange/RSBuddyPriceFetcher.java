@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
-import com.infonuascape.osrshelper.models.RSBuddyPrice;
+import com.infonuascape.osrshelper.models.grandexchange.RSBuddyPrice;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.utils.http.NetworkStack;

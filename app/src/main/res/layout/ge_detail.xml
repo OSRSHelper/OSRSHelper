@@ -30,20 +30,32 @@
 
         <TextView
             android:id="@+id/item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/item_image"
+            android:layout_toLeftOf="@+id/item_subscribe"
             android:textSize="16sp"
             android:text="@string/loading_ge_details"/>
 
         <TextView
             android:id="@+id/item_desc"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="A powerful axe."
+            android:layout_toLeftOf="@+id/item_subscribe"
             android:layout_below="@id/item_name"
             android:layout_marginRight="15dp"
             android:layout_toRightOf="@id/item_image" />
+
+        <ImageView
+            android:id="@+id/item_subscribe"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
+            android:padding="1dp"
+            android:tint="@color/text_normal"
+            android:src="@drawable/follow_empty"/>
 
     </RelativeLayout>
 

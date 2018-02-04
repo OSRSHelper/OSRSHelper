@@ -5,30 +5,43 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
+import com.infonuascape.osrshelper.adapters.ProfileDeltasAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.listeners.ProfileInfoListener;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.models.players.Delta;
+import com.infonuascape.osrshelper.tasks.ProfileInfoFetcherTask;
 import com.infonuascape.osrshelper.utils.Utils;
+
+import java.util.ArrayList;
 
 /**
  * Created by marc_ on 2018-01-20.
  */
 
-public class ProfileFragment extends OSRSFragment implements View.OnClickListener {
+public class ProfileFragment extends OSRSFragment implements View.OnClickListener, ProfileInfoListener {
     private static final String TAG = "ProfileFragment";
     private static final String EXTRA_USERNAME = "EXTRA_USERNAME";
     private Account account;
     private ProfileHeaderFragment profileHeaderFragment;
+    private ArrayList<Delta> deltas;
+    private ProfileDeltasAdapter adapter;
+    private RecyclerView recyclerView;
 
     public static ProfileFragment newInstance(final String username) {
         ProfileFragment fragment = new ProfileFragment();
@@ -48,6 +61,11 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         view.findViewById(R.id.account_type_edit).setOnClickListener(this);
         view.findViewById(R.id.account_set_profile).setOnClickListener(this);
         view.findViewById(R.id.account_follow_profile).setOnClickListener(this);
+
+        recyclerView = view.findViewById(R.id.profile_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         if(!BuildConfig.DEBUG) {
             view.findViewById(R.id.account_follow_profile).setVisibility(View.GONE);
@@ -88,8 +106,21 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         }
         profileHeaderFragment.setTitle(R.string.profile);
         profileHeaderFragment.refreshProfile(account);
+        loadDeltas();
         if(getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).refreshProfileAccount();
+        }
+    }
+
+    private void loadDeltas() {
+        Log.i(TAG, "loadDeltas");
+        if(deltas == null) {
+            killAsyncTaskIfStillRunning();
+            asyncTask = new ProfileInfoFetcherTask(getContext(), this, account);
+            asyncTask.execute();
+        } else {
+            adapter = new ProfileDeltasAdapter(getContext(), deltas);
+            recyclerView.setAdapter(adapter);
         }
     }
 
@@ -110,6 +141,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         DBController.updateAccount(getContext(), account);
         profileHeaderFragment.refreshProfile(account);
         refreshScreen();
+        Toast.makeText(getContext(), "Coming soon©", Toast.LENGTH_SHORT).show();
     }
 
     private void switchAccountType() {
@@ -141,5 +173,13 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
                         dialogInterface.dismiss();
                     }
                 }).create().show();
+    }
+
+    @Override
+    public void onProfileInfoLoaded(ArrayList<Delta> deltas) {
+        this.deltas = deltas;
+        asyncTask = null;
+        adapter = new ProfileDeltasAdapter(getContext(), deltas);
+        recyclerView.setAdapter(adapter);
     }
 }

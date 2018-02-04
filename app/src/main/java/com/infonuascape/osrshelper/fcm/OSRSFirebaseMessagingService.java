@@ -24,8 +24,9 @@ public class OSRSFirebaseMessagingService extends FirebaseMessagingService {
             try {
                 final String title = remoteMessage.getData().get("title");
                 final String description = remoteMessage.getData().get("description");
+                final String url = remoteMessage.getData().get("url");
 
-                NotificationController.showOSRSNews(this, title, description);
+                NotificationController.showOSRSNews(this, title, description, url);
             } catch(Exception e) {
                 e.printStackTrace();
             }

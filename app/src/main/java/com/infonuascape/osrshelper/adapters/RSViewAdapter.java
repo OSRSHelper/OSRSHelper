@@ -83,7 +83,7 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
         }
 
         if(viewType != VIEW_TYPE_DONT_SHOW_ICON) {
-            holder.icon.setImageResource(skill.getDrawableInt());
+            holder.icon.setImageResource(skill.getSkillType().getDrawableInt());
         }
     }
 

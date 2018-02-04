@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 
 public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private final String TAG = "GrandExchangeWidgetService";
+    private final String TAG = "GrandExchangeWidgetServic";
     private ArrayList<Skill> skills;
     private Context mContext;
     private PlayerSkills playerSkills;
@@ -75,7 +75,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
         rv.setTextViewText(R.id.skill_level, (Utils.isShowVirtualLevels(mContext) ? skill.getVirtualLevel() : skill.getLevel()) + "");
 
         if(skill.getSkillType() != SkillType.Overall){
-            rv.setImageViewResource(R.id.skill_image, skill.getDrawableInt());
+            rv.setImageViewResource(R.id.skill_image, skill.getSkillType().getDrawableInt());
         }
 
         // Return the remote views object.

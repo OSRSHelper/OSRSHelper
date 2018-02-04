@@ -39,7 +39,7 @@ public class NotificationController {
         }
     }
 
-    public static void showOSRSNews(final Context context, final String title, final String description) {
+    public static void showOSRSNews(final Context context, final String title, final String description, final String url) {
         NotificationCompat.Builder builder;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new NotificationCompat.Builder(context, OSRS_HELPER_CHANNEL_ID);
@@ -51,7 +51,7 @@ public class NotificationController {
         builder.setContentText(description);
         builder.setSmallIcon(R.drawable.ic_launcher);
 
-        Intent resultIntent = new Intent(context, MainActivity.class);
+        Intent resultIntent = MainActivity.getNewsIntent(context, url);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
@@ -59,6 +59,6 @@ public class NotificationController {
         builder.setVibrate(new long[]{0,100,50,100});
 
         Notification notification = builder.build();
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(OSRS_NEWS_ID, notification);
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(title.hashCode(), notification);
     }
 }

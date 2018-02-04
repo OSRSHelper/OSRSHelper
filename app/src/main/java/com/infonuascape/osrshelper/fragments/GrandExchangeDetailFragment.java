@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeDetailFragmentAdapter;
 import com.infonuascape.osrshelper.db.DBController;
@@ -20,22 +22,23 @@ import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
 import com.infonuascape.osrshelper.tasks.GEDetailPlotTask;
 import com.jjoe64.graphview.series.DataPoint;
 
-public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPager.OnPageChangeListener, GEDetailListener {
+public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPager.OnPageChangeListener, GEDetailListener, View.OnClickListener {
     private static final String TAG = "GrandExchangeDetailFragment";
     public final static String EXTRA_ITEM_ID = "EXTRA_ITEM_ID";
 
     private ViewPager viewPager;
     private GrandExchangeDetailFragmentAdapter adapter;
+    private ImageView subscribeBtn;
 
     private String itemId;
     private DataPoint[] datapoints;
     private DataPoint[] averages;
     private GEItemInfo itemInfo;
 
-    public static GrandExchangeDetailFragment newInstance(String itemId) {
+    public static GrandExchangeDetailFragment newInstance(final String itemId) {
         GrandExchangeDetailFragment fragment = new GrandExchangeDetailFragment();
         Bundle b = new Bundle();
-        b.putSerializable(EXTRA_ITEM_ID, itemId);
+        b.putString(EXTRA_ITEM_ID, itemId);
         fragment.setArguments(b);
         return fragment;
     }
@@ -56,6 +59,13 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
         TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
         tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         tabLayout.setupWithViewPager(viewPager);
+
+        subscribeBtn = view.findViewById(R.id.item_subscribe);
+        subscribeBtn.setOnClickListener(this);
+
+        if(!BuildConfig.DEBUG) {
+            subscribeBtn.setVisibility(View.GONE);
+        }
 
         return view;
     }
@@ -105,5 +115,13 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
         this.itemInfo = itemInfo;
         refreshItemInfo();
         ((GrandExchangePeriodFragment) adapter.getItem(viewPager.getCurrentItem())).onPageVisible(datapoints, averages);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.item_subscribe) {
+            //Todo: magic
+            Toast.makeText(getContext(), "Coming soon©", Toast.LENGTH_SHORT).show();
+        }
     }
 }

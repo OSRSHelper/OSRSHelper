@@ -1,37 +1,36 @@
 package com.infonuascape.osrshelper.models.players;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.Skill;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerSkills {
-	public Skill overall = new Skill(SkillType.Overall, R.drawable.overall);
-	public Skill attack = new Skill(SkillType.Attack, R.drawable.attack);
-	public Skill defence = new Skill(SkillType.Defence, R.drawable.defence);
-	public Skill strength = new Skill(SkillType.Strength, R.drawable.strength);
-	public Skill hitpoints = new Skill(SkillType.Hitpoints, R.drawable.constitution);
-	public Skill ranged = new Skill(SkillType.Ranged, R.drawable.ranged);
-	public Skill prayer = new Skill(SkillType.Prayer, R.drawable.prayer);
-	public Skill magic = new Skill(SkillType.Magic, R.drawable.magic);
-	public Skill cooking = new Skill(SkillType.Cooking, R.drawable.cooking);
-	public Skill woodcutting = new Skill(SkillType.Woodcutting, R.drawable.woodcutting);
-	public Skill fletching = new Skill(SkillType.Fletching, R.drawable.fletching);
-	public Skill fishing = new Skill(SkillType.Fishing, R.drawable.fishing);
-	public Skill firemaking = new Skill(SkillType.Firemaking, R.drawable.firemaking);
-	public Skill crafting = new Skill(SkillType.Crafting, R.drawable.crafting);
-	public Skill smithing = new Skill(SkillType.Smithing, R.drawable.smithing);
-	public Skill mining = new Skill(SkillType.Mining, R.drawable.mining);
-	public Skill herblore = new Skill(SkillType.Herblore, R.drawable.herblore);
-	public Skill agility = new Skill(SkillType.Agility, R.drawable.agility);
-	public Skill thieving = new Skill(SkillType.Thieving, R.drawable.thieving);
-	public Skill slayer = new Skill(SkillType.Slayer, R.drawable.slayer);
-	public Skill farming = new Skill(SkillType.Farming, R.drawable.farming);
-	public Skill runecraft = new Skill(SkillType.Runecraft, R.drawable.runecrafting);
-	public Skill hunter = new Skill(SkillType.Hunter, R.drawable.hunter);
-	public Skill construction = new Skill(SkillType.Construction, R.drawable.construction);
+	public Skill overall = new Skill(SkillType.Overall);
+	public Skill attack = new Skill(SkillType.Attack);
+	public Skill defence = new Skill(SkillType.Defence);
+	public Skill strength = new Skill(SkillType.Strength);
+	public Skill hitpoints = new Skill(SkillType.Hitpoints);
+	public Skill ranged = new Skill(SkillType.Ranged);
+	public Skill prayer = new Skill(SkillType.Prayer);
+	public Skill magic = new Skill(SkillType.Magic);
+	public Skill cooking = new Skill(SkillType.Cooking);
+	public Skill woodcutting = new Skill(SkillType.Woodcutting);
+	public Skill fletching = new Skill(SkillType.Fletching);
+	public Skill fishing = new Skill(SkillType.Fishing);
+	public Skill firemaking = new Skill(SkillType.Firemaking);
+	public Skill crafting = new Skill(SkillType.Crafting);
+	public Skill smithing = new Skill(SkillType.Smithing);
+	public Skill mining = new Skill(SkillType.Mining);
+	public Skill herblore = new Skill(SkillType.Herblore);
+	public Skill agility = new Skill(SkillType.Agility);
+	public Skill thieving = new Skill(SkillType.Thieving);
+	public Skill slayer = new Skill(SkillType.Slayer);
+	public Skill farming = new Skill(SkillType.Farming);
+	public Skill runecraft = new Skill(SkillType.Runecrafting);
+	public Skill hunter = new Skill(SkillType.Hunter);
+	public Skill construction = new Skill(SkillType.Construction);
 
 	public String sinceWhen;
 	public String lastUpdate;

@@ -1,35 +1,38 @@
 package com.infonuascape.osrshelper.enums;
 
+import com.infonuascape.osrshelper.R;
+
 /**
  * Created by marc_ on 2018-01-14.
  */
 
 public enum SkillType {
-    Overall("Overall"),
-    Attack("Attack"),
-    Defence("Defence", "Defense"),
-    Strength("Strength"),
-    Hitpoints("Hitpoints", "Constitution"),
-    Ranged("Ranged"),
-    Prayer("Prayer"),
-    Magic("Magic"),
-    Cooking("Cooking"),
-    Woodcutting("Woodcutting"),
-    Fletching("Fletching"),
-    Fishing("Fishing"),
-    Firemaking("Firemaking"),
-    Crafting("Crafting"),
-    Smithing("Smithing"),
-    Mining("Mining"),
-    Herblore("Herblore"),
-    Agility("Agility"),
-    Thieving("Thieving"),
-    Slayer("Slayer"),
-    Farming("Farming"),
-    Runecraft("Runecrafting", "Runecraft"),
-    Hunter("Hunter"),
-    Construction("Construction");
+    Overall(R.drawable.overall, "Overall"),
+    Attack(R.drawable.attack, "Attack"),
+    Defence(R.drawable.defence, "Defence", "Defense"),
+    Strength(R.drawable.strength, "Strength"),
+    Hitpoints(R.drawable.constitution, "Hitpoints", "Constitution"),
+    Ranged(R.drawable.ranged, "Ranged"),
+    Prayer(R.drawable.prayer, "Prayer"),
+    Magic(R.drawable.magic, "Magic"),
+    Cooking(R.drawable.cooking, "Cooking"),
+    Woodcutting(R.drawable.woodcutting, "Woodcutting"),
+    Fletching(R.drawable.fletching, "Fletching"),
+    Fishing(R.drawable.fishing, "Fishing"),
+    Firemaking(R.drawable.firemaking, "Firemaking"),
+    Crafting(R.drawable.crafting, "Crafting"),
+    Smithing(R.drawable.smithing, "Smithing"),
+    Mining(R.drawable.mining, "Mining"),
+    Herblore(R.drawable.herblore, "Herblore"),
+    Agility(R.drawable.agility, "Agility"),
+    Thieving(R.drawable.thieving, "Thieving"),
+    Slayer(R.drawable.slayer, "Slayer"),
+    Farming(R.drawable.farming, "Farming"),
+    Runecrafting(R.drawable.runecrafting, "Runecrafting", "Runecrafting"),
+    Hunter(R.drawable.hunter, "Hunter"),
+    Construction(R.drawable.construction, "Construction");
 
+    private final int drawableId;
     private final String skillName;
     private final String alternativeName;
 
@@ -45,11 +48,17 @@ public enum SkillType {
         return alternativeName;
     }
 
-    SkillType(String skillName) {
+    public int getDrawableInt() {
+        return drawableId;
+    }
+
+    SkillType(int drawableId, String skillName) {
+        this.drawableId = drawableId;
         this.skillName = skillName;
         this.alternativeName = skillName;
     }
-    SkillType(String skillName, String alternativeName) {
+    SkillType(int drawableId, String skillName, String alternativeName) {
+        this.drawableId = drawableId;
         this.skillName = skillName;
         this.alternativeName = alternativeName;
     }

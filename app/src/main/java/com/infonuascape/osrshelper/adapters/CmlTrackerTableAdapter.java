@@ -40,7 +40,7 @@ public class CmlTrackerTableAdapter {
     private View getView(final Skill s, final boolean isShowVirtualLevels) {
         View view = View.inflate(context, R.layout.cml_tracker_table_row, null);
 
-        ((ImageView) view.findViewById(R.id.cml_table_item_icon)).setImageResource(s.getDrawableInt());
+        ((ImageView) view.findViewById(R.id.cml_table_item_icon)).setImageResource(s.getSkillType().getDrawableInt());
         ((TextView) view.findViewById(R.id.cml_table_item_lvl)).setText(String.valueOf(isShowVirtualLevels ? s.getVirtualLevel() : s.getLevel()));
         ((TextView) view.findViewById(R.id.cml_table_item_ehp)).setText(NumberFormat.getInstance().format(s.getEHP()));
 

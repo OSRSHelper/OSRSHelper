@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.models;
+package com.infonuascape.osrshelper.models.grandexchange;
 
 /**
  * Created by marc_ on 2018-02-03.

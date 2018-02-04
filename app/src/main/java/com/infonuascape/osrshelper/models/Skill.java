@@ -11,12 +11,10 @@ public class Skill {
     private short virtualLevel = 0;
 	private int rank = 0;
 	private int rankDiff = 0;
-	private int drawableId;
 	private double EHP = 0.0;
 
-	public Skill(SkillType skillType, int drawableId) {
+	public Skill(SkillType skillType) {
 		this.skillType = skillType;
-		this.drawableId = drawableId;
 	}
 
 	public Skill(SkillType skillType, long experience, short level) {
@@ -107,10 +105,6 @@ public class Skill {
 
 	public void setRank(int rank) {
 		this.rank = rank;
-	}
-
-	public int getDrawableInt() {
-		return drawableId;
 	}
 
 	@Override

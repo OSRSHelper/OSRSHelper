@@ -3,12 +3,9 @@ package com.infonuascape.osrshelper.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.infonuascape.osrshelper.fetchers.grandexchange.GEDetailInfoFetcher;
-import com.infonuascape.osrshelper.fetchers.grandexchange.GEDetailInfoResults;
 import com.infonuascape.osrshelper.fetchers.grandexchange.RSBuddyPriceFetcher;
-import com.infonuascape.osrshelper.listeners.GEDetailListener;
 import com.infonuascape.osrshelper.listeners.RSBuddyPriceListener;
-import com.infonuascape.osrshelper.models.RSBuddyPrice;
+import com.infonuascape.osrshelper.models.grandexchange.RSBuddyPrice;
 
 /**
  * Created by marc_ on 2018-01-14.

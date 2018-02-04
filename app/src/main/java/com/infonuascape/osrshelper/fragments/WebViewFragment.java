@@ -31,13 +31,24 @@ public class WebViewFragment extends OSRSFragment {
         return newInstance(url, false);
     }
 
+    public static WebViewFragment newInstance(final Bundle bundle) {
+        WebViewFragment fragment = new WebViewFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     public static WebViewFragment newInstance(final String url, final boolean isNews) {
         WebViewFragment fragment = new WebViewFragment();
+        Bundle b = getBundle(url, isNews);
+        fragment.setArguments(b);
+        return fragment;
+    }
+
+    public static Bundle getBundle(final String url, final boolean isNews) {
         Bundle b = new Bundle();
         b.putString(EXTRA_URL, url);
         b.putBoolean(EXTRA_IS_NEWS, isNews);
-        fragment.setArguments(b);
-        return fragment;
+        return b;
     }
 
     @Nullable

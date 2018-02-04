@@ -28,7 +28,7 @@ public class RSViewDialog {
             final View dialogView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.hiscores_dialog, null, false);
 
             ((TextView) dialogView.findViewById(R.id.skill_name)).setText(skill.getSkillType().getSkillName());
-            ((ImageView) dialogView.findViewById(R.id.skill_image)).setImageResource(skill.getDrawableInt());
+            ((ImageView) dialogView.findViewById(R.id.skill_image)).setImageResource(skill.getSkillType().getDrawableInt());
 
             boolean isShowVirtualLevels = Utils.isShowVirtualLevels(context);
 
