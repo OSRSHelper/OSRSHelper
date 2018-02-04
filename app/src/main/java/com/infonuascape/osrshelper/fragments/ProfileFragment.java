@@ -167,7 +167,9 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DBController.setProfileAccount(getContext(), account);
-                        new HiscoresFetcherTask(getContext(), ProfileFragment.this, account).execute();
+                        if(account.combatLvl == 0) {
+                            new HiscoresFetcherTask(getContext(), ProfileFragment.this, account).execute();
+                        }
                         refreshScreen();
                     }
                 })

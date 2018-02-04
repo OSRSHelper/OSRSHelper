@@ -31,17 +31,17 @@ public class ShareImageUtils {
         if(rsView != null) {
             rsView.measure(width, height);
             rsView.layout(0, 0, width, height);
-            shareViewAsBitmap(context, rsView);
+            shareViewAsBitmap(context, rsView, username + " (total " + playerSkills.overall.getVirtualLevel() + ")");
         }
     }
 
-    private static void shareViewAsBitmap(final Context context, final View view) {
+    private static void shareViewAsBitmap(final Context context, final View view, final String title) {
 
         Intent i = new Intent(Intent.ACTION_SEND);
 
         i.setType("image/*");
 
-        i.putExtra(Intent.EXTRA_STREAM, getImageUri(context, getBitmapFromView(view)));
+        i.putExtra(Intent.EXTRA_STREAM, getImageUri(context, getBitmapFromView(view), title));
         try {
             context.startActivity(Intent.createChooser(i, "My OSRS Stats"));
         } catch (android.content.ActivityNotFoundException ex) {
@@ -61,11 +61,11 @@ public class ShareImageUtils {
         return returnedBitmap;
     }
 
-    private static Uri getImageUri(Context context, Bitmap image) {
+    private static Uri getImageUri(Context context, Bitmap image, final String title) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, bytes);
 
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), image, "OSRS Stats", null);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), image, title, "OSRS Helper Hiscores");
         return Uri.parse(path);
     }
 }
