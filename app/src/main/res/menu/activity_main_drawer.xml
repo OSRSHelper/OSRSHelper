@@ -35,6 +35,15 @@
             <menu>
                 <group android:checkableBehavior="single">
                     <item
+                        android:id="@+id/nav_grand_exchange"
+                        android:icon="@drawable/grandexchange"
+                        android:title="@string/grand_exchange" />
+                    <item
+                        android:id="@+id/nav_top_players"
+                        android:icon="@drawable/top"
+                        android:title="@string/cml_top" />
+
+                    <item
                         android:id="@+id/nav_world_map"
                         android:icon="@drawable/world_map"
                         android:title="@string/world_map" />
@@ -46,14 +55,6 @@
                         android:id="@+id/nav_news"
                         android:icon="@drawable/news"
                         android:title="@string/news" />
-                    <item
-                        android:id="@+id/nav_grand_exchange"
-                        android:icon="@drawable/grandexchange"
-                        android:title="@string/grand_exchange" />
-                    <item
-                        android:id="@+id/nav_top_players"
-                        android:icon="@drawable/top"
-                        android:title="@string/cml_top" />
                 </group>
             </menu>
         </item>
