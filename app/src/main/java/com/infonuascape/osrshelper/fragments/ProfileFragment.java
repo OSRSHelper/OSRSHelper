@@ -22,9 +22,12 @@ import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
 import com.infonuascape.osrshelper.adapters.ProfileDeltasAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.ProfileInfoListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.Delta;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.tasks.ProfileInfoFetcherTask;
 import com.infonuascape.osrshelper.utils.Utils;
 
@@ -34,7 +37,7 @@ import java.util.ArrayList;
  * Created by marc_ on 2018-01-20.
  */
 
-public class ProfileFragment extends OSRSFragment implements View.OnClickListener, ProfileInfoListener {
+public class ProfileFragment extends OSRSFragment implements View.OnClickListener, ProfileInfoListener, HiscoresFetcherListener {
     private static final String TAG = "ProfileFragment";
     private static final String EXTRA_USERNAME = "EXTRA_USERNAME";
     private Account account;
@@ -164,6 +167,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         DBController.setProfileAccount(getContext(), account);
+                        new HiscoresFetcherTask(getContext(), ProfileFragment.this, account).execute();
                         refreshScreen();
                     }
                 })
@@ -181,5 +185,19 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         asyncTask = null;
         adapter = new ProfileDeltasAdapter(getContext(), deltas);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onHiscoresFetched(PlayerSkills playerSkills) {
+        account.combatLvl = Utils.getCombatLvl(playerSkills);
+        DBController.setCombatLvlForAccount(getActivity(), account);
+        if(getView() != null) {
+            profileHeaderFragment.showCombatLvl(account.combatLvl);
+        }
+    }
+
+    @Override
+    public void onHiscoresError(String errorMessage) {
+
     }
 }
