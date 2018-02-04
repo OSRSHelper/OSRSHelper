@@ -43,7 +43,7 @@
     <string name="xp_gain">(XPΔ)</string>
     <string name="rank_diff">(RankΔ)</string>
     <string name="gain">(+ %1$dK)</string>
-    <string name="gain_small">(+ %1$d)</string>
+    <string name="gain_small">(+ %1$s)</string>
     <string name="gain_medium">(+ %1$.1fK)</string>
     <string name="loss">(- %1$dK)</string>
     <string name="loss_small">(- %1$d)</string>

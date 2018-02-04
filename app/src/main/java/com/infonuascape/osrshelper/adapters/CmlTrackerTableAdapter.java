@@ -49,21 +49,11 @@ public class CmlTrackerTableAdapter {
         String text;
         if (expDiff == 0) {
             textColorResId = R.color.dark_gray;
-            text = context.getString(R.string.gain_small, expDiff);
         } else {
             textColorResId = R.color.green;
-            if (expDiff < 1000) {
-                text = context.getString(R.string.gain_small, expDiff);
-
-            } else if (expDiff >= 1000 && expDiff < 10000) {
-                text = context.getString(R.string.gain_medium, expDiff / 1000.0f);
-
-            } else {
-                text = context.getString(R.string.gain, expDiff / 1000);
-            }
         }
         ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setTextColor(context.getResources().getColor(textColorResId));
-        ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setText(text);
+        ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setText(context.getString(R.string.gain_small, NumberFormat.getInstance().format(expDiff)));
 
 
         int rankDiff = s.getRankDiff();

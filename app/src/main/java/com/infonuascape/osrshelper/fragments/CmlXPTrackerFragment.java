@@ -79,7 +79,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 		view.findViewById(R.id.update).setOnClickListener(this);
 
 		TrackerTime defaultTime = (TrackerTime) getArguments().getSerializable(EXTRA_TRACKER_TIME);
-		if(defaultTime != null) {
+		if(defaultTime != null && defaultTime != TrackerTime.Day) {
 			viewPager.setCurrentItem(defaultTime.ordinal(), true);
 		} else {
 			adapter.getItem(0).onPageVisible();
