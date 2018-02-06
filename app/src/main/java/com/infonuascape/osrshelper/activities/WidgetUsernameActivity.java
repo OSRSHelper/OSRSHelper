@@ -23,6 +23,7 @@ import com.infonuascape.osrshelper.adapters.UsernamesAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.widget.hiscores.OSRSAppWidgetProvider;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
 
 		setContentView(R.layout.username);
 
-		Log.i(TAG, "onCreate: type=" + type);
+		Logger.add(TAG, ": onCreate: type=" + type);
 		initWidgetId();
 
 		findViewById(R.id.username_edit).clearFocus();

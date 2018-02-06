@@ -29,6 +29,7 @@ import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.tasks.ProfileInfoFetcherTask;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     }
 
     private void loadDeltas() {
-        Log.i(TAG, "loadDeltas");
+        Logger.add(TAG, ": loadDeltas");
         if(deltas == null) {
             killAsyncTaskIfStillRunning();
             asyncTask = new ProfileInfoFetcherTask(getContext(), this, account);

@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.GrandExchangePeriods;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.views.GrandExchangeAxisFormatter;
 import com.infonuascape.osrshelper.views.GrandExchangePointDialog;
 import com.jjoe64.graphview.GraphView;
@@ -100,7 +101,7 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 
 	@Override
 	public void onTap(Series series, DataPointInterface dataPointInterface) {
-		Log.i(TAG, "onTap: series title=" + series.getTitle());
+		Logger.add(TAG, ": onTap: series title=" + series.getTitle());
 		if(dialog == null || !dialog.isShowing()) {
 			dialog = GrandExchangePointDialog.showDialog(getContext(), series.getTitle(), dataPointInterface);
 		}

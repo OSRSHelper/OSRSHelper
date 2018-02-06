@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +15,6 @@ import java.util.concurrent.ExecutionException;
 
 public class HTTPRequest {
 	private static final String TAG = "HTTPRequest";
-
-	public enum RequestType {
-		POST, GET
-	};
 
 	public enum StatusCode {
 		FOUND(200), NOT_FOUND(404), ERROR(500), REQUEST_NOT_SENT(-1);
@@ -56,7 +53,7 @@ public class HTTPRequest {
 		// Instantiate the RequestQueue.
 		RequestFuture<String> future = RequestFuture.newFuture();
 
-		Log.i(TAG, url);
+		Logger.add(TAG, ": ", url);
 		StringRequest stringRequest = new StringRequest(requestMethod, url, future, future);
 		queue.add(stringRequest);
 

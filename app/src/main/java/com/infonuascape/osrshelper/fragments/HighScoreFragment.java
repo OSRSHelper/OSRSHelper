@@ -21,6 +21,7 @@ import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.views.RSView;
@@ -48,7 +49,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
-		Log.i(TAG, "onCreateView");
+		Logger.add(TAG, ": onCreateView");
 		View view = inflater.inflate(R.layout.hiscores, null);
 
 		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);

@@ -6,6 +6,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.WidgetUsernameActivity;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -19,7 +20,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 public class OSRSAppWidgetProvider extends AppWidgetProvider {
-	private static final String TAG = "GrandExchangeAppWidget";
+	private static final String TAG = "OSRSAppWidgetProvider";
 
 	public static String ACTION_WIDGET_CONFIGURE = "ConfigureWidget";
 	
@@ -28,7 +29,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		final int N = appWidgetIds.length;
 
-		Log.i(TAG,  "Updating widgets " + Arrays.asList(appWidgetIds));
+		Logger.add(TAG, ": Updating widgets " + Arrays.asList(appWidgetIds));
 
 		// Perform this loop procedure for each App Widget that belongs to this
 		// provider
@@ -72,7 +73,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 				}
 			}
 
-			Log.i(TAG, "appWidgetId=" + appWidgetId);
+			Logger.add(TAG, ": appWidgetId=" + appWidgetId);
 			//Config
 			Intent configIntent = WidgetUsernameActivity.getIntent(context, appWidgetId);
 	        configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

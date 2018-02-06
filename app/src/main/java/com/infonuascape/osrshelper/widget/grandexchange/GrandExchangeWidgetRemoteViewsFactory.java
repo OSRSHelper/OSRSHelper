@@ -10,6 +10,7 @@ import android.widget.RemoteViewsService;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.fetchers.grandexchange.RSBuddyPriceFetcher;
 import com.infonuascape.osrshelper.models.grandexchange.RSBuddyPrice;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.text.NumberFormat;
 
@@ -18,7 +19,7 @@ import java.text.NumberFormat;
  */
 
 public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private final String TAG = "GrandExchangeWidget";
+    private final String TAG = "GrandExchangeWidgetRemoteViewsFactory";
 
     public final static String EXTRA_ITEM_ID = "EXTRA_ITEM_ID";
     private Context mContext;
@@ -35,7 +36,7 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
     }
 
     public void onCreate() {
-        Log.i(TAG, "onCreate");
+        Logger.add(TAG, ": onCreate");
         isError = false;
     }
 
@@ -79,9 +80,13 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
     }
 
     public void onDataSetChanged() {
-        Log.i(TAG, "onDataSetChanged");
+        Logger.add(TAG, ": onDataSetChanged");
         try {
-            rsBuddyPrice = new RSBuddyPriceFetcher(mContext.getApplicationContext()).fetch(itemId);
+            RSBuddyPrice newRsBuddyPrice = new RSBuddyPriceFetcher(mContext.getApplicationContext()).fetch(itemId);
+
+            if(newRsBuddyPrice != null) {
+                rsBuddyPrice = newRsBuddyPrice;
+            }
             isError = rsBuddyPrice == null;
         } catch(Exception e) {
             e.printStackTrace();

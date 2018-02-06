@@ -16,6 +16,7 @@ import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CmlTrackerFetcherTask;
+import com.infonuascape.osrshelper.utils.Logger;
 
 public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements TrackerFetcherListener {
 	private static final String TAG = "CmlXPTrackerPeriodFragm";
@@ -97,7 +98,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 
 	@Override
 	public void onTrackingFetched(final PlayerSkills playerSkills) {
-		Log.i(TAG, "onTrackingFetched");
+		Logger.add(TAG, ": onTrackingFetched");
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();
@@ -111,7 +112,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 
 	@Override
 	public void onTrackingError(final String errorMessage) {
-		Log.i(TAG, "onTrackingError: errorMessage=" + errorMessage);
+		Logger.add(TAG, ": onTrackingError: errorMessage=" + errorMessage);
 		if(getActivity() != null) {
 			getActivity().runOnUiThread(new Runnable() {
 				@Override

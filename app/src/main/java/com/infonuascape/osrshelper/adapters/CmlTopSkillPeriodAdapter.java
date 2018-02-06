@@ -19,6 +19,7 @@ import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import java.text.NumberFormat;
@@ -137,7 +138,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
             slideInQuickActions.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animator) {
-                    Log.i(TAG, " onAnimationStart: position=" + getAdapterPosition());
+                    Logger.add(TAG, ":  onAnimationStart: position=" + getAdapterPosition());
                     isAnimating = true;
                 }
 

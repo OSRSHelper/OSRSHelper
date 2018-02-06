@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.utils.Logger;
 
 /**
  * Created by marc_ on 2017-09-11.
@@ -91,7 +92,7 @@ public class WebViewFragment extends OSRSFragment {
     }
 
     public void destroyWebView() {
-        Log.i(TAG, "destroyWebView");
+        Logger.add(TAG, ": destroyWebView");
         if(webViewContainer != null && webView != null) {
             webViewContainer.removeAllViews();
             webView.clearHistory();

@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
+import com.infonuascape.osrshelper.utils.Logger;
 
 /**
  * Created by marc_ on 2018-02-03.
@@ -28,7 +29,7 @@ public class NotificationController {
     private final static int OSRS_NEWS_ID = 9001;
 
     public static void initNotificationChannels(final Context context) {
-        Log.i(TAG, "initNotificationChannels:");
+        Logger.add(TAG, ": initNotificationChannels:");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(OSRS_HELPER_CHANNEL_ID, OSRS_HELPER_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.enableVibration(true);

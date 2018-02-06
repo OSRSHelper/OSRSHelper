@@ -26,6 +26,7 @@ import com.infonuascape.osrshelper.fragments.GrandExchangeDetailFragment;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.widget.grandexchange.GrandExchangeAppWidgetProvider;
 import com.infonuascape.osrshelper.widget.hiscores.OSRSAppWidgetProvider;
@@ -169,7 +170,7 @@ public class WidgetGrandExchangeSearchActivity extends Activity implements OnIte
 	protected void killAsyncTaskIfStillRunning() {
 		if(asyncTask != null) {
 			if (asyncTask.getStatus() == AsyncTask.Status.RUNNING) {
-				Log.i(TAG, "killAsyncTaskIfStillRunning: running=true");
+				Logger.add(TAG, ": killAsyncTaskIfStillRunning: running=true");
 				asyncTask.cancel(true);
 				asyncTask = null;
 			}

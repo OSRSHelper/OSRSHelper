@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.utils.Logger;
 
 /**
  * Created by marc_ on 2018-01-20.
@@ -29,7 +30,7 @@ public class NewsFeedFragment extends OSRSFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView");
+        Logger.add(TAG, ": onCreateView");
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.osrs_news_feed, null);
@@ -44,7 +45,7 @@ public class NewsFeedFragment extends OSRSFragment {
     }
 
     private void refreshHeader() {
-        Log.i(TAG, "refreshHeader");
+        Logger.add(TAG, ": refreshHeader");
         final Account account = DBController.getProfileAccount(getContext());
         if (account == null) {
             getView().findViewById(R.id.profile_not_set).setVisibility(View.VISIBLE);

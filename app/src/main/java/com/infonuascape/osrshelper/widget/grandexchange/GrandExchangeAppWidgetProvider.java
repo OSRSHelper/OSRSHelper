@@ -20,9 +20,10 @@ import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.activities.WidgetGrandExchangeSearchActivity;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
+import com.infonuascape.osrshelper.utils.Logger;
 
 public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
-	private static final String TAG = "GrandExchangeAppWidget";
+	private static final String TAG = "GrandExchangeAppWidgetProvider";
 
 	public static String ACTION_WIDGET_CONFIGURE = "ConfigureWidget";
 	
@@ -30,7 +31,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		final int N = appWidgetIds.length;
 
-		Log.i(TAG,  "Updating widgets " + appWidgetIds);
+		Log.d(TAG,  "Updating widgets " + appWidgetIds);
 
 		for (int i = 0; i < N; i++) {
 			final int appWidgetId = appWidgetIds[i];
@@ -68,7 +69,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 				.into(appWidgetTarget);
 		}
 
-		Log.i(TAG, "appWidgetId=" + appWidgetId);
+		Logger.add(TAG, ": appWidgetId=" + appWidgetId);
 		//Config
 		Intent configIntent = WidgetGrandExchangeSearchActivity.getIntent(context, appWidgetId);
 		configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -110,7 +111,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 
 		int[] appWidgetIds;
 		int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-		Log.i(TAG, "onReceive: appWidgetId=" + appWidgetId);
+		Logger.add(TAG, ": onReceive: appWidgetId=" + appWidgetId);
 		if(appWidgetId != -1) {
 			appWidgetIds = new int[]{appWidgetId};
 		} else {

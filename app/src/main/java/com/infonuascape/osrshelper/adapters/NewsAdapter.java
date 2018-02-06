@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.OSRSNews;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,7 +41,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i(TAG, "onCreateViewHolder:");
+        Logger.add(TAG, ": onCreateViewHolder:");
         View rootView = View.inflate(context, R.layout.news_list_item, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
@@ -49,7 +50,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
-        Log.i(TAG, "onBindViewHolder:");
+        Logger.add(TAG, ": onBindViewHolder:");
         OSRSNews news = getItem(position);
         holder.title.setText(news.title);
         holder.description.setText(news.description);

@@ -13,6 +13,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.fragments.NewsFeedFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 /**
@@ -42,14 +43,14 @@ public class MainFragmentController {
     }
 
     public void showRootFragment(final int menuId, final OSRSFragment fragment) {
-        Log.i(TAG, "showRootFragment:");
+        Logger.add(TAG, ": showRootFragment:");
         Utils.hideKeyboard(mainActivity);
         for (int i = 0; i < navigationView.getMenu().size(); i++) {
             MenuItem menuItem = navigationView.getMenu().getItem(i);
             menuItem.setChecked(menuItem.getItemId() == menuId);
         }
 
-        if(fragment != null) {
+        if(fragment != null && mainActivity.isResumed) {
             Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -58,9 +59,9 @@ public class MainFragmentController {
     }
 
     public void showFragment(final OSRSFragment fragment) {
-        Log.i(TAG, "showFragment:");
+        Logger.add(TAG, ": showFragment:");
         Utils.hideKeyboard(mainActivity);
-        if(fragment != null && !isAlreadyInBackStack(fragment)) {
+        if(fragment != null && !isAlreadyInBackStack(fragment) && mainActivity.isResumed) {
             Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             final String tag = getTag(fragment);
@@ -79,7 +80,7 @@ public class MainFragmentController {
         final String fragmentTag = getTag(fragment);
         final boolean isAlreadyInBackStack = TextUtils.equals(currentFragmentTag, fragmentTag);
 
-        Log.i(TAG, "isAlreadyInBackStack=" + isAlreadyInBackStack
+        Logger.add(TAG, ": isAlreadyInBackStack=" + isAlreadyInBackStack
                 + " currentFragment=" + currentFragmentTag
                 + " fragmentName=" + fragmentTag);
         return isAlreadyInBackStack;
@@ -106,7 +107,7 @@ public class MainFragmentController {
 
         //Only cast if not null
         if(fragment != null) {
-            Log.i(TAG, "getCurrentFragment: name=" + fragment.getClass().getSimpleName());
+            Logger.add(TAG, ": getCurrentFragment: name=" + fragment.getClass().getSimpleName());
             return (OSRSFragment) fragment;
         }
 
@@ -114,7 +115,7 @@ public class MainFragmentController {
     }
 
     public boolean onBackPressed() {
-        Log.i(TAG, "onBackPressed:");
+        Logger.add(TAG, ": onBackPressed:");
         FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
 
         if(fragmentManager.getBackStackEntryCount() > 0) {

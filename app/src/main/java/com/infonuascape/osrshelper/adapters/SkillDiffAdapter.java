@@ -14,6 +14,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.models.players.SkillDiff;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -37,7 +38,7 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
 
     @Override
     public DeltaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i(TAG, "onCreateViewHolder:");
+        Logger.add(TAG, ": onCreateViewHolder:");
         View rootView = View.inflate(context, R.layout.profile_delta_skilldiff, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
@@ -46,7 +47,7 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
 
     @Override
     public void onBindViewHolder(DeltaHolder holder, int position) {
-        Log.i(TAG, "onBindViewHolder:");
+        Logger.add(TAG, ": onBindViewHolder:");
         SkillDiff delta = getItem(position);
 
         holder.experience.setText(NumberFormat.getInstance().format(delta.experience));

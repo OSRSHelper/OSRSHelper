@@ -15,6 +15,7 @@ import com.infonuascape.osrshelper.fetchers.hiscore.HiscoreFetcher;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 
 public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    private final String TAG = "GrandExchangeWidgetServic";
+    private final String TAG = "OSRSWidgetRemoteViewsFactory";
     private ArrayList<Skill> skills;
     private Context mContext;
     private PlayerSkills playerSkills;
@@ -38,7 +39,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
     }
 
     public void onCreate() {
-        Log.i(TAG, "onCreate");
+        Logger.add(TAG, ": onCreate");
         skills = new ArrayList<Skill>();
         playerSkills = new PlayerSkills();
         skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
@@ -99,7 +100,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
     }
 
     public void onDataSetChanged() {
-        Log.i(TAG, "onDataSetChanged");
+        Logger.add(TAG, ": onDataSetChanged");
         final long identityToken = Binder.clearCallingIdentity();
         final Account account = DBController.getAccountForWidget(mContext, mAppWidgetId);
         Binder.restoreCallingIdentity(identityToken);

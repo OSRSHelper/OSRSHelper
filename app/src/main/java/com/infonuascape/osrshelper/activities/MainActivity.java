@@ -42,6 +42,7 @@ import com.infonuascape.osrshelper.fragments.ProfileFragment;
 import com.infonuascape.osrshelper.fragments.WebViewFragment;
 import com.infonuascape.osrshelper.fragments.WorldMapFragment;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener,
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private SuggestionsAdapter suggestionsAdapter;
+    public boolean isResumed;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        isResumed = true;
         searchView = findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
         searchView.setOnSuggestionListener(this);
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void refreshProfileAccount() {
-        Log.i(TAG, "refreshProfileAccount");
+        Logger.add(TAG, ": refreshProfileAccount");
         Account account = DBController.getProfileAccount(this);
         navigationView.getMenu().getItem(1).getSubMenu().setGroupEnabled(R.id.nav_group_profile, account != null);
         if(account != null) {
@@ -146,6 +149,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         refreshProfileAccount();
+        isResumed = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isResumed = false;
     }
 
     @Override
@@ -262,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Log.i(TAG, "onQueryTextSubmit: query=" + query);
+        Logger.add(TAG, ": onQueryTextSubmit: query=" + query);
         MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(query));
         searchView.setQuery(null, false);
         searchView.clearFocus();
@@ -271,13 +281,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onQueryTextChange(String query) {
-        Log.i(TAG, "onQueryTextChange: query=" + query);
+        Logger.add(TAG, ": onQueryTextChange: query=" + query);
         return false;
     }
 
     @Override
     public Cursor runQuery(CharSequence query) {
-        Log.i(TAG, "runQuery: charSequence=" + query);
+        Logger.add(TAG, ": runQuery: charSequence=" + query);
 
         Cursor c = DBController.searchAccountsByUsername(this, query);
         return c;

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.utils.Logger;
 
 public class OSRSDatabase extends SQLiteOpenHelper {
 	private static final String TAG = "DBController";
@@ -102,11 +103,11 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 	@Override
 	protected void finalize() throws Throwable {
-		Log.i(TAG , " finalize");
+		Logger.add(TAG, ": finalize");
 
 		SQLiteDatabase dbWritable = getWritableDatabase();
 		if (dbWritable != null) {
-			Log.i(TAG , "finalize: closing db");
+			Logger.add(TAG, ": finalize: closing db");
 			dbWritable.close();
 		}
 		super.finalize();

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.models.players.Delta;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,7 +36,7 @@ public class ProfileDeltasAdapter extends RecyclerView.Adapter<ProfileDeltasAdap
 
     @Override
     public DeltaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i(TAG, "onCreateViewHolder:");
+        Logger.add(TAG, ": onCreateViewHolder:");
         View rootView = View.inflate(context, R.layout.profile_delta, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
@@ -44,7 +45,7 @@ public class ProfileDeltasAdapter extends RecyclerView.Adapter<ProfileDeltasAdap
 
     @Override
     public void onBindViewHolder(DeltaHolder holder, int position) {
-        Log.i(TAG, "onBindViewHolder:");
+        Logger.add(TAG, ": onBindViewHolder:");
         Delta delta = getItem(position);
         final String date1 = simpleDateFormat.format(new Date(delta.timestamp));
         final String date2 = simpleDateFormat.format(new Date(delta.timestampRecent));

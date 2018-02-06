@@ -9,6 +9,7 @@ import android.util.Log;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.util.ArrayList;
 
@@ -72,11 +73,11 @@ public class DBController {
 
 		if(context != null) {
 			if (existingAccount == null) {
-				Log.i(TAG, "setAccountForWidget: insert: appWidgetId=" + appWidgetId + " username=" + account.username);
+				Logger.add(TAG, ": setAccountForWidget: insert: appWidgetId=" + appWidgetId + " username=" + account.username);
 				values.put(COLUMN_WIDGET_ID, String.valueOf(appWidgetId));
 				context.getContentResolver().insert(OSRSDatabase.WIDGETS_CONTENT_URI, values);
 			} else {
-				Log.i(TAG, "setAccountForWidget: update: appWidgetId=" + appWidgetId + " username=" + account.username);
+				Logger.add(TAG, ": setAccountForWidget: update: appWidgetId=" + appWidgetId + " username=" + account.username);
 				final String where = COLUMN_WIDGET_ID + "=?";
 				final String[] whereArgs = new String[]{String.valueOf(appWidgetId)};
 
@@ -106,7 +107,7 @@ public class DBController {
 				}
 			}
 		}
-		Log.i(TAG, "getAccountByUsername: account=" + account + " username=" + username);
+		Logger.add(TAG, ": getAccountByUsername: account=" + account + " username=" + username);
 		return account;
 	}
 
@@ -152,7 +153,7 @@ public class DBController {
 			}
 		}
 
-		Log.i(TAG, "getProfileAccount: account=" + account);
+		Logger.add(TAG, ": getProfileAccount: account=" + account);
 		return account;
 	}
 
@@ -176,7 +177,7 @@ public class DBController {
 			}
 		}
 
-		Log.i(TAG, "getAccountForWidget: account=" + account + " appWidgetId=" + appWidgetId);
+		Log.d(TAG, "getAccountForWidget: account=" + account + " appWidgetId=" + appWidgetId);
 		return account;
 	}
 
@@ -340,7 +341,7 @@ public class DBController {
 			context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
 		}
 
-		Log.i(TAG, "setGrandExchangeWidgetIdToItem:");
+		Logger.add(TAG, ": setGrandExchangeWidgetIdToItem:");
 	}
 
 
@@ -374,7 +375,7 @@ public class DBController {
 			}
 		}
 
-		Log.i(TAG, "doesGrandExchangeItemExist: isExist=" + isExist + " itemId=" + itemId);
+		Logger.add(TAG, ": doesGrandExchangeItemExist: isExist=" + isExist + " itemId=" + itemId);
 		return isExist;
 	}
 

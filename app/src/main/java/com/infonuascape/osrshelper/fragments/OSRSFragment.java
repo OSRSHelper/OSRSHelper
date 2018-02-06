@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.infonuascape.osrshelper.activities.MainActivity;
+import com.infonuascape.osrshelper.utils.Logger;
 
 /**
  * Created by marc_ on 2018-01-20.
@@ -33,7 +34,7 @@ public abstract class OSRSFragment extends Fragment {
     protected void killAsyncTaskIfStillRunning() {
         if(asyncTask != null) {
             if (asyncTask.getStatus() == AsyncTask.Status.RUNNING) {
-                Log.i(TAG, "killAsyncTaskIfStillRunning: running=true");
+                Logger.add(TAG, ": killAsyncTaskIfStillRunning: running=true");
                 asyncTask.cancel(true);
                 asyncTask = null;
             }
