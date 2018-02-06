@@ -65,9 +65,6 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 
 	@Override
 	public boolean onQueryTextSubmit(String searchTerm) {
-		this.searchText = searchTerm;
-		handler.removeCallbacks(waitForSearchRunnable);
-		handler.postDelayed(waitForSearchRunnable, 300);
 		return false;
 	}
 

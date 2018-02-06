@@ -23,6 +23,7 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_DESCRIPTIO
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_ID;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_IMAGE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_NAME;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_PRICE_WANTED;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_TIME_USED;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_USERNAME;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
@@ -40,11 +41,13 @@ public class DBController {
 		values.put(COLUMN_IS_PROFILE, account.isProfile ? 1 : 0);
 		values.put(COLUMN_IS_FOLLOWING, account.isFollowing ? 1 : 0);
 
-		final Account existingAccount = getAccountByUsername(context, account.username);
-		if(existingAccount != null) {
-			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
-		} else {
-			context.getContentResolver().insert(OSRSDatabase.ACCOUNTS_CONTENT_URI, values);
+		if(context != null) {
+			final Account existingAccount = getAccountByUsername(context, account.username);
+			if (existingAccount != null) {
+				context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+			} else {
+				context.getContentResolver().insert(OSRSDatabase.ACCOUNTS_CONTENT_URI, values);
+			}
 		}
 	}
 
@@ -55,7 +58,9 @@ public class DBController {
 		values.put(COLUMN_IS_PROFILE, account.isProfile ? 1 : 0);
 		values.put(COLUMN_IS_FOLLOWING, account.isFollowing ? 1 : 0);
 
-		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+		if(context != null) {
+			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+		}
 	}
 
 	public static void setAccountForWidget(final Context context, final int appWidgetId, final Account account) {
@@ -65,16 +70,18 @@ public class DBController {
 
 		Account existingAccount = getAccountForWidget(context, appWidgetId);
 
-		if(existingAccount == null) {
-			Log.i(TAG, "setAccountForWidget: insert: appWidgetId=" + appWidgetId + " username=" + account.username);
-			values.put(COLUMN_WIDGET_ID, String.valueOf(appWidgetId));
-			context.getContentResolver().insert(OSRSDatabase.WIDGETS_CONTENT_URI, values);
-		} else {
-			Log.i(TAG, "setAccountForWidget: update: appWidgetId=" + appWidgetId + " username=" + account.username);
-			final String where = COLUMN_WIDGET_ID + "=?";
-			final String[] whereArgs = new String[]{String.valueOf(appWidgetId)};
+		if(context != null) {
+			if (existingAccount == null) {
+				Log.i(TAG, "setAccountForWidget: insert: appWidgetId=" + appWidgetId + " username=" + account.username);
+				values.put(COLUMN_WIDGET_ID, String.valueOf(appWidgetId));
+				context.getContentResolver().insert(OSRSDatabase.WIDGETS_CONTENT_URI, values);
+			} else {
+				Log.i(TAG, "setAccountForWidget: update: appWidgetId=" + appWidgetId + " username=" + account.username);
+				final String where = COLUMN_WIDGET_ID + "=?";
+				final String[] whereArgs = new String[]{String.valueOf(appWidgetId)};
 
-			context.getContentResolver().update(OSRSDatabase.WIDGETS_CONTENT_URI, values, where, whereArgs);
+				context.getContentResolver().update(OSRSDatabase.WIDGETS_CONTENT_URI, values, where, whereArgs);
+			}
 		}
 	}
 
@@ -84,17 +91,19 @@ public class DBController {
 		final String where = COLUMN_USERNAME + "=?";
 		final String[] whereArgs = new String[]{username};
 
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, null);
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, null);
 
-		try {
-			if (cursor.moveToFirst()) {
-				account = createAccountFromCursor(cursor);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+			try {
+				if (cursor.moveToFirst()) {
+					account = createAccountFromCursor(cursor);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
 		Log.i(TAG, "getAccountByUsername: account=" + account + " username=" + username);
@@ -103,17 +112,22 @@ public class DBController {
 
 	public static void setProfileAccount(final Context context, final Account account) {
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_IS_PROFILE, 0);
-		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, null, null);
+		if(context != null) {
+			values.put(COLUMN_IS_PROFILE, 0);
+			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, null, null);
 
-		values.put(COLUMN_IS_PROFILE, 1);
-		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+			values.put(COLUMN_IS_PROFILE, 1);
+			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+		}
+
 	}
 
 	public static void setCombatLvlForAccount(final Context context, final Account account) {
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_COMBAT_LVL, account.combatLvl);
-		context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+		if(context != null) {
+			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+		}
 	}
 
 	public static Account getProfileAccount(final Context context) {
@@ -122,39 +136,46 @@ public class DBController {
 		final String where = COLUMN_IS_PROFILE + "=?";
 		final String[] whereArgs = new String[]{String.valueOf(1)};
 
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, null);
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, null);
 
-		try {
-			if (cursor.moveToFirst()) {
-				account = createAccountFromCursor(cursor);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+			try {
+				if (cursor.moveToFirst()) {
+					account = createAccountFromCursor(cursor);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
+
 		Log.i(TAG, "getProfileAccount: account=" + account);
 		return account;
 	}
 
 	public static Account getAccountForWidget(final Context context, final int appWidgetId) {
 		Account account = null;
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, new String[]{COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE}, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null);
-		try {
-			if (cursor.moveToFirst()) {
-				final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
-				final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
-				account = new Account(username, AccountType.valueOf(accountType));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, new String[]{COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE}, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null);
+			try {
+				if (cursor.moveToFirst()) {
+					final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
+					final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
+					account = new Account(username, AccountType.valueOf(accountType));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
+
 		Log.i(TAG, "getAccountForWidget: account=" + account + " appWidgetId=" + appWidgetId);
 		return account;
 	}
@@ -174,21 +195,24 @@ public class DBController {
 		final ArrayList<Account> accounts = new ArrayList<>();
 		final String[] projection = ACCOUNTS_PROJECTION;
 
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, null, null,
-				COLUMN_TIME_USED + " DESC");
-		try {
-			if (cursor.moveToFirst()) {
-				do {
-					accounts.add(createAccountFromCursor(cursor));
-				} while (cursor.moveToNext());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, null, null,
+					COLUMN_TIME_USED + " DESC");
+			try {
+				if (cursor.moveToFirst()) {
+					do {
+						accounts.add(createAccountFromCursor(cursor));
+					} while (cursor.moveToNext());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
+
 		return accounts;
 	}
 
@@ -198,21 +222,24 @@ public class DBController {
 		final String where = COLUMN_IS_FOLLOWING + "=?";
 		final String[] whereArgs = new String[]{String.valueOf(1)};
 
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs,
-				COLUMN_TIME_USED + " DESC");
-		try {
-			if (cursor.moveToFirst()) {
-				do {
-					accounts.add(createAccountFromCursor(cursor));
-				} while (cursor.moveToNext());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs,
+					COLUMN_TIME_USED + " DESC");
+			try {
+				if (cursor.moveToFirst()) {
+					do {
+						accounts.add(createAccountFromCursor(cursor));
+					} while (cursor.moveToNext());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
+
 		return accounts;
 	}
 
@@ -220,11 +247,15 @@ public class DBController {
 		final String where = COLUMN_USERNAME + "=?";
 		final String[] whereArgs = new String[]{account.username};
 
-		context.getContentResolver().delete(OSRSDatabase.ACCOUNTS_CONTENT_URI, where, whereArgs);
+		if(context != null) {
+			context.getContentResolver().delete(OSRSDatabase.ACCOUNTS_CONTENT_URI, where, whereArgs);
+		}
 	}
 
 	public static void deleteAllAccounts(final Context context) {
-		context.getContentResolver().delete(OSRSDatabase.ACCOUNTS_CONTENT_URI, null, null);
+		if(context != null) {
+			context.getContentResolver().delete(OSRSDatabase.ACCOUNTS_CONTENT_URI, null, null);
+		}
 	}
 
 	public static Cursor searchAccountsByUsername(final Context context, CharSequence query) {
@@ -237,7 +268,11 @@ public class DBController {
 			whereArgs = new String[]{"%" + query + "%"};
 		}
 
-		return context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, COLUMN_TIME_USED + " DESC");
+		if(context != null) {
+			return context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, COLUMN_TIME_USED + " DESC");
+		}
+
+		return null;
 	}
 
 	/****
@@ -257,7 +292,7 @@ public class DBController {
 
 	public static void addGrandExchangeItem(final Context context, Item item) {
 		final boolean isExist = doesGrandExchangeItemExist(context, item.id);
-		if(!isExist) {
+		if(!isExist && context != null) {
 			final ContentValues values = new ContentValues();
 			values.put(COLUMN_ITEM_ID, item.id);
 			values.put(COLUMN_ITEM_NAME, item.name);
@@ -273,61 +308,72 @@ public class DBController {
 		final String[] projection = GRAND_EXCHANGE_PROJECTION;
 		final String sortOrder = COLUMN_IS_STARRED + " DESC, " + COLUMN_ITEM_NAME + " ASC";
 
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, projection, null, null,
-				sortOrder);
-		try {
-			if (cursor.moveToFirst()) {
-				do {
-					items.add(createGrandExchangeItemFromCursor(cursor));
-				} while (cursor.moveToNext());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, projection, null, null,
+					sortOrder);
+			try {
+				if (cursor.moveToFirst()) {
+					do {
+						items.add(createGrandExchangeItemFromCursor(cursor));
+					} while (cursor.moveToNext());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
+
 		return items;
 	}
 
 	public static void setGrandExchangeWidgetIdToItem(final Context context, String itemId, final String widgetId) {
 		ContentValues values = new ContentValues();
-		values.put(COLUMN_WIDGET_ID, "");
 
-		context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_WIDGET_ID + "=?", new String[]{widgetId});
+		if(context != null) {
+			values.put(COLUMN_WIDGET_ID, "");
+			context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_WIDGET_ID + "=?", new String[]{widgetId});
 
-		values = new ContentValues();
-		values.put(COLUMN_WIDGET_ID, widgetId);
+			values.put(COLUMN_WIDGET_ID, widgetId);
+			context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
+		}
 
-		context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
 		Log.i(TAG, "setGrandExchangeWidgetIdToItem:");
 	}
 
 
-	public static void setGrandExchangeStarred(final Context context, String itemId, final boolean isStarred) {
+	public static void setGrandExchangeStarred(final Context context, String itemId, final boolean isStarred, final long price) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_IS_STARRED, isStarred ? 1 : 0);
+		values.put(COLUMN_PRICE_WANTED, price);
 
-		context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
+		if(context != null) {
+			context.getContentResolver().update(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, values, COLUMN_ITEM_ID + "=?", new String[]{itemId});
+		}
 	}
 
 	private static boolean doesGrandExchangeItemExist(Context context, String itemId) {
 		final String where = COLUMN_ITEM_ID + "=?";
 		final String[] whereArgs = new String[]{itemId};
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, new String[]{"COUNT(*)"}, where, whereArgs, null);
+
 		boolean isExist = false;
-		try {
-			if (cursor.moveToFirst()) {
-				isExist = cursor.getInt(0) > 0;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, new String[]{"COUNT(*)"}, where, whereArgs, null);
+			try {
+				if (cursor.moveToFirst()) {
+					isExist = cursor.getInt(0) > 0;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
+
 		Log.i(TAG, "doesGrandExchangeItemExist: isExist=" + isExist + " itemId=" + itemId);
 		return isExist;
 	}
@@ -338,19 +384,22 @@ public class DBController {
 		final String where = COLUMN_WIDGET_ID + "=?";
 		final String[] whereArgs = new String[]{String.valueOf(appWidgetId)};
 
-		final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, projection, where, whereArgs,
-				null);
-		try {
-			if (cursor.moveToFirst()) {
-				item = createGrandExchangeItemFromCursor(cursor);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(cursor != null) {
-				cursor.close();
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, projection, where, whereArgs,
+					null);
+			try {
+				if (cursor.moveToFirst()) {
+					item = createGrandExchangeItemFromCursor(cursor);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
 			}
 		}
+
 		return item;
 	}
 }

@@ -66,7 +66,7 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 		if(datapoints != null && averages != null) {
 			progressBar.setVisibility(View.GONE);
 			graphView.removeAllSeries();
-			DataPoint[] list = Arrays.copyOfRange(datapoints, datapoints.length - period.getDays(), datapoints.length);
+			DataPoint[] list = Arrays.copyOfRange(datapoints, Math.max(0, datapoints.length - period.getDays()), datapoints.length);
 			LineGraphSeries<DataPoint> datapointsSerie = new LineGraphSeries<>(list);
 			datapointsSerie.setDrawDataPoints(true);
 			datapointsSerie.setColor(getContext().getResources().getColor(R.color.green));
@@ -74,7 +74,7 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 			datapointsSerie.setOnDataPointTapListener(this);
 			graphView.addSeries(datapointsSerie);
 
-			LineGraphSeries<DataPoint> averageSerie = new LineGraphSeries<>(Arrays.copyOfRange(averages, 0, period.getDays()));
+			LineGraphSeries<DataPoint> averageSerie = new LineGraphSeries<>(Arrays.copyOfRange(averages, Math.max(0, averages.length - period.getDays()), averages.length));
 			averageSerie.setColor(getContext().getResources().getColor(R.color.orange));
 			averageSerie.setTitle(getContext().getResources().getString(R.string.trend));
 			averageSerie.setDrawDataPoints(true);

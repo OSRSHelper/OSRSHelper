@@ -64,7 +64,7 @@ public abstract class OSRSNestedViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public void finishUpdate(ViewGroup container) {
         super.finishUpdate(container);
-        cleanupTransaction.commit();
+        cleanupTransaction.commitAllowingStateLoss();
     }
 
     private OSRSPagerFragment getSubFragmentAtPosition(int position) {

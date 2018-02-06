@@ -160,5 +160,6 @@
     <string name="skill_diff_rank">Rank:</string>
     <string name="profile_recent_gains">Recent Gains</string>
     <string name="profile_delta_on">%1$s &#x2192; %2$s</string>
+    <string name="error_when_sharing">Error when sharing stats</string>
 
 </resources>

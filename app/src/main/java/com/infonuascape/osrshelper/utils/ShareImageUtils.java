@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Toast;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
@@ -28,10 +29,15 @@ public class ShareImageUtils {
         int height = context.getResources().getDimensionPixelSize(R.dimen.rs_view_header_height)
                 + (8 * context.getResources().getDimensionPixelSize(R.dimen.rs_view_item_height))
                 + (2 * context.getResources().getDimensionPixelSize(R.dimen.rs_view_padding));
-        if(rsView != null) {
+        try {
             rsView.measure(width, height);
             rsView.layout(0, 0, width, height);
             shareViewAsBitmap(context, rsView, username + " (total " + playerSkills.overall.getVirtualLevel() + ")");
+        } catch(Exception e) {
+            e.printStackTrace();
+            if(context != null) {
+                Toast.makeText(context, R.string.error_when_sharing, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
