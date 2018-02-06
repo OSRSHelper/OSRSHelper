@@ -52,3 +52,4 @@ gen-external-apklibs
 
 app/app.iml
 /app/fabric.properties
+app/release
