@@ -37,6 +37,7 @@ public class UsernamesAdapter extends ArrayAdapter<Account> {
 			holder = new ViewHolder();
 			holder.username = result.findViewById(R.id.username);
 			holder.image = result.findViewById(R.id.icon);
+			result.findViewById(R.id.delete_btn).setVisibility(View.GONE);
 			result.setTag(holder);
 		} else {
 			result = convertView;

@@ -54,7 +54,7 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
 
         // set value into textview
         if(rsBuddyPrice != null) {
-            rv.setTextViewText(R.id.item_price, NumberFormat.getInstance().format(rsBuddyPrice.buying) + "gp");
+            rv.setTextViewText(R.id.item_price, NumberFormat.getInstance().format(rsBuddyPrice.overall) + "gp");
         } else if(isError) {
             rv.setTextViewText(R.id.item_price, mContext.getResources().getString(R.string.error));
         }

@@ -25,7 +25,7 @@ public class SuggestionsAdapter extends CursorAdapter {
 	class ViewHolder {
 		TextView username;
 		ImageView image;
-		View container;
+		View delete;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class SuggestionsAdapter extends CursorAdapter {
 		holder = new ViewHolder();
 		holder.username = result.findViewById(R.id.username);
 		holder.image = result.findViewById(R.id.icon);
-		holder.container = result.findViewById(R.id.container);
+		holder.delete = result.findViewById(R.id.delete_btn);
 		result.setTag(holder);
 
 		return result;
@@ -49,9 +49,9 @@ public class SuggestionsAdapter extends CursorAdapter {
 		ViewHolder holder = (ViewHolder) view.getTag();
 		holder.username.setText(account.username);
 		holder.image.setImageResource(Utils.getAccountTypeResource(account.type));
-		holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+		holder.delete.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public boolean onLongClick(View view) {
+			public void onClick(View view) {
 				if(context != null) {
 					new AlertDialog.Builder(context)
 							.setTitle(R.string.delete)
@@ -65,10 +65,7 @@ public class SuggestionsAdapter extends CursorAdapter {
 							})
 							.setNegativeButton(R.string.dialog_no, null)
 							.create().show();
-
-					return true;
 				}
-				return false;
 			}
 		});
 	}
