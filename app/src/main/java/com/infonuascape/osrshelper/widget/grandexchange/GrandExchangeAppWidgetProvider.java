@@ -83,7 +83,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 			views.setViewVisibility(R.id.info_item_btn, View.VISIBLE);
 			Intent infoIntent = MainActivity.getGrandExchangeDetailIntent(context, item.id);
 			infoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			PendingIntent infoPendingIntent = PendingIntent.getActivity(context, appWidgetId, infoIntent, 0);
+			PendingIntent infoPendingIntent = PendingIntent.getActivity(context, appWidgetId, infoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 			views.setOnClickPendingIntent(R.id.info_item_btn, infoPendingIntent);
 		} else {
 			views.setViewVisibility(R.id.info_item_btn, View.GONE);
