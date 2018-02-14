@@ -36,9 +36,4 @@ public class OSRSFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
     }
-
-    @Override
-    public void handleIntent(Intent intent) {
-        super.handleIntent(intent);
-    }
 }
