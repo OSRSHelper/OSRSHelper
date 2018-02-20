@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/subscribe_news"
-        android:layout_marginLeft="10dp"
+        android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:drawableLeft="@drawable/subscribe_checkmark"
         android:drawableTint="@color/text_normal"

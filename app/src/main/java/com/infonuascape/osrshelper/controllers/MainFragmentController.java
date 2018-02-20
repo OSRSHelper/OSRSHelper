@@ -124,11 +124,11 @@ public class MainFragmentController {
         } else if(fragmentManager.getBackStackEntryCount() == 0) {
             OSRSFragment fragment = getCurrentFragment();
             if (fragment != null) {
-                if (!fragment.onBackPressed()) {
-                    if (!(fragment instanceof NewsFeedFragment)) {
-                        showRootFragment(R.id.nav_home, NewsFeedFragment.newInstance());
-                        return true;
-                    }
+                if (fragment.onBackPressed()) {
+                    return true;
+                } else if (!(fragment instanceof NewsFeedFragment)) {
+                    showRootFragment(R.id.nav_home, NewsFeedFragment.newInstance());
+                    return true;
                 }
             }
         }

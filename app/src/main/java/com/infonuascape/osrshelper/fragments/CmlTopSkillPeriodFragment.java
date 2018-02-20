@@ -24,7 +24,7 @@ import com.infonuascape.osrshelper.utils.Logger;
 import java.util.List;
 
 public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopPlayersListener {
-    private static final String TAG = "CmlTopSkillPeriodFragme";
+    private static final String TAG = "CmlTopSkillPeriodFragment";
 
     public static final String ARG_SKILL = "ARG_SKILL";
     public static final String ARG_POSITION = "ARG_POSITION";
@@ -68,7 +68,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
         Logger.add(TAG, ": onPageVisible: period=" + period.name());
         if(playerExp == null) {
             if(asyncTask== null) {
-                asyncTask = new CmlTopFetcherTask(getContext(), this, skillType, period);
+                asyncTask = new CmlTopFetcherTask(getActivity(), this, skillType, period);
                 asyncTask.execute();
                 if(progressBar != null) {
                     progressBar.setVisibility(View.VISIBLE);

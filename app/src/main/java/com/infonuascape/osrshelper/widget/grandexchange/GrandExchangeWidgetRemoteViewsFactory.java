@@ -54,10 +54,10 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
 
         // set value into textview
         if(rsBuddyPrice != null) {
-            if(rsBuddyPrice.buying == 0) {
+            if(getPrice(rsBuddyPrice) == 0) {
                 rv.setTextViewText(R.id.item_price, mContext.getResources().getString(R.string.unknown));
             } else {
-                rv.setTextViewText(R.id.item_price, NumberFormat.getInstance().format(rsBuddyPrice.overall) + "gp");
+                rv.setTextViewText(R.id.item_price, NumberFormat.getInstance().format(getPrice(rsBuddyPrice)) + "gp");
             }
         } else if(isError) {
             rv.setTextViewText(R.id.item_price, mContext.getResources().getString(R.string.error));
@@ -88,12 +88,32 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
         try {
             RSBuddyPrice newRsBuddyPrice = new RSBuddyPriceFetcher(mContext.getApplicationContext()).fetch(itemId);
 
-            if(newRsBuddyPrice != null) {
+            if(newRsBuddyPrice != null && getPrice(newRsBuddyPrice) > 0) {
                 rsBuddyPrice = newRsBuddyPrice;
             }
             isError = rsBuddyPrice == null;
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private long getPrice(final RSBuddyPrice rsBuddyPrice) {
+        if(rsBuddyPrice == null) {
+            return 0;
+        }
+
+        if(rsBuddyPrice.overall > 0) {
+            return rsBuddyPrice.overall;
+        }
+
+        if(rsBuddyPrice.selling > 0) {
+            return rsBuddyPrice.selling;
+        }
+
+        if(rsBuddyPrice.buying > 0) {
+            return rsBuddyPrice.buying;
+        }
+
+        return 0;
     }
 }

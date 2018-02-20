@@ -69,7 +69,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 					progressBar.setVisibility(View.VISIBLE);
 				}
 				killAsyncTaskIfStillRunning();
-				asyncTask = new CmlTrackerFetcherTask(getContext(), this, account, time);
+				asyncTask = new CmlTrackerFetcherTask(getActivity(), this, account, time);
 				asyncTask.execute();
 			}
 		} else {

@@ -44,11 +44,13 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
     public void refreshProfile(final Account account) {
         this.account = account;
-        ((TextView) getView().findViewById(R.id.account_username)).setText(account.username);
-        ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
-        ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
-        if(account.combatLvl != 0) {
-            showCombatLvl(account.combatLvl);
+        if(account != null) {
+            ((TextView) getView().findViewById(R.id.account_username)).setText(account.username);
+            ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
+            ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
+            if (account.combatLvl != 0) {
+                showCombatLvl(account.combatLvl);
+            }
         }
     }
 
