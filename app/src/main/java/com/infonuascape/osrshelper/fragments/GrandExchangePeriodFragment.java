@@ -31,6 +31,7 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 	private final static String EXTRA_GE_PERIOD = "EXTRA_GE_PERIOD";
 	private GraphView graphView;
 	private ProgressBar progressBar;
+	private View errorView;
 
 	private GrandExchangePeriods period;
 	private AlertDialog dialog;
@@ -51,6 +52,7 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 		View view = inflater.inflate(R.layout.ge_detail_period, null);
 
 		progressBar = view.findViewById(R.id.progress_bar);
+		errorView = view.findViewById(R.id.empty_view);
 
 		period = (GrandExchangePeriods) getArguments().getSerializable(EXTRA_GE_PERIOD);
 
@@ -64,9 +66,10 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 	}
 
 	public void onPageVisible(final DataPoint[] datapoints, DataPoint[] averages) {
+		progressBar.setVisibility(View.GONE);
+		graphView.removeAllSeries();
 		if(datapoints != null && averages != null) {
-			progressBar.setVisibility(View.GONE);
-			graphView.removeAllSeries();
+			errorView.setVisibility(View.GONE);
 			DataPoint[] list = Arrays.copyOfRange(datapoints, Math.max(0, datapoints.length - period.getDays()), datapoints.length);
 			LineGraphSeries<DataPoint> datapointsSerie = new LineGraphSeries<>(list);
 			datapointsSerie.setDrawDataPoints(true);
@@ -96,6 +99,9 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 			graphView.getGridLabelRenderer().setHumanRounding(false, true);
 
 			graphView.setVisibility(View.VISIBLE);
+		} else {
+			graphView.setVisibility(View.GONE);
+			errorView.setVisibility(View.VISIBLE);
 		}
 	}
 

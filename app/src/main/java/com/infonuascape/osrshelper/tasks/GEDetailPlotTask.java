@@ -44,12 +44,14 @@ public class GEDetailPlotTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(final Void result) {
-        if(detailPlotResults != null && detailPlotResults.datapoints != null
-                && detailInfoResults != null && detailInfoResults.itemInfo != null) {
-            if(listener != null) {
+        if(listener != null) {
+            if (detailPlotResults != null && detailPlotResults.datapoints != null
+                    && detailInfoResults != null && detailInfoResults.itemInfo != null) {
                 final DataPoint[] dataPoints = detailPlotResults.datapoints.toArray(new DataPoint[detailPlotResults.datapoints.size()]);
                 final DataPoint[] averages = detailPlotResults.averages.toArray(new DataPoint[detailPlotResults.averages.size()]);
                 listener.onInfoFetched(dataPoints, averages, detailInfoResults.itemInfo);
+            } else {
+                listener.onInfoFetched(null, null, null);
             }
         }
     }

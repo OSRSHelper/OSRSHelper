@@ -109,11 +109,15 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
 
     @Override
     public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GEItemInfo itemInfo) {
-        DBController.addGrandExchangeItem(getContext(), itemInfo);
-        this.datapoints = datapoints;
-        this.averages = averages;
-        this.itemInfo = itemInfo;
-        refreshItemInfo();
+        if(datapoints != null && averages != null) {
+            DBController.addGrandExchangeItem(getContext(), itemInfo);
+            this.datapoints = datapoints;
+            this.averages = averages;
+            this.itemInfo = itemInfo;
+            refreshItemInfo();
+        } else {
+            ((TextView) getView().findViewById(R.id.item_name)).setText(R.string.error_when_fetching);
+        }
         ((GrandExchangePeriodFragment) adapter.getItem(viewPager.getCurrentItem())).onPageVisible(datapoints, averages);
     }
 
