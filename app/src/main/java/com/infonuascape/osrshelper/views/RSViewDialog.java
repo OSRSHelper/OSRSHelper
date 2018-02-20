@@ -45,7 +45,12 @@ public class RSViewDialog {
                 dialogView.findViewById(R.id.skill_exp_to_lvl).setVisibility(View.GONE);
             }
 
-            ((TextView) dialogView.findViewById(R.id.skill_rank)).setText(NumberFormat.getInstance().format(skill.getRank()));
+            if(skill.getRank() > 0) {
+                ((TextView) dialogView.findViewById(R.id.skill_rank)).setText(NumberFormat.getInstance().format(skill.getRank()));
+            } else {
+                dialogView.findViewById(R.id.skill_rank_title).setVisibility(View.GONE);
+                dialogView.findViewById(R.id.skill_rank).setVisibility(View.GONE);
+            }
 
             builder.setView(dialogView);
             final AlertDialog dialog = builder.create();

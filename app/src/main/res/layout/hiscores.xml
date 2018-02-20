@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/profile_header"
         android:layout_marginTop="10dp"
         android:overScrollMode="never"
         android:scrollbars="none"
@@ -50,11 +51,15 @@
         </LinearLayout>
     </ScrollView>
 
-    <ProgressBar
-        android:id="@+id/progressbar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+    <TextView
+        android:id="@+id/error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/profile_header"
+        android:gravity="center"
+        android:background="@color/black_semi_transparent"
+        android:text="@string/error_when_fetching"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 
-</LinearLayout>
+</RelativeLayout>

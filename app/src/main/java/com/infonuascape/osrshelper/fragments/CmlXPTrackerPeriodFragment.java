@@ -29,6 +29,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 	private CmlTrackerTableAdapter tableFiller;
 	private TableLayout tableLayout;
 	private View progressBar;
+	private View emptyView;
 	private boolean forceRepopulate;
 
 	public static CmlXPTrackerPeriodFragment newInstance(final Account account, final TrackerTime period) {
@@ -48,6 +49,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 		View view = inflater.inflate(R.layout.cml_xp_tracker_period, null);
 
 		progressBar = view.findViewById(R.id.progressbar);
+		emptyView = view.findViewById(R.id.empty_view);
 
 		tableLayout = view.findViewById(R.id.table_tracking);
 		tableFiller = new CmlTrackerTableAdapter(getContext(), tableLayout);
@@ -67,6 +69,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 				if(getView() != null) {
 					tableLayout.removeAllViews();
 					progressBar.setVisibility(View.VISIBLE);
+					emptyView.setVisibility(View.GONE);
 				}
 				killAsyncTaskIfStillRunning();
 				asyncTask = new CmlTrackerFetcherTask(getActivity(), this, account, time);
@@ -102,6 +105,8 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();
+		} else {
+			emptyView.setVisibility(View.VISIBLE);
 		}
 
 		final OSRSFragment currentFragment = MainFragmentController.getInstance().getCurrentFragment();
@@ -119,6 +124,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 				public void run() {
 					if(getView() != null) {
 						progressBar.setVisibility(View.GONE);
+						emptyView.setVisibility(View.VISIBLE);
 					}
 
 				}

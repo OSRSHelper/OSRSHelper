@@ -3,7 +3,6 @@ package com.infonuascape.osrshelper.widget.grandexchange;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -55,12 +54,12 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
         // set value into textview
         if(rsBuddyPrice != null) {
             if(getPrice(rsBuddyPrice) == 0) {
-                rv.setTextViewText(R.id.item_price, mContext.getResources().getString(R.string.unknown));
+                rv.setTextViewText(R.id.item_price, mContext.getResources().getString(R.string.unavailable_right_now));
             } else {
                 rv.setTextViewText(R.id.item_price, NumberFormat.getInstance().format(getPrice(rsBuddyPrice)) + "gp");
             }
         } else if(isError) {
-            rv.setTextViewText(R.id.item_price, mContext.getResources().getString(R.string.error));
+            rv.setTextViewText(R.id.item_price, mContext.getResources().getString(R.string.error_when_fetching));
         }
 
         // Return the remote views object.
@@ -88,7 +87,7 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
         try {
             RSBuddyPrice newRsBuddyPrice = new RSBuddyPriceFetcher(mContext.getApplicationContext()).fetch(itemId);
 
-            if(newRsBuddyPrice != null && getPrice(newRsBuddyPrice) > 0) {
+            if(newRsBuddyPrice != null) {
                 rsBuddyPrice = newRsBuddyPrice;
             }
             isError = rsBuddyPrice == null;

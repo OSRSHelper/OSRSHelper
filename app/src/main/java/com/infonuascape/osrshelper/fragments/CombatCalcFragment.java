@@ -192,7 +192,23 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 
 	@Override
 	public void onHiscoresError(String errorMessage) {
-
+		if(getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (getView() != null) {
+						hitpointEdit.setText(String.valueOf(10));
+						attackEdit.setText(String.valueOf(1));
+						strengthEdit.setText(String.valueOf(1));
+						defenceEdit.setText(String.valueOf(1));
+						magicEdit.setText(String.valueOf(1));
+						rangingEdit.setText(String.valueOf(1));
+						prayerEdit.setText(String.valueOf(1));
+						changeCombatText();
+					}
+				}
+			});
+		}
 	}
 
 

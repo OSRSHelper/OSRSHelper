@@ -35,6 +35,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	private Account account;
 	private PlayerSkills playerSkills;
 	private RSView rsView;
+	private View errorView;
 	private ProfileHeaderFragment profileHeaderFragment;
 
 	public static HighScoreFragment newInstance(final Account account) {
@@ -62,11 +63,13 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		profileHeaderFragment.setTitle(R.string.highscores);
 
 		rsView = view.findViewById(R.id.rs_view);
+		errorView = view.findViewById(R.id.error_view);
 
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
 
 		asyncTask = new HiscoresFetcherTask(getContext(), this, account);
 		asyncTask.execute();
+		errorView.setVisibility(View.GONE);
 
 		return view;
 	}
@@ -130,7 +133,16 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 	@Override
 	public void onHiscoresError(String errorMessage) {
-
+		if(getActivity() != null) {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(errorView != null) {
+						errorView.setVisibility(View.VISIBLE);
+					}
+				}
+			});
+		}
 	}
 
 	@Override

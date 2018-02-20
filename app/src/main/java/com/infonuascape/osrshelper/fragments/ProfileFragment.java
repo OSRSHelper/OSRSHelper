@@ -186,8 +186,12 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     public void onProfileInfoLoaded(ArrayList<Delta> deltas) {
         this.deltas = deltas;
         asyncTask = null;
-        adapter = new ProfileDeltasAdapter(getContext(), deltas);
-        recyclerView.setAdapter(adapter);
+        if(deltas != null && deltas.size() > 0) {
+            adapter = new ProfileDeltasAdapter(getContext(), deltas);
+            recyclerView.setAdapter(adapter);
+        } else {
+            getView().findViewById(R.id.profile_gains).setVisibility(View.GONE);
+        }
     }
 
     @Override

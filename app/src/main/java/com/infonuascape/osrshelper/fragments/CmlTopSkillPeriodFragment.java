@@ -32,6 +32,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
     private SkillType skillType;
     private List<PlayerExp> playerExp;
     private ProgressBar progressBar;
+    private View emptyView;
 
     private RecyclerView recyclerView;
     private CmlTopSkillPeriodAdapter adapter;
@@ -53,6 +54,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
         View view = inflater.inflate(R.layout.cml_top_skill_period, null);
 
         progressBar = view.findViewById(R.id.progress_bar);
+        emptyView = view.findViewById(R.id.empty_view);
         recyclerView = view.findViewById(R.id.cml_top_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -72,6 +74,9 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
                 asyncTask.execute();
                 if(progressBar != null) {
                     progressBar.setVisibility(View.VISIBLE);
+                }
+                if(emptyView != null) {
+                    emptyView.setVisibility(View.GONE);
                 }
             }
         } else {
@@ -95,6 +100,8 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
             if (playerList != null) {
                 adapter = new CmlTopSkillPeriodAdapter(this, playerList, period);
                 recyclerView.setAdapter(adapter);
+            } else {
+                emptyView.setVisibility(View.VISIBLE);
             }
         }
     }
