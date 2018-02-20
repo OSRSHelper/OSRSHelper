@@ -66,42 +66,44 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 	}
 
 	public void onPageVisible(final DataPoint[] datapoints, DataPoint[] averages) {
-		progressBar.setVisibility(View.GONE);
-		graphView.removeAllSeries();
-		if(datapoints != null && averages != null) {
-			errorView.setVisibility(View.GONE);
-			DataPoint[] list = Arrays.copyOfRange(datapoints, Math.max(0, datapoints.length - period.getDays()), datapoints.length);
-			LineGraphSeries<DataPoint> datapointsSerie = new LineGraphSeries<>(list);
-			datapointsSerie.setDrawDataPoints(true);
-			datapointsSerie.setColor(getContext().getResources().getColor(R.color.green));
-			datapointsSerie.setTitle(getContext().getResources().getString(R.string.daily_average));
-			datapointsSerie.setOnDataPointTapListener(this);
-			graphView.addSeries(datapointsSerie);
+		if(getView() != null) {
+			progressBar.setVisibility(View.GONE);
+			graphView.removeAllSeries();
+			if (datapoints != null && averages != null) {
+				errorView.setVisibility(View.GONE);
+				DataPoint[] list = Arrays.copyOfRange(datapoints, Math.max(0, datapoints.length - period.getDays()), datapoints.length);
+				LineGraphSeries<DataPoint> datapointsSerie = new LineGraphSeries<>(list);
+				datapointsSerie.setDrawDataPoints(true);
+				datapointsSerie.setColor(getContext().getResources().getColor(R.color.green));
+				datapointsSerie.setTitle(getContext().getResources().getString(R.string.daily_average));
+				datapointsSerie.setOnDataPointTapListener(this);
+				graphView.addSeries(datapointsSerie);
 
-			LineGraphSeries<DataPoint> averageSerie = new LineGraphSeries<>(Arrays.copyOfRange(averages, Math.max(0, averages.length - period.getDays()), averages.length));
-			averageSerie.setColor(getContext().getResources().getColor(R.color.orange));
-			averageSerie.setTitle(getContext().getResources().getString(R.string.trend));
-			averageSerie.setDrawDataPoints(true);
-			averageSerie.setDataPointsRadius(6f);
-			averageSerie.setOnDataPointTapListener(this);
-			graphView.addSeries(averageSerie);
+				LineGraphSeries<DataPoint> averageSerie = new LineGraphSeries<>(Arrays.copyOfRange(averages, Math.max(0, averages.length - period.getDays()), averages.length));
+				averageSerie.setColor(getContext().getResources().getColor(R.color.orange));
+				averageSerie.setTitle(getContext().getResources().getString(R.string.trend));
+				averageSerie.setDrawDataPoints(true);
+				averageSerie.setDataPointsRadius(6f);
+				averageSerie.setOnDataPointTapListener(this);
+				graphView.addSeries(averageSerie);
 
-			graphView.getViewport().setMinX(datapointsSerie.getLowestValueX());
-			graphView.getViewport().setMaxX(datapointsSerie.getHighestValueX());
-			graphView.getViewport().setXAxisBoundsManual(true);
+				graphView.getViewport().setMinX(datapointsSerie.getLowestValueX());
+				graphView.getViewport().setMaxX(datapointsSerie.getHighestValueX());
+				graphView.getViewport().setXAxisBoundsManual(true);
 
-			graphView.getGridLabelRenderer().setNumHorizontalLabels(period.getNbLabels());
-			graphView.getGridLabelRenderer().setNumVerticalLabels(10);
-			graphView.getLegendRenderer().setVisible(true);
-			graphView.getLegendRenderer().setBackgroundColor(getContext().getResources().getColor(R.color.grand_exchange_legend));
-			graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+				graphView.getGridLabelRenderer().setNumHorizontalLabels(period.getNbLabels());
+				graphView.getGridLabelRenderer().setNumVerticalLabels(10);
+				graphView.getLegendRenderer().setVisible(true);
+				graphView.getLegendRenderer().setBackgroundColor(getContext().getResources().getColor(R.color.grand_exchange_legend));
+				graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
-			graphView.getGridLabelRenderer().setHumanRounding(false, true);
+				graphView.getGridLabelRenderer().setHumanRounding(false, true);
 
-			graphView.setVisibility(View.VISIBLE);
-		} else {
-			graphView.setVisibility(View.GONE);
-			errorView.setVisibility(View.VISIBLE);
+				graphView.setVisibility(View.VISIBLE);
+			} else {
+				graphView.setVisibility(View.GONE);
+				errorView.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 

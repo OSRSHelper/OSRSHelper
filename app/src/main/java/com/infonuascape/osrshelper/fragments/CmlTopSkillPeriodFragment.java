@@ -80,7 +80,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
                 }
             }
         } else {
-            if(recyclerView.getAdapter() == null) {
+            if(recyclerView != null && recyclerView.getAdapter() == null) {
                 if(adapter == null) {
                     adapter = new CmlTopSkillPeriodAdapter(this, playerExp, period);
                 }
