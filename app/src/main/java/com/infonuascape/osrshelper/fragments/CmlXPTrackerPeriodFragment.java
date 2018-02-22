@@ -105,7 +105,7 @@ public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements Tra
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();
-		} else {
+		} else if (getView() != null) {
 			emptyView.setVisibility(View.VISIBLE);
 		}
 
