@@ -19,6 +19,7 @@ import com.infonuascape.osrshelper.listeners.NewsFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.OSRSNews;
 import com.infonuascape.osrshelper.tasks.OSRSNewsTask;
+import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.List;
 
@@ -143,12 +144,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     public void onClick(View view) {
         if(view.getId() == R.id.subscribe_btn) {
             final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
-            PreferencesController.setPreference(getContext(), PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, !isSubscribedToNews);
-            if (isSubscribedToNews) {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
-            } else {
-                FirebaseMessaging.getInstance().subscribeToTopic("news");
-            }
+            Utils.subscribeToNews(getContext(), !isSubscribedToNews);
             refreshSubscribeBtn();
         }
     }

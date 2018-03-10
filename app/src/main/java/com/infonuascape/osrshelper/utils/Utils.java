@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
 import com.infonuascape.osrshelper.db.PreferencesController;
@@ -282,6 +283,15 @@ public class Utils {
 		if (activity.getCurrentFocus() != null) {
 			InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+		}
+	}
+
+	public static void subscribeToNews(final Context context, boolean isSubscribed) {
+		PreferencesController.setPreference(context, PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, isSubscribed);
+		if (!isSubscribed) {
+			FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+		} else {
+			FirebaseMessaging.getInstance().subscribeToTopic("news");
 		}
 	}
 }
