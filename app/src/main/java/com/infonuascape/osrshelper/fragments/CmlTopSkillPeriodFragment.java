@@ -70,7 +70,7 @@ public class CmlTopSkillPeriodFragment extends OSRSPagerFragment implements TopP
         Logger.add(TAG, ": onPageVisible: period=" + period.name());
         if(playerExp == null) {
             if(asyncTask== null) {
-                asyncTask = new CmlTopFetcherTask(getActivity(), this, skillType, period);
+                asyncTask = new CmlTopFetcherTask(getContext(), this, skillType, period);
                 asyncTask.execute();
                 if(progressBar != null) {
                     progressBar.setVisibility(View.VISIBLE);

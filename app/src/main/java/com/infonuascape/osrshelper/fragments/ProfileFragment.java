@@ -97,22 +97,24 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
 
     private void refreshScreen() {
         initProfile();
-        ((TextView) getView().findViewById(R.id.account_type)).setText(Utils.getAccountTypeString(account.type));
-        //Is profile
-        getView().findViewById(R.id.account_set_profile).setVisibility(account.isProfile ? View.GONE : View.VISIBLE);
-        //Is following
-        if(account.isFollowing) {
-            ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_full);
-            ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.following);
-        } else {
-            ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_empty);
-            ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.follow);
-        }
-        profileHeaderFragment.setTitle(R.string.profile);
-        profileHeaderFragment.refreshProfile(account);
-        loadDeltas();
-        if(getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).refreshProfileAccount();
+        if(getView() != null) {
+            ((TextView) getView().findViewById(R.id.account_type)).setText(Utils.getAccountTypeString(account.type));
+            //Is profile
+            getView().findViewById(R.id.account_set_profile).setVisibility(account.isProfile ? View.GONE : View.VISIBLE);
+            //Is following
+            if (account.isFollowing) {
+                ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_full);
+                ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.following);
+            } else {
+                ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_empty);
+                ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.follow);
+            }
+            profileHeaderFragment.setTitle(R.string.profile);
+            profileHeaderFragment.refreshProfile(account);
+            loadDeltas();
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).refreshProfileAccount();
+            }
         }
     }
 
