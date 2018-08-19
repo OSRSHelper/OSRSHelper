@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.fetchers.hiscore;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.SkillType;
@@ -84,7 +85,7 @@ public class HiscoreFetcher {
 	}
 
 	private String getAPIEndpoint() {
-		return String.format("/hiscore/%1$s/%2$s", getAccountType().name().toLowerCase(), getUserName());
+		return String.format("/hiscore/%1$s/%2$s", getAccountType().name().toLowerCase(), Uri.encode(userName));
     }
 
 	private JSONObject getDataFromAPI() throws PlayerNotFoundException, JSONException, APIError {

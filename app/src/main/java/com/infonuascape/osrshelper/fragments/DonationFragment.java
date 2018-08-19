@@ -68,7 +68,9 @@ public class DonationFragment extends OSRSFragment implements View.OnClickListen
                     .setSku(product)
                     .setType(BillingClient.SkuType.INAPP)
                     .build();
-            mBillingClient.launchBillingFlow(getActivity(), flowParams);
+            if(getActivity() != null) {
+                mBillingClient.launchBillingFlow(getActivity(), flowParams);
+            }
         } else {
             isTryAgainToBuy = product;
             mBillingClient.startConnection(this);

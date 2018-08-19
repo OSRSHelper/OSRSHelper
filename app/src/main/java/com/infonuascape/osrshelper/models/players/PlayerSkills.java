@@ -32,9 +32,7 @@ public class PlayerSkills {
 	public Skill hunter = new Skill(SkillType.Hunter);
 	public Skill construction = new Skill(SkillType.Construction);
 
-	public String sinceWhen;
 	public String lastUpdate;
-	public boolean hasOneAbove99;
 
 	public List<Skill> skillList = new ArrayList<Skill>();
 
@@ -63,21 +61,6 @@ public class PlayerSkills {
 		skillList.add(this.runecraft);
 		skillList.add(this.hunter);
 		skillList.add(this.construction);
-	}
-	public void setSinceWhen(String sinceWhen) {
-		this.sinceWhen = sinceWhen;
-	}
-
-	public String getSinceWhen() {
-		return sinceWhen;
-	}
-
-	public String getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(String lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	public static ArrayList<Skill> getSkillsInOrder(PlayerSkills playerSkills) {

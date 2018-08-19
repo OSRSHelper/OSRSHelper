@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Utils;
 
@@ -47,26 +48,32 @@ public class SuggestionsAdapter extends CursorAdapter {
 		final Account account = DBController.createAccountFromCursor(cursor);
 
 		ViewHolder holder = (ViewHolder) view.getTag();
-		holder.username.setText(account.username);
-		holder.image.setImageResource(Utils.getAccountTypeResource(account.type));
-		holder.delete.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if(context != null) {
-					new AlertDialog.Builder(context)
-							.setTitle(R.string.delete)
-							.setMessage(R.string.delete_username)
-							.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialogInterface, int i) {
-									DBController.deleteAccount(context, account);
-									notifyDataSetChanged();
-								}
-							})
-							.setNegativeButton(R.string.dialog_no, null)
-							.create().show();
+		if(account != null) {
+			holder.username.setText(account.username);
+			holder.image.setImageResource(Utils.getAccountTypeResource(account.type));
+			holder.delete.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (context != null) {
+						new AlertDialog.Builder(context)
+								.setTitle(R.string.delete)
+								.setMessage(R.string.delete_username)
+								.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialogInterface, int i) {
+										DBController.deleteAccount(context, account);
+										notifyDataSetChanged();
+									}
+								})
+								.setNegativeButton(R.string.dialog_no, null)
+								.create().show();
+					}
 				}
-			}
-		});
+			});
+		} else {
+			holder.username.setText(R.string.unknown_account);
+			holder.image.setImageResource(Utils.getAccountTypeResource(AccountType.REGULAR));
+			holder.delete.setOnClickListener(null);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.fetchers.profile;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -29,7 +30,7 @@ public class ProfileInfoFetcher {
     }
 
     public ArrayList<Delta> fetch(final String username, final int seconds) {
-        HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(String.format(API_URL, username, String.valueOf(seconds)), Request.Method.GET);
+        HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(String.format(API_URL, Uri.encode(username), String.valueOf(seconds)), Request.Method.GET);
         String output = null;
         if (httpRequest.getStatusCode() == StatusCode.FOUND) { // got 200,
             output = httpRequest.getOutput();

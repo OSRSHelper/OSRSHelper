@@ -96,7 +96,7 @@ public class DBController {
 			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, null);
 
 			try {
-				if (cursor.moveToFirst()) {
+				if (cursor != null && cursor.moveToFirst()) {
 					account = createAccountFromCursor(cursor);
 				}
 			} catch (Exception e) {
@@ -141,7 +141,7 @@ public class DBController {
 			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, null);
 
 			try {
-				if (cursor.moveToFirst()) {
+				if (cursor != null && cursor.moveToFirst()) {
 					account = createAccountFromCursor(cursor);
 				}
 			} catch (Exception e) {
@@ -182,14 +182,20 @@ public class DBController {
 	}
 
 	public static Account createAccountFromCursor(final Cursor cursor) {
-		final int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
-		final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
-		final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
-		final long lastTimeUsed = cursor.getInt(cursor.getColumnIndex(COLUMN_TIME_USED));
-		final boolean isProfile = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_PROFILE)) == 1;
-		final boolean isFollowing = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_FOLLOWING)) == 1;
-		final int combatLvl = cursor.getInt(cursor.getColumnIndex(COLUMN_COMBAT_LVL));
-		return new Account(id, username, AccountType.valueOf(accountType), lastTimeUsed, isProfile, isFollowing, combatLvl);
+		try {
+			final int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
+			final String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+			final String accountType = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACCOUNT_TYPE));
+			final long lastTimeUsed = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TIME_USED));
+			final boolean isProfile = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_PROFILE)) == 1;
+			final boolean isFollowing = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_FOLLOWING)) == 1;
+			final int combatLvl = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_COMBAT_LVL));
+			return new Account(id, username, AccountType.valueOf(accountType), lastTimeUsed, isProfile, isFollowing, combatLvl);
+		} catch(IllegalArgumentException iae) {
+			iae.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public static ArrayList<Account> getAllAccounts(final Context context) {
@@ -200,9 +206,12 @@ public class DBController {
 			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, null, null,
 					COLUMN_TIME_USED + " DESC");
 			try {
-				if (cursor.moveToFirst()) {
+				if (cursor != null && cursor.moveToFirst()) {
 					do {
-						accounts.add(createAccountFromCursor(cursor));
+						Account account = createAccountFromCursor(cursor);
+						if(account != null) {
+							accounts.add(account);
+						}
 					} while (cursor.moveToNext());
 				}
 			} catch (Exception e) {
@@ -227,9 +236,12 @@ public class DBController {
 			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs,
 					COLUMN_TIME_USED + " DESC");
 			try {
-				if (cursor.moveToFirst()) {
+				if (cursor != null && cursor.moveToFirst()) {
 					do {
-						accounts.add(createAccountFromCursor(cursor));
+						Account account = createAccountFromCursor(cursor);
+						if(account != null) {
+							accounts.add(account);
+						}
 					} while (cursor.moveToNext());
 				}
 			} catch (Exception e) {

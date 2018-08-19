@@ -32,7 +32,7 @@ public class ProfileInfoFetcherTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        deltas = new ProfileInfoFetcher(context.get()).fetch(account.username, 60 * 60 * 24 * 30);
+        deltas = new ProfileInfoFetcher(context.get()).fetch(account.username, 60 * 60 * 24 * 30 * 3); //Last three months
 
         //Sort desc
         Collections.sort(deltas, new Comparator<Delta>() {

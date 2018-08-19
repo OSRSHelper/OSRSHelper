@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
@@ -287,11 +288,16 @@ public class Utils {
 	}
 
 	public static void subscribeToNews(final Context context, boolean isSubscribed) {
-		PreferencesController.setPreference(context, PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, isSubscribed);
-		if (!isSubscribed) {
-			FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
-		} else {
-			FirebaseMessaging.getInstance().subscribeToTopic("news");
+		try {
+			FirebaseApp.initializeApp(context.getApplicationContext());
+			PreferencesController.setPreference(context, PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, isSubscribed);
+			if (!isSubscribed) {
+				FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+			} else {
+				FirebaseMessaging.getInstance().subscribeToTopic("news");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

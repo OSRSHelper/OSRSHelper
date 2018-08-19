@@ -264,9 +264,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onSuggestionClick(int position) {
         Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
-        MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
-        searchView.setQuery(null, false);
-        searchView.clearFocus();
+        if(account != null) {
+            MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
+            searchView.setQuery(null, false);
+            searchView.clearFocus();
+        }
         return false;
     }
 

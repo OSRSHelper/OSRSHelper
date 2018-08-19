@@ -117,10 +117,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 			if (getView() != null) {
 				profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
 				description.setVisibility(View.VISIBLE);
-				if (playerSkills.sinceWhen != null) {
-					title.setText(R.string.tracking_since);
-					description.setText(playerSkills.sinceWhen);
-				} else if (playerSkills.lastUpdate != null) {
+				if (playerSkills.lastUpdate != null) {
 					title.setText(R.string.last_update);
 					description.setText(playerSkills.lastUpdate);
 				} else {

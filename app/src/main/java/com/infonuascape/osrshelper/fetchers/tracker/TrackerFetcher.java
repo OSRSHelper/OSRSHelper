@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.fetchers.tracker;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
@@ -79,7 +80,7 @@ public class TrackerFetcher {
 		long seconds = ehp.getLong("lastupdated");
 		long millis = seconds * 1000;
 		Date date = new Date(System.currentTimeMillis() - millis);
-		ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG).format(date);
+		ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(date);
 
 		JSONObject skills = ehp.getJSONObject("skills");
 		for (Iterator<String> it = skills.keys(); it.hasNext(); ) {
@@ -117,7 +118,7 @@ public class TrackerFetcher {
 	}
 
 	private String getAPIEndpoint() {
-		return String.format("/track/ehp/%1$s/%2$s", getUserName(), getLookupTime());
+		return String.format("/track/ehp/%1$s/%2$s", Uri.encode(userName), getLookupTime());
 	}
 
 	private JSONObject getDataFromAPI() throws PlayerNotFoundException, JSONException, APIError {
