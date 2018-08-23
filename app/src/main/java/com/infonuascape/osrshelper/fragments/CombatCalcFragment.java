@@ -118,7 +118,9 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 			playerSkills.magic = magic.isEmpty() ? new Skill(SkillType.Magic, 0, (short) 0) : new Skill(SkillType.Magic, 0, Short.valueOf(magic));
 
 			boolean isOneShown = false;
-			profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
+
+			int combatLvl = Utils.getCombatLvl(playerSkills);
+			profileHeaderFragment.showCombatLvl(combatLvl);
 
 			int missingAttStr = Utils.getMissingAttackStrengthUntilNextCombatLvl(playerSkills);
 			if (playerSkills.attack.getLevel() + playerSkills.strength.getLevel() + missingAttStr < 199) {
@@ -166,10 +168,11 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 				prayerText.setVisibility(View.GONE);
 			}
 
+			lvlNeededText.setVisibility(View.VISIBLE);
 			if (!isOneShown) {
 				lvlNeededText.setText(R.string.maxed_out);
 			} else {
-				lvlNeededText.setText(R.string.lvl_need);
+				lvlNeededText.setText(getString(R.string.lvl_need, combatLvl + 1));
 			}
 		}
 	}

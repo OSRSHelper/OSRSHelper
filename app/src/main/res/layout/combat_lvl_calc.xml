@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorAccent">
 
     <fragment
         android:id="@+id/profile_header"
@@ -13,7 +14,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_below="@id/profile_header">
 
         <LinearLayout
@@ -26,7 +26,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -58,7 +57,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -90,7 +88,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -122,7 +119,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -154,7 +150,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -186,7 +181,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -218,7 +212,6 @@
             <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -251,8 +244,10 @@
                 android:id="@+id/number_lvl_needed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/lvl_need"
                 android:textColor="@color/text_normal"
                 android:textSize="16sp" />
@@ -261,6 +256,8 @@
                 android:id="@+id/attack_strength_needed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/attack_strength_lvl_needed"
                 android:textColor="@color/text_normal" />
 
@@ -268,6 +265,8 @@
                 android:id="@+id/hitpoint_defence_needed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/hitpoint_defence_lvl_needed"
                 android:textColor="@color/text_normal" />
 
@@ -275,6 +274,8 @@
                 android:id="@+id/ranging_needed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/ranging_lvl_needed"
                 android:textColor="@color/text_normal" />
 
@@ -282,6 +283,8 @@
                 android:id="@+id/magic_needed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/magic_lvl_needed"
                 android:textColor="@color/text_normal" />
 
@@ -289,6 +292,8 @@
                 android:id="@+id/prayer_needed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:text="@string/prayer_lvl_needed"
                 android:textColor="@color/text_normal" />
         </LinearLayout>

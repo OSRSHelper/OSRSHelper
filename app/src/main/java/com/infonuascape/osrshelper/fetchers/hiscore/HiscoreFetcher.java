@@ -28,7 +28,7 @@ public class HiscoreFetcher {
 
 	public HiscoreFetcher(final Context context, String userName, AccountType accountType) {
 		this.context = context;
-		this.userName = userName.replace(" ", "%20");
+		this.userName = Uri.encode(userName);
 		this.accountType = accountType;
 	}
 
@@ -85,7 +85,7 @@ public class HiscoreFetcher {
 	}
 
 	private String getAPIEndpoint() {
-		return String.format("/hiscore/%1$s/%2$s", getAccountType().name().toLowerCase(), Uri.encode(userName));
+		return String.format("/hiscore/%1$s/%2$s", getAccountType().name().toLowerCase(), userName);
     }
 
 	private JSONObject getDataFromAPI() throws PlayerNotFoundException, JSONException, APIError {
