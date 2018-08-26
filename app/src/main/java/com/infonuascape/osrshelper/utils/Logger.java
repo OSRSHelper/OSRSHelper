@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import io.fabric.sdk.android.Fabric;
+
 /**
  * Created by marc_ on 2018-02-05.
  */
@@ -17,7 +19,9 @@ public class Logger {
         for(String log : logs) stringBuilder.append(log);
 
         String log = stringBuilder.toString();
-        Crashlytics.log(log);
+        if(Fabric.isInitialized()) {
+            Crashlytics.log(log);
+        }
         Log.d(TAG, log);
     }
 }
