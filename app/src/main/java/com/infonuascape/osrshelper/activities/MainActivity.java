@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_world_map) {
             fragment = WorldMapFragment.newInstance();
         } else if (id == R.id.nav_wiki) {
-            fragment = WebViewFragment.newInstance("http://2007.runescape.wikia.com/wiki/2007scape_Wiki");
+            fragment = WebViewFragment.newInstance("https://oldschool.runescape.wiki/");
         } else if (id == R.id.nav_news) {
             fragment = NewsFragment.newInstance();
         } else if (id == R.id.nav_grand_exchange) {
