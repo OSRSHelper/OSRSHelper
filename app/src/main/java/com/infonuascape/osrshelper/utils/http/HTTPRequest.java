@@ -1,12 +1,10 @@
 package com.infonuascape.osrshelper.utils.http;
 
-import android.content.Context;
-import android.util.Log;
-
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.infonuascape.osrshelper.utils.Logger;
 
 import java.util.HashMap;
@@ -55,6 +53,7 @@ public class HTTPRequest {
 
 		Logger.add(TAG, ": ", url);
 		StringRequest stringRequest = new StringRequest(requestMethod, url, future, future);
+		stringRequest.setRetryPolicy(new DefaultRetryPolicy(15000, 1 ,1));
 		queue.add(stringRequest);
 
 		try {

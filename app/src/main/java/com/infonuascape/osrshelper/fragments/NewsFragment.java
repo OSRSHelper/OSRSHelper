@@ -1,16 +1,12 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.NewsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
@@ -22,6 +18,10 @@ import com.infonuascape.osrshelper.tasks.OSRSNewsTask;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by marc_ on 2018-01-20.

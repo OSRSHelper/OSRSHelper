@@ -1,10 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeDetailFragmentAdapter;
@@ -21,6 +18,10 @@ import com.infonuascape.osrshelper.listeners.GEDetailListener;
 import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
 import com.infonuascape.osrshelper.tasks.GEDetailPlotTask;
 import com.jjoe64.graphview.series.DataPoint;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPager.OnPageChangeListener, GEDetailListener, View.OnClickListener {
     private static final String TAG = "GrandExchangeDetailFragment";

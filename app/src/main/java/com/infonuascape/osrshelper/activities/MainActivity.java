@@ -6,15 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +23,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setOnSuggestionListener(this);
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint(getResources().getString(R.string.lookup_user));
-        View searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        View searchAutoComplete = searchView.findViewById(R.id.search_src_text);
         if(searchAutoComplete instanceof SearchView.SearchAutoComplete) {
             ((SearchView.SearchAutoComplete) searchAutoComplete).setThreshold(0);
         }

@@ -2,8 +2,6 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -24,6 +22,8 @@ import com.infonuascape.osrshelper.utils.Utils;
 
 import java.text.NumberFormat;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by marc_ on 2018-01-21.

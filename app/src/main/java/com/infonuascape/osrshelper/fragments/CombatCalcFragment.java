@@ -1,7 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,6 +18,8 @@ import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.utils.Utils;
+
+import androidx.annotation.Nullable;
 
 public class CombatCalcFragment extends OSRSFragment implements TextWatcher, HiscoresFetcherListener {
 	private static final String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";

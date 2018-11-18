@@ -3,9 +3,6 @@ package com.infonuascape.osrshelper.fragments;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +14,13 @@ import android.widget.ListView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PoIAdapter;
 import com.infonuascape.osrshelper.utils.Utils;
+
+import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class WorldMapFragment extends OSRSFragment implements OnItemClickListener, OnClickListener {
 	private static final String TAG = "WorldMapFragment";

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,8 @@ import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Utils;
+
+import androidx.cursoradapter.widget.CursorAdapter;
 
 public class SuggestionsAdapter extends CursorAdapter {
 

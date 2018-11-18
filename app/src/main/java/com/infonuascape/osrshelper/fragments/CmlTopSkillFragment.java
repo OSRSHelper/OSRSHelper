@@ -1,18 +1,19 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlTopSkillFragmentAdapter;
 import com.infonuascape.osrshelper.enums.SkillType;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
 
 public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPageChangeListener {
     private static final String TAG = "CmlTopSkillFragment";

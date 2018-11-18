@@ -1,9 +1,7 @@
 package com.infonuascape.osrshelper.fragments;
 
 
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by marc_ on 2018-01-20.

@@ -1,9 +1,6 @@
 package com.infonuascape.osrshelper.views;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -15,6 +12,10 @@ import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by marc-antoinehinse on 2018-01-13.

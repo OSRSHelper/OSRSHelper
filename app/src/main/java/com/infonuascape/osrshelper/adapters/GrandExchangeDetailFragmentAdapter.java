@@ -1,12 +1,11 @@
 package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.GrandExchangePeriods;
 import com.infonuascape.osrshelper.fragments.GrandExchangePeriodFragment;
-import com.infonuascape.osrshelper.fragments.OSRSFragment;
 import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
 
 public class GrandExchangeDetailFragmentAdapter extends OSRSNestedViewPagerAdapter{

@@ -2,8 +2,6 @@ package com.infonuascape.osrshelper.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +22,8 @@ import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.Series;
 
 import java.util.Arrays;
+
+import androidx.annotation.Nullable;
 
 public class GrandExchangePeriodFragment extends OSRSPagerFragment implements OnDataPointTapListener {
 	private static final String TAG = "GrandExchangePeriodFrag";

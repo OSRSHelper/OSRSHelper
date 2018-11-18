@@ -1,13 +1,14 @@
 package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.fragments.CmlXPTrackerPeriodFragment;
 import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
 import com.infonuascape.osrshelper.models.Account;
+
+import androidx.fragment.app.FragmentManager;
 
 public class CmlXpTrackerFragmentAdapter extends OSRSNestedViewPagerAdapter {
 

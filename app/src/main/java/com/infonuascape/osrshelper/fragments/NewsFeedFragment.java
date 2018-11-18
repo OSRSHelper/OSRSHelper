@@ -1,8 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +10,8 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by marc_ on 2018-01-20.

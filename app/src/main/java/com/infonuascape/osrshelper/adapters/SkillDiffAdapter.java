@@ -1,9 +1,6 @@
 package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,15 +8,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
-import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.models.players.SkillDiff;
 import com.infonuascape.osrshelper.utils.Logger;
 
-import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.util.Date;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by marc_ on 2018-01-20.

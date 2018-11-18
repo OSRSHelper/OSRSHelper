@@ -1,8 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,8 @@ import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CmlTrackerFetcherTask;
 import com.infonuascape.osrshelper.utils.Logger;
+
+import androidx.annotation.Nullable;
 
 public class CmlXPTrackerPeriodFragment extends OSRSPagerFragment implements TrackerFetcherListener {
 	private static final String TAG = "CmlXPTrackerPeriodFragm";

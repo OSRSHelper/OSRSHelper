@@ -1,7 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.infonuascape.osrshelper.R;
 
 import java.util.List;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by marc_ on 2017-09-11.

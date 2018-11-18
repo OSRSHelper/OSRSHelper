@@ -4,13 +4,11 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;

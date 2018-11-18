@@ -1,10 +1,11 @@
 package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.ViewGroup;
 
 import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;

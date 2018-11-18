@@ -2,9 +2,6 @@ package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +17,11 @@ import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
-import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 
 public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
 	private GrandExchangeSearchAdapter adapter;

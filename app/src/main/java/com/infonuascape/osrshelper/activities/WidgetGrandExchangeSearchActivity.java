@@ -7,31 +7,26 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeSearchAdapter;
-import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
-import com.infonuascape.osrshelper.fragments.GrandExchangeDetailFragment;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.widget.grandexchange.GrandExchangeAppWidgetProvider;
-import com.infonuascape.osrshelper.widget.hiscores.OSRSAppWidgetProvider;
 
 import java.util.ArrayList;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 
 public class WidgetGrandExchangeSearchActivity extends Activity implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener, View.OnFocusChangeListener {
 	private static final String TAG = "WidgetGrandExchangeSear";
