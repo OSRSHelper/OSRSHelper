@@ -1,9 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/osrs_quick_actions_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/osrs_quick_actions_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quick_actions_title"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="4dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_normal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                tools:cardCornerRadius="4dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/world_map_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/gen_white_bt_sel"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/world_map"
+                        android:tint="@color/text_normal"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="left"
+                        android:text="@string/world_map"
+                        android:textColor="@color/text_normal"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                tools:cardCornerRadius="4dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/grand_exchange_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/gen_white_bt_sel"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/grandexchange"
+                        android:tint="@color/text_normal"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="left"
+                        android:text="@string/grand_exchange"
+                        android:textColor="@color/text_normal"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                tools:cardCornerRadius="4dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/bubble_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/gen_white_bt_sel"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/member"
+                        android:tint="@color/text_normal"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="left"
+                        android:text="@string/start_bubble"
+                        android:textColor="@color/text_normal"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/profile_not_set"
@@ -35,16 +160,16 @@
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
-        android:id="@+id/osrs_quick_actions_container"
+        android:id="@+id/osrs_quick_actions_profile_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/osrs_quick_actions_title"
+            android:id="@+id/osrs_quick_actions_profile_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/quick_actions_title"
+            tools:text="jocepain"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="4dp"
             android:textSize="16sp"
@@ -52,7 +177,7 @@
             android:textColor="@color/text_normal" />
 
         <fragment
-            android:id="@+id/osrs_quick_actions"
+            android:id="@+id/osrs_quick_profile_actions"
             class="com.infonuascape.osrshelper.fragments.AccountQuickActionsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

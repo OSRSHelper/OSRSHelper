@@ -96,7 +96,7 @@
     <string name="hide_virtual_levels">Hide virtual levels</string>
     <string name="tap_to_dismiss">Tap to dismiss</string>
 
-    <string name="quick_actions_title">Quick Actions for %1$s</string>
+    <string name="quick_actions_title">Quick Actions</string>
 
     <string name="donate_text1">Hey! This app is developed by three scapers which happen to be software development enthusiasts.</string>
     <string name="donate_text2">This app is 100% open-sourced (meaning the source code is freely available for anyone) and free.</string>
@@ -164,5 +164,6 @@
     <string name="error_when_fetching">Error when fetching</string>
     <string name="unavailable_right_now">Unavailable right now</string>
     <string name="unknown_account">Unknown</string>
+    <string name="start_bubble">Start Bubble</string>
 
 </resources>

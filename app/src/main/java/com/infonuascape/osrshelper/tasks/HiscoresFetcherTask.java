@@ -2,6 +2,7 @@ package com.infonuascape.osrshelper.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.fetchers.hiscore.HiscoreFetcher;
@@ -21,6 +22,7 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
     private HiscoresFetcherListener listener;
     private Account account;
     private PlayerSkills playerSkills;
+    private String errorMessage = null;
 
     public HiscoresFetcherTask(final Context context, final HiscoresFetcherListener listener, final Account account) {
         this.context = new WeakReference<>(context);
@@ -33,15 +35,11 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
         try {
             playerSkills = new HiscoreFetcher(context.get(), account.username, account.type).getPlayerSkills();
         } catch (PlayerNotFoundException e) {
-            if(listener != null) {
-                listener.onHiscoresError(context.get().getString(R.string.not_existing_player));
-            }
+            errorMessage = context.get().getString(R.string.not_existing_player);
 
         } catch (Exception uhe) {
             uhe.printStackTrace();
-            if(listener != null) {
-                listener.onHiscoresError(context.get().getString(R.string.internal_error));
-            }
+            errorMessage = context.get().getString(R.string.internal_error);
         }
         return null;
     }
@@ -49,7 +47,11 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         if(listener != null) {
-            listener.onHiscoresFetched(playerSkills);
+            if(!TextUtils.isEmpty(errorMessage)) {
+                listener.onHiscoresError(errorMessage);
+            } else {
+                listener.onHiscoresFetched(playerSkills);
+            }
         }
     }
 }
