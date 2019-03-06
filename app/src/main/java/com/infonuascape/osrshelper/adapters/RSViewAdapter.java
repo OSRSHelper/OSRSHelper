@@ -49,10 +49,11 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
         this.isShowLevel = isShowLevel;
     }
 
+    //ISVIRTUALLEVEL?
     @Override
     public int getItemViewType(int position) {
         SkillType skillType = skills.get(position).getSkillType();
-
+        //isShowLevel =true;
         if(!isShowLevel) {
             return VIEW_TYPE_DONT_SHOW_LEVEL;
         } else if(skillType == SkillType.Overall) {
@@ -77,9 +78,10 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
     public void onBindViewHolder(RSViewHolder holder, int position) {
         Skill skill = skills.get(position);
         int viewType = getItemViewType(position);
-
+        //viewType = 3;
+        //isShowAbove99 = false;
         if(viewType != VIEW_TYPE_DONT_SHOW_LEVEL) {
-            holder.skillLvl.setText((isShowAbove99 ? skill.getVirtualLevel() : skill.getLevel()) + "");
+            holder.skillLvl.setText((isShowAbove99 ? skill.getLevel() : skill.getLevel()) + "");
         }
 
         if(viewType != VIEW_TYPE_DONT_SHOW_ICON) {

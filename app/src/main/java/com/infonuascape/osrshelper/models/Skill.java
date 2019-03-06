@@ -5,6 +5,12 @@ import com.infonuascape.osrshelper.enums.SkillType;
 
 public class Skill {
 	private SkillType skillType;
+
+    public int getJagexIndex() {
+        return JagexIndex;
+    }
+
+    int JagexIndex;
 	private long experience = 0;
 	private long experienceDiff = 0;
 	private short level = 0;
@@ -15,6 +21,11 @@ public class Skill {
 
 	public Skill(SkillType skillType) {
 		this.skillType = skillType;
+	}
+
+	public Skill(SkillType skillType, int Jindex) {
+		this.skillType = skillType;
+		this.JagexIndex = Jindex;
 	}
 
 	public Skill(SkillType skillType, long experience, short level) {

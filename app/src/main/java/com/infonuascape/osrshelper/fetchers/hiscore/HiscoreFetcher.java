@@ -3,18 +3,22 @@ package com.infonuascape.osrshelper.fetchers.hiscore;
 import android.content.Context;
 import android.net.Uri;
 
+import com.android.volley.Request;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.utils.API;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
+import com.infonuascape.osrshelper.utils.http.HTTPRequest;
 import com.infonuascape.osrshelper.utils.http.HTTPRequest.StatusCode;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.utils.http.NetworkStack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,6 +34,7 @@ public class HiscoreFetcher {
 		this.context = context;
 		this.userName = Uri.encode(userName);
 		this.accountType = accountType;
+
 	}
 
 	public String getUserName() {
@@ -40,41 +45,64 @@ public class HiscoreFetcher {
         return accountType;
     }
 
+    public List<String> FetchHSdata() throws JSONException{
+	    String OSRSHSAPICall = "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=";
+	    OSRSHSAPICall = OSRSHSAPICall + getUserName();
+
+        HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(OSRSHSAPICall, Request.Method.GET);
+        HTTPRequest.StatusCode statusCode = httpRequest.getStatusCode();
+        if(statusCode == HTTPRequest.StatusCode.FOUND) {
+			List<String> items = Arrays.asList(httpRequest.getOutput().split(","));
+			return  items;
+        }
+		return null;
+	}
+
+
     public PlayerSkills getPlayerSkills() throws PlayerNotFoundException, JSONException, APIError {
-		JSONObject APIOutput = getDataFromAPI();
+		//JSONObject APIOutput = getDataFromAPI();
+		List<String> JagexSkillsList = FetchHSdata();
 		PlayerSkills ps = new PlayerSkills();
 		List<Skill> skillList = ps.skillList;
 
-		for (Iterator<String> it = APIOutput.keys(); it.hasNext(); ) {
-			String skill = it.next();
-			JSONObject skillJson = APIOutput.getJSONObject(skill);
+		for (SkillType enumVal: SkillType.values()) {
+			String skill = enumVal.getSkillName();
+			//JSONObject skillJson = APIOutput.getJSONObject(skill);
 
 			for (Skill s: skillList) {
 				if (s.getSkillType().equals(skill)) {
-					s.setExperience(skillJson.getLong("Experience"));
-					s.setRank(Integer.parseInt(skillJson.getString("Rank")));
-					s.setLevel(Short.parseShort(skillJson.getString("Level")));
-				}
-				if (!s.getSkillType().equals(SkillType.Overall)) {
-					s.calculateLevel();
+					//s.setExperience(skillJson.getLong("Experience"));
+					//s.setRank(Integer.parseInt(skillJson.getString("Rank")));
+					//s.setLevel(Short.parseShort(skillJson.getString("Level")));
+					int pos = s.getJagexIndex();
+					int lvl = Integer.parseInt(JagexSkillsList.get(pos-1));
+					//String together = JagexSkillsList.get(pos).replace(" ",",");
+					//String[] split = together.toString().split(",");
+					//int xp = Integer.parseInt(split[0]);
+					//int rank = Integer.parseInt(split[1]);
+					//s.setExperience((long) rank);
+					//s.setRank((long) rank);
+					s.setVirtualLevel((short) lvl);
+					s.setLevel((short) lvl);
 				}
 			}
 		}
 
 		//compute total level
 		short totalLevel = 0;
+		short Temp = 0;
 		short totalVirtualLevel = 0;
 		for (Skill s : skillList) {
 			if (s.getSkillType() != SkillType.Overall) {
-				totalLevel += s.getLevel();
-				totalVirtualLevel += s.getVirtualLevel();
+				totalLevel += Integer.parseInt(JagexSkillsList.get(s.getJagexIndex()-1));
+				totalVirtualLevel += 0;
 			}
 		}
 
 		//add total level to appropriate Skill entry
 		Skill overallSkill = skillList.get(0); //always first indexed
 		overallSkill.setLevel(totalLevel);
-		overallSkill.setVirtualLevel(totalVirtualLevel);
+		overallSkill.setVirtualLevel(totalLevel);
 
 		return ps;
 	}

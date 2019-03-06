@@ -40,7 +40,7 @@ public class TrackerFetcher {
 		this.userName = Uri.encode(userName);
 		this.lookupTime = lookupTime;
 		this.playerSkills = new PlayerSkills();
-		processAPI();
+		//API();
 	}
 
 	public TrackerFetcher(Context context, String userName, TrackerTime trackerTime) throws ParserErrorException, APIError, PlayerNotTrackedException, PlayerNotFoundException, JSONException {
@@ -118,7 +118,8 @@ public class TrackerFetcher {
 	}
 
 	private String getAPIEndpoint() {
-		return String.format("/track/ehp/%1$s/%2$s", userName, getLookupTime());
+		String wtf =String.format("/track/ehp/%1$s/%2$s", userName, getLookupTime());
+		return wtf;
 	}
 
 	private JSONObject getDataFromAPI() throws PlayerNotFoundException, JSONException, APIError {

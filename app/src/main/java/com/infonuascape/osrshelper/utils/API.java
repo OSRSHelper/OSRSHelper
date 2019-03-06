@@ -31,7 +31,7 @@ public class API {
         HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(endpoint + args, Request.Method.GET);
         statusCode = httpRequest.getStatusCode();
         if(statusCode == HTTPRequest.StatusCode.FOUND) {
-            json = new JSONObject(httpRequest.getOutput());
+           json = new JSONObject(httpRequest.getOutput());
         }
     }
 
