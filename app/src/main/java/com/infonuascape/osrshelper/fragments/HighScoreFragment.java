@@ -64,7 +64,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		rsView = view.findViewById(R.id.rs_view);
 		errorView = view.findViewById(R.id.error_view);
 
-		view.findViewById(R.id.share_btn).setOnClickListener(this);
+		//view.findViewById(R.id.share_btn).setOnClickListener(this);
 
 		asyncTask = new HiscoresFetcherTask(getContext(), this, account);
 		asyncTask.execute();
@@ -83,15 +83,15 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 	@Override
 	public void onClick(View view) {
-		if(view.getId() == R.id.share_btn) {
-			if(playerSkills != null) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
-				} else {
-					ShareImageUtils.shareHiscores(getContext(), account.username, playerSkills);
-				}
-			}
-		}
+//		if(view.getId() == R.id.share_btn) {
+//			if(playerSkills != null) {
+//				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
+//				} else {
+//					ShareImageUtils.shareHiscores(getContext(), account.username, playerSkills);
+//				}
+//			}
+//		}
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 			});
 		}
 		if(getView() != null) {
-			getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
+			//getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
 			rsView.populateView(playerSkills, this);
 		}
 	}

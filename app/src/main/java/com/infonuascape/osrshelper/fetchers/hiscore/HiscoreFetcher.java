@@ -51,9 +51,13 @@ public class HiscoreFetcher {
 
         HTTPRequest httpRequest = NetworkStack.getInstance(context).performRequest(OSRSHSAPICall, Request.Method.GET);
         HTTPRequest.StatusCode statusCode = httpRequest.getStatusCode();
-        if(statusCode == HTTPRequest.StatusCode.FOUND) {
-			List<String> items = Arrays.asList(httpRequest.getOutput().split(","));
-			return  items;
+        if(statusCode == HTTPRequest.StatusCode.FOUND)
+        {
+
+        	String data = httpRequest.getOutput();
+        	List<String> sep = Arrays.asList(data.split("\n"));
+
+			return  sep;
         }
 		return null;
 	}
@@ -64,45 +68,31 @@ public class HiscoreFetcher {
 		List<String> JagexSkillsList = FetchHSdata();
 		PlayerSkills ps = new PlayerSkills();
 		List<Skill> skillList = ps.skillList;
-
+		//for each skill type,
 		for (SkillType enumVal: SkillType.values()) {
 			String skill = enumVal.getSkillName();
-			//JSONObject skillJson = APIOutput.getJSONObject(skill);
-
+			//loop through a list of skills and
 			for (Skill s: skillList) {
 				if (s.getSkillType().equals(skill)) {
-					//s.setExperience(skillJson.getLong("Experience"));
-					//s.setRank(Integer.parseInt(skillJson.getString("Rank")));
-					//s.setLevel(Short.parseShort(skillJson.getString("Level")));
 					int pos = s.getJagexIndex();
-					int lvl = Integer.parseInt(JagexSkillsList.get(pos-1));
-					//String together = JagexSkillsList.get(pos).replace(" ",",");
-					//String[] split = together.toString().split(",");
-					//int xp = Integer.parseInt(split[0]);
-					//int rank = Integer.parseInt(split[1]);
-					//s.setExperience((long) rank);
-					//s.setRank((long) rank);
-					s.setVirtualLevel((short) lvl);
-					s.setLevel((short) lvl);
+					String csv = JagexSkillsList.get(pos);
+					Skill _skill_ = new Skill(csv,pos);
+					int lvl = _skill_.getLevel();
+					s.setVirtualLevel((short) _skill_.getVirtualLevel());
+					s.setLevel((short) _skill_.getLevel());
 				}
 			}
 		}
 
 		//compute total level
-		short totalLevel = 0;
-		short Temp = 0;
+
+
 		short totalVirtualLevel = 0;
-		for (Skill s : skillList) {
-			if (s.getSkillType() != SkillType.Overall) {
-				totalLevel += Integer.parseInt(JagexSkillsList.get(s.getJagexIndex()-1));
-				totalVirtualLevel += 0;
-			}
-		}
 
 		//add total level to appropriate Skill entry
 		Skill overallSkill = skillList.get(0); //always first indexed
-		overallSkill.setLevel(totalLevel);
-		overallSkill.setVirtualLevel(totalLevel);
+		overallSkill.setLevel(overallSkill.getLevel());
+		overallSkill.setVirtualLevel(overallSkill.getLevel());
 
 		return ps;
 	}

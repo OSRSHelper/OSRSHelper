@@ -2,9 +2,10 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:configure="com.infonuascape.osrshelper.activities.WidgetUsernameActivity"
     android:initialLayout="@layout/widget_username_layout"
-    android:minHeight="350dp"
-    android:minWidth="350dp"
+    android:minHeight="250dp"
+    android:minWidth="250dp"
     android:previewImage="@drawable/widgetpreview"
-    android:updatePeriodMillis="3600000" >
+    android:updatePeriodMillis="3600000"
+    android:resizeMode="horizontal|vertical" >
 
 </appwidget-provider>

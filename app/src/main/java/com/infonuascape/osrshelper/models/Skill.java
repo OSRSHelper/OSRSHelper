@@ -2,6 +2,10 @@ package com.infonuascape.osrshelper.models;
 
 
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.models.players.PlayerSkills;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Skill {
 	private SkillType skillType;
@@ -18,6 +22,7 @@ public class Skill {
 	private long rank = 0;
 	private long rankDiff = 0;
 	private double EHP = 0.0;
+	private Boolean isBoss = Boolean.FALSE;
 
 	public Skill(SkillType skillType) {
 		this.skillType = skillType;
@@ -27,7 +32,31 @@ public class Skill {
 		this.skillType = skillType;
 		this.JagexIndex = Jindex;
 	}
+	public Skill(String s , int Jindex){
+		PlayerSkills ps = new PlayerSkills();
+		Skill match = null;
+		Boolean boss = Boolean.FALSE;
+		for (Skill _skill_: ps.skillList) {
+			if (_skill_.getJagexIndex() == Jindex) {
+				match = _skill_;
+				boss = _skill_.getSkillType().getBoss();
 
+			}
+		}
+		List<String> values = Arrays.asList(s.split(","));
+		if(!boss){
+			rank = Long.parseLong(values.get(0));
+			level = Short.parseShort(values.get(1));
+			virtualLevel = Short.parseShort(values.get(1));
+			experience = Long.parseLong(values.get(2));
+			boss = false;
+		}else{
+			level = Short.parseShort(values.get(1));
+			rank = Long.parseLong(values.get(0));
+			experience = rank;
+		}
+		//DO PARSE
+	}
 	public Skill(SkillType skillType, long experience, short level) {
 		this.skillType = skillType;
 		this.experience = experience;

@@ -5,7 +5,8 @@
     android:background="@drawable/widget_bg"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:resizeMode="horizontal|vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,16 +22,17 @@
 
         <TextView
             android:id="@+id/username"
+            android:text="tba"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:ellipsize="marquee"
             android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/username_btn"
@@ -57,7 +59,6 @@
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="3" >
-    </GridView>
+        android:numColumns="3"></GridView>
 
 </LinearLayout>

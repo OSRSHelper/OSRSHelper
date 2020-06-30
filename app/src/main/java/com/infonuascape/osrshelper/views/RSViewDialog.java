@@ -20,11 +20,13 @@ import java.text.NumberFormat;
 /**
  * Created by marc_ on 2018-01-14.
  */
-
+//THIS CLASS IS CALLED WHEN SOMEONE CLICKS A SKILL, IT's A BUTTON PRESS METHOD
 public class RSViewDialog {
     public static void showDialog(final Context context, final Skill skill) {
+        System.out.println("Show Skill_button CLICK()");
         if(context != null && skill != null && skill.getLevel() > 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            //this view shows on click
             final View dialogView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.hiscores_dialog, null, false);
 
             ((TextView) dialogView.findViewById(R.id.skill_name)).setText(skill.getSkillType().getSkillName());
