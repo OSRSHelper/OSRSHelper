@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class OSRSNewsTask extends AsyncTask<Void, Void, Void> {
-    private final static String API_ENDPOINT = "http://services.runescape.com/m=news/latest_news.rss?oldschool=true";
+    private final static String API_ENDPOINT = "https://secure.runescape.com/m=news/latest_news.rss?oldschool=true";
     private WeakReference<Context> context;
     private WeakReference<NewsFetcherListener> listener;
     private List<OSRSNews> osrsNews;
@@ -50,6 +50,7 @@ public class OSRSNewsTask extends AsyncTask<Void, Void, Void> {
 
         //If we reach here, we were not able to parse the rss feed
         if(listener.get() != null) {
+            System.out.println("ERROR");
             listener.get().onNewsFetchingError();
         }
         return null;

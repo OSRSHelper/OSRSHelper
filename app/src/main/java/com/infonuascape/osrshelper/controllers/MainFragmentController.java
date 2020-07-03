@@ -45,11 +45,12 @@ public class MainFragmentController {
     public void showRootFragment(final int menuId, final OSRSFragment fragment) {
         Logger.add(TAG, ": showRootFragment:");
         Utils.hideKeyboard(mainActivity);
+        //whats this do? no idea
         for (int i = 0; i < navigationView.getMenu().size(); i++) {
             MenuItem menuItem = navigationView.getMenu().getItem(i);
             menuItem.setChecked(menuItem.getItemId() == menuId);
         }
-
+        //idk what this either
         if(fragment != null && mainActivity.isResumed) {
             Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
