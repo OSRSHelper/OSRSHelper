@@ -2,6 +2,8 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.graphics.Point;
 
+import java.util.Objects;
+
 
 public class PointOfInterest {
 	public String name;
@@ -20,4 +22,8 @@ public class PointOfInterest {
 		return point;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, point);
+	}
 }

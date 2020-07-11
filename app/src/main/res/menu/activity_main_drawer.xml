@@ -59,16 +59,5 @@
             </menu>
         </item>
 
-        <item android:title="@string/donate_group">
-            <menu>
-                <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/nav_donate"
-                        android:icon="@drawable/donation"
-                        android:title="@string/donate" />
-                </group>
-            </menu>
-        </item>
-
     </group>
 </menu>

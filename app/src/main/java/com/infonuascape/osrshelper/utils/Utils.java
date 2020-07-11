@@ -11,6 +11,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PointOfInterest;
+import com.infonuascape.osrshelper.adapters.PointOfInterestHeader;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.TrendRate;
@@ -180,6 +181,7 @@ public class Utils {
 	public static ArrayList<PointOfInterest> getCitiesPoI(){
 		ArrayList<PointOfInterest> poi = new ArrayList<PointOfInterest>();
 
+		poi.add(new PointOfInterestHeader("Cities", null));
 		poi.add(new PointOfInterest("Al Kharid", new Point(ZEAH_OFFSET_X + 3932, 3126 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Ardougne", new Point(ZEAH_OFFSET_X + 1920, 2775 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Barbarian Village", new Point(ZEAH_OFFSET_X + 3285, 2400 + ZEAH_OFFSET_Y)));
@@ -189,6 +191,7 @@ public class Utils {
 		poi.add(new PointOfInterest("Camelot", new Point(ZEAH_OFFSET_X + 2328, 2192 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Canifis", new Point(ZEAH_OFFSET_X + 4535, 2200 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Catherby", new Point(ZEAH_OFFSET_X + 2520, 2355 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Darkmeyer", new Point(7450, 2230)));
 		poi.add(new PointOfInterest("Draynor Village", new Point(ZEAH_OFFSET_X + 3360, 2880 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Edgeville", new Point(ZEAH_OFFSET_X + 3330, 2200 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Falador", new Point(ZEAH_OFFSET_X + 3050, 2580 + ZEAH_OFFSET_Y)));
@@ -208,6 +211,7 @@ public class Utils {
 		poi.add(new PointOfInterest("Rimmington", new Point(ZEAH_OFFSET_X + 2915, 3000 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Seers' Village", new Point(ZEAH_OFFSET_X + 2175, 2215 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Shilo Village", new Point(ZEAH_OFFSET_X + 2590, 3740 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Slepe", new Point(7750, 2330)));
 		poi.add(new PointOfInterest("Sophanem", new Point(ZEAH_OFFSET_X + 3945, 4325 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Tai Bwo Wannai", new Point(ZEAH_OFFSET_X + 2430, 3470 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Taverley", new Point(ZEAH_OFFSET_X + 2750, 2335 + ZEAH_OFFSET_Y)));
@@ -215,18 +219,38 @@ public class Utils {
 		poi.add(new PointOfInterest("Tutorial Island", new Point(ZEAH_OFFSET_X + 3370, 3370 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Varrock", VARROCK_POINT));
 		poi.add(new PointOfInterest("Waterbirth Island", new Point(ZEAH_OFFSET_X + 1645, 1440 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Weiss", new Point(5190, 500)));
 		poi.add(new PointOfInterest("Yanille", new Point(ZEAH_OFFSET_X + 1780, 3395 + ZEAH_OFFSET_Y)));
 
-		poi.add(new PointOfInterest("Zeah's Arceuus House", new Point(1583, 1215 + FOSSIL_ISLAND_OFFSET_Y)));
-		poi.add(new PointOfInterest("Zeah's Hosidius House", new Point(1750, 1825 + FOSSIL_ISLAND_OFFSET_Y)));
-		poi.add(new PointOfInterest("Zeah's Lovakengj House", new Point(1000, 1165 + FOSSIL_ISLAND_OFFSET_Y)));
-		poi.add(new PointOfInterest("Zeah's Piscarilius House", new Point(1986, 1261 + FOSSIL_ISLAND_OFFSET_Y)));
-		poi.add(new PointOfInterest("Zeah's Shayzien House", new Point(1130, 1752 + FOSSIL_ISLAND_OFFSET_Y)));
-		poi.add(new PointOfInterest("Zeah's Wintertodt", new Point(1470, 477 + FOSSIL_ISLAND_OFFSET_Y)));
-		poi.add(new PointOfInterest("Zeah's Mount Quidamortem", new Point(315, 1825 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterestHeader("Zeah", null));
+		poi.add(new PointOfInterest("Arceuus House", new Point(1583, 1215 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Hosidius House", new Point(1750, 1825 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Lovakengj House", new Point(1000, 1165 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Piscarilius House", new Point(1986, 1261 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Shayzien House", new Point(1130, 1752 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Wintertodt", new Point(1470, 477 + FOSSIL_ISLAND_OFFSET_Y)));
+		poi.add(new PointOfInterest("Mount Karuulm", new Point(500, 895)));
+		poi.add(new PointOfInterest("Mount Quidamortem", new Point(315, 1825 + FOSSIL_ISLAND_OFFSET_Y)));
 
+		poi.add(new PointOfInterestHeader("Fossil Island", null));
 		poi.add(new PointOfInterest("Lithkren", new Point(7266, 303)));
 		poi.add(new PointOfInterest("Fossil Island", new Point(7751, 892)));
+
+		poi.add(new PointOfInterestHeader("Guilds", null));
+		poi.add(new PointOfInterest("Cook (lvl 32)", new Point(6000, 1970)));
+		poi.add(new PointOfInterest("Crafting (lvl 40)", new Point(5360, 2470)));
+		poi.add(new PointOfInterest("Mining (lvl 60)", new Point(5630, 2300)));
+		poi.add(new PointOfInterest("Prayer (lvl 31)", new Point(5725, 1845)));
+		poi.add(new PointOfInterest("Farming (lvl 45)", new Point(316, 1100)));
+		poi.add(new PointOfInterest("Fishing (lvl 68)", new Point(4365, 2100)));
+		poi.add(new PointOfInterest("Woodcutting (lvl 60)", new Point(1400, 1835)));
+		poi.add(new PointOfInterest("Wizard (lvl 66)", new Point(4340, 3050)));
+		poi.add(new PointOfInterest("Ranging (lvl 40)", new Point(4575, 2030)));
+		poi.add(new PointOfInterest("Champion", new Point(6140, 2240)));
+		poi.add(new PointOfInterest("Heroes", new Point(5250, 1785)));
+		poi.add(new PointOfInterest("Legends", new Point(4755, 2200)));
+		poi.add(new PointOfInterest("Myths", new Point(3940, 3775)));
+		poi.add(new PointOfInterest("Warriors (lvl 130 Att+Str)", new Point(5135, 1674)));
 
 		return poi;
 	}

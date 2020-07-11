@@ -3,10 +3,11 @@
     android:id="@+id/name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gen_bt_sel"
     android:paddingBottom="8dp"
     android:paddingLeft="8dp"
     android:paddingTop="8dp"
     android:text="Falador"
-    android:textColor="@color/black"
+    android:background="@color/gray"
+    android:textStyle="bold"
+    android:textColor="@color/white"
     android:textSize="14sp" />

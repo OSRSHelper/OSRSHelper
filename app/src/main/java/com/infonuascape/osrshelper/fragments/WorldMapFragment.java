@@ -8,27 +8,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PoIAdapter;
+import com.infonuascape.osrshelper.adapters.PointOfInterest;
+import com.infonuascape.osrshelper.adapters.PointOfInterestHeader;
 import com.infonuascape.osrshelper.utils.Utils;
 
-import androidx.annotation.Nullable;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-public class WorldMapFragment extends OSRSFragment implements OnItemClickListener, OnClickListener {
+public class WorldMapFragment extends OSRSFragment implements OnClickListener, PoIAdapter.OnItemClickListener {
 	private static final String TAG = "WorldMapFragment";
 	private static final String KEY_X = "X";
 	private static final String KEY_Y = "Y";
 	private static final String MAP_FILE_NAME = "osrs.jpg";
 	private DrawerLayout drawerLayout;
-	private ListView poICitiesListView;
+	private RecyclerView poICitiesRecyclerView;
 	private PoIAdapter adapterCities;
 	private NavigationView navigationView;
 
@@ -49,10 +50,10 @@ public class WorldMapFragment extends OSRSFragment implements OnItemClickListene
 
 		View view = inflater.inflate(R.layout.world_map, null);
 
-		imageSurfaceView = (SubsamplingScaleImageView) view.findViewById(R.id.world_map_image);
-		drawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_map_layout);
-		poICitiesListView = (ListView) view.findViewById(R.id.poi_cities);
-		navigationView = (NavigationView) view.findViewById(R.id.navigation);
+		imageSurfaceView = view.findViewById(R.id.world_map_image);
+		drawerLayout = view.findViewById(R.id.drawer_map_layout);
+		poICitiesRecyclerView = view.findViewById(R.id.poi_cities);
+		navigationView = view.findViewById(R.id.navigation);
 
 		view.findViewById(R.id.world_map_open).setOnClickListener(this);
 
@@ -130,8 +131,10 @@ public class WorldMapFragment extends OSRSFragment implements OnItemClickListene
 	private void initPoT() {
 		//Cities
 		adapterCities = new PoIAdapter(Utils.getCitiesPoI());
-		poICitiesListView.setAdapter(adapterCities);
-		poICitiesListView.setOnItemClickListener(this);
+		adapterCities.setOnItemClickListener(this);
+		LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+		poICitiesRecyclerView.setAdapter(adapterCities);
+		poICitiesRecyclerView.setLayoutManager(llm);
 	}
 
 	public void zoomToPoT(Point point){
@@ -164,18 +167,20 @@ public class WorldMapFragment extends OSRSFragment implements OnItemClickListene
 		super.onSaveInstanceState(outState);
 	}
 
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		zoomToPoT(adapterCities.getItem(position).getPoint());
-		drawerLayout.closeDrawers();
-	}
-
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.world_map_open){
 			drawerLayout.openDrawer(navigationView);
+		}
+	}
+
+	@Override
+	public void onItemClicked(int position) {
+		Log.d(TAG, "onItemClicked() called with: position = [" + position + "]");
+		PointOfInterest pointOfInterest = adapterCities.getItem(position);
+		if (pointOfInterest != null && !(pointOfInterest instanceof PointOfInterestHeader)) {
+			zoomToPoT(pointOfInterest.getPoint());
+			drawerLayout.closeDrawers();
 		}
 	}
 }

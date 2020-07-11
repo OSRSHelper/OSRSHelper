@@ -6,14 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +14,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
@@ -32,7 +31,6 @@ import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.fragments.CmlTopFragment;
 import com.infonuascape.osrshelper.fragments.CmlXPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
-import com.infonuascape.osrshelper.fragments.DonationFragment;
 import com.infonuascape.osrshelper.fragments.GrandExchangeDetailFragment;
 import com.infonuascape.osrshelper.fragments.GrandExchangeSearchFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
@@ -229,8 +227,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = GrandExchangeSearchFragment.newInstance();
         } else if (id == R.id.nav_top_players) {
             fragment = CmlTopFragment.newInstance();
-        } else if (id == R.id.nav_donate) {
-            fragment = DonationFragment.newInstance();
         }
 
         if(fragment != null) {
