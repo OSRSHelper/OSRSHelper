@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 
@@ -26,8 +27,10 @@ public class NetworkStack {
     public static final String ENDPOINT = "https://api.buying-gf.com/v2";
     private static NetworkStack instance;
     private final RequestQueue queue;
+    private final Context context;
 
     private NetworkStack(final Context context) {
+        this.context = context;
         queue = Volley.newRequestQueue(context);
     }
 
@@ -42,11 +45,15 @@ public class NetworkStack {
     }
 
     public HTTPResult performGetRequest(String url) {
-        return performRequest(url, Request.Method.GET);
+        return performRequest(url, Request.Method.GET, false);
     }
 
-    public HTTPResult performRequest(String url, int requestMethod) {
-        Log.d(TAG, "performRequest: url=" + url);
+    public HTTPResult performGetRequest(String url, boolean saveOutput) {
+        return performRequest(url, Request.Method.GET, saveOutput);
+    }
+
+    public HTTPResult performRequest(String url, int requestMethod, boolean saveOutput) {
+        Log.d(TAG, "performRequest: url=" + url + ", saveOutput=" + saveOutput);
         HTTPResult result = new HTTPResult();
         result.url = url;
 
@@ -57,14 +64,11 @@ public class NetworkStack {
 
         try {
             result.output = future.get();
-            try {
-                result.jsonObject = new JSONObject(result.output);
-                result.isParsingSuccessful = result.jsonObject.length() != 0;
-            } catch (JSONException ignored) {
-                //Certain APIs returns an array instead of an object
-            }
-
             result.statusCode = StatusCode.FOUND;
+
+            if (saveOutput) {
+                DBController.insertOutputToQueryCache(context, url, result.output);
+            }
         } catch (InterruptedException e) {
             result.statusCode = StatusCode.NOT_FOUND;
             //Don't show interrupted exception, it's user-triggered

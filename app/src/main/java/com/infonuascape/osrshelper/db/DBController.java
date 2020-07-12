@@ -24,7 +24,9 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_DESCRIPTIO
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_ID;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_IMAGE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ITEM_NAME;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_OUTPUT;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_PRICE_WANTED;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_QUERY;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_TIME_USED;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_USERNAME;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
@@ -414,5 +416,71 @@ public class DBController {
 		}
 
 		return item;
+	}
+
+	public static String getQueryCache(final Context context, final String query) {
+		final String[] projection = new String[]{COLUMN_OUTPUT};
+		final String where = COLUMN_QUERY + "=?";
+		final String[] whereArgs = new String[]{query};
+
+		String output = null;
+
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.QUERY_CACHE_CONTENT_URI, projection, where, whereArgs,
+					null);
+			if (cursor != null) {
+				try {
+					if (cursor.moveToFirst()) {
+						output = cursor.getString(cursor.getColumnIndex(COLUMN_OUTPUT));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					cursor.close();
+				}
+			}
+		}
+
+		return output;
+	}
+
+	public static boolean isQueryInCache(final Context context, final String query) {
+		final String[] projection = new String[]{"COUNT(*)"};
+		final String where = COLUMN_QUERY + "=?";
+		final String[] whereArgs = new String[]{String.valueOf(query)};
+
+		int count = 0;
+
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.QUERY_CACHE_CONTENT_URI, projection, where, whereArgs,
+					null);
+			if (cursor != null) {
+				try {
+					if (cursor.moveToFirst()) {
+						count = cursor.getInt(0);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					cursor.close();
+				}
+			}
+		}
+
+		return count > 0;
+	}
+
+	public static void insertOutputToQueryCache(final Context context, String query, final String output) {
+		final ContentValues values = new ContentValues();
+		values.put(COLUMN_OUTPUT, output);
+
+		if(context != null) {
+			if (isQueryInCache(context, query)) {
+				context.getContentResolver().update(OSRSDatabase.QUERY_CACHE_CONTENT_URI, values, COLUMN_QUERY + "=?", new String[]{query});
+			} else {
+				values.put(COLUMN_QUERY, query);
+				context.getContentResolver().insert(OSRSDatabase.QUERY_CACHE_CONTENT_URI, values);
+			}
+		}
 	}
 }

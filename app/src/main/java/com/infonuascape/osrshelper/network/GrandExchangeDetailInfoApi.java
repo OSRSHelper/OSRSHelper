@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
+import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.GrandExchangeDetailInfo;
 import com.infonuascape.osrshelper.models.grandexchange.Trend;
 import com.infonuascape.osrshelper.models.grandexchange.TrendChange;
@@ -36,10 +37,10 @@ public class GrandExchangeDetailInfoApi {
     private final static String VALUE_TRUE = "true";
 
     public static GrandExchangeDetailInfo fetch(String itemId) {
-        HTTPResult httpResult = NetworkStack.getInstance().performRequest(String.format(API_URL, Uri.encode(itemId)), Request.Method.GET);
-        if (httpResult.isParsingSuccessful) {
+        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemId)));
+        if (httpResult.statusCode == StatusCode.FOUND) {
             try {
-                JSONObject json = httpResult.jsonObject.getJSONObject(KEY_ITEM);
+                JSONObject json = new JSONObject(httpResult.output).getJSONObject(KEY_ITEM);
 
                 GrandExchangeDetailInfo itemInfo = new GrandExchangeDetailInfo();
                 itemInfo.id = json.getString(KEY_ID);

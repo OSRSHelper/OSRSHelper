@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.network.TrackerApi;
+import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
@@ -36,6 +38,8 @@ public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         try {
             playerSkills = TrackerApi.fetch(account.username, time);
+            account.combatLvl = Utils.getCombatLvl(playerSkills);
+            DBController.setCombatLvlForAccount(context.get(), account);
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
                 if(context.get() != null) {

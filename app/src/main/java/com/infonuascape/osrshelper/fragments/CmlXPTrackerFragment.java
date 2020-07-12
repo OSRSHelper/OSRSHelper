@@ -112,8 +112,6 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 	public void onTrackingFetched(final PlayerSkills playerSkills) {
 		if (playerSkills != null) {
-			account.combatLvl = Utils.getCombatLvl(playerSkills);
-			DBController.setCombatLvlForAccount(getContext(), account);
 			if (getView() != null) {
 				profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
 				description.setVisibility(View.VISIBLE);

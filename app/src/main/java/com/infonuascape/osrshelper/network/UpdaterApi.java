@@ -3,8 +3,10 @@ package com.infonuascape.osrshelper.network;
 import android.net.Uri;
 
 import com.infonuascape.osrshelper.models.HTTPResult;
+import com.infonuascape.osrshelper.models.StatusCode;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UpdaterApi {
     private static final String API_URL = NetworkStack.ENDPOINT + "/track/update/%1$s";
@@ -14,9 +16,10 @@ public class UpdaterApi {
         final String url = String.format(API_URL, Uri.encode(username));
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
 
-        if (httpResult.isParsingSuccessful && httpResult.jsonObject.has(KEY_SUCCESS)) {
+        if (httpResult.statusCode == StatusCode.FOUND) {
             try {
-                return httpResult.jsonObject.getInt(KEY_SUCCESS) == 1;
+                JSONObject jsonObject = new JSONObject(httpResult.output);
+                return jsonObject.has(KEY_SUCCESS) && jsonObject.getInt(KEY_SUCCESS) == 1;
             } catch (JSONException e) {
                 e.printStackTrace();
             }

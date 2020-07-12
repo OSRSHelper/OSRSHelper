@@ -1,9 +1,11 @@
 package com.infonuascape.osrshelper.network;
 
 import com.infonuascape.osrshelper.models.HTTPResult;
+import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.RSBuddyPrice;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Iterator;
 
@@ -21,28 +23,29 @@ public class RSBuddyPriceApi {
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
 
         RSBuddyPrice rsBuddyPrice = null;
-        if(httpResult.isParsingSuccessful) {
+        if(httpResult.statusCode == StatusCode.FOUND) {
             try {
                 rsBuddyPrice = new RSBuddyPrice();
-                Iterator<String> keys = httpResult.jsonObject.keys();
+                JSONObject jsonObject = new JSONObject(httpResult.output);
+                Iterator<String> keys = jsonObject.keys();
                 while(keys.hasNext()) {
                     String key = keys.next();
 
                     switch(key) {
                         case KEY_OVERALL:
-                            rsBuddyPrice.overall = httpResult.jsonObject.getLong(key);
+                            rsBuddyPrice.overall = jsonObject.getLong(key);
                             break;
                         case KEY_BUYING:
-                            rsBuddyPrice.buying = httpResult.jsonObject.getLong(key);
+                            rsBuddyPrice.buying = jsonObject.getLong(key);
                             break;
                         case KEY_BUYING_QUANTITY:
-                            rsBuddyPrice.buyingQuantity = httpResult.jsonObject.getLong(key);
+                            rsBuddyPrice.buyingQuantity = jsonObject.getLong(key);
                             break;
                         case KEY_SELLING:
-                            rsBuddyPrice.selling = httpResult.jsonObject.getLong(key);
+                            rsBuddyPrice.selling = jsonObject.getLong(key);
                             break;
                         case KEY_SELLING_QUANTITY:
-                            rsBuddyPrice.sellingQuantity = httpResult.jsonObject.getLong(key);
+                            rsBuddyPrice.sellingQuantity = jsonObject.getLong(key);
                             break;
                     }
                 }

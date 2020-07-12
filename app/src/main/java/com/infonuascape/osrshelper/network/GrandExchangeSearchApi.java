@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
+import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 
 import org.json.JSONException;
@@ -26,10 +27,10 @@ public class GrandExchangeSearchApi {
 
     public static List<Item> fetch(String itemName) {
         List<Item> itemsSearch = new ArrayList<>();
-        HTTPResult httpResult = NetworkStack.getInstance().performRequest(String.format(API_URL, Uri.encode(itemName)), Request.Method.GET);
-        if (httpResult.isParsingSuccessful) {
+        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemName)));
+        if (httpResult.statusCode == StatusCode.FOUND) {
             try {
-                JSONObject json = httpResult.jsonObject.getJSONObject(KEY_MATCHES);
+                JSONObject json = new JSONObject(httpResult.output).getJSONObject(KEY_MATCHES);
 
                 Iterator<String> keys = json.keys();
                 while(keys.hasNext()) {

@@ -110,13 +110,13 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 			String prayer = prayerEdit.getText().toString();
 			String magic = magicEdit.getText().toString();
 
-			playerSkills.hitpoints = hitpoint.isEmpty() ? new Skill(SkillType.Hitpoints, 0, (short) 0) : new Skill(SkillType.Hitpoints, 0, Short.valueOf(hitpoint));
-			playerSkills.attack = attack.isEmpty() ? new Skill(SkillType.Attack, 0, (short) 0) : new Skill(SkillType.Attack, 0, Short.valueOf(attack));
-			playerSkills.defence = defence.isEmpty() ? new Skill(SkillType.Defence, 0, (short) 0) : new Skill(SkillType.Defence, 0, Short.valueOf(defence));
-			playerSkills.strength = strength.isEmpty() ? new Skill(SkillType.Strength, 0, (short) 0) : new Skill(SkillType.Strength, 0, Short.valueOf(strength));
-			playerSkills.ranged = ranging.isEmpty() ? new Skill(SkillType.Ranged, 0, (short) 0) : new Skill(SkillType.Ranged, 0, Short.valueOf(ranging));
-			playerSkills.prayer = prayer.isEmpty() ? new Skill(SkillType.Prayer, 0, (short) 0) : new Skill(SkillType.Prayer, 0, Short.valueOf(prayer));
-			playerSkills.magic = magic.isEmpty() ? new Skill(SkillType.Magic, 0, (short) 0) : new Skill(SkillType.Magic, 0, Short.valueOf(magic));
+			playerSkills.hitpoints = hitpoint.isEmpty() ? new Skill(SkillType.Hitpoints, 0, (short) 0) : new Skill(SkillType.Hitpoints, 0, Short.parseShort(hitpoint));
+			playerSkills.attack = attack.isEmpty() ? new Skill(SkillType.Attack, 0, (short) 0) : new Skill(SkillType.Attack, 0, Short.parseShort(attack));
+			playerSkills.defence = defence.isEmpty() ? new Skill(SkillType.Defence, 0, (short) 0) : new Skill(SkillType.Defence, 0, Short.parseShort(defence));
+			playerSkills.strength = strength.isEmpty() ? new Skill(SkillType.Strength, 0, (short) 0) : new Skill(SkillType.Strength, 0, Short.parseShort(strength));
+			playerSkills.ranged = ranging.isEmpty() ? new Skill(SkillType.Ranged, 0, (short) 0) : new Skill(SkillType.Ranged, 0, Short.parseShort(ranging));
+			playerSkills.prayer = prayer.isEmpty() ? new Skill(SkillType.Prayer, 0, (short) 0) : new Skill(SkillType.Prayer, 0, Short.parseShort(prayer));
+			playerSkills.magic = magic.isEmpty() ? new Skill(SkillType.Magic, 0, (short) 0) : new Skill(SkillType.Magic, 0, Short.parseShort(magic));
 
 			boolean isOneShown = false;
 
@@ -178,11 +178,8 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 		}
 	}
 
-	@Override
-	public void onHiscoresFetched(PlayerSkills playerSkills) {
+	private void refreshPlayerSkills(PlayerSkills playerSkills) {
 		if (playerSkills != null && getView() != null) {
-			account.combatLvl = Utils.getCombatLvl(playerSkills);
-			DBController.setCombatLvlForAccount(getContext(), account);
 			hitpointEdit.setText(String.valueOf(playerSkills.hitpoints.getLevel()));
 			attackEdit.setText(String.valueOf(playerSkills.attack.getLevel()));
 			strengthEdit.setText(String.valueOf(playerSkills.strength.getLevel()));
@@ -195,23 +192,28 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 	}
 
 	@Override
+	public void onHiscoresCacheFetched(final PlayerSkills playerSkills) {
+		if (getActivity() != null) {
+			getActivity().runOnUiThread(() -> refreshPlayerSkills(playerSkills));
+		}
+	}
+
+	@Override
+	public void onHiscoresFetched(PlayerSkills playerSkills) {
+		refreshPlayerSkills(playerSkills);
+	}
+
+	@Override
 	public void onHiscoresError(String errorMessage) {
-		if(getActivity() != null) {
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					if (getView() != null) {
-						hitpointEdit.setText(String.valueOf(10));
-						attackEdit.setText(String.valueOf(1));
-						strengthEdit.setText(String.valueOf(1));
-						defenceEdit.setText(String.valueOf(1));
-						magicEdit.setText(String.valueOf(1));
-						rangingEdit.setText(String.valueOf(1));
-						prayerEdit.setText(String.valueOf(1));
-						changeCombatText();
-					}
-				}
-			});
+		if (getView() != null) {
+			hitpointEdit.setText(String.valueOf(10));
+			attackEdit.setText(String.valueOf(1));
+			strengthEdit.setText(String.valueOf(1));
+			defenceEdit.setText(String.valueOf(1));
+			magicEdit.setText(String.valueOf(1));
+			rangingEdit.setText(String.valueOf(1));
+			prayerEdit.setText(String.valueOf(1));
+			changeCombatText();
 		}
 	}
 

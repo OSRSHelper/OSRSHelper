@@ -153,35 +153,25 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     private void switchAccountType() {
         final AccountTypeAdapter adapter = new AccountTypeAdapter(getActivity());
         new AlertDialog.Builder(getActivity()).setTitle(R.string.select_account_type)
-                .setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item ) {
-                        AccountType accountType = adapter.getItem(item);
-                        account.type = accountType;
-                        DBController.updateAccount(getContext(), account);
-                        refreshScreen();
-                    }
+                .setAdapter(adapter, (dialog, item) -> {
+                    AccountType accountType = adapter.getItem(item);
+                    account.type = accountType;
+                    DBController.updateAccount(getContext(), account);
+                    refreshScreen();
                 }).show();
     }
 
     private void setUserAsMyProfile() {
         new AlertDialog.Builder(getActivity()).setTitle(R.string.set_profile_title)
                 .setMessage(R.string.set_profile_desc)
-                .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        DBController.setProfileAccount(getContext(), account);
-                        if(account.combatLvl == 0) {
-                            new HiscoresFetcherTask(getContext(), ProfileFragment.this, account).execute();
-                        }
-                        refreshScreen();
+                .setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
+                    DBController.setProfileAccount(getContext(), account);
+                    if(account.combatLvl == 0) {
+                        new HiscoresFetcherTask(getContext(), ProfileFragment.this, account).execute();
                     }
+                    refreshScreen();
                 })
-                .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).create().show();
+                .setNegativeButton(R.string.dialog_no, (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
     }
 
     @Override
@@ -197,10 +187,21 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     }
 
     @Override
+    public void onHiscoresCacheFetched(PlayerSkills playerSkills) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if(account.combatLvl > 0) {
+                    if (getView() != null) {
+                        profileHeaderFragment.showCombatLvl(account.combatLvl);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
     public void onHiscoresFetched(PlayerSkills playerSkills) {
         if(playerSkills != null) {
-            account.combatLvl = Utils.getCombatLvl(playerSkills);
-            DBController.setCombatLvlForAccount(getActivity(), account);
             if (getView() != null) {
                 profileHeaderFragment.showCombatLvl(account.combatLvl);
             }

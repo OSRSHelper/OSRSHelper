@@ -23,6 +23,7 @@ public class OSRSContentProvider extends ContentProvider {
     private static final int ACCOUNTS_URI = 1;
     private static final int WIDGETS_URI = 2;
     private static final int GRAND_EXCHANGE_URI = 3;
+    private static final int QUERY_CACHE_URI = 4;
 
     private static final UriMatcher sUriMatcher;
 
@@ -31,6 +32,7 @@ public class OSRSContentProvider extends ContentProvider {
         sUriMatcher.addURI(OSRSDatabase.AUTHORITY, OSRSDatabase.ACCOUNTS_TABLE, ACCOUNTS_URI);
         sUriMatcher.addURI(OSRSDatabase.AUTHORITY, OSRSDatabase.WIDGETS_TABLE, WIDGETS_URI);
         sUriMatcher.addURI(OSRSDatabase.AUTHORITY, OSRSDatabase.GRAND_EXCHANGE_TABLE, GRAND_EXCHANGE_URI);
+        sUriMatcher.addURI(OSRSDatabase.AUTHORITY, OSRSDatabase.QUERY_CACHE_TABLE, QUERY_CACHE_URI);
     }
 
     @Override
@@ -52,6 +54,8 @@ public class OSRSContentProvider extends ContentProvider {
                 return db.query(OSRSDatabase.TABLE_WIDGET, projection, selection, selectionArgs, null, null, sortOrder);
             case GRAND_EXCHANGE_URI:
                 return db.query(OSRSDatabase.TABLE_GRAND_EXCHANGE, projection, selection, selectionArgs, null, null, sortOrder);
+            case QUERY_CACHE_URI:
+                return db.query(OSRSDatabase.TABLE_QUERY_CACHE, projection, selection, selectionArgs, null, null, sortOrder);
             default:
                 throw new IllegalArgumentException("No matching URI");
         }
@@ -67,6 +71,8 @@ public class OSRSContentProvider extends ContentProvider {
                 return OSRSDatabase.TABLE_WIDGET;
             case GRAND_EXCHANGE_URI:
                 return OSRSDatabase.TABLE_GRAND_EXCHANGE;
+            case QUERY_CACHE_URI:
+                return OSRSDatabase.TABLE_QUERY_CACHE;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
@@ -90,6 +96,10 @@ public class OSRSContentProvider extends ContentProvider {
             case GRAND_EXCHANGE_URI:
                 rowId = db.insert(OSRSDatabase.TABLE_GRAND_EXCHANGE, null, contentValues);
                 newUri = ContentUris.withAppendedId(OSRSDatabase.GRAND_EXCHANGE_CONTENT_URI, rowId);
+                break;
+            case QUERY_CACHE_URI:
+                rowId = db.insert(OSRSDatabase.TABLE_QUERY_CACHE, null, contentValues);
+                newUri = ContentUris.withAppendedId(OSRSDatabase.QUERY_CACHE_CONTENT_URI, rowId);
                 break;
             default:
                 throw new IllegalArgumentException("No matching URI");
@@ -117,6 +127,9 @@ public class OSRSContentProvider extends ContentProvider {
             case GRAND_EXCHANGE_URI:
                 affectedRows = db.delete(OSRSDatabase.TABLE_GRAND_EXCHANGE, selection, selectionArgs);
                 break;
+            case QUERY_CACHE_URI:
+                affectedRows = db.delete(OSRSDatabase.TABLE_QUERY_CACHE, selection, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("No matching URI");
         }
@@ -141,6 +154,9 @@ public class OSRSContentProvider extends ContentProvider {
                 break;
             case GRAND_EXCHANGE_URI:
                 count = db.update(OSRSDatabase.TABLE_GRAND_EXCHANGE, contentValues, selection, selectionArgs);
+                break;
+            case QUERY_CACHE_URI:
+                count = db.update(OSRSDatabase.TABLE_QUERY_CACHE, contentValues, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);

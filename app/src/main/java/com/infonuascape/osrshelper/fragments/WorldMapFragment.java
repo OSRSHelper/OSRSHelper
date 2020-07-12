@@ -19,8 +19,8 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PoIAdapter;
-import com.infonuascape.osrshelper.adapters.PointOfInterest;
-import com.infonuascape.osrshelper.adapters.PointOfInterestHeader;
+import com.infonuascape.osrshelper.models.PointOfInterest;
+import com.infonuascape.osrshelper.models.PointOfInterestHeader;
 import com.infonuascape.osrshelper.utils.Utils;
 
 public class WorldMapFragment extends OSRSFragment implements OnClickListener, PoIAdapter.OnItemClickListener {

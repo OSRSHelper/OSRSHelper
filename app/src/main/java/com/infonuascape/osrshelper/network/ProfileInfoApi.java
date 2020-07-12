@@ -37,9 +37,9 @@ public class ProfileInfoApi {
         }
 
         ArrayList<Delta> deltas = new ArrayList<>();
-        if(httpResult.isParsingSuccessful) {
+        if(httpResult.statusCode == StatusCode.FOUND) {
             try {
-                JSONArray jsonArray = httpResult.jsonObject.getJSONArray(KEY_DATAPOINTS);
+                JSONArray jsonArray = new JSONObject(httpResult.output).getJSONArray(KEY_DATAPOINTS);
                 for(int i=0; i<jsonArray.length(); i++) {
                     JSONObject deltaJson = jsonArray.getJSONObject(i);
                     Delta delta = new Delta();

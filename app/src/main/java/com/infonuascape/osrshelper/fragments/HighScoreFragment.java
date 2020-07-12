@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,24 +108,29 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 	private void populateTable() {
 		if(getActivity() != null) {
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
+			getActivity().runOnUiThread(() -> {
+				profileHeaderFragment.showCombatLvl(account.combatLvl);
+				if(getView() != null) {
+					getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
+					rsView.populateView(playerSkills, this);
 				}
 			});
 		}
-		if(getView() != null) {
-			getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
-			rsView.populateView(playerSkills, this);
+	}
+
+	@Override
+	public void onHiscoresCacheFetched(PlayerSkills playerSkills) {
+		Log.d(TAG, "onHiscoresCacheFetched() called with: playerSkills = [" + playerSkills + "]");
+		this.playerSkills = playerSkills;
+		if (playerSkills != null) {
+			populateTable();
 		}
 	}
 
 	@Override
 	public void onHiscoresFetched(PlayerSkills playerSkills) {
+		Log.d(TAG, "onHiscoresFetched() called with: playerSkills = [" + playerSkills + "]");
 		this.playerSkills = playerSkills;
-		account.combatLvl = Utils.getCombatLvl(playerSkills);
-		DBController.setCombatLvlForAccount(getContext(), account);
 		if (playerSkills != null) {
 			populateTable();
 		}
@@ -132,15 +138,8 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 	@Override
 	public void onHiscoresError(String errorMessage) {
-		if(getActivity() != null) {
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					if(errorView != null) {
-						errorView.setVisibility(View.VISIBLE);
-					}
-				}
-			});
+		if(errorView != null) {
+			errorView.setVisibility(View.VISIBLE);
 		}
 	}
 

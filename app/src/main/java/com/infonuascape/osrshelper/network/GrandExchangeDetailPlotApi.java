@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
+import com.infonuascape.osrshelper.models.StatusCode;
 import com.jjoe64.graphview.series.DataPoint;
 
 import org.json.JSONException;
@@ -21,26 +22,27 @@ public class GrandExchangeDetailPlotApi {
     private final static String KEY_AVERAGE = "average";
 
     public static GrandExchangeDetailPlotResults fetch(String itemId) {
-        HTTPResult httpResult = NetworkStack.getInstance().performRequest(String.format(API_URL, Uri.encode(itemId)), Request.Method.GET);
-        if (httpResult.isParsingSuccessful) {
+        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemId)));
+        if (httpResult.statusCode == StatusCode.FOUND) {
             List<DataPoint> datapoints = new ArrayList<>();
             List<DataPoint> averages = new ArrayList<>();
             try {
-                JSONObject json = httpResult.jsonObject.getJSONObject(KEY_DAILY);
+                JSONObject json = new JSONObject(httpResult.output);
+                JSONObject jsonDaily = json.getJSONObject(KEY_DAILY);
 
-                Iterator<String> keys = json.keys();
+                Iterator<String> keys = jsonDaily.keys();
                 while(keys.hasNext()) {
                     String timestamp = keys.next();
-                    DataPoint datapoint = new DataPoint(Double.parseDouble(timestamp), json.getDouble(timestamp));
+                    DataPoint datapoint = new DataPoint(Double.parseDouble(timestamp), jsonDaily.getDouble(timestamp));
                     datapoints.add(datapoint);
                 }
 
-                json = httpResult.jsonObject.getJSONObject(KEY_AVERAGE);
+                JSONObject jsonAverage = json.getJSONObject(KEY_AVERAGE);
 
-                keys = json.keys();
+                keys = jsonAverage.keys();
                 while(keys.hasNext()) {
                     String timestamp = keys.next();
-                    DataPoint datapoint = new DataPoint(new Date(Long.parseLong(timestamp)), json.getLong(timestamp));
+                    DataPoint datapoint = new DataPoint(new Date(Long.parseLong(timestamp)), jsonAverage.getLong(timestamp));
                     averages.add(datapoint);
                 }
 

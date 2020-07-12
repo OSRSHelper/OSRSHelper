@@ -33,7 +33,7 @@ public class TopPlayersApi {
 		}
 		List<PlayerExp> playerList = new ArrayList<>();
 
-		JSONArray top = httpResult.jsonObject.getJSONArray(KEY_TOP);
+		JSONArray top = new JSONObject(httpResult.output).getJSONArray(KEY_TOP);
 		for (int i = 0; top.length() > i; i++) {
 			JSONObject userEntry = top.getJSONObject(i);
 			playerList.add(new PlayerExp(userEntry.getString(KEY_USERNAME), userEntry.getLong(KEY_EXPERIENCE_DIFF)));

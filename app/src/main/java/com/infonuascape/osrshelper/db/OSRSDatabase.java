@@ -15,6 +15,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 	public static final String TABLE_USERNAMES = "osrshelper_usernames";
 	public static final String TABLE_WIDGET = "osrshelper_widgets";
 	public static final String TABLE_GRAND_EXCHANGE = "grand_exchange";
+	public static final String TABLE_QUERY_CACHE = "query_cache";
 
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_USERNAME = "username";
@@ -35,8 +36,11 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 	public static final String COLUMN_IS_STARRED = "is_starred";
 	public static final String COLUMN_PRICE_WANTED = "price_wanted";
 
+	public static final String COLUMN_QUERY = "query_url";
+	public static final String COLUMN_OUTPUT = "output";
+
 	private static final String DATABASE_NAME = "osrshelper.db";
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 9;
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE_USERNAMES = "CREATE TABLE " + TABLE_USERNAMES + "("
@@ -53,14 +57,19 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 			+ COLUMN_ITEM_DESCRIPTION + " TEXT, " + COLUMN_ITEM_IMAGE + " TEXT, " + COLUMN_WIDGET_ID + " TEXT, "
 			+ COLUMN_IS_STARRED + " INTEGER, " + COLUMN_IS_MEMBERS + " INTEGER, " + COLUMN_PRICE_WANTED + " INTEGER);";
 
+	private static final String DATABASE_CREATE_QUERY_CACHE = "CREATE TABLE " + TABLE_QUERY_CACHE + "("
+			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_QUERY + " TEXT, " + COLUMN_OUTPUT + " TEXT);";
+
 	public static final String AUTHORITY = "com.infonuascape.osrshelper.provider";
 	public static final String ACCOUNTS_TABLE = "ACCOUNTS_TABLE";
 	public static final String WIDGETS_TABLE = "WIDGETS_TABLE";
 	public static final String GRAND_EXCHANGE_TABLE = "GRAND_EXCHANGE_TABLE";
+	public static final String QUERY_CACHE_TABLE = "QUERY_CACHE_TABLE";
 
 	public static final Uri ACCOUNTS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + ACCOUNTS_TABLE);
 	public static final Uri WIDGETS_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + WIDGETS_TABLE);
 	public static final Uri GRAND_EXCHANGE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + GRAND_EXCHANGE_TABLE);
+	public static final Uri QUERY_CACHE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + QUERY_CACHE_TABLE);
 
 	public OSRSDatabase(final Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -71,6 +80,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 		database.execSQL(DATABASE_CREATE_USERNAMES);
 		database.execSQL(DATABASE_CREATE_WIDGET);
 		database.execSQL(DATABASE_CREATE_GRAND_EXCHANGE);
+		database.execSQL(DATABASE_CREATE_QUERY_CACHE);
 	}
 
 	@Override
@@ -98,6 +108,10 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 		if(oldVersion < 8) {
 			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_COMBAT_LVL + " INTEGER");
+		}
+
+		if(oldVersion < 9) {
+			db.execSQL(DATABASE_CREATE_QUERY_CACHE);
 		}
 	}
 

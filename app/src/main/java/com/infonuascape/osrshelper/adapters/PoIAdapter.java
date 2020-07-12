@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.models.PointOfInterest;
+import com.infonuascape.osrshelper.models.PointOfInterestHeader;
 
 import java.util.ArrayList;
 

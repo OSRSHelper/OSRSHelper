@@ -7,6 +7,7 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
  */
 
 public interface HiscoresFetcherListener {
+    void onHiscoresCacheFetched(final PlayerSkills playerSkills);
     void onHiscoresFetched(final PlayerSkills playerSkills);
     void onHiscoresError(final String errorMessage);
 }

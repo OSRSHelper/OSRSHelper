@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.adapters;
+package com.infonuascape.osrshelper.models;
 
 import android.graphics.Point;
 

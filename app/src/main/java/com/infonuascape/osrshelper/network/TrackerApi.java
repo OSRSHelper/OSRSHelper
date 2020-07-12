@@ -45,7 +45,7 @@ public class TrackerApi {
 			throw new APIError("Unexpected response from the server.");
 		}
 
-		JSONObject ehp = httpResult.jsonObject.getJSONObject(KEY_EHP);
+		JSONObject ehp = new JSONObject(httpResult.output).getJSONObject(KEY_EHP);
 
 		PlayerSkills ps = new PlayerSkills();
 		List<Skill> skillList = ps.skillList;

@@ -1,4 +1,4 @@
-package com.infonuascape.osrshelper.adapters;
+package com.infonuascape.osrshelper.listeners;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
