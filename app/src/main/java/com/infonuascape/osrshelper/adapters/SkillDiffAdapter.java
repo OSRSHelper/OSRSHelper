@@ -46,7 +46,15 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
         SkillDiff delta = getItem(position);
 
         holder.experience.setText(NumberFormat.getInstance().format(delta.experience));
-        holder.rank.setText(NumberFormat.getInstance().format(delta.rank));
+
+        if (delta.rank > 0) {
+            holder.rankImage.setImageResource(R.drawable.delta_up);
+        } else if(delta.rank < 0) {
+            holder.rankImage.setImageResource(R.drawable.delta_down);
+        } else {
+            holder.rankImage.setImageResource(R.drawable.delta_neutral);
+        }
+        holder.rank.setText(NumberFormat.getInstance().format(Math.abs(delta.rank)));
         Glide.with(holder.icon).asBitmap().load(delta.skillType.getDrawableInt()).into(holder.icon);
     }
 
@@ -59,10 +67,11 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
         return skillDiffs.get(position);
     }
 
-    class DeltaHolder extends RecyclerView.ViewHolder {
+    protected static class DeltaHolder extends RecyclerView.ViewHolder {
         ImageView icon;
         TextView experience;
         TextView rank;
+        ImageView rankImage;
 
         public DeltaHolder(View itemView) {
             super(itemView);
@@ -70,6 +79,7 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
             icon = itemView.findViewById(R.id.skill_image);
             experience = itemView.findViewById(R.id.experience);
             rank = itemView.findViewById(R.id.rank);
+            rankImage = itemView.findViewById(R.id.rank_image);
         }
     }
 }

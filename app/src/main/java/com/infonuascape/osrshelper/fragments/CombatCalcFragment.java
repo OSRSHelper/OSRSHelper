@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.models.Account;

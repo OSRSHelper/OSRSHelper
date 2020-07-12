@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlXpTrackerFragmentAdapter;
-import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;

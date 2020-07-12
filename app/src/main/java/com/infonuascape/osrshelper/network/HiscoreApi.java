@@ -2,7 +2,6 @@ package com.infonuascape.osrshelper.network;
 
 import android.net.Uri;
 
-import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.HTTPResult;

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -20,7 +19,6 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
-import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 
