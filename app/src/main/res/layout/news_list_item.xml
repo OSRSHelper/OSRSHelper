@@ -31,37 +31,38 @@
                     android:src="@drawable/ic_launcher"/>
 
                 <TextView
-                    android:id="@+id/news_title"
+                    android:id="@+id/news_category"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="20dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:fontFamily="sans-serif-light"
                     android:layout_alignParentBottom="true"
                     android:background="@color/black_semi_transparent"
-                    tools:text="Fossil Island Improvements"
+                    tools:text="Game Update News"
                     android:ellipsize="marquee"
                     android:singleLine="true"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/news_category"
+                android:id="@+id/news_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_normal"
-                tools:text="Game Update News"/>
+                tools:text="Fossil Island Improvements"/>
 
             <TextView
                 android:id="@+id/news_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="3dp"
                 android:textSize="14sp"
                 android:textColor="@color/text_normal"
@@ -72,9 +73,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_alignParentRight="true"
                 android:textColor="@color/text_light"
                 android:textSize="13sp"/>
 
