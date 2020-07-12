@@ -24,6 +24,7 @@ import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.widget.grandexchange.GrandExchangeAppWidgetProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
@@ -118,7 +119,7 @@ public class WidgetGrandExchangeSearchActivity extends Activity implements OnIte
 	}
 
 	@Override
-	public void onSearchResults(final String searchTerm, ArrayList<Item> searchResults) {
+	public void onSearchResults(final String searchTerm, List<Item> searchResults) {
 		findViewById(R.id.progress_loading).setVisibility(View.GONE);
 
 		if(TextUtils.equals(searchTerm, searchText)) {
@@ -150,7 +151,7 @@ public class WidgetGrandExchangeSearchActivity extends Activity implements OnIte
 
 	private void startSearchTask() {
 		killAsyncTaskIfStillRunning();
-		asyncTask = new SearchGEResultsTask(this, this, searchText);
+		asyncTask = new SearchGEResultsTask(this, searchText);
 		asyncTask.execute();
 		findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
 	}

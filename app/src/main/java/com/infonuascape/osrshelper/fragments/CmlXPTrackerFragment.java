@@ -106,7 +106,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	private void updateAccount() {
 		title.setText(R.string.loading);
 		description.setText(null);
-		asyncTask = new CmlTrackerUpdateTask(getContext(), this, account);
+		asyncTask = new CmlTrackerUpdateTask(this, account);
 		asyncTask.execute();
 	}
 

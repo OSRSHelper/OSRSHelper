@@ -164,5 +164,6 @@
     <string name="error_when_fetching">Error when fetching</string>
     <string name="unavailable_right_now">Unavailable right now</string>
     <string name="unknown_account">Unknown</string>
+    <string name="hiscore_share_intent_name">My OSRS Stats</string>
 
 </resources>

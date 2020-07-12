@@ -7,7 +7,7 @@ import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TopPlayersListener;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
-import com.infonuascape.osrshelper.fetchers.top.TopFetcher;
+import com.infonuascape.osrshelper.network.TopPlayersApi;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.ParserErrorException;
 
@@ -23,14 +23,12 @@ import java.util.List;
 public class CmlTopFetcherTask extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "CmlTopFetcherTask";
 
-    private WeakReference<Context> context;
     private WeakReference<TopPlayersListener> listener;
     private SkillType skillType;
     private TrackerTime period;
     private List<PlayerExp> playerExps;
 
-    public CmlTopFetcherTask(final Context context, final TopPlayersListener listener, final SkillType skillType, final TrackerTime period) {
-        this.context = new WeakReference<>(context);
+    public CmlTopFetcherTask(final TopPlayersListener listener, final SkillType skillType, final TrackerTime period) {
         this.listener = new WeakReference<>(listener);
         this.skillType = skillType;
         this.period = period;
@@ -39,14 +37,9 @@ public class CmlTopFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            TopFetcher tf = new TopFetcher(context.get(), skillType, period);
-            playerExps = tf.processAPI();
-        } catch (ParserErrorException e) {
-            e.printStackTrace();
-        } catch (APIError apiError) {
+            playerExps = TopPlayersApi.fetch(skillType, period);
+        } catch (APIError | JSONException apiError) {
             apiError.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         return null;

@@ -4,7 +4,7 @@ package com.infonuascape.osrshelper.models.grandexchange;
  * Created by marc_ on 2018-01-31.
  */
 
-public class GEItemInfo extends Item {
+public class GrandExchangeDetailInfo extends Item {
     public String type;
     public Trend current;
     public Trend today;

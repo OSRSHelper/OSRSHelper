@@ -12,13 +12,13 @@ import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GrandExchangeSearchAdapter extends ArrayAdapter<Item> {
     private Context mContext;
-    private ArrayList<Item> items;
+    private List<Item> items;
 
-    public GrandExchangeSearchAdapter(Context context, ArrayList<Item> map) {
+    public GrandExchangeSearchAdapter(Context context, List<Item> map) {
         super(context, R.layout.search_listitem, map);
         this.mContext = context;
         items = map;

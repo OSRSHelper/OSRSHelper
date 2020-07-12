@@ -1,27 +1,29 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.adapters.EndlessRecyclerOnScrollListener;
 import com.infonuascape.osrshelper.adapters.NewsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.listeners.NewsFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
-import com.infonuascape.osrshelper.models.OSRSNews;
+import com.infonuascape.osrshelper.models.News;
 import com.infonuascape.osrshelper.tasks.OSRSNewsTask;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by marc_ on 2018-01-20.
@@ -34,8 +36,6 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     private NewsAdapter newsAdapter;
     private TextView emptyText;
     private ProgressBar progressBar;
-    private LinearLayoutManager linearLayoutManager;
-    private List<OSRSNews> news;
     private TextView subscribeBtn;
 
     public static NewsFragment newInstance() {
@@ -53,8 +53,16 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
         View view = inflater.inflate(R.layout.osrs_news, null);
 
         recyclerView = view.findViewById(R.id.news_list);
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                loadNews(currentPage);
+            }
+        });
+        newsAdapter = new NewsAdapter(getContext(), this);
+        recyclerView.setAdapter(newsAdapter);
         progressBar = view.findViewById(R.id.progress_bar);
         emptyText = view.findViewById(R.id.empty_view);
 
@@ -80,58 +88,34 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     public void onStart() {
         super.onStart();
         killAsyncTaskIfStillRunning();
-        if(news != null) {
-            newsAdapter = new NewsAdapter(getContext(), news, this);
-            recyclerView.setAdapter(newsAdapter);
-        } else {
-            asyncTask = new OSRSNewsTask(getContext(), this);
-            asyncTask.execute();
-        }
+        loadNews(1);
     }
 
-    @Override
-    public void onNewsFetchingStarted() {
-        if(getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+    private void loadNews(int pageNum) {
+        Log.d(TAG, "loadNews: pageNum=" + pageNum);
+        progressBar.setVisibility(View.VISIBLE);
+        asyncTask = new OSRSNewsTask(this, pageNum);
+        asyncTask.execute();
     }
 
     @Override
     public void onNewsFetchingError() {
-        if(getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setVisibility(View.GONE);
-                    emptyText.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+        progressBar.setVisibility(View.GONE);
+        emptyText.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onNewsFetched(List<OSRSNews> news) {
+    public void onNewsFetched(List<News> news) {
         if(getView() != null) {
             progressBar.setVisibility(View.GONE);
-            if (news != null && news.size() > 0) {
-                this.news = news;
-                emptyText.setVisibility(View.GONE);
-                newsAdapter = new NewsAdapter(getContext(), news, this);
-                recyclerView.setAdapter(newsAdapter);
-            } else {
-                emptyText.setVisibility(View.VISIBLE);
-            }
+            emptyText.setVisibility(View.GONE);
+            newsAdapter.addNews(news);
         }
     }
 
     @Override
     public void onItemClicked(int position) {
-        OSRSNews news = newsAdapter.getItem(position);
+        News news = newsAdapter.getItem(position);
         MainFragmentController.getInstance().showFragment(WebViewFragment.newInstance(news.url, true));
     }
 

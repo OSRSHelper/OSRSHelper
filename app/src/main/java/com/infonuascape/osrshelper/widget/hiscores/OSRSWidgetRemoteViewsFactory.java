@@ -4,17 +4,17 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.SkillType;
-import com.infonuascape.osrshelper.fetchers.hiscore.HiscoreFetcher;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.network.HiscoreApi;
+import com.infonuascape.osrshelper.network.NetworkStack;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
@@ -38,13 +38,15 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
                 AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
+    @Override
     public void onCreate() {
         Logger.add(TAG, ": onCreate");
-        skills = new ArrayList<Skill>();
+        skills = new ArrayList<>();
         playerSkills = new PlayerSkills();
         skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
     }
 
+    @Override
     public void onDestroy() {
         // In onDestroy() you should tear down anything that was setup for your
         // data source,
@@ -52,10 +54,12 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
         skills.clear();
     }
 
+    @Override
     public int getCount() {
         return skills.size();
     }
 
+    @Override
     public RemoteViews getViewAt(int position) {
         // position will always range from 0 to getCount() - 1.
 
@@ -83,22 +87,27 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
         return rv;
     }
 
+    @Override
     public RemoteViews getLoadingView() {
         return null;
     }
 
+    @Override
     public int getViewTypeCount() {
         return 2;
     }
 
+    @Override
     public long getItemId(int position) {
         return position;
     }
 
+    @Override
     public boolean hasStableIds() {
         return true;
     }
 
+    @Override
     public void onDataSetChanged() {
         Logger.add(TAG, ": onDataSetChanged");
         final long identityToken = Binder.clearCallingIdentity();
@@ -106,7 +115,11 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
         Binder.restoreCallingIdentity(identityToken);
 
         try {
-            playerSkills = new HiscoreFetcher(mContext, account.username, account.type).getPlayerSkills();
+            if (NetworkStack.getInstance() == null) {
+                NetworkStack.init(mContext.getApplicationContext());
+            }
+
+            playerSkills = HiscoreApi.fetch(account.username, account.type);
             skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
         } catch (PlayerNotFoundException e) {
             if(playerSkills == null) {

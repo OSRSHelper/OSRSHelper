@@ -9,13 +9,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
-import com.infonuascape.osrshelper.models.OSRSNews;
+import com.infonuascape.osrshelper.models.News;
 import com.infonuascape.osrshelper.utils.Logger;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,15 +29,24 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     private static final String TAG = "NewsAdapter";
 
     private Context context;
-    private List<OSRSNews> osrsNews;
+    private List<News> news;
     private RecyclerItemClickListener listener;
     private DateFormat dateFormat;
+    private SimpleDateFormat simpleDateFormat;
 
-    public NewsAdapter(final Context context, final List<OSRSNews> osrsNews, final RecyclerItemClickListener listener) {
+    public NewsAdapter(final Context context, final RecyclerItemClickListener listener) {
         this.context = context;
-        this.osrsNews = osrsNews;
+        this.news = new ArrayList<>();
         this.listener = listener;
         dateFormat = SimpleDateFormat.getDateInstance(DateFormat.LONG);
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+
+    public void addNews(List<News> news) {
+        int sizeBefore = this.news.size();
+        this.news.addAll(news);
+        notifyItemRangeInserted(sizeBefore, news.size());
     }
 
     @Override
@@ -50,21 +61,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
         Logger.add(TAG, ": onBindViewHolder:");
-        OSRSNews news = getItem(position);
+        News news = getItem(position);
         holder.title.setText(news.title);
         holder.description.setText(news.description);
         holder.category.setText(news.category);
-        Glide.with(holder.image).load(news.imageUrl).into(holder.image);
-        holder.publicationDate.setText(dateFormat.format(new Date(news.publicationDate)));
+        Glide.with(holder.image).asBitmap().load(news.imageUrl).into(holder.image);
+        try {
+            holder.publicationDate.setText(dateFormat.format(simpleDateFormat.parse(news.publicationDate)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return osrsNews.size();
+        return news.size();
     }
 
-    public OSRSNews getItem(int position) {
-        return osrsNews.get(position);
+    public News getItem(int position) {
+        return news.get(position);
     }
 
     class NewsViewHolder extends RecyclerView.ViewHolder {

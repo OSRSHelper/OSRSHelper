@@ -1,6 +1,6 @@
 package com.infonuascape.osrshelper.listeners;
 
-import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
+import com.infonuascape.osrshelper.models.grandexchange.GrandExchangeDetailInfo;
 import com.jjoe64.graphview.series.DataPoint;
 
 /**
@@ -8,5 +8,5 @@ import com.jjoe64.graphview.series.DataPoint;
  */
 
 public interface GEDetailListener {
-    void onInfoFetched(final DataPoint[] datapoints, final DataPoint[] averages, final GEItemInfo itemInfo);
+    void onInfoFetched(final DataPoint[] datapoints, final DataPoint[] averages, final GrandExchangeDetailInfo itemInfo);
 }

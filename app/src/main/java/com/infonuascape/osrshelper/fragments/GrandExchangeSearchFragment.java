@@ -10,6 +10,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeSearchAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
@@ -18,10 +21,7 @@ import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
 
-import java.util.ArrayList;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
+import java.util.List;
 
 public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
 	private GrandExchangeSearchAdapter adapter;
@@ -80,7 +80,7 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 	}
 
 	@Override
-	public void onSearchResults(final String searchTerm, ArrayList<Item> searchResults) {
+	public void onSearchResults(final String searchTerm, List<Item> searchResults) {
 		getView().findViewById(R.id.progress_loading).setVisibility(View.GONE);
 
 		if(TextUtils.equals(searchTerm, searchText)) {
@@ -114,7 +114,7 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 
 	private void startSearchTask() {
 		killAsyncTaskIfStillRunning();
-		asyncTask = new SearchGEResultsTask(getContext(), this, searchText);
+		asyncTask = new SearchGEResultsTask(this, searchText);
 		asyncTask.execute();
 		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
 	}

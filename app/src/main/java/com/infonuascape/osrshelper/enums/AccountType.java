@@ -6,4 +6,8 @@ package com.infonuascape.osrshelper.enums;
 
 public enum AccountType {
     REGULAR, IRONMAN, ULTIMATE_IRONMAN, HARDCORE_IRONMAN;
+
+    public String getApiName() {
+        return name().toLowerCase();
+    }
 }

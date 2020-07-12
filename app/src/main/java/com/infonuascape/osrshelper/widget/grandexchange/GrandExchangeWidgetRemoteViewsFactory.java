@@ -7,8 +7,9 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.fetchers.grandexchange.RSBuddyPriceFetcher;
 import com.infonuascape.osrshelper.models.grandexchange.RSBuddyPrice;
+import com.infonuascape.osrshelper.network.NetworkStack;
+import com.infonuascape.osrshelper.network.RSBuddyPriceApi;
 import com.infonuascape.osrshelper.utils.Logger;
 
 import java.text.NumberFormat;
@@ -34,18 +35,18 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
                 AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
+    @Override
     public void onCreate() {
         Logger.add(TAG, ": onCreate");
         isError = false;
     }
 
-    public void onDestroy() {
-    }
-
+    @Override
     public int getCount() {
         return 1;
     }
 
+    @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews rv = new RemoteViews(mContext.getPackageName(),
                     R.layout.widget_grand_exchange_price);
@@ -66,26 +67,34 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
         return rv;
     }
 
+    @Override
     public RemoteViews getLoadingView() {
         return null;
     }
 
+    @Override
     public int getViewTypeCount() {
         return 1;
     }
 
+    @Override
     public long getItemId(int position) {
         return position;
     }
 
+    @Override
     public boolean hasStableIds() {
         return true;
     }
 
+    @Override
     public void onDataSetChanged() {
         Logger.add(TAG, ": onDataSetChanged");
         try {
-            RSBuddyPrice newRsBuddyPrice = new RSBuddyPriceFetcher(mContext.getApplicationContext()).fetch(itemId);
+            if (NetworkStack.getInstance() == null) {
+                NetworkStack.init(mContext.getApplicationContext());
+            }
+            RSBuddyPrice newRsBuddyPrice = RSBuddyPriceApi.fetch(itemId);
 
             if(newRsBuddyPrice != null) {
                 rsBuddyPrice = newRsBuddyPrice;
@@ -94,6 +103,11 @@ public class GrandExchangeWidgetRemoteViewsFactory implements RemoteViewsService
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+
     }
 
     private long getPrice(final RSBuddyPrice rsBuddyPrice) {

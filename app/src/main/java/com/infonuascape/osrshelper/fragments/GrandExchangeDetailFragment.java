@@ -15,8 +15,8 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeDetailFragmentAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.GEDetailListener;
-import com.infonuascape.osrshelper.models.grandexchange.GEItemInfo;
-import com.infonuascape.osrshelper.tasks.GEDetailPlotTask;
+import com.infonuascape.osrshelper.models.grandexchange.GrandExchangeDetailInfo;
+import com.infonuascape.osrshelper.tasks.GrandExchangeDetailPlotTask;
 import com.jjoe64.graphview.series.DataPoint;
 
 import androidx.annotation.NonNull;
@@ -34,7 +34,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
     private String itemId;
     private DataPoint[] datapoints;
     private DataPoint[] averages;
-    private GEItemInfo itemInfo;
+    private GrandExchangeDetailInfo itemInfo;
 
     public static GrandExchangeDetailFragment newInstance(final String itemId) {
         GrandExchangeDetailFragment fragment = new GrandExchangeDetailFragment();
@@ -74,7 +74,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
     @Override
     public void onStart() {
         super.onStart();
-        asyncTask = new GEDetailPlotTask(getContext(), this, itemId);
+        asyncTask = new GrandExchangeDetailPlotTask(this, itemId);
         asyncTask.execute();
     }
 
@@ -111,7 +111,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
     }
 
     @Override
-    public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GEItemInfo itemInfo) {
+    public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GrandExchangeDetailInfo itemInfo) {
         if(datapoints != null && averages != null) {
             DBController.addGrandExchangeItem(getContext(), itemInfo);
             this.datapoints = datapoints;

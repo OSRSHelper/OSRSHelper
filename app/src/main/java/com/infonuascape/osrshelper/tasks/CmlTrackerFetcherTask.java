@@ -8,10 +8,9 @@ import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.fetchers.tracker.TrackerFetcher;
+import com.infonuascape.osrshelper.network.TrackerApi;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 
 import java.lang.ref.WeakReference;
 
@@ -36,19 +35,11 @@ public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            playerSkills = new TrackerFetcher(context.get(), account.username, time).getPlayerSkills();
+            playerSkills = TrackerApi.fetch(account.username, time);
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
                 if(context.get() != null) {
                     listener.onTrackingError(context.get().getString(R.string.not_existing_player));
-                } else {
-                    listener.onTrackingError("Error");
-                }
-            }
-        } catch (PlayerNotTrackedException e) {
-            if(listener != null) {
-                if(context.get() != null) {
-                    listener.onTrackingError(context.get().getString(R.string.not_tracked_player));
                 } else {
                     listener.onTrackingError("Error");
                 }

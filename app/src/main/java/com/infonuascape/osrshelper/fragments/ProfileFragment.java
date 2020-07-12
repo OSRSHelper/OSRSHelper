@@ -10,6 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
@@ -28,11 +33,6 @@ import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by marc_ on 2018-01-20.
@@ -122,7 +122,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         Logger.add(TAG, ": loadDeltas");
         if(deltas == null) {
             killAsyncTaskIfStillRunning();
-            asyncTask = new ProfileInfoFetcherTask(getContext(), this, account);
+            asyncTask = new ProfileInfoFetcherTask(this, account);
             asyncTask.execute();
         } else {
             adapter = new ProfileDeltasAdapter(getContext(), deltas);

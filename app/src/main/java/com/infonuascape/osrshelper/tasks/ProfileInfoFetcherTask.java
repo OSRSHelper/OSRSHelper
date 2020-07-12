@@ -1,16 +1,15 @@
 package com.infonuascape.osrshelper.tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
-import com.infonuascape.osrshelper.fetchers.profile.ProfileInfoFetcher;
 import com.infonuascape.osrshelper.listeners.ProfileInfoListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.Delta;
+import com.infonuascape.osrshelper.network.ProfileInfoApi;
+import com.infonuascape.osrshelper.utils.exceptions.APIError;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -19,34 +18,39 @@ import java.util.Comparator;
  */
 
 public class ProfileInfoFetcherTask extends AsyncTask<Void, Void, Void> {
-    private WeakReference<Context> context;
+    private final static int THREE_MONTHS = 60 * 60 * 24 * 30 * 3;
     private ProfileInfoListener listener;
     private Account account;
     private ArrayList<Delta> deltas;
 
-    public ProfileInfoFetcherTask(final Context context, final ProfileInfoListener listener, final Account account) {
-        this.context = new WeakReference<>(context);
+    public ProfileInfoFetcherTask(final ProfileInfoListener listener, final Account account) {
         this.listener = listener;
         this.account = account;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        deltas = new ProfileInfoFetcher(context.get()).fetch(account.username, 60 * 60 * 24 * 30 * 3); //Last three months
+        try {
+            deltas = ProfileInfoApi.fetch(account.username, THREE_MONTHS);
 
-        //Sort desc
-        Collections.sort(deltas, new Comparator<Delta>() {
-            @Override
-            public int compare(Delta delta, Delta t1) {
-                if(delta.timestampRecent > t1.timestampRecent) {
-                    return -1;
-                } else if(delta.timestampRecent == t1.timestampRecent) {
-                    return 0;
+            //Sort desc
+            Collections.sort(deltas, new Comparator<Delta>() {
+                @Override
+                public int compare(Delta delta, Delta t1) {
+                    if(delta.timestampRecent > t1.timestampRecent) {
+                        return -1;
+                    } else if(delta.timestampRecent == t1.timestampRecent) {
+                        return 0;
+                    }
+
+                    return 1;
                 }
-
-                return 1;
-            }
-        });
+            });
+        } catch (PlayerNotFoundException e) {
+            e.printStackTrace();
+        } catch (APIError apiError) {
+            apiError.printStackTrace();
+        }
         return null;
     }
 

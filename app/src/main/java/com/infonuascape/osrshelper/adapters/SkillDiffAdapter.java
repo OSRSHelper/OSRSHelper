@@ -47,7 +47,7 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
 
         holder.experience.setText(NumberFormat.getInstance().format(delta.experience));
         holder.rank.setText(NumberFormat.getInstance().format(delta.rank));
-        Glide.with(holder.icon).load(delta.skillType.getDrawableInt()).into(holder.icon);
+        Glide.with(holder.icon).asBitmap().load(delta.skillType.getDrawableInt()).into(holder.icon);
     }
 
     @Override

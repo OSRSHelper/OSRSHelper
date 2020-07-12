@@ -3,7 +3,7 @@ package com.infonuascape.osrshelper.utils.rss;
 import android.text.TextUtils;
 import android.util.Xml;
 
-import com.infonuascape.osrshelper.models.OSRSNews;
+import com.infonuascape.osrshelper.models.News;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -30,7 +30,7 @@ public class NewsRSSParser {
 
     private static final String ns = null;
 
-    public List<OSRSNews> parse(final String xml)
+    public List<News> parse(final String xml)
             throws XmlPullParserException, IOException, ParseException {
         InputStream in = new ByteArrayInputStream(xml.getBytes());
         try {
@@ -44,9 +44,9 @@ public class NewsRSSParser {
         }
     }
 
-    private List<OSRSNews> readFeed(XmlPullParser parser)
+    private List<News> readFeed(XmlPullParser parser)
             throws XmlPullParserException, IOException, ParseException {
-        List<OSRSNews> news = new ArrayList<>();
+        List<News> news = new ArrayList<>();
 
         parser.require(XmlPullParser.START_TAG, ns, "rss");
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -74,10 +74,10 @@ public class NewsRSSParser {
         return news;
     }
 
-    private OSRSNews readNews(XmlPullParser parser)
+    private News readNews(XmlPullParser parser)
             throws XmlPullParserException, IOException, ParseException {
         parser.require(XmlPullParser.START_TAG, ns, "item");
-        OSRSNews news = new OSRSNews();
+        News news = new News();
 
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {

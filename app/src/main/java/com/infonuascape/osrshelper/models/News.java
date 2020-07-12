@@ -4,7 +4,7 @@ package com.infonuascape.osrshelper.models;
  * Created by marc_ on 2018-01-20.
  */
 
-public class OSRSNews {
+public class News {
     public String title;
     public String description;
     public String url;

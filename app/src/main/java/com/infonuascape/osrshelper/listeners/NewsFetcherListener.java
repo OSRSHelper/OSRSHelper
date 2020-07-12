@@ -1,6 +1,6 @@
 package com.infonuascape.osrshelper.listeners;
 
-import com.infonuascape.osrshelper.models.OSRSNews;
+import com.infonuascape.osrshelper.models.News;
 
 import java.util.List;
 
@@ -9,7 +9,6 @@ import java.util.List;
  */
 
 public interface NewsFetcherListener {
-    void onNewsFetchingStarted();
     void onNewsFetchingError();
-    void onNewsFetched(final List<OSRSNews> news);
+    void onNewsFetched(final List<News> news);
 }

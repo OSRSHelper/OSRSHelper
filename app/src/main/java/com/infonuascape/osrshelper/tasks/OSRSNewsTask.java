@@ -1,21 +1,12 @@
 package com.infonuascape.osrshelper.tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
-import com.android.volley.Request;
 import com.infonuascape.osrshelper.listeners.NewsFetcherListener;
-import com.infonuascape.osrshelper.models.OSRSNews;
-import com.infonuascape.osrshelper.utils.http.HTTPRequest;
-import com.infonuascape.osrshelper.utils.http.NetworkStack;
-import com.infonuascape.osrshelper.utils.rss.NewsRSSParser;
+import com.infonuascape.osrshelper.models.News;
+import com.infonuascape.osrshelper.network.NewsApi;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,35 +14,18 @@ import java.util.List;
  */
 
 public class OSRSNewsTask extends AsyncTask<Void, Void, Void> {
-    private final static String API_ENDPOINT = "https://services.runescape.com/m=news/latest_news.rss?oldschool=true";
-    private WeakReference<Context> context;
     private WeakReference<NewsFetcherListener> listener;
-    private List<OSRSNews> osrsNews;
+    private List<News> news;
+    private int pageNum;
 
-    public OSRSNewsTask(final Context context, final NewsFetcherListener listener) {
-        this.context = new WeakReference<>(context);
+    public OSRSNewsTask(final NewsFetcherListener listener, final int pageNum) {
         this.listener = new WeakReference<>(listener);
+        this.pageNum = pageNum;
     }
+
     @Override
     protected Void doInBackground(Void... voids) {
-        if(listener.get() != null) {
-            listener.get().onNewsFetchingStarted();
-        }
-
-        HTTPRequest httpRequest = NetworkStack.getInstance(context.get()).performRequest(API_ENDPOINT, Request.Method.GET);
-        if(httpRequest.getStatusCode() == HTTPRequest.StatusCode.FOUND) {
-            NewsRSSParser parser = new NewsRSSParser();
-            try {
-                osrsNews = parser.parse(httpRequest.getOutput());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        //If we reach here, we were not able to parse the rss feed
-        if(listener.get() != null) {
-            listener.get().onNewsFetchingError();
-        }
+        news = NewsApi.fetch(pageNum);
         return null;
     }
 
@@ -59,7 +33,11 @@ public class OSRSNewsTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
         if(listener.get() != null) {
-            listener.get().onNewsFetched(osrsNews);
+            if (news.isEmpty() && pageNum == 1) {
+                listener.get().onNewsFetchingError();
+            } else {
+                listener.get().onNewsFetched(news);
+            }
         }
     }
 }
