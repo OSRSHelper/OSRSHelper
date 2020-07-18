@@ -1,7 +1,10 @@
 package com.infonuascape.osrshelper.models;
 
-public class HiscoreBoss {
-    public String name;
-    public long rank;
-    public long score;
+import com.infonuascape.osrshelper.R;
+
+public class HiscoreBoss extends HiscoreRankScoreItem {
+    @Override
+    public int getTitleName() {
+        return R.string.hiscore_title_bosses;
+    }
 }

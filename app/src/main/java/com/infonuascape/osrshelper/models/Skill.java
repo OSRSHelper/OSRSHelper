@@ -1,9 +1,10 @@
 package com.infonuascape.osrshelper.models;
 
 
+import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.SkillType;
 
-public class Skill {
+public class Skill implements HiscoreItem {
 	private SkillType skillType;
 	private long experience = 0;
 	private long experienceDiff = 0;
@@ -129,5 +130,10 @@ public class Skill {
 
 		this.level = (short) Math.min(level, 99);
 		this.virtualLevel = level;
+	}
+
+	@Override
+	public int getTitleName() {
+		return R.string.hiscore_title_skills;
 	}
 }

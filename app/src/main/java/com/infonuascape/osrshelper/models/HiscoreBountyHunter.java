@@ -1,7 +1,10 @@
 package com.infonuascape.osrshelper.models;
 
-public class HiscoreBountyHunter {
-    public String name;
-    public long rank;
-    public long score;
+import com.infonuascape.osrshelper.R;
+
+public class HiscoreBountyHunter extends HiscoreRankScoreItem {
+    @Override
+    public int getTitleName() {
+        return R.string.hiscore_title_bounty_hunter;
+    }
 }

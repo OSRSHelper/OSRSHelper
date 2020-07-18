@@ -4,6 +4,7 @@ import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.HiscoreBoss;
 import com.infonuascape.osrshelper.models.HiscoreBountyHunter;
 import com.infonuascape.osrshelper.models.HiscoreClueScroll;
+import com.infonuascape.osrshelper.models.HiscoreItem;
 import com.infonuascape.osrshelper.models.HiscoreLms;
 import com.infonuascape.osrshelper.models.Skill;
 
@@ -133,8 +134,16 @@ public class PlayerSkills {
 		return skills;
 	}
 
-	public int getCount() {
-		return skillList.size() + bountyHunterList.size() + clueScrollsList.size() + bossesList.size() + (hiscoreLms != null ? 1 : 0);
+	public List<HiscoreItem> getHiscoresItems() {
+		List<HiscoreItem> hiscoreItems = new ArrayList<>();
+		hiscoreItems.addAll(getSkillsInOrder(this));
+		hiscoreItems.addAll(bountyHunterList);
+		hiscoreItems.addAll(clueScrollsList);
+		hiscoreItems.addAll(bossesList);
+		if (hiscoreLms != null) {
+			hiscoreItems.add(hiscoreLms);
+		}
+		return hiscoreItems;
 	}
 
 	public Object getItem(int position) {

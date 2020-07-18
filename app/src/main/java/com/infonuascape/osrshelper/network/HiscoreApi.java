@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by maden on 9/9/14.
@@ -96,6 +98,7 @@ public class HiscoreApi {
 			overallSkill.setVirtualLevel(totalVirtualLevel);
 
 
+			Pattern patternBountyHunter = Pattern.compile("(Bounty Hunter - )(\\w*)");
 			JSONObject jsonBountyHunters = jsonObject.getJSONObject(KEY_BOUNTY_HUNTER);
 			for (Iterator<String> it = jsonBountyHunters.keys(); it.hasNext(); ) {
 				String name = it.next();
@@ -105,7 +108,12 @@ public class HiscoreApi {
 
 				if (rank != -1 && score != -1) {
 					HiscoreBountyHunter bountyHunter = new HiscoreBountyHunter();
-					bountyHunter.name = name;
+					Matcher matcher = patternBountyHunter.matcher(name);
+					if (matcher.find()) {
+						bountyHunter.name = matcher.group(2);
+					} else {
+						bountyHunter.name = name;
+					}
 					bountyHunter.rank = rank;
 					bountyHunter.score = score;
 					ps.bountyHunterList.add(bountyHunter);
@@ -129,6 +137,7 @@ public class HiscoreApi {
 			}
 
 			JSONObject jsonClueScrolls = jsonObject.getJSONObject(KEY_CLUE_SCROLLS);
+			Pattern patternClueScroll = Pattern.compile("(Clue Scrolls \\()(\\w*)([)])");
 			for (Iterator<String> it = jsonClueScrolls.keys(); it.hasNext(); ) {
 				String name = it.next();
 				JSONObject jsonClueScroll = jsonClueScrolls.getJSONObject(name);
@@ -137,7 +146,12 @@ public class HiscoreApi {
 
 				if (rank != -1 && score != -1) {
 					HiscoreClueScroll clueScroll = new HiscoreClueScroll();
-					clueScroll.name = name;
+					Matcher matcher = patternClueScroll.matcher(name);
+					if (matcher.find()) {
+						clueScroll.name = matcher.group(2);
+					} else {
+						clueScroll.name = name;
+					}
 					clueScroll.rank = rank;
 					clueScroll.score = score;
 					ps.clueScrollsList.add(clueScroll);
