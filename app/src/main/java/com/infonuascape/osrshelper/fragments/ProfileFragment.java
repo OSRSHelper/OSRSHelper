@@ -151,7 +151,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
 
     private void switchAccountType() {
         final AccountTypeAdapter adapter = new AccountTypeAdapter(getActivity());
-        new AlertDialog.Builder(getActivity()).setTitle(R.string.select_account_type)
+        new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(R.string.select_account_type)
                 .setAdapter(adapter, (dialog, item) -> {
                     AccountType accountType = adapter.getItem(item);
                     account.type = accountType;
@@ -161,7 +161,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     }
 
     private void setUserAsMyProfile() {
-        new AlertDialog.Builder(getActivity()).setTitle(R.string.set_profile_title)
+        new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(R.string.set_profile_title)
                 .setMessage(R.string.set_profile_desc)
                 .setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
                     DBController.setProfileAccount(getContext(), account);
