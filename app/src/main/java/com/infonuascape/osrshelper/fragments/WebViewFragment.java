@@ -1,5 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +78,7 @@ public class WebViewFragment extends OSRSFragment {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
+        webView.setBackgroundColor(Color.TRANSPARENT);
 
         if(getArguments().getBoolean(EXTRA_IS_NEWS, false)) {
             webView.getSettings().setMinimumFontSize(32);

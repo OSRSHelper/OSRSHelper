@@ -50,7 +50,7 @@
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:padding="8dp"
-        android:tint="@color/rs_view_bg"
+        android:tint="@color/text_normal"
         android:src="@drawable/refresh"/>
 
     <com.google.android.material.tabs.TabLayout

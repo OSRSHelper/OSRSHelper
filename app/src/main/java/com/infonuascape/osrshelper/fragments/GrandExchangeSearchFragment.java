@@ -76,7 +76,7 @@ public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemC
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		final Item item = adapter.getItem(position);
-		MainFragmentController.getInstance().showFragment(GrandExchangeDetailFragment.newInstance(item.id));
+		MainFragmentController.getInstance().showFragment(GrandExchangeDetailFragment.newInstance(item.name, item.id));
 	}
 
 	@Override

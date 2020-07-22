@@ -136,7 +136,7 @@ public class PlayerSkills {
 
 	public List<HiscoreItem> getHiscoresItems() {
 		List<HiscoreItem> hiscoreItems = new ArrayList<>();
-		hiscoreItems.addAll(getSkillsInOrder(this));
+//		hiscoreItems.addAll(getSkillsInOrder(this));
 		hiscoreItems.addAll(bountyHunterList);
 		hiscoreItems.addAll(clueScrollsList);
 		hiscoreItems.addAll(bossesList);
@@ -148,9 +148,9 @@ public class PlayerSkills {
 
 	public Object getItem(int position) {
 		int currentPosition = position;
-		if (currentPosition < skillList.size()) {
-			return skillList.get(currentPosition);
-		}
+//		if (currentPosition < skillList.size()) {
+//			return skillList.get(currentPosition);
+//		}
 		currentPosition -= skillList.size();
 		if (currentPosition < bountyHunterList.size()) {
 			return bountyHunterList.get(currentPosition);

@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/colorAccent">
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/profile_header"
@@ -11,37 +11,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/hiscore_list"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profile_header"
-        android:layout_margin="10dp" />
+        android:layout_below="@id/profile_header">
 
-    <TextView
-        android:id="@+id/share_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:background="@drawable/btn_white_sel"
-        android:drawableRight="@drawable/ic_menu_share"
-        android:drawableTint="@color/text_normal"
-        android:layout_below="@id/hiscore_list"
-        android:text="@string/share_hiscores"
-        android:gravity="center"
-        android:visibility="invisible"
-        tools:visibility="visible"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <com.infonuascape.osrshelper.views.RSView
+                android:id="@+id/rs_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/hiscore_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rs_view"
+                android:layout_margin="20dp" />
+
+            <TextView
+                android:id="@+id/share_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/hiscore_list"
+                android:background="@drawable/btn_white_sel"
+                android:drawableRight="@drawable/ic_menu_share"
+                android:drawableTint="@color/text_normal"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/share_hiscores"
+                android:textColor="@color/text_normal"
+                android:visibility="invisible"
+                tools:visibility="visible" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/error_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/profile_header"
-        android:gravity="center"
         android:background="@color/black_semi_transparent"
+        android:gravity="center"
         android:text="@string/error_when_fetching"
         android:textColor="@color/white"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

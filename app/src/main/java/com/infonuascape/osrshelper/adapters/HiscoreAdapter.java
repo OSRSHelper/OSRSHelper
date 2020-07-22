@@ -77,7 +77,7 @@ public class HiscoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         holder.name.setText(skill.getSkillType().getSkillName());
         holder.level.setText(String.valueOf(isShowVirtualLevels ? skill.getVirtualLevel() : skill.getLevel()));
         holder.experience.setText(context.getString(R.string.hiscore_experience, NumberFormat.getInstance().format(skill.getExperience())));
-        holder.rank.setText(context.getString(R.string.hiscore_rank, NumberFormat.getInstance().format(skill.getRank())));
+        holder.rank.setText(NumberFormat.getInstance().format(skill.getRank()));
     }
 
     private void bindViewHolder(RankScoreHolder holder, HiscoreRankScoreItem hiscoreRankScoreItem) {
@@ -87,8 +87,8 @@ public class HiscoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else {
             holder.name.setVisibility(View.GONE);
         }
-        holder.score.setText(context.getString(R.string.hiscore_score, NumberFormat.getInstance().format(hiscoreRankScoreItem.score)));
-        holder.rank.setText(context.getString(R.string.hiscore_rank, NumberFormat.getInstance().format(hiscoreRankScoreItem.rank)));
+        holder.score.setText(NumberFormat.getInstance().format(hiscoreRankScoreItem.score));
+        holder.rank.setText(NumberFormat.getInstance().format(hiscoreRankScoreItem.rank));
     }
 
     @Override

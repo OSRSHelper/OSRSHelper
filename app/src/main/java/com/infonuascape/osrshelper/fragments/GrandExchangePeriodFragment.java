@@ -60,6 +60,11 @@ public class GrandExchangePeriodFragment extends OSRSPagerFragment implements On
 		graphView.setVisibility(View.GONE);
 
 		graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
+		final int textColor = getResources().getColor(R.color.text_normal);
+		graphView.getGridLabelRenderer().setVerticalLabelsColor(textColor);
+		graphView.getGridLabelRenderer().setHorizontalLabelsColor(textColor);
+		graphView.getLegendRenderer().setTextColor(textColor);
+		graphView.getGridLabelRenderer().reloadStyles();
 		graphView.getGridLabelRenderer().setLabelFormatter(new GrandExchangeAxisFormatter(getActivity(), period.getFormat()));
 
 		return view;

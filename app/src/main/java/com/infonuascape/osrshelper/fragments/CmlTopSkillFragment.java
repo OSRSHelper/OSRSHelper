@@ -47,7 +47,8 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(4);
         TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
-        tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+        tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.text_normal));
+        tabLayout.setTabTextColors(getContext().getResources().getColor(R.color.text_light), getContext().getResources().getColor(R.color.text_normal));
         tabLayout.setupWithViewPager(viewPager);
 
         return view;

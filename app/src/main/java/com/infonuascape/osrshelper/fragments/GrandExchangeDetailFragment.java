@@ -26,6 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPager.OnPageChangeListener, GEDetailListener, View.OnClickListener {
     private static final String TAG = "GrandExchangeDetailFragment";
     public final static String EXTRA_ITEM_ID = "EXTRA_ITEM_ID";
+    public final static String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
 
     private ViewPager viewPager;
     private GrandExchangeDetailFragmentAdapter adapter;
@@ -36,9 +37,10 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
     private DataPoint[] averages;
     private GrandExchangeDetailInfo itemInfo;
 
-    public static GrandExchangeDetailFragment newInstance(final String itemId) {
+    public static GrandExchangeDetailFragment newInstance(final String name, final String itemId) {
         GrandExchangeDetailFragment fragment = new GrandExchangeDetailFragment();
         Bundle b = new Bundle();
+        b.putString(EXTRA_ITEM_NAME, name);
         b.putString(EXTRA_ITEM_ID, itemId);
         fragment.setArguments(b);
         return fragment;
@@ -52,13 +54,16 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
 
         itemId = getArguments().getString(EXTRA_ITEM_ID);
 
+        ((TextView) view.findViewById(R.id.item_name)).setText(getString(R.string.loading_ge_details, getArguments().getString(EXTRA_ITEM_NAME)));
+
         viewPager = view.findViewById(R.id.viewpager);
         adapter = new GrandExchangeDetailFragmentAdapter(getChildFragmentManager(), getContext());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(4);
         TabLayout tabLayout = view.findViewById(R.id.sliding_tabs);
-        tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+        tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.text_normal));
+        tabLayout.setTabTextColors(getContext().getResources().getColor(R.color.text_light), getContext().getResources().getColor(R.color.text_normal));
         tabLayout.setupWithViewPager(viewPager);
 
         subscribeBtn = view.findViewById(R.id.item_subscribe);

@@ -50,8 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String EXTRA_FRAGMENT_TO_OPEN = "EXTRA_FRAGMENT_TO_OPEN";
     private static final String EXTRA_FRAGMENT_TO_OPEN_BUNDLE = "EXTRA_FRAGMENT_TO_OPEN_BUNDLE";
 
-    public static Intent getGrandExchangeDetailIntent(Context context, String itemId) {
+    public static Intent getGrandExchangeDetailIntent(Context context, String name, String itemId) {
         Intent i = new Intent(context, MainActivity.class);
+        i.putExtra(GrandExchangeDetailFragment.EXTRA_ITEM_NAME, name);
         i.putExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID, itemId);
         i.putExtra(EXTRA_FRAGMENT_TO_OPEN, GrandExchangeDetailFragment.class.getSimpleName());
         return i;
@@ -117,7 +118,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(fragmentToOpen != null) {
             final Bundle bundle = intent.getBundleExtra(EXTRA_FRAGMENT_TO_OPEN_BUNDLE);
             if(TextUtils.equals(GrandExchangeDetailFragment.class.getSimpleName(), fragmentToOpen)) {
-                OSRSFragment fragment = GrandExchangeDetailFragment.newInstance(intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID));
+                final String name = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_NAME);
+                final String itemId = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID);
+                OSRSFragment fragment = GrandExchangeDetailFragment.newInstance(name, itemId);
                 MainFragmentController.getInstance().showFragment(fragment);
             } else if(TextUtils.equals(WebViewFragment.class.getSimpleName(), fragmentToOpen)) {
                 OSRSFragment fragment = WebViewFragment.newInstance(bundle);

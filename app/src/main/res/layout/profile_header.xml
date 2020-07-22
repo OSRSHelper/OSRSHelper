@@ -13,23 +13,24 @@
 
         <ImageView
             android:id="@+id/account_icon"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
             android:src="@drawable/ic_launcher"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:background="@color/black_semi_transparent" />
+            android:background="#50000000" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:layout_marginTop="5dp"
+            android:paddingStart="20dp"
+            android:layout_centerVertical="true"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -61,7 +62,6 @@
                 android:id="@+id/page_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="125dp"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 tools:text="@string/highscores"/>

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textColor="@color/text_normal"
         tools:text="Clue Scrolls Easy"/>
 
     <TextView
@@ -17,13 +18,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="Score: 343,230" />
+        android:gravity="end"
+        android:textColor="@color/text_normal"
+        tools:text="343,230" />
 
     <TextView
         android:id="@+id/rank"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Rank: 56,678"
+        android:gravity="end"
+        tools:text="56,678"
+        android:textColor="@color/text_normal"
         android:layout_weight="1"/>
 
 </LinearLayout>

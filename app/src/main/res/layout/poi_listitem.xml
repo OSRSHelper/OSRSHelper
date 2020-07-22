@@ -8,5 +8,5 @@
     android:paddingLeft="8dp"
     android:paddingTop="8dp"
     android:text="Falador"
-    android:textColor="@color/black"
+    android:textColor="@color/text_normal"
     android:textSize="14sp" />

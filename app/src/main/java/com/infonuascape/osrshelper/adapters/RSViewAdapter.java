@@ -32,21 +32,19 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
     private boolean isShowAbove99;
     private RecyclerItemClickListener listener;
     private boolean isShowLevel;
+    private boolean withBackground;
 
-    public RSViewAdapter(final Context context, final PlayerSkills playerSkills, final RecyclerItemClickListener listener) {
-        this.context = context;
-        this.skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
-        this.listener = listener;
-        isShowAbove99 = Utils.isShowVirtualLevels(context);
-        isShowLevel = true;
+    public RSViewAdapter(final Context context, final PlayerSkills playerSkills, final RecyclerItemClickListener listener, final boolean withBackground) {
+        this(context, playerSkills, listener, withBackground, true);
     }
 
-    public RSViewAdapter(final Context context, final PlayerSkills playerSkills, final RecyclerItemClickListener listener, final boolean isShowLevel) {
+    public RSViewAdapter(final Context context, final PlayerSkills playerSkills, final RecyclerItemClickListener listener, final boolean withBackground, final boolean isShowLevel) {
         this.context = context;
         this.skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
         this.listener = listener;
         isShowAbove99 = Utils.isShowVirtualLevels(context);
         this.isShowLevel = isShowLevel;
+        this.withBackground = withBackground;
     }
 
     @Override
@@ -85,6 +83,8 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
         if(viewType != VIEW_TYPE_DONT_SHOW_ICON) {
             holder.icon.setImageResource(skill.getSkillType().getDrawableInt());
         }
+
+        holder.background.setBackgroundResource(withBackground ? R.drawable.base : R.drawable.rs_view_background);
     }
 
     @Override
@@ -99,12 +99,14 @@ public class RSViewAdapter extends RecyclerView.Adapter<RSViewAdapter.RSViewHold
     protected class RSViewHolder extends RecyclerView.ViewHolder {
         public TextView skillLvl;
         public ImageView icon;
+        public View background;
 
         public RSViewHolder(View itemView) {
             super(itemView);
 
             skillLvl = itemView.findViewById(R.id.skill_level);
             icon = itemView.findViewById(R.id.skill_image);
+            background = itemView;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

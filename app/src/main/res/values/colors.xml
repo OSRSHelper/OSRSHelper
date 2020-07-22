@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
- <color name="colorPrimary">#555555</color>
- <color name="colorPrimaryDark">#404040</color>
- <color name="colorAccent">#f4f4f4</color>
+ <color name="colorPrimary">#191919</color>
+ <color name="colorPrimaryDark">#303030</color>
+ <color name="colorAccent">#191919</color>
  <color name="grand_exchange_legend">#40aaaaaa</color>
 
  <color name="white_semi_transparent">#66FFFFFF</color>
@@ -19,7 +19,7 @@
  <color name="menu_checked_item">#808080</color>
 
  <color name="dialog_background">#fafafa</color>
- <color name="text_normal">#454545</color>
+ <color name="text_normal">@color/white</color>
  <color name="dialog_text">#a2a2a2</color>
  <color name="button">@color/colorPrimaryDark</color>
  <color name="button_over">@color/colorPrimary</color>
@@ -28,7 +28,7 @@
  <color name="progress_bg">#30555555</color>
  <color name="red">#800000</color>
  <color name="transparent">#00000000</color>
-    <color name="text_light">#808080</color>
+    <color name="text_light">#fafafa</color>
 
  <color name="combat_lvl_lower">#008000</color>
  <color name="combat_lvl_slightly_lower">#bfdc00</color>

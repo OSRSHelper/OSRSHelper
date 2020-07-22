@@ -7,7 +7,7 @@
     android:paddingLeft="8dp"
     android:paddingTop="8dp"
     android:text="Falador"
-    android:background="@color/gray"
+    android:background="@color/colorPrimaryDark"
     android:textStyle="bold"
     android:textColor="@color/white"
     android:textSize="14sp" />

@@ -30,7 +30,7 @@
     <string name="ranking">Ranking</string>
     <string name="load">Load</string>
     <string name="loading">Loading</string>
-    <string name="loading_ge_details">Loading Details</string>
+    <string name="loading_ge_details">Loading %1$s</string>
     <string name="combat_lvl_for_share">Combat lvl: %1$d</string>
     <string name="combat_lvl">(level-%1$d)</string>
     <string name="not_existing_player">Failed to load account</string>
@@ -173,7 +173,7 @@
     <string name="hiscore_title_lms">Last Man Standing</string>
 
     <string name="hiscore_experience">XP: %1$s</string>
-    <string name="hiscore_score">Score: %1$s</string>
-    <string name="hiscore_rank">Rank: %1$s</string>
+    <string name="hiscore_score">Score</string>
+    <string name="hiscore_rank">Rank</string>
 
 </resources>
