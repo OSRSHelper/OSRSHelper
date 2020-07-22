@@ -25,6 +25,7 @@ public class RSView extends RelativeLayout {
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private RSViewAdapter adapter;
+    private View container;
 
     private View headerLayout;
     private TextView usernameTextView;
@@ -52,6 +53,7 @@ public class RSView extends RelativeLayout {
 
     private void init() {
         inflate(getContext(), R.layout.rs_view, this);
+        container = findViewById(R.id.container);
         recyclerView = findViewById(R.id.list_rs_view);
         headerLayout = findViewById(R.id.rs_view_header);
         usernameTextView = findViewById(R.id.username_rs_view);
@@ -63,13 +65,19 @@ public class RSView extends RelativeLayout {
         populateViewWithZeros(null);
     }
 
-    public void populateView(final PlayerSkills playerSkills, final RecyclerItemClickListener listener) {
-        adapter = new RSViewAdapter(getContext(), playerSkills, listener);
+    public void populateViewForHiscores(final PlayerSkills playerSkills, final RecyclerItemClickListener listener) {
+        populateViewForHiscores(playerSkills, listener, true);
+    }
+
+    public void populateViewForHiscores(final PlayerSkills playerSkills, final RecyclerItemClickListener listener, final boolean withBackground) {
+        container.setBackgroundResource(withBackground ? R.drawable.rs_view_frame : 0);
+        container.getLayoutParams().width = withBackground ? getResources().getDimensionPixelSize(R.dimen.rs_view_width) : LayoutParams.MATCH_PARENT;
+        adapter = new RSViewAdapter(getContext(), playerSkills, listener, withBackground);
         recyclerView.setAdapter(adapter);
     }
 
     public void populateViewForImageShare(final PlayerSkills playerSkills, final String username, final RecyclerItemClickListener listener) {
-        populateView(playerSkills, listener);
+        populateViewForHiscores(playerSkills, listener);
 
         usernameTextView.setText(username);
         combatLvlTextView.setText(getResources().getString(R.string.combat_lvl_for_share, Utils.getCombatLvl(playerSkills)));

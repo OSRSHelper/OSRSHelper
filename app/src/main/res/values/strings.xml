@@ -30,7 +30,7 @@
     <string name="ranking">Ranking</string>
     <string name="load">Load</string>
     <string name="loading">Loading</string>
-    <string name="loading_ge_details">Loading Details</string>
+    <string name="loading_ge_details">Loading %1$s</string>
     <string name="combat_lvl_for_share">Combat lvl: %1$d</string>
     <string name="combat_lvl">(level-%1$d)</string>
     <string name="not_existing_player">Failed to load account</string>
@@ -165,5 +165,15 @@
     <string name="unavailable_right_now">Unavailable right now</string>
     <string name="unknown_account">Unknown</string>
     <string name="hiscore_share_intent_name">My OSRS Stats</string>
+
+    <string name="hiscore_title_skills">Skills</string>
+    <string name="hiscore_title_bounty_hunter">Bounty Hunter</string>
+    <string name="hiscore_title_clue_scrolls">Clue Scrolls</string>
+    <string name="hiscore_title_bosses">Bosses</string>
+    <string name="hiscore_title_lms">Last Man Standing</string>
+
+    <string name="hiscore_experience">XP: %1$s</string>
+    <string name="hiscore_score">Score</string>
+    <string name="hiscore_rank">Rank</string>
 
 </resources>

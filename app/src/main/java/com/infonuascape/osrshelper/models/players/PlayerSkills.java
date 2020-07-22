@@ -1,6 +1,11 @@
 package com.infonuascape.osrshelper.models.players;
 
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.models.HiscoreBoss;
+import com.infonuascape.osrshelper.models.HiscoreBountyHunter;
+import com.infonuascape.osrshelper.models.HiscoreClueScroll;
+import com.infonuascape.osrshelper.models.HiscoreItem;
+import com.infonuascape.osrshelper.models.HiscoreLms;
 import com.infonuascape.osrshelper.models.Skill;
 
 import java.util.ArrayList;
@@ -34,7 +39,11 @@ public class PlayerSkills {
 
 	public String lastUpdate;
 
-	public List<Skill> skillList = new ArrayList<Skill>();
+	public List<Skill> skillList = new ArrayList<>();
+	public List<HiscoreBoss> bossesList = new ArrayList<>();
+	public List<HiscoreClueScroll> clueScrollsList = new ArrayList<>();
+	public List<HiscoreBountyHunter> bountyHunterList = new ArrayList<>();
+	public HiscoreLms hiscoreLms;
 
 	public PlayerSkills() {
 		skillList.add(this.overall);
@@ -123,5 +132,37 @@ public class PlayerSkills {
 		skills.add(playerSkills.overall);
 
 		return skills;
+	}
+
+	public List<HiscoreItem> getHiscoresItems() {
+		List<HiscoreItem> hiscoreItems = new ArrayList<>();
+//		hiscoreItems.addAll(getSkillsInOrder(this));
+		hiscoreItems.addAll(bountyHunterList);
+		hiscoreItems.addAll(clueScrollsList);
+		hiscoreItems.addAll(bossesList);
+		if (hiscoreLms != null) {
+			hiscoreItems.add(hiscoreLms);
+		}
+		return hiscoreItems;
+	}
+
+	public Object getItem(int position) {
+		int currentPosition = position;
+//		if (currentPosition < skillList.size()) {
+//			return skillList.get(currentPosition);
+//		}
+		currentPosition -= skillList.size();
+		if (currentPosition < bountyHunterList.size()) {
+			return bountyHunterList.get(currentPosition);
+		}
+		currentPosition -= bountyHunterList.size();
+		if (currentPosition < clueScrollsList.size()) {
+			return clueScrollsList.get(currentPosition);
+		}
+		currentPosition -= clueScrollsList.size();
+		if (currentPosition < bossesList.size()) {
+			return bossesList.get(currentPosition);
+		}
+		return hiscoreLms;
 	}
 }

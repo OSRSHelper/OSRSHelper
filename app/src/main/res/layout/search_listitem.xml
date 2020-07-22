@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/item_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"/>
-
-    <ImageView
-        android:id="@+id/item_member"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:src="@drawable/member"
-        android:visibility="gone"
-        android:layout_alignBottom="@id/item_image"
-        android:layout_alignRight="@id/item_image"/>
-
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/item_image"
-        android:textSize="16sp"
-        android:layout_marginLeft="5dp"
-        android:text="Adamant Axe"/>
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark">
 
-    <TextView
-        android:id="@+id/item_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="A powerful axe."
-        android:layout_below="@id/item_name"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@id/item_image" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
 
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:id="@+id/item_member"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignEnd="@id/item_image"
+                android:layout_alignBottom="@id/item_image"
+                android:src="@drawable/member"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/item_image"
+                android:textColor="@color/text_normal"
+                android:textSize="16sp"
+                tools:text="Adamant Axe" />
+
+            <TextView
+                android:id="@+id/item_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_name"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="15dp"
+                android:layout_toEndOf="@id/item_image"
+                android:textColor="@color/text_normal"
+                tools:text="A powerful axe." />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

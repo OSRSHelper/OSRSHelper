@@ -10,7 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.adapters.HiscoreAdapter;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -21,9 +27,7 @@ import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
 public class HighScoreFragment extends OSRSFragment implements View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener {
 	private static final String TAG = "HighScoreFragment";
@@ -32,8 +36,10 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
 	private Account account;
 	private PlayerSkills playerSkills;
-	private RSView rsView;
 	private View errorView;
+	private HiscoreAdapter hiscoreAdapter;
+	private RSView rsView;
+	private RecyclerView recyclerView;
 	private ProfileHeaderFragment profileHeaderFragment;
 
 	public static HighScoreFragment newInstance(final Account account) {
@@ -61,6 +67,21 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		profileHeaderFragment.setTitle(R.string.highscores);
 
 		rsView = view.findViewById(R.id.rs_view);
+
+		recyclerView = view.findViewById(R.id.hiscore_list);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		recyclerView.setNestedScrollingEnabled(false);
+		hiscoreAdapter = new HiscoreAdapter(getContext());
+		recyclerView.setAdapter(hiscoreAdapter);
+		final StickyRecyclerHeadersDecoration stickyRecyclerHeadersDecoration = new StickyRecyclerHeadersDecoration(hiscoreAdapter);
+		recyclerView.addItemDecoration(stickyRecyclerHeadersDecoration);
+		hiscoreAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+			@Override
+			public void onChanged() {
+				super.onChanged();
+				stickyRecyclerHeadersDecoration.invalidateHeaders();
+			}
+		});
 		errorView = view.findViewById(R.id.error_view);
 
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
@@ -110,7 +131,9 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 				profileHeaderFragment.showCombatLvl(account.combatLvl);
 				if(getView() != null) {
 					getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
-					rsView.populateView(playerSkills, this);
+					rsView.populateViewForHiscores(playerSkills, this, false);
+					hiscoreAdapter.setHiscoreItems(playerSkills.getHiscoresItems());
+					hiscoreAdapter.notifyDataSetChanged();
 				}
 			});
 		}
