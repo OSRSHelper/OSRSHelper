@@ -88,52 +88,31 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
 
             initAnimations();
 
-            container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(!isAnimating) {
-                        if(isQuickActionsShown) {
-                            slideOutQuickActions.start();
-                        } else {
-                            slideInQuickActions.start();
-                        }
+            container.setOnClickListener(view -> {
+                if(!isAnimating) {
+                    if(isQuickActionsShown) {
+                        slideOutQuickActions.start();
+                    } else {
+                        slideInQuickActions.start();
                     }
                 }
             });
 
-            itemView.findViewById(R.id.quick_action_hiscore).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MainFragmentController.getInstance().showFragment(HighScoreFragment.newInstance(getAccount(getAdapterPosition())));
-                }
-            });
+            itemView.findViewById(R.id.quick_action_hiscore).setOnClickListener(view -> MainFragmentController.getInstance().showRootFragment(-1, HighScoreFragment.newInstance(getAccount(getAdapterPosition()))));
 
-            itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MainFragmentController.getInstance().showFragment(CmlXPTrackerFragment.newInstance(getAccount(getAdapterPosition()), period));
-                }
-            });
+            itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(CmlXPTrackerFragment.newInstance(getAccount(getAdapterPosition()), period)));
 
-            itemView.findViewById(R.id.quick_action_combat).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MainFragmentController.getInstance().showFragment(CombatCalcFragment.newInstance(getAccount(getAdapterPosition())));
-                }
-            });
+            itemView.findViewById(R.id.quick_action_combat).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(CombatCalcFragment.newInstance(getAccount(getAdapterPosition()))));
         }
 
         private void initAnimations() {
             slideInQuickActions = ValueAnimator.ofFloat(0f, Utils.convertDpToPixel(QUICK_ACTIONS_HEIGHT, fragment.getContext()));
             slideInQuickActions.setDuration(300);
-            slideInQuickActions.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    float value = (float) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams params = quickActionsContainer.getLayoutParams();
-                    params.height = (int) value;
-                    quickActionsContainer.setLayoutParams(params);
-                }
+            slideInQuickActions.addUpdateListener(valueAnimator -> {
+                float value = (float) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams params = quickActionsContainer.getLayoutParams();
+                params.height = (int) value;
+                quickActionsContainer.setLayoutParams(params);
             });
             slideInQuickActions.addListener(new Animator.AnimatorListener() {
                 @Override
@@ -162,14 +141,11 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
 
             slideOutQuickActions = ValueAnimator.ofFloat(Utils.convertDpToPixel(QUICK_ACTIONS_HEIGHT, fragment.getContext()), 0f);
             slideOutQuickActions.setDuration(300);
-            slideOutQuickActions.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    float value = (float) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams params = quickActionsContainer.getLayoutParams();
-                    params.height = (int) value;
-                    quickActionsContainer.setLayoutParams(params);
-                }
+            slideOutQuickActions.addUpdateListener(valueAnimator -> {
+                float value = (float) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams params = quickActionsContainer.getLayoutParams();
+                params.height = (int) value;
+                quickActionsContainer.setLayoutParams(params);
             });
             slideOutQuickActions.addListener(new Animator.AnimatorListener() {
                 @Override

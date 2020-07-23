@@ -46,7 +46,7 @@ public class RSViewDialog {
             }
 
             if(skill.getRank() > 0) {
-                ((TextView) dialogView.findViewById(R.id.skill_rank)).setText(NumberFormat.getInstance().format(skill.getRank()) + context.getResources().getString(R.string.hiscore_rank_item));
+                ((TextView) dialogView.findViewById(R.id.skill_rank)).setText(NumberFormat.getInstance().format(skill.getRank()));
             } else {
                 dialogView.findViewById(R.id.skill_rank_title).setVisibility(View.GONE);
                 dialogView.findViewById(R.id.skill_rank).setVisibility(View.GONE);

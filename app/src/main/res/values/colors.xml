@@ -5,15 +5,16 @@
  <color name="colorAccent">#191919</color>
  <color name="grand_exchange_legend">#40aaaaaa</color>
 
- <color name="white_semi_transparent">#44FFFFFF</color>
+ <color name="white_semi_transparent">#A0FFFFFF</color>
  <color name="black_semi_transparent">#60000000</color>
  <color name="gen_white_btn_over">#10000000</color>
  <color name="white">#FFFFFF</color>
  <color name="light_gray">#F5F5F5</color>
  <color name="dark_gray">#A9A9A9</color>
  <color name="gray">#808080</color>
- <color name="green">#008000</color>
+ <color name="green">#00CC00</color>
  <color name="orange">#ffa500</color>
+ <color name="red">#CC0000</color>
  <color name="black">#000000</color>
 
  <color name="menu_checked_item">#808080</color>
@@ -26,7 +27,6 @@
  <color name="rs_view_bg">#453C33</color>
  <color name="widget_rs_view_bg">#50000000</color>
  <color name="progress_bg">#30555555</color>
- <color name="red">#800000</color>
  <color name="transparent">#00000000</color>
     <color name="text_light">#fafafa</color>
 

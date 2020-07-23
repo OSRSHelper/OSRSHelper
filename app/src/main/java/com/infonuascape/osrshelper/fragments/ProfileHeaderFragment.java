@@ -25,6 +25,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
     private Account account;
     private TextView combatText;
+    private View progressBar;
 
     @Nullable
     @Override
@@ -33,6 +34,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
 
         View view = inflater.inflate(R.layout.profile_header, null);
 
+        progressBar = view.findViewById(R.id.progressbar);
         view.findViewById(R.id.profile_header).setOnClickListener(this);
         combatText = view.findViewById(R.id.account_combat);
 
@@ -51,6 +53,14 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         }
     }
 
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.profile_header) {
@@ -59,7 +69,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
     }
 
     private void showProfile() {
-        MainFragmentController.getInstance().showFragment(ProfileFragment.newInstance(account.username));
+        MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
     }
 
     public void setTitle(int textResId) {

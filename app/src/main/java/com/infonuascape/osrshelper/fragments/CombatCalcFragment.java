@@ -91,6 +91,7 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 
 		changeCombatText();
 		if (account != null) {
+			profileHeaderFragment.showProgressBar();
 			asyncTask = new HiscoresFetcherTask(getContext(), this, account);
 			asyncTask.execute();
 		}
@@ -199,6 +200,7 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 
 	@Override
 	public void onHiscoresFetched(PlayerSkills playerSkills) {
+		profileHeaderFragment.hideProgressBar();
 		refreshPlayerSkills(playerSkills);
 	}
 

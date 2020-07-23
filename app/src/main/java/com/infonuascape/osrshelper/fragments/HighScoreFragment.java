@@ -86,6 +86,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
 
+		profileHeaderFragment.showProgressBar();
 		asyncTask = new HiscoresFetcherTask(getContext(), this, account);
 		asyncTask.execute();
 		errorView.setVisibility(View.GONE);
@@ -151,6 +152,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	@Override
 	public void onHiscoresFetched(PlayerSkills playerSkills) {
 		Log.d(TAG, "onHiscoresFetched() called with: playerSkills = [" + playerSkills + "]");
+		profileHeaderFragment.hideProgressBar();
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();

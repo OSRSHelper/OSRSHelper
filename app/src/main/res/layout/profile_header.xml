@@ -19,12 +19,15 @@
             android:layout_marginEnd="50dp"
             android:src="@drawable/ic_launcher"/>
 
-        <View
-            android:layout_width="match_parent"
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="#50000000" />
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/text_normal"
+            android:indeterminate="true"
+            android:layout_alignParentEnd="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"

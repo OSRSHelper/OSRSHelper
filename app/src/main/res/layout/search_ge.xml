@@ -47,6 +47,8 @@
             android:layout_alignTop="@id/searchView"
             android:layout_alignBottom="@id/searchView"
             android:layout_marginRight="13dp"
+            android:indeterminateTint="@color/text_normal"
+            android:indeterminate="true"
             android:visibility="gone"
             tools:visibility="visible"/>
     </RelativeLayout>

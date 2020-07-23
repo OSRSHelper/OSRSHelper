@@ -48,9 +48,9 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
         holder.experience.setText(NumberFormat.getInstance().format(delta.experience));
 
         if (delta.rank > 0) {
-            holder.rankImage.setImageResource(R.drawable.delta_up);
-        } else if(delta.rank < 0) {
             holder.rankImage.setImageResource(R.drawable.delta_down);
+        } else if(delta.rank < 0) {
+            holder.rankImage.setImageResource(R.drawable.delta_up);
         } else {
             holder.rankImage.setImageResource(R.drawable.delta_neutral);
         }

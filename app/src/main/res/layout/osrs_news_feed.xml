@@ -37,29 +37,11 @@
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:id="@+id/osrs_quick_actions_container"
+    <fragment
+        android:id="@+id/profile_header"
+        class="com.infonuascape.osrshelper.fragments.ProfileHeaderFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/osrs_quick_actions_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quick_actions_title"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="4dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_normal" />
-
-        <fragment
-            android:id="@+id/osrs_quick_actions"
-            class="com.infonuascape.osrshelper.fragments.AccountQuickActionsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/osrs_news_container"

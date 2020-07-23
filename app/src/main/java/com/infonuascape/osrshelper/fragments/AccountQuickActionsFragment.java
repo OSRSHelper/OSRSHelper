@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,11 +76,11 @@ public class AccountQuickActionsFragment extends OSRSFragment implements Recycle
         if(account != null) {
             QuickAction quickAction = adapter.getItem(position);
             if(quickAction == QuickAction.HISCORES) {
-                MainFragmentController.getInstance().showFragment(HighScoreFragment.newInstance(account));
+                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
             } else if(quickAction == QuickAction.XP_TRACKER) {
-                MainFragmentController.getInstance().showFragment(CmlXPTrackerFragment.newInstance(account));
+                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_cml_tracker : -1, CmlXPTrackerFragment.newInstance(account));
             } else if(quickAction == QuickAction.COMBAT_CALC) {
-                MainFragmentController.getInstance().showFragment(CombatCalcFragment.newInstance(account));
+                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_combat_lvl : -1, CombatCalcFragment.newInstance(account));
             }
         }
     }

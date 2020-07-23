@@ -104,8 +104,8 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	}
 
 	private void updateAccount() {
-		title.setText(R.string.loading);
 		description.setText(null);
+		profileHeaderFragment.showProgressBar();
 		asyncTask = new CmlTrackerUpdateTask(this, account);
 		asyncTask.execute();
 	}
@@ -157,6 +157,7 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 	@Override
 	public void onUpdatingDone(boolean isSuccess) {
+		profileHeaderFragment.hideProgressBar();
 		for(int i=0; i < adapter.getCount(); i++) {
 			((CmlXPTrackerPeriodFragment) adapter.getItem(i)).onForceRepopulate();
 		}

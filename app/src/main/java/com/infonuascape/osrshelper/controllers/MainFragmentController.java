@@ -47,7 +47,21 @@ public class MainFragmentController {
         Utils.hideKeyboard(mainActivity);
         for (int i = 0; i < navigationView.getMenu().size(); i++) {
             MenuItem menuItem = navigationView.getMenu().getItem(i);
-            menuItem.setChecked(menuItem.getItemId() == menuId);
+            if (menuItem.getItemId() == menuId) {
+                menuItem.setChecked(true);
+            } else {
+                menuItem.setChecked(false);
+                if (menuItem.getSubMenu() != null) {
+                    for (int j = 0; j < menuItem.getSubMenu().size(); j++) {
+                        MenuItem subMenuItem = menuItem.getSubMenu().getItem(j);
+                        if (subMenuItem.getItemId() == menuId) {
+                            subMenuItem.setChecked(true);
+                        } else {
+                            subMenuItem.setChecked(false);
+                        }
+                    }
+                }
+            }
         }
 
         if(fragment != null && mainActivity.isResumed) {

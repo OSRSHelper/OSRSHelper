@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.db.DBController;
@@ -49,12 +48,12 @@ public class NewsFeedFragment extends OSRSFragment {
         final Account account = DBController.getProfileAccount(getContext());
         if (account == null) {
             getView().findViewById(R.id.profile_not_set).setVisibility(View.VISIBLE);
-            getView().findViewById(R.id.osrs_quick_actions_container).setVisibility(View.GONE);
+            getView().findViewById(R.id.profile_header).setVisibility(View.GONE);
         } else {
             getView().findViewById(R.id.profile_not_set).setVisibility(View.GONE);
-            getView().findViewById(R.id.osrs_quick_actions_container).setVisibility(View.VISIBLE);
-            ((TextView) getView().findViewById(R.id.osrs_quick_actions_title)).setText(getContext().getResources().getString(R.string.quick_actions_title, account.username));
-            ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
+            getView().findViewById(R.id.profile_header).setVisibility(View.VISIBLE);
+            ((ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header)).refreshProfile(account);
+            ((ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header)).setTitle(R.string.click_here_profile);
         }
     }
 

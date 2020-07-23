@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(view.getId() == R.id.nav_header_container) {
             Account account = DBController.getProfileAccount(this);
             if(account != null) {
-                MainFragmentController.getInstance().showRootFragment(R.id.nav_home, ProfileFragment.newInstance(account.username));
+                MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
                 drawer.closeDrawer(GravityCompat.START);
                 drawer.closeDrawers();
             }

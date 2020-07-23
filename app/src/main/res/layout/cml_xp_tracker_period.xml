@@ -76,6 +76,8 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="@color/text_normal"
+        android:indeterminate="true"
         android:layout_centerInParent="true" />
 
     <TextView

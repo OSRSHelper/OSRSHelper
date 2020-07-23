@@ -94,6 +94,10 @@
         android:textColor="@color/dialog_text"
         android:textSize="16sp" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <TextView
         android:id="@+id/skill_rank"
         android:layout_width="wrap_content"
@@ -103,4 +107,13 @@
         android:text="16 300"
         android:textColor="@color/text_normal"
         android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/hiscore_rank_item"
+            android:textColor="@color/text_normal"
+            android:textSize="14sp" />
+    </LinearLayout>
 </LinearLayout>

@@ -117,6 +117,7 @@
     <string name="first_time_news_feed">Since you are new here, lookup your username at the top and select it as your profile</string>
     <string name="profile">Profile</string>
     <string name="home">Home</string>
+    <string name="click_here_profile">See profile</string>
     <string name="failed_load_osrs_news">Failed to load the news</string>
     <string name="grand_exchange_lookup_hint">Lookup item</string>
     <string name="set_as_my_profile">Set as my profile</string>

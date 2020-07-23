@@ -120,6 +120,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     private void loadDeltas() {
         Logger.add(TAG, ": loadDeltas");
         if(deltas == null) {
+            profileHeaderFragment.showProgressBar();
             killAsyncTaskIfStillRunning();
             asyncTask = new ProfileInfoFetcherTask(this, account);
             asyncTask.execute();
@@ -175,6 +176,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
 
     @Override
     public void onProfileInfoLoaded(ArrayList<Delta> deltas) {
+        profileHeaderFragment.hideProgressBar();
         this.deltas = deltas;
         asyncTask = null;
         if(deltas != null && deltas.size() > 0) {
