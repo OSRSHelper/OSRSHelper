@@ -21,6 +21,8 @@ import java.util.TimeZone;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 /**
  * Created by marc_ on 2018-01-20.
  */
@@ -65,7 +67,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         holder.title.setText(news.title);
         holder.description.setText(news.description);
         holder.category.setText(news.category);
-        Glide.with(holder.image).asBitmap().load(news.imageUrl).into(holder.image);
+        Glide.with(holder.image).asBitmap().load(news.imageUrl).transform((new BlurTransformation(5))).into(holder.image);
         try {
             holder.publicationDate.setText(dateFormat.format(simpleDateFormat.parse(news.publicationDate)));
         } catch (ParseException e) {

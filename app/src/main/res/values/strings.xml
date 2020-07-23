@@ -175,5 +175,6 @@
     <string name="hiscore_experience">XP: %1$s</string>
     <string name="hiscore_score">Score</string>
     <string name="hiscore_rank">Rank</string>
+    <string name="hiscore_rank_item">th</string>
 
 </resources>

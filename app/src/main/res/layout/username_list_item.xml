@@ -4,7 +4,6 @@
     android:layout_height="48dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="@color/white"
     android:orientation="horizontal">
     
     <ImageView
@@ -20,7 +19,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_weight="1"
-        android:textColor="@color/black"
+        android:textColor="@color/text_normal"
         android:text="maybe watson"/>
 
     <ImageView

@@ -2,7 +2,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:configure="com.infonuascape.osrshelper.activities.WidgetGrandExchangeSearchActivity"
     android:initialLayout="@layout/widget_grand_exchange_layout"
-    android:minHeight="60dp"
+    android:minHeight="40dp"
     android:minWidth="350dp"
     android:updatePeriodMillis="1200000" >
 

@@ -32,16 +32,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/editbox"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
             android:hint="@string/prompt_username"
             android:inputType="text"
             android:maxLength="12"
             android:maxLines="1"
             android:padding="5dp"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/text_normal"
             android:textCursorDrawable="@drawable/blackcursor" />
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="16dp"

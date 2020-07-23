@@ -75,7 +75,6 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
                     R.layout.rs_view_item_no_icon);
         }
 
-
         // set value into textview
         rv.setTextViewText(R.id.skill_level, (Utils.isShowVirtualLevels(mContext) ? skill.getVirtualLevel() : skill.getLevel()) + "");
 

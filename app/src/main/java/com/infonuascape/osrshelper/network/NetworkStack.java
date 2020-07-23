@@ -67,7 +67,11 @@ public class NetworkStack {
             result.statusCode = StatusCode.FOUND;
 
             if (saveOutput) {
-                DBController.insertOutputToQueryCache(context, url, result.output);
+                try {
+                    DBController.insertOutputToQueryCache(context, url, result.output);
+                } catch(SecurityException e) {
+                    //The widgets doesn't have the permission to access the database
+                }
             }
         } catch (InterruptedException e) {
             result.statusCode = StatusCode.NOT_FOUND;

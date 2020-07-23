@@ -72,6 +72,7 @@ public class RSView extends RelativeLayout {
     public void populateViewForHiscores(final PlayerSkills playerSkills, final RecyclerItemClickListener listener, final boolean withBackground) {
         container.setBackgroundResource(withBackground ? R.drawable.rs_view_frame : 0);
         container.getLayoutParams().width = withBackground ? getResources().getDimensionPixelSize(R.dimen.rs_view_width) : LayoutParams.MATCH_PARENT;
+        container.requestLayout();
         adapter = new RSViewAdapter(getContext(), playerSkills, listener, withBackground);
         recyclerView.setAdapter(adapter);
     }
