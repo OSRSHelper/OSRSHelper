@@ -14,16 +14,25 @@
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/textNameApp"
+            android:id="@+id/page_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="@string/username_desc"
+            android:text="@string/username_widget"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/text_normal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/username_desc"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/text_normal"
             android:textStyle="bold" />
 
@@ -40,7 +49,7 @@
             android:padding="5dp"
             android:singleLine="true"
             android:textColor="@color/text_normal"
-            android:textCursorDrawable="@drawable/blackcursor" />
+            android:textCursorDrawable="@drawable/cursor" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -107,11 +116,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/newUsernameLayout"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/username_choose"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_normal"
         android:textStyle="bold" />
 

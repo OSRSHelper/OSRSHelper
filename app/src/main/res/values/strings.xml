@@ -12,7 +12,9 @@
     <string name="donate_1">1$ Donation</string>
     <string name="donate_3">3$ Donation</string>
     <string name="donate_10">10$ Donation</string>
-    <string name="username_desc">Enter a username</string>
+    <string name="username_desc">Enter a new username</string>
+    <string name="username_widget">Widget configuration</string>
+    <string name="username_profile">Profile configuration</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_search">Search an item...</string>
     <string name="continuee">Continue</string>
@@ -20,7 +22,7 @@
     <string name="cancel">Cancel</string>
     <string name="combat_lvl_calculator">Combat Lvl Calculator</string>
     <string name="username_error">You need to specify a username</string>
-    <string name="username_choose">Or choose a username</string>
+    <string name="username_choose">Or choose from the previously entered ones</string>
     <string name="delete">Delete</string>
     <string name="delete_username">Do you want to delete this username?</string>
     <string name="skill">Skill</string>
@@ -114,7 +116,7 @@
     <string name="news">News</string>
     <string name="lookup_user">Lookup user</string>
     <string name="no_profile">No profile selected yet</string>
-    <string name="first_time_news_feed">Since you are new here, lookup your username at the top and select it as your profile</string>
+    <string name="first_time_news_feed">Since you are new here, click here to enter your account name to set as your profile</string>
     <string name="profile">Profile</string>
     <string name="home">Home</string>
     <string name="click_here_profile">See profile</string>

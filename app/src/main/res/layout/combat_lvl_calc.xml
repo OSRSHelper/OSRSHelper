@@ -51,7 +51,7 @@
                     android:selectAllOnFocus="true"
                     android:text=""
                     android:textColor="@color/text_normal"
-                    android:textCursorDrawable="@drawable/blackcursor" />
+                    android:textCursorDrawable="@drawable/cursor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -82,7 +82,7 @@
                     android:selectAllOnFocus="true"
                     android:text=""
                     android:textColor="@color/text_normal"
-                    android:textCursorDrawable="@drawable/blackcursor" />
+                    android:textCursorDrawable="@drawable/cursor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -113,7 +113,7 @@
                     android:selectAllOnFocus="true"
                     android:text=""
                     android:textColor="@color/text_normal"
-                    android:textCursorDrawable="@drawable/blackcursor" />
+                    android:textCursorDrawable="@drawable/cursor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -144,7 +144,7 @@
                     android:selectAllOnFocus="true"
                     android:text=""
                     android:textColor="@color/text_normal"
-                    android:textCursorDrawable="@drawable/blackcursor" />
+                    android:textCursorDrawable="@drawable/cursor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -175,7 +175,7 @@
                     android:selectAllOnFocus="true"
                     android:text=""
                     android:textColor="@color/text_normal"
-                    android:textCursorDrawable="@drawable/blackcursor" />
+                    android:textCursorDrawable="@drawable/cursor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -206,7 +206,7 @@
                     android:selectAllOnFocus="true"
                     android:text=""
                     android:textColor="@color/text_normal"
-                    android:textCursorDrawable="@drawable/blackcursor" />
+                    android:textCursorDrawable="@drawable/cursor" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -237,7 +237,7 @@
                     android:selectAllOnFocus="true"
                     android:text=""
                     android:textColor="@color/text_normal"
-                    android:textCursorDrawable="@drawable/blackcursor" />
+                    android:textCursorDrawable="@drawable/cursor" />
             </RelativeLayout>
 
             <TextView

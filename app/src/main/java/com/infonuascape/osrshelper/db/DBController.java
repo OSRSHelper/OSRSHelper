@@ -119,8 +119,10 @@ public class DBController {
 			values.put(COLUMN_IS_PROFILE, 0);
 			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, null, null);
 
-			values.put(COLUMN_IS_PROFILE, 1);
-			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+			if (account != null) {
+				values.put(COLUMN_IS_PROFILE, 1);
+				context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+			}
 		}
 
 	}

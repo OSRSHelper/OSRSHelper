@@ -26,7 +26,6 @@ import com.infonuascape.osrshelper.listeners.ProfileInfoListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.tasks.ProfileInfoFetcherTask;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
@@ -62,7 +61,6 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.profile, null);
 
         view.findViewById(R.id.account_type_edit).setOnClickListener(this);
-        view.findViewById(R.id.account_set_profile).setOnClickListener(this);
         view.findViewById(R.id.account_follow_profile).setOnClickListener(this);
 
         recyclerView = view.findViewById(R.id.profile_list);
@@ -98,8 +96,6 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         initProfile();
         if(getView() != null) {
             ((TextView) getView().findViewById(R.id.account_type)).setText(Utils.getAccountTypeString(account.type));
-            //Is profile
-            getView().findViewById(R.id.account_set_profile).setVisibility(account.isProfile ? View.GONE : View.VISIBLE);
             //Is following
             if (account.isFollowing) {
                 ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_full);
@@ -135,8 +131,6 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     public void onClick(View view) {
         if(view.getId() == R.id.account_type_edit) {
             switchAccountType();
-        } else if(view.getId() == R.id.account_set_profile) {
-            setUserAsMyProfile();
         } else if(view.getId() == R.id.account_follow_profile) {
             followThisAccount();
         }
@@ -154,24 +148,10 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         final AccountTypeAdapter adapter = new AccountTypeAdapter(getActivity());
         new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(R.string.select_account_type)
                 .setAdapter(adapter, (dialog, item) -> {
-                    AccountType accountType = adapter.getItem(item);
-                    account.type = accountType;
+                    account.type = adapter.getItem(item);
                     DBController.updateAccount(getContext(), account);
                     refreshScreen();
                 }).show();
-    }
-
-    private void setUserAsMyProfile() {
-        new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(R.string.set_profile_title)
-                .setMessage(R.string.set_profile_desc)
-                .setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
-                    DBController.setProfileAccount(getContext(), account);
-                    if(account.combatLvl == 0) {
-                        new HiscoresFetcherTask(getContext(), ProfileFragment.this, account).execute();
-                    }
-                    refreshScreen();
-                })
-                .setNegativeButton(R.string.dialog_no, (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
     }
 
     @Override

@@ -29,7 +29,7 @@
 
         <!-- Hiscores widget -->
         <activity
-            android:name=".activities.WidgetUsernameActivity">
+            android:name=".activities.UsernameActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

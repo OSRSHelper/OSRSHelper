@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.activities.MainActivity;
+import com.infonuascape.osrshelper.activities.UsernameActivity;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -16,8 +18,12 @@ import androidx.annotation.Nullable;
  * Created by marc_ on 2018-01-20.
  */
 
-public class NewsFeedFragment extends OSRSFragment {
+public class NewsFeedFragment extends OSRSFragment implements View.OnClickListener {
     private static final String TAG = "NewsFeedFragment";
+
+    private ProfileHeaderFragment profileHeaderFragment;
+    private View profileHeaderContainer;
+    private View profileNotSetContainer;
 
     public static NewsFeedFragment newInstance() {
         NewsFeedFragment fragment = new NewsFeedFragment();
@@ -34,6 +40,11 @@ public class NewsFeedFragment extends OSRSFragment {
 
         View view = inflater.inflate(R.layout.osrs_news_feed, null);
 
+        profileHeaderFragment = ((ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header));
+        profileHeaderContainer = view.findViewById(R.id.profile_header);
+        profileNotSetContainer = view.findViewById(R.id.profile_not_set);
+        view.findViewById(R.id.profile_not_set_button).setOnClickListener(this);
+
         return view;
     }
 
@@ -47,14 +58,20 @@ public class NewsFeedFragment extends OSRSFragment {
         Logger.add(TAG, ": refreshHeader");
         final Account account = DBController.getProfileAccount(getContext());
         if (account == null) {
-            getView().findViewById(R.id.profile_not_set).setVisibility(View.VISIBLE);
-            getView().findViewById(R.id.profile_header).setVisibility(View.GONE);
+            profileNotSetContainer.setVisibility(View.VISIBLE);
+            profileHeaderContainer.setVisibility(View.GONE);
         } else {
-            getView().findViewById(R.id.profile_not_set).setVisibility(View.GONE);
-            getView().findViewById(R.id.profile_header).setVisibility(View.VISIBLE);
-            ((ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header)).refreshProfile(account);
-            ((ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header)).setTitle(R.string.click_here_profile);
+            profileNotSetContainer.setVisibility(View.GONE);
+            profileHeaderContainer.setVisibility(View.VISIBLE);
+            profileHeaderFragment.refreshProfile(account);
+            profileHeaderFragment.setTitle(R.string.click_here_profile);
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.profile_not_set_button) {
+            UsernameActivity.showForProfileForResult(getActivity(), MainActivity.REQUEST_CODE_SET_PROFILE);
+        }
+    }
 }

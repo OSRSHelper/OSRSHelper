@@ -1,12 +1,7 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/graybt" android:state_enabled="false"/>
-    <!-- Finger interaction -->
-    <item android:drawable="@drawable/bt" android:state_focused="false" android:state_pressed="false"/>
-    <item android:drawable="@drawable/bt_over" android:state_focused="false" android:state_pressed="true"/>
-
-    <!-- Keyboard interaction -->
-    <item android:drawable="@drawable/bt_over" android:state_focused="true" android:state_pressed="false"/>
-    <item android:drawable="@drawable/bt" android:state_focused="true" android:state_pressed="true"/>
-
-</selector>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/white_semi_transparent">
+    <item
+        android:id="@android:id/mask"
+        android:drawable="@color/colorPrimaryDark" />
+    <item android:drawable="@drawable/bt" />
+</ripple>

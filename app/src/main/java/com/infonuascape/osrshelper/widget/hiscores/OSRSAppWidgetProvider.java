@@ -3,7 +3,7 @@ package com.infonuascape.osrshelper.widget.hiscores;
 import java.util.Arrays;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.activities.WidgetUsernameActivity;
+import com.infonuascape.osrshelper.activities.UsernameActivity;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -15,7 +15,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -75,7 +74,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 
 			Logger.add(TAG, ": appWidgetId=" + appWidgetId);
 			//Config
-			Intent configIntent = WidgetUsernameActivity.getIntent(context, appWidgetId);
+			Intent configIntent = UsernameActivity.getIntent(context, appWidgetId);
 	        configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 	        configIntent.setAction(ACTION_WIDGET_CONFIGURE + Integer.toString(appWidgetId));

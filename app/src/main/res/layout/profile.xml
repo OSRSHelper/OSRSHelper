@@ -94,43 +94,6 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/account_set_profile"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/colorPrimaryDark"
-        app:cardCornerRadius="4dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gen_white_bt_sel">
-
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_vertical"
-                android:padding="1dp"
-                android:tint="@color/text_normal"
-                android:src="@drawable/account"/>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="@string/set_as_my_profile"
-                android:textColor="@color/text_normal"
-                android:textSize="13sp"/>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
     <TextView
         android:id="@+id/profile_gains"
         android:layout_width="wrap_content"

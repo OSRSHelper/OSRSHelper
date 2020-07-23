@@ -16,9 +16,11 @@
         app:cardCornerRadius="4dp">
 
         <LinearLayout
+            android:id="@+id/profile_not_set_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
+            android:background="@drawable/gen_white_bt_sel"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="50dp"

@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FilterQueryProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String TAG = "MainActivity";
     private static final String EXTRA_FRAGMENT_TO_OPEN = "EXTRA_FRAGMENT_TO_OPEN";
     private static final String EXTRA_FRAGMENT_TO_OPEN_BUNDLE = "EXTRA_FRAGMENT_TO_OPEN_BUNDLE";
+    public static final int REQUEST_CODE_SET_PROFILE = 9001;
 
     public static Intent getGrandExchangeDetailIntent(Context context, String name, String itemId) {
         Intent i = new Intent(context, MainActivity.class);
@@ -134,7 +137,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void refreshProfileAccount() {
         Logger.add(TAG, ": refreshProfileAccount");
         Account account = DBController.getProfileAccount(this);
-        navigationView.getMenu().getItem(1).getSubMenu().setGroupEnabled(R.id.nav_group_profile, account != null);
+        SubMenu profileSubMenu = navigationView.getMenu().getItem(1).getSubMenu();
+
+        //If there's no profile set, hide the options
+        for (int i = 0; i < profileSubMenu.size(); i++) {
+            if (profileSubMenu.getItem(i).getItemId() != R.id.nav_switch_profile) {
+                profileSubMenu.getItem(i).setVisible(account != null);
+            }
+        }
         if(account != null) {
             ((ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
             ((TextView) navigationView.getHeaderView(0).findViewById(R.id.profile_name)).setText(account.username);
@@ -166,6 +176,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else if(!MainFragmentController.getInstance().onBackPressed()) {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_SET_PROFILE) {
+            MainFragmentController.getInstance().setSelectedMenuItem(-1);
         }
     }
 
@@ -230,6 +248,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = GrandExchangeSearchFragment.newInstance();
         } else if (id == R.id.nav_top_players) {
             fragment = CmlTopFragment.newInstance();
+        } else if (id == R.id.nav_switch_profile) {
+            UsernameActivity.showForProfileForResult(this, REQUEST_CODE_SET_PROFILE);
+            drawer.closeDrawer(GravityCompat.START);
+            drawer.closeDrawers();
+            return true;
         }
 
         if(fragment != null) {

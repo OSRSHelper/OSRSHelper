@@ -27,6 +27,10 @@
                         android:id="@+id/nav_combat_lvl"
                         android:icon="@drawable/calculator"
                         android:title="@string/combat_lvl_calculator" />
+                    <item
+                        android:id="@+id/nav_switch_profile"
+                        android:icon="@drawable/ic_launcher"
+                        android:title="@string/switch_profile" />
 
                 </group>
             </menu>

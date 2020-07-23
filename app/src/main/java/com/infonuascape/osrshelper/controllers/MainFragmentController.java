@@ -45,24 +45,7 @@ public class MainFragmentController {
     public void showRootFragment(final int menuId, final OSRSFragment fragment) {
         Logger.add(TAG, ": showRootFragment:");
         Utils.hideKeyboard(mainActivity);
-        for (int i = 0; i < navigationView.getMenu().size(); i++) {
-            MenuItem menuItem = navigationView.getMenu().getItem(i);
-            if (menuItem.getItemId() == menuId) {
-                menuItem.setChecked(true);
-            } else {
-                menuItem.setChecked(false);
-                if (menuItem.getSubMenu() != null) {
-                    for (int j = 0; j < menuItem.getSubMenu().size(); j++) {
-                        MenuItem subMenuItem = menuItem.getSubMenu().getItem(j);
-                        if (subMenuItem.getItemId() == menuId) {
-                            subMenuItem.setChecked(true);
-                        } else {
-                            subMenuItem.setChecked(false);
-                        }
-                    }
-                }
-            }
-        }
+        setSelectedMenuItem(menuId);
 
         if(fragment != null && mainActivity.isResumed) {
             Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
@@ -80,6 +63,28 @@ public class MainFragmentController {
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             final String tag = getTag(fragment);
             fragmentManager.beginTransaction().replace(R.id.content, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
+        }
+    }
+
+    public void setSelectedMenuItem(final int menuId) {
+        Logger.add(TAG, ": setSelectedMenuItem: menuId=" + menuId);
+        for (int i = 0; i < navigationView.getMenu().size(); i++) {
+            MenuItem menuItem = navigationView.getMenu().getItem(i);
+            if (menuItem.getItemId() == menuId) {
+                menuItem.setChecked(true);
+            } else {
+                menuItem.setChecked(false);
+                if (menuItem.getSubMenu() != null) {
+                    for (int j = 0; j < menuItem.getSubMenu().size(); j++) {
+                        MenuItem subMenuItem = menuItem.getSubMenu().getItem(j);
+                        if (subMenuItem.getItemId() == menuId) {
+                            subMenuItem.setChecked(true);
+                        } else {
+                            subMenuItem.setChecked(false);
+                        }
+                    }
+                }
+            }
         }
     }
 

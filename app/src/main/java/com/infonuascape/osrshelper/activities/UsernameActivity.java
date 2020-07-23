@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.infonuascape.osrshelper.R;
@@ -28,17 +28,28 @@ import com.infonuascape.osrshelper.widget.hiscores.OSRSAppWidgetProvider;
 
 import java.util.ArrayList;
 
-public class WidgetUsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
+public class UsernameActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
 	private static final String TAG = "WidgetUsernameActivity";
+
+	private static final String EXTRA_ACTION = "EXTRA_ACTION";
+	private static final int ACTION_WIDGET = 0;
+	private static final int ACTION_PROFILE = 1;
 
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private UsernamesAdapter adapter;
-	private int type;
+	private int action;
 
 	public static Intent getIntent(Context context, final int appWidgetId) {
-		Intent i = new Intent(context, WidgetUsernameActivity.class);
+		Intent i = new Intent(context, UsernameActivity.class);
 		i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		i.putExtra(EXTRA_ACTION, ACTION_WIDGET);
 		return i;
+	}
+
+	public static void showForProfileForResult(final Activity activity, final int requestCode) {
+		Intent i = new Intent(activity, UsernameActivity.class);
+		i.putExtra(EXTRA_ACTION, ACTION_PROFILE);
+		activity.startActivityForResult(i, requestCode);
 	}
 
 	@Override
@@ -49,11 +60,13 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
 
 		setContentView(R.layout.username);
 
-		Logger.add(TAG, ": onCreate: type=" + type);
+		action = getIntent().getIntExtra(EXTRA_ACTION, ACTION_WIDGET);
+		Logger.add(TAG, ": onCreate: action=" + action);
 		initWidgetId();
 
 		findViewById(R.id.username_edit).clearFocus();
 		findViewById(R.id.continue_btn).setOnClickListener(this);
+		((TextView) findViewById(R.id.page_name)).setText(action == ACTION_WIDGET ? R.string.username_widget : R.string.username_profile);
 
         // if hiscore lookup, enable ironman selectors
 		for (int id : new int[]{R.id.ironman, R.id.ult_ironman, R.id.hc_ironman}) {
@@ -64,7 +77,7 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
 	}
 
 	private void initWidgetId() {
-		if(getIntent() != null){
+		if(action == ACTION_WIDGET && getIntent() != null){
 			mAppWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
 			// If they gave us an intent without the widget id, just bail.
@@ -96,6 +109,8 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
 			if (!username.isEmpty()) {
 				Account account = new Account(username, getSelectedAccountType());
 				closeActivity(account);
+			} else if (action == ACTION_PROFILE) {
+				closeActivity(null);
 			} else {
 				Toast.makeText(this, R.string.username_error, Toast.LENGTH_SHORT).show();
 			}
@@ -126,15 +141,22 @@ public class WidgetUsernameActivity extends Activity implements OnClickListener,
     }
 
 	private void closeActivity(final Account account) {
-		DBController.addOrUpdateAccount(this, account);
+		if (account != null) {
+			DBController.addOrUpdateAccount(this, account);
+		}
 
-		DBController.setAccountForWidget(this, mAppWidgetId, account);
-		Intent resultValue = new Intent();
-		resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-		setResult(RESULT_OK, resultValue);
-		Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this, OSRSAppWidgetProvider.class);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {mAppWidgetId});
-		sendBroadcast(intent);
+		if (action == ACTION_WIDGET) {
+			DBController.setAccountForWidget(this, mAppWidgetId, account);
+			Intent resultValue = new Intent();
+			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+			setResult(RESULT_OK, resultValue);
+			Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE, null, this, OSRSAppWidgetProvider.class);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{mAppWidgetId});
+			sendBroadcast(intent);
+		} else if (action == ACTION_PROFILE) {
+			DBController.setProfileAccount(this, account);
+			setResult(RESULT_OK);
+		}
 		finish();
 	}
 
