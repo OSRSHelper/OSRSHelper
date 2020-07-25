@@ -46,7 +46,11 @@ public class TrackerTableAdapter {
 
         ((ImageView) view.findViewById(R.id.table_item_icon)).setImageResource(s.getSkillType().getDrawableInt());
         ((TextView) view.findViewById(R.id.table_item_lvl)).setText(String.valueOf(isShowVirtualLevels ? s.getVirtualLevel() : s.getLevel()));
-        ((TextView) view.findViewById(R.id.table_item_ehp)).setText(NumberFormat.getInstance().format(s.getEHP()));
+        if (s.getEHP() == -1) {
+            ((TextView) view.findViewById(R.id.table_item_ehp)).setText(R.string.not_available);
+        } else {
+            ((TextView) view.findViewById(R.id.table_item_ehp)).setText(NumberFormat.getInstance().format(s.getEHP()));
+        }
 
         long expDiff = s.getExperienceDiff();
         int textColorResId;

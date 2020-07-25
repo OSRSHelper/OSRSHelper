@@ -149,6 +149,7 @@
     <string name="price">Price</string>
     <string name="error">Error</string>
     <string name="ehp">EHP</string>
+    <string name="not_available">N/A</string>
 
     <string name="skill_diff_xp">XP:</string>
     <string name="skill_diff_rank">Rank:</string>

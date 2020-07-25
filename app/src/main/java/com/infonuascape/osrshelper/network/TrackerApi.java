@@ -77,7 +77,7 @@ public class TrackerApi {
 						s.setExperienceDiff(skillJson.getJSONObject(KEY_EXPERIENCE).getLong(KEY_GAINED));
 						s.setRankDiff(skillJson.getJSONObject(KEY_RANK).getLong(KEY_GAINED));
 						s.setExperience(skillJson.getJSONObject(KEY_EXPERIENCE).getLong(KEY_END));
-						s.setEHP(0);
+						s.setEHP(-1);
 					}
 				}
 			}
