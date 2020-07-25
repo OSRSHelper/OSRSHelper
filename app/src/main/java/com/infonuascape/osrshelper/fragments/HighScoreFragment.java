@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,10 +21,12 @@ import com.infonuascape.osrshelper.adapters.HiscoreAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
+import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
+import com.infonuascape.osrshelper.tasks.TrackerUpdateTask;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
 import com.infonuascape.osrshelper.views.CombatCalcDialog;
@@ -31,7 +34,7 @@ import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 
-public class HighScoreFragment extends OSRSFragment implements View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener {
+public class HighScoreFragment extends OSRSFragment implements View.OnClickListener, RecyclerItemClickListener, HiscoresFetcherListener, TrackerUpdateListener {
 	private static final String TAG = "HighScoreFragment";
 
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
@@ -39,6 +42,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
 	private Account account;
 	private PlayerSkills playerSkills;
+	private TextView titleView;
 	private View errorView;
 	private HiscoreAdapter hiscoreAdapter;
 	private RSView rsView;
@@ -89,6 +93,8 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 		rsView = view.findViewById(R.id.rs_view);
 
+		titleView = view.findViewById(R.id.hiscore_title);
+
 		recyclerView = view.findViewById(R.id.hiscore_list);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		recyclerView.setNestedScrollingEnabled(false);
@@ -107,13 +113,19 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
 		view.findViewById(R.id.combat_lvl_btn).setOnClickListener(this);
+		view.findViewById(R.id.update).setOnClickListener(this);
 
+		loadHiscores();
+
+		return view;
+	}
+
+	private void loadHiscores() {
+		titleView.setText(R.string.hiscore_title);
 		profileHeaderFragment.showProgressBar();
 		asyncTask = new HiscoresFetcherTask(getContext(), this, account);
 		asyncTask.execute();
 		errorView.setVisibility(View.GONE);
-
-		return view;
 	}
 
 	@Override
@@ -138,7 +150,16 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 			if(playerSkills != null) {
 				CombatCalcDialog.showDialog(getContext(), playerSkills);
 			}
+		} else if (view.getId() == R.id.update) {
+			updateAccount();
 		}
+	}
+
+	private void updateAccount() {
+		titleView.setText(R.string.updating);
+		profileHeaderFragment.showProgressBar();
+		asyncTask = new TrackerUpdateTask(this, account);
+		asyncTask.execute();
 	}
 
 	@Override
@@ -172,6 +193,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		Log.d(TAG, "onHiscoresCacheFetched() called with: playerSkills = [" + playerSkills + "]");
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
+			titleView.setText(getString(R.string.hiscore_cached, playerSkills.lastUpdate));
 			populateTable();
 		}
 	}
@@ -184,6 +206,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		profileHeaderFragment.refreshProfile(account);
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
+			titleView.setText(getString(R.string.hiscore_fetch, playerSkills.lastUpdate));
 			populateTable();
 		}
 	}
@@ -208,5 +231,12 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onUpdatingDone(boolean isSuccess) {
+		Log.d(TAG, "onUpdatingDone() called with: isSuccess = [" + isSuccess + "]");
+		profileHeaderFragment.hideProgressBar();
+		loadHiscores();
 	}
 }

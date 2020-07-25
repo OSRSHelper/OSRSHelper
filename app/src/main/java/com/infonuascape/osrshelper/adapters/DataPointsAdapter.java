@@ -20,14 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by marc_ on 2018-01-20.
  */
 
-public class ProfileDeltasAdapter extends RecyclerView.Adapter<ProfileDeltasAdapter.DeltaHolder>{
+public class DataPointsAdapter extends RecyclerView.Adapter<DataPointsAdapter.DeltaHolder>{
     private static final String TAG = "ProfileDeltasAdapter";
 
     private Context context;
     private List<Delta> deltas;
     private SimpleDateFormat simpleDateFormat;
 
-    public ProfileDeltasAdapter(final Context context, final List<Delta> deltas) {
+    public DataPointsAdapter(final Context context, final List<Delta> deltas) {
         this.context = context;
         this.deltas = deltas;
         simpleDateFormat = new SimpleDateFormat("MMM dd HH:mm");

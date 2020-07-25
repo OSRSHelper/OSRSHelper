@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
-import com.infonuascape.osrshelper.adapters.ProfileDeltasAdapter;
+import com.infonuascape.osrshelper.adapters.DataPointsAdapter;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.DataPointsListener;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
@@ -37,7 +37,7 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
     private Account account;
     private ProfileHeaderFragment profileHeaderFragment;
     private ArrayList<Delta> deltas;
-    private ProfileDeltasAdapter adapter;
+    private DataPointsAdapter adapter;
     private RecyclerView recyclerView;
 
     public static DataPointsFragment newInstance(final Account account) {
@@ -96,7 +96,7 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
             asyncTask = new DatapointsFetcherTask(this, account);
             asyncTask.execute();
         } else {
-            adapter = new ProfileDeltasAdapter(getContext(), deltas);
+            adapter = new DataPointsAdapter(getContext(), deltas);
             recyclerView.setAdapter(adapter);
         }
     }
@@ -125,7 +125,7 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
         this.deltas = deltas;
         asyncTask = null;
         if(deltas != null && deltas.size() > 0) {
-            adapter = new ProfileDeltasAdapter(getContext(), deltas);
+            adapter = new DataPointsAdapter(getContext(), deltas);
             recyclerView.setAdapter(adapter);
         } else {
             getView().findViewById(R.id.profile_gains).setVisibility(View.GONE);

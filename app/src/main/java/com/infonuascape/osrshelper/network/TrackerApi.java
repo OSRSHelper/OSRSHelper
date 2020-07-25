@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Created by maden on 9/14/14.
@@ -46,6 +47,7 @@ public class TrackerApi {
 		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 		Map<TrackerTime, PlayerSkills> trackings = new HashMap<>();
 		JSONObject json = new JSONObject(httpResult.output);

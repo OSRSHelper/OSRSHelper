@@ -51,7 +51,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 	private static final String DATABASE_CREATE_WIDGET = "CREATE TABLE " + TABLE_WIDGET + "("
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_WIDGET_ID + " TEXT, "
-			+ COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_USERNAME + " TEXT);";
+			+ COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_USERNAME + " TEXT, " + COLUMN_DISPLAY_NAME + " TEXT);";
 
 	private static final String DATABASE_CREATE_GRAND_EXCHANGE = "CREATE TABLE " + TABLE_GRAND_EXCHANGE + "("
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ITEM_ID + " TEXT, " + COLUMN_ITEM_NAME + " TEXT, "
@@ -117,6 +117,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 		if(oldVersion < 10) {
 			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_DISPLAY_NAME + " TEXT");
+			db.execSQL("ALTER TABLE " + WIDGETS_TABLE + " ADD COLUMN " + COLUMN_DISPLAY_NAME + " TEXT");
 		}
 	}
 

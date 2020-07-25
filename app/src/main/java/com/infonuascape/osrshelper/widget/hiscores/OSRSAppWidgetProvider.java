@@ -54,7 +54,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			//Username
 			final Account account = DBController.getAccountForWidget(context, appWidgetId);
 			if(account != null) {
-				views.setTextViewText(R.id.username, account.username);
+				views.setTextViewText(R.id.username, account.getDisplayName());
 				views.setViewVisibility(R.id.icon, View.VISIBLE);
 				switch (account.type) {
 					case REGULAR:

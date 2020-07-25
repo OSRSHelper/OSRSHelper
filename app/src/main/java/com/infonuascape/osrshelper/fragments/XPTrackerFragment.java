@@ -59,7 +59,7 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 
-		View view = inflater.inflate(R.layout.xptracker, null);
+		View view = inflater.inflate(R.layout.xp_tracker, null);
 
 		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 

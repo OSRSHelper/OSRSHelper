@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.TimeZone;
 
 public class DataPointsApi {
     private final static String API_URL = NetworkStack.ENDPOINT + "/wom/datapointsdelta/%s";
@@ -43,6 +44,7 @@ public class DataPointsApi {
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         ArrayList<Delta> deltas = new ArrayList<>();
         if(httpResult.statusCode == StatusCode.FOUND) {

@@ -161,6 +161,9 @@
     <string name="unknown_account">Unknown</string>
     <string name="hiscore_share_intent_name">My OSRS Stats</string>
 
+    <string name="hiscore_title">Hiscore</string>
+    <string name="hiscore_cached">Cache from: %1$s</string>
+    <string name="hiscore_fetch">Fetched on: %1$s</string>
     <string name="hiscore_title_skills">Skills</string>
     <string name="hiscore_title_bounty_hunter">Bounty Hunter</string>
     <string name="hiscore_title_clue_scrolls">Clue Scrolls</string>

@@ -73,8 +73,9 @@ public class DBController {
 		values.put(COLUMN_ACCOUNT_TYPE, accountType);
 		values.put(COLUMN_COMBAT_LVL, combatLvl);
 
-		if(context != null) {
+		if (context != null) {
 			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{username});
+			updateWidgetsByUsername(context, username, displayName, AccountType.valueOf(accountType));
 		}
 	}
 
@@ -82,6 +83,7 @@ public class DBController {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_USERNAME, account.username);
 		values.put(COLUMN_ACCOUNT_TYPE, account.type.name());
+		values.put(COLUMN_DISPLAY_NAME, account.displayName);
 
 		Account existingAccount = getAccountForWidget(context, appWidgetId);
 
@@ -94,6 +96,25 @@ public class DBController {
 				Logger.add(TAG, ": setAccountForWidget: update: appWidgetId=" + appWidgetId + " username=" + account.username);
 				final String where = COLUMN_WIDGET_ID + "=?";
 				final String[] whereArgs = new String[]{String.valueOf(appWidgetId)};
+
+				context.getContentResolver().update(OSRSDatabase.WIDGETS_CONTENT_URI, values, where, whereArgs);
+			}
+		}
+	}
+
+	public static void updateWidgetsByUsername(final Context context, final String username, final String displayName, final AccountType accountType) {
+		if(context != null) {
+			final ContentValues values = new ContentValues();
+			values.put(COLUMN_ACCOUNT_TYPE, accountType.name());
+			values.put(COLUMN_DISPLAY_NAME, displayName);
+			if (!isUsernameInWidgets(context, username)) {
+				Logger.add(TAG, ": updateWidgetsByUsername: insert: username=" + username );
+				values.put(COLUMN_USERNAME, String.valueOf(username));
+				context.getContentResolver().insert(OSRSDatabase.WIDGETS_CONTENT_URI, values);
+			} else {
+				Logger.add(TAG, ": updateWidgetsByUsername: update: username=" + username);
+				final String where = COLUMN_USERNAME + "=?";
+				final String[] whereArgs = new String[]{username};
 
 				context.getContentResolver().update(OSRSDatabase.WIDGETS_CONTENT_URI, values, where, whereArgs);
 			}
@@ -139,14 +160,6 @@ public class DBController {
 
 	}
 
-	public static void setCombatLvlForAccount(final Context context, final Account account) {
-		ContentValues values = new ContentValues();
-		values.put(COLUMN_COMBAT_LVL, account.combatLvl);
-		if(context != null) {
-			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
-		}
-	}
-
 	public static Account getProfileAccount(final Context context) {
 		Account account = null;
 		final String[] projection = ACCOUNTS_PROJECTION;
@@ -177,11 +190,14 @@ public class DBController {
 		Account account = null;
 
 		if(context != null) {
-			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, new String[]{COLUMN_USERNAME}, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null);
+			final String[] projection = new String[]{COLUMN_USERNAME, COLUMN_DISPLAY_NAME, COLUMN_ACCOUNT_TYPE};
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, projection, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null);
 			try {
 				if (cursor.moveToFirst()) {
 					final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
-					account = new Account(username);
+					final String displayName = cursor.getString(cursor.getColumnIndex(COLUMN_DISPLAY_NAME));
+					final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
+					account = new Account(username, displayName, AccountType.valueOf(accountType));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -194,6 +210,28 @@ public class DBController {
 
 		Log.d(TAG, "getAccountForWidget: account=" + account + " appWidgetId=" + appWidgetId);
 		return account;
+	}
+
+	public static boolean isUsernameInWidgets(final Context context, final String username) {
+		boolean isFound = false;
+
+		if(context != null) {
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, new String[]{"COUNT(*)"}, COLUMN_USERNAME + "=?", new String[]{username}, null);
+			try {
+				if (cursor != null && cursor.moveToFirst()) {
+					isFound = cursor.getInt(0) > 0;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
+			}
+		}
+
+		Log.d(TAG, "isUsernameInWidgets: isFound=" + isFound);
+		return isFound;
 	}
 
 	public static Account createAccountFromCursor(final Cursor cursor) {

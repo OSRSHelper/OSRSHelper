@@ -21,8 +21,11 @@ public class Account implements Serializable{
     public int combatLvl;
 
     public Account(final String username) {
-        this.username = username;
-        this.type = AccountType.REGULAR;
+        this(username, null, AccountType.REGULAR);
+    }
+
+    public Account(final String username, final String displayName, final AccountType type) {
+        this(0, username, displayName, type, 0, false, false, 0);
     }
 
     public Account(final int id, final String username, final String displayName, final AccountType type, final long lastTimeUsed, final boolean isProfile, final boolean isFollowing, final int combatLvl) {

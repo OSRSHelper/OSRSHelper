@@ -22,8 +22,12 @@ import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by maden on 9/9/14.
@@ -125,7 +129,16 @@ public class HiscoreApi {
 						leaguePoints.score = score;
 						ps.hiscoreLeaguePoints = leaguePoints;
 					}
-				} else if (!TextUtils.equals(key, KEY_CREATED_AT) && !TextUtils.equals(key, KEY_IMPORTED_AT)) {
+				} else if (TextUtils.equals(key, KEY_CREATED_AT)) {
+					String dateString = jsonLatestSnapshot.getString(KEY_CREATED_AT);
+					try {
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+						sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+						ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(sdf.parse(dateString));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				} else if (!TextUtils.equals(key, KEY_IMPORTED_AT)) {
 					for (Skill s : skillList) {
 						if (s.getSkillType().equals(key)) {
 							JSONObject skillJson = jsonLatestSnapshot.getJSONObject(key);
