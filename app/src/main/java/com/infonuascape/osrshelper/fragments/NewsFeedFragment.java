@@ -64,7 +64,7 @@ public class NewsFeedFragment extends OSRSFragment implements View.OnClickListen
             profileNotSetContainer.setVisibility(View.GONE);
             profileHeaderContainer.setVisibility(View.VISIBLE);
             profileHeaderFragment.refreshProfile(account);
-            profileHeaderFragment.setTitle(R.string.click_here_profile);
+            profileHeaderFragment.setTitle(0);
         }
     }
 

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,21 +12,18 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
 import com.infonuascape.osrshelper.adapters.ProfileDeltasAdapter;
 import com.infonuascape.osrshelper.db.DBController;
-import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.listeners.DataPointsListener;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
-import com.infonuascape.osrshelper.listeners.ProfileInfoListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.tasks.ProfileInfoFetcherTask;
+import com.infonuascape.osrshelper.tasks.DatapointsFetcherTask;
 import com.infonuascape.osrshelper.utils.Logger;
-import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -36,19 +31,19 @@ import java.util.ArrayList;
  * Created by marc_ on 2018-01-20.
  */
 
-public class ProfileFragment extends OSRSFragment implements View.OnClickListener, ProfileInfoListener, HiscoresFetcherListener {
-    private static final String TAG = "ProfileFragment";
-    private static final String EXTRA_USERNAME = "EXTRA_USERNAME";
+public class DataPointsFragment extends OSRSFragment implements DataPointsListener, HiscoresFetcherListener {
+    private static final String TAG = "DataPointsFragment";
+    private static final String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
     private Account account;
     private ProfileHeaderFragment profileHeaderFragment;
     private ArrayList<Delta> deltas;
     private ProfileDeltasAdapter adapter;
     private RecyclerView recyclerView;
 
-    public static ProfileFragment newInstance(final String username) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static DataPointsFragment newInstance(final Account account) {
+        DataPointsFragment fragment = new DataPointsFragment();
         Bundle b = new Bundle();
-        b.putString(EXTRA_USERNAME, username);
+        b.putSerializable(EXTRA_ACCOUNT, account);
         fragment.setArguments(b);
         return fragment;
     }
@@ -58,32 +53,22 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.profile, null);
+        View view = inflater.inflate(R.layout.data_points, null);
 
-        view.findViewById(R.id.account_type_edit).setOnClickListener(this);
-        view.findViewById(R.id.account_follow_profile).setOnClickListener(this);
+        account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
+
+        if(account == null) {
+            return view;
+        }
 
         recyclerView = view.findViewById(R.id.profile_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-//        if(!BuildConfig.DEBUG) {
-        view.findViewById(R.id.account_follow_profile).setVisibility(View.GONE);
-//        }
-
         profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
 
         return view;
-    }
-
-    private void initProfile() {
-        final String username = getArguments().getString(EXTRA_USERNAME);
-        account = DBController.getAccountByUsername(getContext(), username);
-        if(account == null) {
-            account = new Account(username, AccountType.REGULAR);
-            DBController.addOrUpdateAccount(getContext(), account);
-        }
     }
 
     @Override
@@ -93,18 +78,8 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     }
 
     private void refreshScreen() {
-        initProfile();
         if(getView() != null) {
-            ((TextView) getView().findViewById(R.id.account_type)).setText(Utils.getAccountTypeString(account.type));
-            //Is following
-            if (account.isFollowing) {
-                ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_full);
-                ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.following);
-            } else {
-                ((ImageView) getView().findViewById(R.id.account_follow_profile_image)).setImageResource(R.drawable.follow_empty);
-                ((TextView) getView().findViewById(R.id.account_follow_profile_text)).setText(R.string.follow);
-            }
-            profileHeaderFragment.setTitle(R.string.profile);
+            profileHeaderFragment.setTitle(R.string.data_points);
             profileHeaderFragment.refreshProfile(account);
             loadDeltas();
             if (getActivity() instanceof MainActivity) {
@@ -118,21 +93,11 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         if(deltas == null) {
             profileHeaderFragment.showProgressBar();
             killAsyncTaskIfStillRunning();
-            asyncTask = new ProfileInfoFetcherTask(this, account);
+            asyncTask = new DatapointsFetcherTask(this, account);
             asyncTask.execute();
         } else {
             adapter = new ProfileDeltasAdapter(getContext(), deltas);
             recyclerView.setAdapter(adapter);
-        }
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.account_type_edit) {
-            switchAccountType();
-        } else if(view.getId() == R.id.account_follow_profile) {
-            followThisAccount();
         }
     }
 
@@ -155,7 +120,7 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
     }
 
     @Override
-    public void onProfileInfoLoaded(ArrayList<Delta> deltas) {
+    public void onDataPointsLoaded(ArrayList<Delta> deltas) {
         profileHeaderFragment.hideProgressBar();
         this.deltas = deltas;
         asyncTask = null;

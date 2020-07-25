@@ -8,8 +8,7 @@
     <RelativeLayout
         android:id="@+id/profile_header"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@drawable/gen_white_bt_sel">
+        android:layout_height="70dp">
 
         <ImageView
             android:id="@+id/account_icon"

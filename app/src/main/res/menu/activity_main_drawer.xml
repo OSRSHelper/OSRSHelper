@@ -10,7 +10,7 @@
             android:title="@string/home" />
 
         <item
-             android:title="@string/profile" >
+             android:title="@string/data_points" >
             <menu>
                 <group
                     android:checkableBehavior="single"
@@ -24,9 +24,9 @@
                         android:icon="@drawable/xptrack"
                         android:title="@string/xptracker" />
                     <item
-                        android:id="@+id/nav_combat_lvl"
+                        android:id="@+id/nav_data_points"
                         android:icon="@drawable/calculator"
-                        android:title="@string/combat_lvl_calculator" />
+                        android:title="@string/data_points" />
                     <item
                         android:id="@+id/nav_switch_profile"
                         android:icon="@drawable/ic_launcher"

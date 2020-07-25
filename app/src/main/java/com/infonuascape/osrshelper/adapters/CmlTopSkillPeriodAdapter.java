@@ -6,15 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
-import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
-import com.infonuascape.osrshelper.fragments.XPTrackerFragment;
-import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
+import com.infonuascape.osrshelper.fragments.DataPointsFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
+import com.infonuascape.osrshelper.fragments.XPTrackerFragment;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -22,8 +23,6 @@ import com.infonuascape.osrshelper.utils.Utils;
 
 import java.text.NumberFormat;
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by marc_ on 2018-01-21.
@@ -102,7 +101,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
 
             itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(XPTrackerFragment.newInstance(getAccount(getAdapterPosition()), period)));
 
-            itemView.findViewById(R.id.quick_action_combat).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(CombatCalcFragment.newInstance(getAccount(getAdapterPosition()))));
+            itemView.findViewById(R.id.quick_action_data_points).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(DataPointsFragment.newInstance(getAccount(getAdapterPosition()))));
         }
 
         private void initAnimations() {
@@ -176,7 +175,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
         final String username = playerExps.get(position).playerName;
         Account account = DBController.getAccountByUsername(fragment.getContext(), username);
         if(account == null) {
-            account = new Account(username, AccountType.REGULAR);
+            account = new Account(username);
         }
 
         return account;

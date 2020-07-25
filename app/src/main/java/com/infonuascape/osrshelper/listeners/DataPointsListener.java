@@ -8,6 +8,6 @@ import java.util.ArrayList;
  * Created by marc_ on 2018-02-03.
  */
 
-public interface ProfileInfoListener {
-    void onProfileInfoLoaded(final ArrayList<Delta> deltas);
+public interface DataPointsListener {
+    void onDataPointsLoaded(final ArrayList<Delta> deltas);
 }

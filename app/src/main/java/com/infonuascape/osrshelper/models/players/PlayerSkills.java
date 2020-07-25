@@ -5,6 +5,7 @@ import com.infonuascape.osrshelper.models.HiscoreBoss;
 import com.infonuascape.osrshelper.models.HiscoreBountyHunter;
 import com.infonuascape.osrshelper.models.HiscoreClueScroll;
 import com.infonuascape.osrshelper.models.HiscoreItem;
+import com.infonuascape.osrshelper.models.HiscoreLeaguePoints;
 import com.infonuascape.osrshelper.models.HiscoreLms;
 import com.infonuascape.osrshelper.models.Skill;
 
@@ -38,12 +39,14 @@ public class PlayerSkills {
 	public Skill construction = new Skill(SkillType.Construction);
 
 	public String lastUpdate;
+	public int combatLvl;
 
 	public List<Skill> skillList = new ArrayList<>();
 	public List<HiscoreBoss> bossesList = new ArrayList<>();
 	public List<HiscoreClueScroll> clueScrollsList = new ArrayList<>();
 	public List<HiscoreBountyHunter> bountyHunterList = new ArrayList<>();
 	public HiscoreLms hiscoreLms;
+	public HiscoreLeaguePoints hiscoreLeaguePoints;
 
 	public PlayerSkills() {
 		skillList.add(this.overall);
@@ -136,21 +139,20 @@ public class PlayerSkills {
 
 	public List<HiscoreItem> getHiscoresItems() {
 		List<HiscoreItem> hiscoreItems = new ArrayList<>();
-//		hiscoreItems.addAll(getSkillsInOrder(this));
 		hiscoreItems.addAll(bountyHunterList);
 		hiscoreItems.addAll(clueScrollsList);
 		hiscoreItems.addAll(bossesList);
 		if (hiscoreLms != null) {
 			hiscoreItems.add(hiscoreLms);
 		}
+		if (hiscoreLeaguePoints != null) {
+			hiscoreItems.add(hiscoreLeaguePoints);
+		}
 		return hiscoreItems;
 	}
 
 	public Object getItem(int position) {
 		int currentPosition = position;
-//		if (currentPosition < skillList.size()) {
-//			return skillList.get(currentPosition);
-//		}
 		currentPosition -= skillList.size();
 		if (currentPosition < bountyHunterList.size()) {
 			return bountyHunterList.get(currentPosition);
@@ -163,6 +165,10 @@ public class PlayerSkills {
 		if (currentPosition < bossesList.size()) {
 			return bossesList.get(currentPosition);
 		}
-		return hiscoreLms;
+		if (hiscoreLms != null) {
+			return hiscoreLms;
+		}
+
+		return hiscoreLeaguePoints;
 	}
 }

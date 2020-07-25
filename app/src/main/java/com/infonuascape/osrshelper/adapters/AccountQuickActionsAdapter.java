@@ -46,9 +46,9 @@ public class AccountQuickActionsAdapter extends RecyclerView.Adapter<AccountQuic
         } else if(quickAction == QuickAction.XP_TRACKER) {
             resId = R.drawable.xptrack;
             nameId = R.string.xptracker;
-        } else if(quickAction == QuickAction.COMBAT_CALC) {
+        } else if(quickAction == QuickAction.DATA_POINTS) {
             resId = R.drawable.calculator;
-            nameId = R.string.combat_lvl_calculator;
+            nameId = R.string.data_points;
         }
 
         holder.icon.setImageResource(resId);
@@ -74,12 +74,9 @@ public class AccountQuickActionsAdapter extends RecyclerView.Adapter<AccountQuic
             icon = itemView.findViewById(R.id.quick_action_icon);
             name = itemView.findViewById(R.id.quick_action_title);
 
-            itemView.findViewById(R.id.quick_action_container).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(listener != null) {
-                        listener.onItemClicked(getAdapterPosition());
-                    }
+            itemView.findViewById(R.id.quick_action_container).setOnClickListener(view -> {
+                if(listener != null) {
+                    listener.onItemClicked(getAdapterPosition());
                 }
             });
         }

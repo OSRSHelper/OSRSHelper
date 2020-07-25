@@ -40,7 +40,6 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
             trackings = TrackerApi.fetch(account.username);
             if (trackings.size() > 0) {
                 account.combatLvl = Utils.getCombatLvl(trackings.get(trackings.keySet().iterator().next()));
-                DBController.setCombatLvlForAccount(context.get(), account);
             }
         } catch (PlayerNotFoundException e) {
             if(listener != null) {

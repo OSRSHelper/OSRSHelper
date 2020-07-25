@@ -19,6 +19,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_USERNAME = "username";
+	public static final String COLUMN_DISPLAY_NAME = "display_name";
 	public static final String COLUMN_ACCOUNT_TYPE = "account_type";
 	public static final String COLUMN_TIME_USED = "lastused";
 	public static final String COLUMN_IS_PROFILE = "is_profile";
@@ -40,12 +41,12 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 	public static final String COLUMN_OUTPUT = "output";
 
 	private static final String DATABASE_NAME = "osrshelper.db";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE_USERNAMES = "CREATE TABLE " + TABLE_USERNAMES + "("
 			+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERNAME + " TEXT, "
-			+ COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_TIME_USED + " INTEGER, " + COLUMN_COMBAT_LVL
+			+ COLUMN_DISPLAY_NAME + " TEXT, " + COLUMN_ACCOUNT_TYPE + " TEXT, " + COLUMN_TIME_USED + " INTEGER, " + COLUMN_COMBAT_LVL
 			+ " INTEGER, " + COLUMN_IS_PROFILE + " INTEGER DEFAULT 0, " + COLUMN_IS_FOLLOWING + " INTEGER DEFAULT 0);";
 
 	private static final String DATABASE_CREATE_WIDGET = "CREATE TABLE " + TABLE_WIDGET + "("
@@ -112,6 +113,10 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 		if(oldVersion < 9) {
 			db.execSQL(DATABASE_CREATE_QUERY_CACHE);
+		}
+
+		if(oldVersion < 10) {
+			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_DISPLAY_NAME + " TEXT");
 		}
 	}
 

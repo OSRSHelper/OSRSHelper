@@ -46,7 +46,7 @@ public class UsernamesAdapter extends ArrayAdapter<Account> {
 		holder = (ViewHolder) result.getTag();
 		Account account = accounts.get(position);
 
-		holder.username.setText(account.username);
+		holder.username.setText(account.getDisplayName());
 		holder.image.setImageResource(Utils.getAccountTypeResource(account.type));
 
 		return result;

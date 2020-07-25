@@ -144,7 +144,7 @@
                     app:cardCornerRadius="4dp">
 
                     <LinearLayout
-                        android:id="@+id/quick_action_combat"
+                        android:id="@+id/quick_action_data_points"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="10dp"
@@ -163,7 +163,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:gravity="left"
-                            android:text="@string/combat_lvl_calculator"
+                            android:text="@string/data_points"
                             android:textColor="@color/text_normal"
                             android:textSize="12sp"/>
                     </LinearLayout>

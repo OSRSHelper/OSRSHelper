@@ -34,7 +34,7 @@ public class SkillDiffAdapter extends RecyclerView.Adapter<SkillDiffAdapter.Delt
     @Override
     public DeltaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Logger.add(TAG, ": onCreateViewHolder:");
-        View rootView = View.inflate(context, R.layout.profile_delta_skilldiff, null);
+        View rootView = View.inflate(context, R.layout.datapoints_item_skilldiff, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
         return new DeltaHolder(rootView);

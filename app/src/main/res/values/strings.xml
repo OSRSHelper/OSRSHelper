@@ -20,7 +20,6 @@
     <string name="continuee">Continue</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
-    <string name="combat_lvl_calculator">Combat Lvl Calculator</string>
     <string name="username_error">You need to specify a username</string>
     <string name="username_choose">Or choose from the previously entered ones</string>
     <string name="delete">Delete</string>
@@ -98,6 +97,7 @@
     <string name="hide_virtual_levels">Hide virtual levels</string>
     <string name="tap_to_dismiss">Tap to dismiss</string>
     <string name="share_hiscores">Share</string>
+    <string name="combat_lvl_calc">Next Combat level</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -109,9 +109,8 @@
     <string name="lookup_user">Lookup user</string>
     <string name="no_profile">No profile selected yet</string>
     <string name="first_time_news_feed">Since you are new here, click here to enter your account name to set as your profile</string>
-    <string name="profile">Profile</string>
+    <string name="data_points">Data points</string>
     <string name="home">Home</string>
-    <string name="click_here_profile">See profile</string>
     <string name="failed_load_osrs_news">Failed to load the news</string>
     <string name="grand_exchange_lookup_hint">Lookup item</string>
     <string name="set_as_my_profile">Set as my profile</string>
@@ -167,6 +166,7 @@
     <string name="hiscore_title_clue_scrolls">Clue Scrolls</string>
     <string name="hiscore_title_bosses">Bosses</string>
     <string name="hiscore_title_lms">Last Man Standing</string>
+    <string name="hiscore_title_league_points">League Points</string>
 
     <string name="hiscore_experience">XP: %1$s</string>
     <string name="hiscore_score">Score</string>

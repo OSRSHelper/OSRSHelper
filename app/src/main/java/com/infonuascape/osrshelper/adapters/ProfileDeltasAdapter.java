@@ -36,7 +36,7 @@ public class ProfileDeltasAdapter extends RecyclerView.Adapter<ProfileDeltasAdap
     @Override
     public DeltaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Logger.add(TAG, ": onCreateViewHolder:");
-        View rootView = View.inflate(context, R.layout.profile_delta, null);
+        View rootView = View.inflate(context, R.layout.data_points_item, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
         return new DeltaHolder(rootView);

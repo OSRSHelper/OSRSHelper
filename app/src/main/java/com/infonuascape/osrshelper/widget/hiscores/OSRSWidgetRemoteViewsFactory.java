@@ -118,7 +118,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
                 NetworkStack.init(mContext.getApplicationContext());
             }
 
-            playerSkills = HiscoreApi.fetch(account.username, account.type);
+            playerSkills = HiscoreApi.fetch(mContext, account.username);
             skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
         } catch (PlayerNotFoundException e) {
             if(playerSkills == null) {

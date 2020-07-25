@@ -5,5 +5,5 @@ package com.infonuascape.osrshelper.enums;
  */
 
 public enum QuickAction {
-    HISCORES, XP_TRACKER, COMBAT_CALC
+    HISCORES, XP_TRACKER, DATA_POINTS
 }

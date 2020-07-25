@@ -57,43 +57,6 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp" >
 
-            <ImageView
-                android:id="@+id/ironman"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:background="@drawable/ironman_bt_sel"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="5dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ironman"/>
-
-            <ImageView
-                android:id="@+id/ult_ironman"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:background="@drawable/ironman_bt_sel"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_toRightOf="@id/ironman"
-                android:padding="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/ult_ironman"/>
-
-            <ImageView
-                android:id="@+id/hc_ironman"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:background="@drawable/ironman_bt_sel"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_toRightOf="@id/ult_ironman"
-                android:padding="5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/hc_ironman"/>
-
             <TextView
                 android:id="@+id/continue_btn"
                 android:layout_width="wrap_content"

@@ -61,7 +61,7 @@ public class AccountQuickActionsFragment extends OSRSFragment implements Recycle
         List<QuickAction> quickActions = new ArrayList<>();
         quickActions.add(QuickAction.HISCORES);
         quickActions.add(QuickAction.XP_TRACKER);
-        quickActions.add(QuickAction.COMBAT_CALC);
+        quickActions.add(QuickAction.DATA_POINTS);
         adapter = new AccountQuickActionsAdapter(getContext(), quickActions, this);
         recyclerView.setAdapter(adapter);
     }
@@ -78,8 +78,8 @@ public class AccountQuickActionsFragment extends OSRSFragment implements Recycle
                 MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
             } else if(quickAction == QuickAction.XP_TRACKER) {
                 MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_cml_tracker : -1, XPTrackerFragment.newInstance(account));
-            } else if(quickAction == QuickAction.COMBAT_CALC) {
-                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_combat_lvl : -1, CombatCalcFragment.newInstance(account));
+            } else if(quickAction == QuickAction.DATA_POINTS) {
+                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_data_points : -1, DataPointsFragment.newInstance(account));
             }
         }
     }

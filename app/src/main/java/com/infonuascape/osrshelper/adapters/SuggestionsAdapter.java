@@ -50,31 +50,30 @@ public class SuggestionsAdapter extends CursorAdapter {
 
 		ViewHolder holder = (ViewHolder) view.getTag();
 		if(account != null) {
-			holder.username.setText(account.username);
+			holder.username.setText(account.getDisplayName());
 			holder.image.setImageResource(Utils.getAccountTypeResource(account.type));
-			holder.delete.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
+			if (account.isProfile) {
+				holder.delete.setVisibility(View.GONE);
+			} else {
+				holder.delete.setVisibility(View.VISIBLE);
+				holder.delete.setOnClickListener(view1 -> {
 					if (context != null) {
 						new AlertDialog.Builder(context)
 								.setTitle(R.string.delete)
 								.setMessage(R.string.delete_username)
-								.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialogInterface, int i) {
-										DBController.deleteAccount(context, account);
-										notifyDataSetChanged();
-									}
+								.setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
+									DBController.deleteAccount(context, account);
+									notifyDataSetChanged();
 								})
 								.setNegativeButton(R.string.dialog_no, null)
 								.create().show();
 					}
-				}
-			});
+				});
+			}
 		} else {
 			holder.username.setText(R.string.unknown_account);
 			holder.image.setImageResource(Utils.getAccountTypeResource(AccountType.REGULAR));
-			holder.delete.setOnClickListener(null);
+			holder.delete.setVisibility(View.GONE);
 		}
 	}
 }

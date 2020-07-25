@@ -10,12 +10,12 @@ import com.infonuascape.osrshelper.network.UpdaterApi;
  * Created by marc_ on 2018-01-14.
  */
 
-public class CmlTrackerUpdateTask extends AsyncTask<Void, Void, Void> {
+public class TrackerUpdateTask extends AsyncTask<Void, Void, Void> {
     private Account account;
     private TrackerUpdateListener listener;
     private boolean isSuccess;
 
-    public CmlTrackerUpdateTask(final TrackerUpdateListener listener, final Account account) {
+    public TrackerUpdateTask(final TrackerUpdateListener listener, final Account account) {
         this.listener = listener;
         this.account = account;
         isSuccess = false;

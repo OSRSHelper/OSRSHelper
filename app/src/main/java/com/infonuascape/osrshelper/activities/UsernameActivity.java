@@ -67,13 +67,6 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		findViewById(R.id.username_edit).clearFocus();
 		findViewById(R.id.continue_btn).setOnClickListener(this);
 		((TextView) findViewById(R.id.page_name)).setText(action == ACTION_WIDGET ? R.string.username_widget : R.string.username_profile);
-
-        // if hiscore lookup, enable ironman selectors
-		for (int id : new int[]{R.id.ironman, R.id.ult_ironman, R.id.hc_ironman}) {
-			View v = findViewById(id);
-			v.setOnClickListener(this);
-			v.setVisibility(View.VISIBLE);
-		}
 	}
 
 	private void initWidgetId() {
@@ -107,38 +100,15 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 		if (id == R.id.continue_btn) {
 			String username = ((EditText) findViewById(R.id.username_edit)).getText().toString();
 			if (!username.isEmpty()) {
-				Account account = new Account(username, getSelectedAccountType());
+				Account account = new Account(username);
 				closeActivity(account);
 			} else if (action == ACTION_PROFILE) {
 				closeActivity(null);
 			} else {
 				Toast.makeText(this, R.string.username_error, Toast.LENGTH_SHORT).show();
 			}
-		} else if (id == R.id.ironman) {
-			findViewById(R.id.ult_ironman).setSelected(false);
-			findViewById(R.id.hc_ironman).setSelected(false);
-			v.setSelected(!v.isSelected());
-        } else if (id == R.id.ult_ironman) {
-            findViewById(R.id.ironman).setSelected(false);
-		    findViewById(R.id.hc_ironman).setSelected(false);
-            v.setSelected(!v.isSelected());
-        } else if (id == R.id.hc_ironman) {
-            findViewById(R.id.ironman).setSelected(false);
-            findViewById(R.id.ult_ironman).setSelected(false);
-            v.setSelected(!v.isSelected());
-        }
+		}
 	}
-
-	private AccountType getSelectedAccountType() {
-        if (findViewById(R.id.ironman).isSelected())
-            return AccountType.IRONMAN;
-        else if (findViewById(R.id.ult_ironman).isSelected())
-            return AccountType.ULTIMATE_IRONMAN;
-        else if (findViewById(R.id.hc_ironman).isSelected())
-            return AccountType.HARDCORE_IRONMAN;
-        else
-            return AccountType.REGULAR;
-    }
 
 	private void closeActivity(final Account account) {
 		if (account != null) {

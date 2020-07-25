@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.HiscoreAdapter;
+import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -25,6 +26,7 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
+import com.infonuascape.osrshelper.views.CombatCalcDialog;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
@@ -33,6 +35,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	private static final String TAG = "HighScoreFragment";
 
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
+	private static final String EXTRA_USERNAME = "EXTRA_USERNAME";
 	private static final int WRITE_PERMISSION_REQUEST_CODE = 9001;
 	private Account account;
 	private PlayerSkills playerSkills;
@@ -50,6 +53,14 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		return fragment;
     }
 
+	public static HighScoreFragment newInstance(final String username) {
+    	HighScoreFragment fragment = new HighScoreFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(EXTRA_USERNAME, username);
+		fragment.setArguments(bundle);
+		return fragment;
+    }
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +68,17 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		Logger.add(TAG, ": onCreateView");
 		View view = inflater.inflate(R.layout.hiscores, null);
 
-		account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
+		if (getArguments().containsKey(EXTRA_USERNAME)) {
+			final String username = getArguments().getString(EXTRA_USERNAME);
+			account = DBController.getAccountByUsername(getContext(), username);
+			if(account == null) {
+				account = new Account(username);
+				DBController.addOrUpdateAccount(getContext(), account);
+			}
+		} else if (getArguments().containsKey(EXTRA_ACCOUNT)) {
+			account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
+		}
+
 		if(account == null) {
 			return view;
 		}
@@ -85,6 +106,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		errorView = view.findViewById(R.id.error_view);
 
 		view.findViewById(R.id.share_btn).setOnClickListener(this);
+		view.findViewById(R.id.combat_lvl_btn).setOnClickListener(this);
 
 		profileHeaderFragment.showProgressBar();
 		asyncTask = new HiscoresFetcherTask(getContext(), this, account);
@@ -109,8 +131,12 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 					requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST_CODE);
 				} else {
-					ShareImageUtils.shareHiscores(getContext(), account.username, playerSkills);
+					ShareImageUtils.shareHiscores(getContext(), account.getDisplayName(), playerSkills);
 				}
+			}
+		} else if(view.getId() == R.id.combat_lvl_btn) {
+			if(playerSkills != null) {
+				CombatCalcDialog.showDialog(getContext(), playerSkills);
 			}
 		}
 	}
@@ -132,6 +158,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 				profileHeaderFragment.showCombatLvl(account.combatLvl);
 				if(getView() != null) {
 					getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
+					getView().findViewById(R.id.combat_lvl_btn).setVisibility(View.VISIBLE);
 					rsView.populateViewForHiscores(playerSkills, this, false);
 					hiscoreAdapter.setHiscoreItems(playerSkills.getHiscoresItems());
 					hiscoreAdapter.notifyDataSetChanged();
@@ -153,6 +180,8 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	public void onHiscoresFetched(PlayerSkills playerSkills) {
 		Log.d(TAG, "onHiscoresFetched() called with: playerSkills = [" + playerSkills + "]");
 		profileHeaderFragment.hideProgressBar();
+		account = DBController.getAccountByUsername(getContext(), account.username);
+		profileHeaderFragment.refreshProfile(account);
 		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
 			populateTable();
@@ -174,7 +203,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 			for(int i=0 ; i < permissions.length; i++) {
 				if(TextUtils.equals(permissions[i], Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 					if(grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-						ShareImageUtils.shareHiscores(getContext(), account.username, playerSkills);
+						ShareImageUtils.shareHiscores(getContext(), account.getDisplayName(), playerSkills);
 					}
 				}
 			}

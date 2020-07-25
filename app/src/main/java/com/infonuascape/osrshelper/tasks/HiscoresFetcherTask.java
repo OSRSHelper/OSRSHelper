@@ -35,16 +35,14 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            String output = DBController.getQueryCache(context.get(), HiscoreApi.getQueryUrl(account.username, account.type));
+            String output = DBController.getQueryCache(context.get(), HiscoreApi.getQueryUrl(account.username));
             if (!TextUtils.isEmpty(output)) {
-                PlayerSkills playerSkills = HiscoreApi.parseResponse(output);
+                PlayerSkills playerSkills = HiscoreApi.parseResponse(context.get(), output);
                 if(playerSkills != null && listener != null) {
                     listener.onHiscoresCacheFetched(playerSkills);
                 }
             }
-            playerSkills = HiscoreApi.fetch(account.username, account.type);
-            account.combatLvl = Utils.getCombatLvl(playerSkills);
-            DBController.setCombatLvlForAccount(context.get(), account);
+            playerSkills = HiscoreApi.fetch(context.get(), account.username);
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();
             errorMessage = context.get().getString(R.string.not_existing_player);

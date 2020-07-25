@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ACCOUNT_TYPE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_COMBAT_LVL;
+import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_DISPLAY_NAME;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ID;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_FOLLOWING;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_IS_MEMBERS;
@@ -33,7 +34,7 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
 
 public class DBController {
 	private static final String TAG = "DBController";
-	private static final String[] ACCOUNTS_PROJECTION = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE, COLUMN_COMBAT_LVL};
+	private static final String[] ACCOUNTS_PROJECTION = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_DISPLAY_NAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE, COLUMN_COMBAT_LVL};
 	private static final String[] GRAND_EXCHANGE_PROJECTION = new String[]{COLUMN_ID, COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_DESCRIPTION, COLUMN_ITEM_IMAGE, COLUMN_IS_MEMBERS, COLUMN_IS_STARRED, COLUMN_WIDGET_ID};
 
 	public static void addOrUpdateAccount(final Context context, final Account account) {
@@ -63,6 +64,17 @@ public class DBController {
 
 		if(context != null) {
 			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{account.username});
+		}
+	}
+
+	public static void updateAccount(final Context context, final String username, final String displayName, final String accountType, final int combatLvl) {
+		final ContentValues values = new ContentValues();
+		values.put(COLUMN_DISPLAY_NAME, displayName);
+		values.put(COLUMN_ACCOUNT_TYPE, accountType);
+		values.put(COLUMN_COMBAT_LVL, combatLvl);
+
+		if(context != null) {
+			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{username});
 		}
 	}
 
@@ -165,12 +177,11 @@ public class DBController {
 		Account account = null;
 
 		if(context != null) {
-			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, new String[]{COLUMN_USERNAME, COLUMN_ACCOUNT_TYPE}, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null);
+			final Cursor cursor = context.getContentResolver().query(OSRSDatabase.WIDGETS_CONTENT_URI, new String[]{COLUMN_USERNAME}, COLUMN_WIDGET_ID + "=?", new String[]{String.valueOf(appWidgetId)}, null);
 			try {
 				if (cursor.moveToFirst()) {
 					final String username = cursor.getString(cursor.getColumnIndex(COLUMN_USERNAME));
-					final String accountType = cursor.getString(cursor.getColumnIndex(COLUMN_ACCOUNT_TYPE));
-					account = new Account(username, AccountType.valueOf(accountType));
+					account = new Account(username);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -189,12 +200,13 @@ public class DBController {
 		try {
 			final int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
 			final String username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME));
+			final String displayName = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DISPLAY_NAME));
 			final String accountType = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ACCOUNT_TYPE));
 			final long lastTimeUsed = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TIME_USED));
 			final boolean isProfile = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_PROFILE)) == 1;
 			final boolean isFollowing = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_FOLLOWING)) == 1;
 			final int combatLvl = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_COMBAT_LVL));
-			return new Account(id, username, AccountType.valueOf(accountType), lastTimeUsed, isProfile, isFollowing, combatLvl);
+			return new Account(id, username, displayName, AccountType.valueOf(accountType), lastTimeUsed, isProfile, isFollowing, combatLvl);
 		} catch(IllegalArgumentException iae) {
 			iae.printStackTrace();
 		}

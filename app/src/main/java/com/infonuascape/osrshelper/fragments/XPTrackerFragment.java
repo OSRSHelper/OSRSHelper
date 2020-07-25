@@ -18,7 +18,7 @@ import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
-import com.infonuascape.osrshelper.tasks.CmlTrackerUpdateTask;
+import com.infonuascape.osrshelper.tasks.TrackerUpdateTask;
 import com.infonuascape.osrshelper.tasks.TrackerFetcherTask;
 import com.infonuascape.osrshelper.utils.Utils;
 
@@ -123,7 +123,7 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 		description.setText(null);
 		title.setText(R.string.updating);
 		profileHeaderFragment.showProgressBar();
-		asyncTask = new CmlTrackerUpdateTask(this, account);
+		asyncTask = new TrackerUpdateTask(this, account);
 		asyncTask.execute();
 	}
 

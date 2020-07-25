@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
  * Created by marc_ on 2018-01-21.
  */
 
-public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickListener {
+public class ProfileHeaderFragment extends OSRSFragment {
     private static final String TAG = "ProfileHeaderFragment";
 
     private Account account;
@@ -35,7 +35,6 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         View view = inflater.inflate(R.layout.profile_header, null);
 
         progressBar = view.findViewById(R.id.progressbar);
-        view.findViewById(R.id.profile_header).setOnClickListener(this);
         combatText = view.findViewById(R.id.account_combat);
 
         return view;
@@ -44,7 +43,7 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
     public void refreshProfile(final Account account) {
         this.account = account;
         if(account != null) {
-            ((TextView) getView().findViewById(R.id.account_username)).setText(account.username);
+            ((TextView) getView().findViewById(R.id.account_username)).setText(account.getDisplayName());
             ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
             ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
             if (account.combatLvl != 0) {
@@ -61,19 +60,12 @@ public class ProfileHeaderFragment extends OSRSFragment implements View.OnClickL
         progressBar.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.profile_header) {
-            showProfile();
-        }
-    }
-
-    private void showProfile() {
-        MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
-    }
-
     public void setTitle(int textResId) {
-        ((TextView) getView().findViewById(R.id.page_name)).setText(textResId);
+        if (textResId > 0) {
+            ((TextView) getView().findViewById(R.id.page_name)).setText(textResId);
+        } else {
+            ((TextView) getView().findViewById(R.id.page_name)).setText("");
+        }
     }
 
     public void showCombatLvl(final int combatLvl) {

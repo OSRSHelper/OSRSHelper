@@ -31,17 +31,16 @@ import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.fragments.CmlTopFragment;
-import com.infonuascape.osrshelper.fragments.XPTrackerFragment;
-import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
+import com.infonuascape.osrshelper.fragments.DataPointsFragment;
 import com.infonuascape.osrshelper.fragments.GrandExchangeDetailFragment;
 import com.infonuascape.osrshelper.fragments.GrandExchangeSearchFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.NewsFeedFragment;
 import com.infonuascape.osrshelper.fragments.NewsFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
-import com.infonuascape.osrshelper.fragments.ProfileFragment;
 import com.infonuascape.osrshelper.fragments.WebViewFragment;
 import com.infonuascape.osrshelper.fragments.WorldMapFragment;
+import com.infonuascape.osrshelper.fragments.XPTrackerFragment;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
@@ -139,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Account account = DBController.getProfileAccount(this);
         SubMenu profileSubMenu = navigationView.getMenu().getItem(1).getSubMenu();
 
-        //If there's no profile set, hide the options
+        //If there's no data_points set, hide the options
         for (int i = 0; i < profileSubMenu.size(); i++) {
             if (profileSubMenu.getItem(i).getItemId() != R.id.nav_switch_profile) {
                 profileSubMenu.getItem(i).setVisible(account != null);
@@ -147,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if(account != null) {
             ((ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
-            ((TextView) navigationView.getHeaderView(0).findViewById(R.id.profile_name)).setText(account.username);
+            ((TextView) navigationView.getHeaderView(0).findViewById(R.id.profile_name)).setText(account.getDisplayName());
         }
     }
 
@@ -184,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_SET_PROFILE) {
             MainFragmentController.getInstance().setSelectedMenuItem(-1);
+
+            if (resultCode == RESULT_OK) {
+                refreshProfileAccount();
+            }
         }
     }
 
@@ -235,9 +238,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_cml_tracker) {
             Account account = DBController.getProfileAccount(this);
             fragment = XPTrackerFragment.newInstance(account);
-        } else if (id == R.id.nav_combat_lvl) {
+        } else if (id == R.id.nav_data_points) {
             Account account = DBController.getProfileAccount(this);
-            fragment = CombatCalcFragment.newInstance(account);
+            fragment = DataPointsFragment.newInstance(account);
         } else if (id == R.id.nav_world_map) {
             fragment = WorldMapFragment.newInstance();
         } else if (id == R.id.nav_wiki) {
@@ -250,8 +253,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = CmlTopFragment.newInstance();
         } else if (id == R.id.nav_switch_profile) {
             UsernameActivity.showForProfileForResult(this, REQUEST_CODE_SET_PROFILE);
-            drawer.closeDrawer(GravityCompat.START);
-            drawer.closeDrawers();
             return true;
         }
 
@@ -288,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onSuggestionClick(int position) {
         Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
         if(account != null) {
-            MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
+            MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
             searchView.setQuery(null, false);
             searchView.clearFocus();
         }
@@ -298,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onQueryTextSubmit(String query) {
         Logger.add(TAG, ": onQueryTextSubmit: query=" + query);
-        MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(query));
+        MainFragmentController.getInstance().showRootFragment(-1, HighScoreFragment.newInstance(query));
         searchView.setQuery(null, false);
         searchView.clearFocus();
         return false;
@@ -323,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(view.getId() == R.id.nav_header_container) {
             Account account = DBController.getProfileAccount(this);
             if(account != null) {
-                MainFragmentController.getInstance().showRootFragment(-1, ProfileFragment.newInstance(account.username));
+                MainFragmentController.getInstance().showRootFragment(R.id.nav_hiscores, HighScoreFragment.newInstance(account));
                 drawer.closeDrawer(GravityCompat.START);
                 drawer.closeDrawers();
             }
