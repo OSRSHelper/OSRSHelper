@@ -45,7 +45,7 @@ public class AccountQuickActionsAdapter extends RecyclerView.Adapter<AccountQuic
             nameId = R.string.highscores;
         } else if(quickAction == QuickAction.XP_TRACKER) {
             resId = R.drawable.xptrack;
-            nameId = R.string.cml_xptracker;
+            nameId = R.string.xptracker;
         } else if(quickAction == QuickAction.COMBAT_CALC) {
             resId = R.drawable.calculator;
             nameId = R.string.combat_lvl_calculator;

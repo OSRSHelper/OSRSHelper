@@ -2,21 +2,17 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.content.Context;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.enums.TrackerTime;
-import com.infonuascape.osrshelper.fragments.CmlXPTrackerPeriodFragment;
 import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
-import com.infonuascape.osrshelper.models.Account;
-
-import androidx.fragment.app.FragmentManager;
+import com.infonuascape.osrshelper.fragments.XPTrackerPeriodFragment;
 
 public class CmlXpTrackerFragmentAdapter extends OSRSNestedViewPagerAdapter {
 
-    private Account account;
-
-    public CmlXpTrackerFragmentAdapter(final FragmentManager fm, final Context context, final Account account) {
+    public CmlXpTrackerFragmentAdapter(final FragmentManager fm, final Context context) {
         super(fm, context);
-        this.account = account;
     }
 
     @Override
@@ -26,7 +22,7 @@ public class CmlXpTrackerFragmentAdapter extends OSRSNestedViewPagerAdapter {
 
     @Override
     public OSRSPagerFragment createFragment(int position) {
-        return CmlXPTrackerPeriodFragment.newInstance(account, TrackerTime.values()[position]);
+        return XPTrackerPeriodFragment.newInstance(TrackerTime.values()[position]);
     }
 
     @Override
@@ -39,9 +35,8 @@ public class CmlXpTrackerFragmentAdapter extends OSRSNestedViewPagerAdapter {
             case 2:
                 return R.string.month;
             case 3:
-                return R.string.year;
             default:
-                return R.string.all;
+                return R.string.year;
         }
     }
 }

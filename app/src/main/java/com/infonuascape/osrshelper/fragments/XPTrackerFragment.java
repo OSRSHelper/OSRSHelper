@@ -1,28 +1,31 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.CmlXpTrackerFragmentAdapter;
 import com.infonuascape.osrshelper.enums.TrackerTime;
+import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.CmlTrackerUpdateTask;
+import com.infonuascape.osrshelper.tasks.TrackerFetcherTask;
 import com.infonuascape.osrshelper.utils.Utils;
 
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
+import java.util.Map;
 
-public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListener, TrackerUpdateListener, ViewPager.OnPageChangeListener {
-	private static final String TAG = "CmlXPTrackerFragment";
+public class XPTrackerFragment extends OSRSFragment implements OnClickListener, TrackerUpdateListener, ViewPager.OnPageChangeListener, TrackerFetcherListener {
+	private static final String TAG = "XPTrackerFragment";
 
 	private final static String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
 	private final static String EXTRA_TRACKER_TIME = "EXTRA_TRACKER_TIME";
@@ -32,17 +35,18 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	private CmlXpTrackerFragmentAdapter adapter;
 	private ViewPager viewPager;
 	private ProfileHeaderFragment profileHeaderFragment;
+	private Map<TrackerTime, PlayerSkills> trackings;
 
-	public static CmlXPTrackerFragment newInstance(final Account account) {
-		CmlXPTrackerFragment fragment = new CmlXPTrackerFragment();
+	public static XPTrackerFragment newInstance(final Account account) {
+		XPTrackerFragment fragment = new XPTrackerFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(EXTRA_ACCOUNT, account);
 		fragment.setArguments(b);
 		return fragment;
 	}
 
-	public static CmlXPTrackerFragment newInstance(final Account account, final TrackerTime trackerTime) {
-		CmlXPTrackerFragment fragment = new CmlXPTrackerFragment();
+	public static XPTrackerFragment newInstance(final Account account, final TrackerTime trackerTime) {
+		XPTrackerFragment fragment = new XPTrackerFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(EXTRA_ACCOUNT, account);
 		b.putSerializable(EXTRA_TRACKER_TIME, trackerTime);
@@ -61,13 +65,13 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 		profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
 		profileHeaderFragment.refreshProfile(account);
-		profileHeaderFragment.setTitle(R.string.cml_xptracker);
+		profileHeaderFragment.setTitle(R.string.xptracker);
 
 		title = view.findViewById(R.id.track_metadata_title);
 		description = view.findViewById(R.id.track_metadata_desc);
 
 		viewPager = view.findViewById(R.id.viewpager);
-		adapter = new CmlXpTrackerFragmentAdapter(getChildFragmentManager(), getContext(), account);
+		adapter = new CmlXpTrackerFragmentAdapter(getChildFragmentManager(), getContext());
 		viewPager.setAdapter(adapter);
 		viewPager.addOnPageChangeListener(this);
 		viewPager.setOffscreenPageLimit(5);
@@ -89,10 +93,22 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		loadTracking();
+	}
+
+	private void loadTracking() {
+		killAsyncTaskIfStillRunning();
+		asyncTask = new TrackerFetcherTask(getActivity(), this, account);
+		asyncTask.execute();
+	}
+
+	@Override
 	public void refreshDataOnPreferencesChanged() {
 		super.refreshDataOnPreferencesChanged();
 		for(int i=0; i < adapter.getCount(); i++) {
-			((CmlXPTrackerPeriodFragment) adapter.getItem(i)).reloadData();
+			((XPTrackerPeriodFragment) adapter.getItem(i)).reloadData();
 		}
 	}
 
@@ -105,35 +121,51 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 
 	private void updateAccount() {
 		description.setText(null);
+		title.setText(R.string.updating);
 		profileHeaderFragment.showProgressBar();
 		asyncTask = new CmlTrackerUpdateTask(this, account);
 		asyncTask.execute();
 	}
 
-	public void onTrackingFetched(final PlayerSkills playerSkills) {
-		if (playerSkills != null) {
+	@Override
+	public void onTrackingFetched(Map<TrackerTime, PlayerSkills> trackings) {
+		this.trackings = trackings;
+		if (trackings.size() > 0) {
 			if (getView() != null) {
-				profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
 				description.setVisibility(View.VISIBLE);
-				if (playerSkills.lastUpdate != null) {
+				String lastUpdate = null;
+				for (TrackerTime trackerTime : trackings.keySet()) {
+					PlayerSkills playerSkills = trackings.get(trackerTime);
+					if (playerSkills.lastUpdate != null) {
+						lastUpdate = playerSkills.lastUpdate;
+						profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
+						break;
+					}
+				}
+				if (lastUpdate != null) {
 					title.setText(R.string.last_update);
-					description.setText(playerSkills.lastUpdate);
+					description.setText(lastUpdate);
 				} else {
 					title.setText(R.string.now_tracking);
-					description.setText(R.string.tracking_starting);
+				}
+
+				for(int i=0; i < adapter.getCount(); i++) {
+					((XPTrackerPeriodFragment) adapter.getItem(i)).onForceRepopulate();
 				}
 			}
 		}
 	}
 
+	@Override
 	public void onTrackingError(final String errorMessage) {
 		if(getActivity() != null) {
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					if(getView() != null) {
-						title.setText(R.string.error);
-						description.setText(errorMessage);
+			getActivity().runOnUiThread(() -> {
+				if(getView() != null) {
+					title.setText(R.string.error);
+					description.setText(errorMessage);
+
+					for (int i = 0; i < adapter.getCount(); i++) {
+						((XPTrackerPeriodFragment) adapter.getItem(i)).onTrackingError();
 					}
 				}
 			});
@@ -158,10 +190,15 @@ public class CmlXPTrackerFragment extends OSRSFragment implements OnClickListene
 	@Override
 	public void onUpdatingDone(boolean isSuccess) {
 		profileHeaderFragment.hideProgressBar();
-		for(int i=0; i < adapter.getCount(); i++) {
-			((CmlXPTrackerPeriodFragment) adapter.getItem(i)).onForceRepopulate();
+		if (isSuccess) {
+			for (int i = 0; i < adapter.getCount(); i++) {
+				((XPTrackerPeriodFragment) adapter.getItem(i)).onUpdatingSuccessful();
+			}
+			loadTracking();
 		}
-		final int position = viewPager.getCurrentItem();
-		adapter.getItem(position).onPageVisible();
+	}
+
+	public PlayerSkills getPlayerSkills(TrackerTime time) {
+		return trackings != null ? trackings.get(time) : null;
 	}
 }

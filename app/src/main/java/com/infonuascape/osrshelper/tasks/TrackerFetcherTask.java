@@ -15,31 +15,33 @@ import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by marc_ on 2018-01-14.
  */
 
-public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
+public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     private WeakReference<Context> context;
     private Account account;
-    private TrackerTime time;
     private TrackerFetcherListener listener;
-    private PlayerSkills playerSkills;
+    private Map<TrackerTime, PlayerSkills> trackings;
 
-    public CmlTrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account, final TrackerTime time) {
+    public TrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account) {
         this.context = new WeakReference<>(context);
         this.listener = listener;
         this.account = account;
-        this.time = time;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            playerSkills = TrackerApi.fetch(account.username, time);
-            account.combatLvl = Utils.getCombatLvl(playerSkills);
-            DBController.setCombatLvlForAccount(context.get(), account);
+            trackings = TrackerApi.fetch(account.username);
+            if (trackings.size() > 0) {
+                account.combatLvl = Utils.getCombatLvl(trackings.get(trackings.keySet().iterator().next()));
+                DBController.setCombatLvlForAccount(context.get(), account);
+            }
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
                 if(context.get() != null) {
@@ -72,7 +74,10 @@ public class CmlTrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         if(listener != null) {
-            listener.onTrackingFetched(playerSkills);
+            if (trackings == null) {
+                trackings = new HashMap<>();
+            }
+            listener.onTrackingFetched(trackings);
         }
     }
 }

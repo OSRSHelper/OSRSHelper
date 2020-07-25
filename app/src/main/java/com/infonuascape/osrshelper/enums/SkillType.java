@@ -28,7 +28,7 @@ public enum SkillType {
     Thieving(R.drawable.thieving, "Thieving"),
     Slayer(R.drawable.slayer, "Slayer"),
     Farming(R.drawable.farming, "Farming"),
-    Runecrafting(R.drawable.runecrafting, "Runecrafting", "Runecrafting"),
+    Runecrafting(R.drawable.runecrafting, "Runecrafting"),
     Hunter(R.drawable.hunter, "Hunter"),
     Construction(R.drawable.construction, "Construction");
 
@@ -41,7 +41,7 @@ public enum SkillType {
     }
 
     public boolean equals(String skillName) {
-        return (getAlternativeName().equals(skillName)) || (getSkillName().equals(skillName));
+        return (getAlternativeName().toLowerCase().equals(skillName.toLowerCase())) || (getSkillName().toLowerCase().equals(skillName.toLowerCase()));
     }
 
     public String getAlternativeName() {

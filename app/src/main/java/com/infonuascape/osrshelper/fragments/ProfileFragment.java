@@ -68,9 +68,9 @@ public class ProfileFragment extends OSRSFragment implements View.OnClickListene
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        if(!BuildConfig.DEBUG) {
-            view.findViewById(R.id.account_follow_profile).setVisibility(View.GONE);
-        }
+//        if(!BuildConfig.DEBUG) {
+        view.findViewById(R.id.account_follow_profile).setVisibility(View.GONE);
+//        }
 
         profileHeaderFragment = (ProfileHeaderFragment) getChildFragmentManager().findFragmentById(R.id.profile_header);
 

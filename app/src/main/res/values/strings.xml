@@ -5,7 +5,7 @@
     <string name="highscores">Hiscores</string>
     <string name="world_map">World Map</string>
     <string name="wiki">Wiki</string>
-    <string name="cml_xptracker">Crystal Math Labs XP Tracker</string>
+    <string name="xptracker">XP Tracker</string>
     <string name="grand_exchange">Grand Exchange</string>
     <string name="cml_top">Crystal Math Labs Top Players</string>
     <string name="donate_group">Donation</string>
@@ -52,16 +52,16 @@
     <string name="loss_medium">(- %1$.1fK)</string>
     <string name="tracking_since">Tracking since</string>
     <string name="last_update">Last track</string>
-    <string name="now_tracking">Now tracking</string>
-    <string name="tracking_starting">Tracking will start from now on.\nGo train and come back to see your gains.</string>
+    <string name="now_tracking">Player not found, please press the update icon</string>
     <string name="virtual_levels">Virtual Levels</string>
     <string name="update">Update</string>
+    <string name="updating">Updating</string>
     <string name="widget_username_name">Hiscores</string>
     <string name="widget_grand_exchange_name">Grand Exchange Price</string>
     <string name="next_page">Next Page</string>
     <string name="back_page">Back Page</string>
 
-    <string name="cml_top_select_skill_title">Crystal Math Labs Top Players</string>
+    <string name="cml_top_select_skill_title">@string/cml_top</string>
     <string name="cml_top_select_skill_desc">Choose a skill to see its top players</string>
 
     <string name="grand_exchange_search_title">Grand Exchange</string>
@@ -97,14 +97,6 @@
     <string name="show_virtual_levels">Show virtual levels</string>
     <string name="hide_virtual_levels">Hide virtual levels</string>
     <string name="tap_to_dismiss">Tap to dismiss</string>
-
-    <string name="quick_actions_title">Quick Actions for %1$s</string>
-
-    <string name="donate_text1">Hey! This app is developed by three scapers which happen to be software development enthusiasts.</string>
-    <string name="donate_text2">This app is 100% open-sourced (meaning the source code is freely available for anyone) and free.</string>
-    <string name="donate_text3">We created this app for fun and to learn, so if you feel like you want to help us out by buying us a beer, go right ahead!</string>
-    <string name="donate_text4">We added features that require servers (ie. Crystal Math Labs support, and more) that requires some monthly costs. Donating would definitely help towards this.</string>
-    <string name="donate_text5">Thank you for using this app!</string>
     <string name="share_hiscores">Share</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -165,6 +157,7 @@
     <string name="profile_delta_on">%1$s &#x2192; %2$s</string>
     <string name="error_when_sharing">Error when sharing stats</string>
     <string name="error_when_fetching">Error when fetching</string>
+    <string name="error_when_fetching_tracker">No information available\nfor this period</string>
     <string name="unavailable_right_now">Unavailable right now</string>
     <string name="unknown_account">Unknown</string>
     <string name="hiscore_share_intent_name">My OSRS Stats</string>

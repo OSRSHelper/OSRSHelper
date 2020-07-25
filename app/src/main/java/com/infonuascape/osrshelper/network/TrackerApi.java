@@ -1,5 +1,7 @@
 package com.infonuascape.osrshelper.network;
 
+import android.net.Uri;
+
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.models.HTTPResult;
@@ -13,30 +15,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by maden on 9/14/14.
  */
 public class TrackerApi {
-	private static final String API_URL = NetworkStack.ENDPOINT + "/track/lookup/%1$s/%2$s";
-	private static final String KEY_EHP = "ehp";
-	private static final String KEY_EHP_CAP = "EHP";
-	private static final String KEY_SKILLS = "skills";
-	private static final String KEY_LAST_UPDATED = "lastupdated";
-	private static final String KEY_EXPERIENCE_DIFF = "ExperienceDiff";
-	private static final String KEY_RANK_DIFF = "RankDiff";
-	private static final String KEY_EXPERIENCE = "Experience";
+	private static final String API_URL = NetworkStack.ENDPOINT + "/wom/lookup/%1$s";
+	private static final String KEY_DATA = "data";
+	private static final String KEY_LAST_UPDATED = "endsAt";
+	private static final String KEY_EXPERIENCE = "experience";
+	private static final String KEY_RANK = "rank";
+	private static final String KEY_GAINED = "gained";
+	private static final String KEY_END = "end";
 
-	public static PlayerSkills fetch(String userName, TrackerTime trackerTime) throws JSONException, APIError, PlayerNotFoundException {
-		return fetch(userName, trackerTime.getSeconds());
-	}
-
-    public static PlayerSkills fetch(String username, int lookupTime) throws APIError, PlayerNotFoundException, JSONException {
-		final String url = String.format(API_URL, username, lookupTime);
+    public static Map<TrackerTime, PlayerSkills> fetch(String username) throws APIError, PlayerNotFoundException, JSONException {
+		final String url = String.format(API_URL, Uri.encode(username));
 		HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
 
 		if (httpResult.statusCode == StatusCode.NOT_FOUND) {
@@ -45,46 +45,60 @@ public class TrackerApi {
 			throw new APIError("Unexpected response from the server.");
 		}
 
-		JSONObject ehp = new JSONObject(httpResult.output).getJSONObject(KEY_EHP);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-		PlayerSkills ps = new PlayerSkills();
-		List<Skill> skillList = ps.skillList;
-		long seconds = ehp.getLong(KEY_LAST_UPDATED);
-		long millis = seconds * 1000;
-		Date date = new Date(System.currentTimeMillis() - millis);
-		ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(date);
+		Map<TrackerTime, PlayerSkills> trackings = new HashMap<>();
+		JSONObject json = new JSONObject(httpResult.output);
 
-		JSONObject skills = ehp.getJSONObject(KEY_SKILLS);
-		for (Iterator<String> it = skills.keys(); it.hasNext(); ) {
-			String skill = it.next();
-			JSONObject skillJson = skills.getJSONObject(skill);
+		Iterator<String> keys = json.keys();
+		while(keys.hasNext()) {
+			final String period = keys.next();
+			final TrackerTime trackerTime = TrackerTime.create(period);
+			PlayerSkills ps = new PlayerSkills();
 
-			for (Skill s : skillList) {
-				if (s.getSkillType().equals(skill)) {
-					s.setExperienceDiff(skillJson.getLong(KEY_EXPERIENCE_DIFF));
-					s.setRankDiff(skillJson.getLong(KEY_RANK_DIFF));
-					s.setExperience(skillJson.getLong(KEY_EXPERIENCE));
-					s.setEHP(skillJson.getDouble(KEY_EHP_CAP));
+			final JSONObject jsonPeriod = json.getJSONObject(period);
+			final JSONObject jsonData = jsonPeriod.getJSONObject(KEY_DATA);
+			String dateString = jsonPeriod.getString(KEY_LAST_UPDATED);
+			try {
+				ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(sdf.parse(dateString));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			Iterator<String> skillKeys = jsonData.keys();
+			while(skillKeys.hasNext()) {
+				String skill = skillKeys.next();
+				JSONObject skillJson = jsonData.getJSONObject(skill);
+
+				for (Skill s : ps.skillList) {
+					if (s.getSkillType().equals(skill)) {
+						s.setExperienceDiff(skillJson.getJSONObject(KEY_EXPERIENCE).getLong(KEY_GAINED));
+						s.setRankDiff(skillJson.getJSONObject(KEY_RANK).getLong(KEY_GAINED));
+						s.setExperience(skillJson.getJSONObject(KEY_EXPERIENCE).getLong(KEY_END));
+						s.setEHP(0);
+					}
 				}
 			}
-		}
 
-		short totalLevel = 0;
-		short totalVirtualLevel = 0;
-		for (Skill s : skillList) {
-			if (s.getSkillType() != SkillType.Overall) {
-				totalLevel += s.getLevel();
-				totalVirtualLevel += s.getVirtualLevel();
+			short totalLevel = 0;
+			short totalVirtualLevel = 0;
+			for (Skill s : ps.skillList) {
+				if (s.getSkillType() != SkillType.Overall) {
+					totalLevel += s.getLevel();
+					totalVirtualLevel += s.getVirtualLevel();
+				}
 			}
-		}
 
-		for (Skill s : skillList) {
-			if (s.getSkillType().equals(SkillType.Overall)) {
-				s.setLevel(totalLevel);
-				s.setVirtualLevel(totalVirtualLevel);
+			for (Skill s : ps.skillList) {
+				if (s.getSkillType().equals(SkillType.Overall)) {
+					s.setLevel(totalLevel);
+					s.setVirtualLevel(totalVirtualLevel);
+				}
 			}
+
+			trackings.put(trackerTime, ps);
 		}
 
-		return ps;
+		return trackings;
 	}
 }

@@ -128,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:gravity="left"
-                            android:text="@string/cml_xptracker"
+                            android:text="@string/xptracker"
                             android:textColor="@color/text_normal"
                             android:textSize="12sp"/>
                     </LinearLayout>

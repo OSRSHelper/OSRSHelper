@@ -11,7 +11,7 @@ import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
-import com.infonuascape.osrshelper.fragments.CmlXPTrackerFragment;
+import com.infonuascape.osrshelper.fragments.XPTrackerFragment;
 import com.infonuascape.osrshelper.fragments.CombatCalcFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
 import com.infonuascape.osrshelper.fragments.OSRSFragment;
@@ -100,7 +100,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
 
             itemView.findViewById(R.id.quick_action_hiscore).setOnClickListener(view -> MainFragmentController.getInstance().showRootFragment(-1, HighScoreFragment.newInstance(getAccount(getAdapterPosition()))));
 
-            itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(CmlXPTrackerFragment.newInstance(getAccount(getAdapterPosition()), period)));
+            itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(XPTrackerFragment.newInstance(getAccount(getAdapterPosition()), period)));
 
             itemView.findViewById(R.id.quick_action_combat).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(CombatCalcFragment.newInstance(getAccount(getAdapterPosition()))));
         }

@@ -161,6 +161,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
 	@Override
 	public void onHiscoresError(String errorMessage) {
+		profileHeaderFragment.hideProgressBar();
 		if(errorView != null) {
 			errorView.setVisibility(View.VISIBLE);
 		}

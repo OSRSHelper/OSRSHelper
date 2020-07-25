@@ -206,6 +206,7 @@ public class CombatCalcFragment extends OSRSFragment implements TextWatcher, His
 
 	@Override
 	public void onHiscoresError(String errorMessage) {
+		profileHeaderFragment.hideProgressBar();
 		if (getView() != null) {
 			hitpointEdit.setText(String.valueOf(10));
 			attackEdit.setText(String.valueOf(1));

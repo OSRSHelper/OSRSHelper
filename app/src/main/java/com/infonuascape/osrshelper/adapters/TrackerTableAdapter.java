@@ -17,13 +17,17 @@ import java.text.NumberFormat;
  * Created by marc_ on 2018-01-14.
  */
 
-public class CmlTrackerTableAdapter {
+public class TrackerTableAdapter {
     private Context context;
     private TableLayout tableLayout;
 
-    public CmlTrackerTableAdapter(final Context context, final TableLayout tableLayout) {
+    public TrackerTableAdapter(final Context context, final TableLayout tableLayout) {
         this.context = context;
         this.tableLayout = tableLayout;
+    }
+
+    public boolean isEmpty() {
+        return tableLayout.getChildCount() == 0;
     }
 
     public void fill(final PlayerSkills playerSkills) {
@@ -38,11 +42,11 @@ public class CmlTrackerTableAdapter {
     }
 
     private View getView(final Skill s, final boolean isShowVirtualLevels) {
-        View view = View.inflate(context, R.layout.cml_tracker_table_row, null);
+        View view = View.inflate(context, R.layout.tracker_table_row, null);
 
-        ((ImageView) view.findViewById(R.id.cml_table_item_icon)).setImageResource(s.getSkillType().getDrawableInt());
-        ((TextView) view.findViewById(R.id.cml_table_item_lvl)).setText(String.valueOf(isShowVirtualLevels ? s.getVirtualLevel() : s.getLevel()));
-        ((TextView) view.findViewById(R.id.cml_table_item_ehp)).setText(NumberFormat.getInstance().format(s.getEHP()));
+        ((ImageView) view.findViewById(R.id.table_item_icon)).setImageResource(s.getSkillType().getDrawableInt());
+        ((TextView) view.findViewById(R.id.table_item_lvl)).setText(String.valueOf(isShowVirtualLevels ? s.getVirtualLevel() : s.getLevel()));
+        ((TextView) view.findViewById(R.id.table_item_ehp)).setText(NumberFormat.getInstance().format(s.getEHP()));
 
         long expDiff = s.getExperienceDiff();
         int textColorResId;
@@ -52,8 +56,8 @@ public class CmlTrackerTableAdapter {
         } else {
             textColorResId = R.color.green;
         }
-        ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setTextColor(context.getResources().getColor(textColorResId));
-        ((TextView) view.findViewById(R.id.cml_table_item_diff_xp)).setText(NumberFormat.getInstance().format(expDiff));
+        ((TextView) view.findViewById(R.id.table_item_diff_xp)).setTextColor(context.getResources().getColor(textColorResId));
+        ((TextView) view.findViewById(R.id.table_item_diff_xp)).setText(NumberFormat.getInstance().format(expDiff));
 
 
         long rankDiff = s.getRankDiff();
@@ -89,8 +93,8 @@ public class CmlTrackerTableAdapter {
                 text = context.getString(R.string.loss, Math.abs(rankDiff) / 1000);
             }
         }
-        ((TextView) view.findViewById(R.id.cml_table_item_diff_rank)).setTextColor(context.getResources().getColor(textColorResId));
-        ((TextView) view.findViewById(R.id.cml_table_item_diff_rank)).setText(text);
+        ((TextView) view.findViewById(R.id.table_item_diff_rank)).setTextColor(context.getResources().getColor(textColorResId));
+        ((TextView) view.findViewById(R.id.table_item_diff_rank)).setText(text);
 
         return view;
     }
