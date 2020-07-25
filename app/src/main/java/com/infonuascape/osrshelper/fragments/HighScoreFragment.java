@@ -179,7 +179,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 				profileHeaderFragment.showCombatLvl(account.combatLvl);
 				if(getView() != null) {
 					getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
-					getView().findViewById(R.id.combat_lvl_btn).setVisibility(View.VISIBLE);
+					getView().findViewById(R.id.combat_lvl_btn).setVisibility(account.combatLvl == 126 ? View. GONE : View.VISIBLE);
 					rsView.populateViewForHiscores(playerSkills, this, false);
 					hiscoreAdapter.setHiscoreItems(playerSkills.getHiscoresItems());
 					hiscoreAdapter.notifyDataSetChanged();
