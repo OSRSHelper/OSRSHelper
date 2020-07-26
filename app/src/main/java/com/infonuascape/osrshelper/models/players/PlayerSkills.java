@@ -47,8 +47,9 @@ public class PlayerSkills {
 	public List<HiscoreBountyHunter> bountyHunterList = new ArrayList<>();
 	public HiscoreLms hiscoreLms;
 	public HiscoreLeaguePoints hiscoreLeaguePoints;
+	public boolean isNewlyTracked;
 
-	public PlayerSkills() {
+    public PlayerSkills() {
 		skillList.add(this.overall);
 		skillList.add(this.attack);
 		skillList.add(this.defence);

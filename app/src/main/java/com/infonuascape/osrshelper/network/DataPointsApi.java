@@ -26,10 +26,8 @@ import java.util.TimeZone;
 
 public class DataPointsApi {
     private final static String API_URL = NetworkStack.ENDPOINT + "/wom/datapointsdelta/%s";
-    private final static String KEY_DATAPOINTS = "datapoints";
     private final static String KEY_BEFORE = "before";
     private final static String KEY_AFTER = "after";
-    private final static String KEY_DELTAS = "deltas";
     private final static String KEY_EXPERIENCE = "experience";
     private final static String KEY_RANK = "rank";
 

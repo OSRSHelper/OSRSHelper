@@ -10,6 +10,6 @@ import java.util.Map;
  */
 
 public interface TrackerFetcherListener {
-    void onTrackingFetched(final Map<TrackerTime, PlayerSkills> trackings);
+    void onTrackingFetched(final Map<TrackerTime, PlayerSkills> trackings, String lastUpdate, int combatLvl);
     void onTrackingError(final String errorMessage);
 }

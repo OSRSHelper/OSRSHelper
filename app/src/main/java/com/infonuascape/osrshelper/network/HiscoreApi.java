@@ -15,9 +15,11 @@ import com.infonuascape.osrshelper.models.HiscoreLms;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,18 +35,23 @@ import java.util.TimeZone;
  * Created by maden on 9/9/14.
  */
 public class HiscoreApi {
+	private static final String TAG = "HiscoreApi";
 	private static final String API_URL = NetworkStack.ENDPOINT + "/wom/hiscore/%1$s";
 
 	private static final String KEY_LATEST_SNAPSHOT = "latestSnapshot";
 	private static final String KEY_SKILLS_EXPERIENCE = "experience";
 	private static final String KEY_SKILLS_RANK = "rank";
 
+	private static final String KEY_STATUS = "status";
+	private static final String VALUE_NOW_TRACKING = "now_tracking";
+	private static final String VALUE_UNKNOWN_PLAYER = "unknown_player";
+	private static final String VALUE_INVALID_USERNAME = "invalid_username";
+
 	private static final String KEY_LMS = "last_man_standing";
 	private static final String KEY_LEAGUE_POINTS = "league_points";
 	private static final String KEY_CLUE_SCROLL = "clue_scrolls_";
 	private static final String KEY_BOUNTY_HUNTER = "bounty_hunter";
 
-	private static final String KEY_USERNAME = "username";
 	private static final String KEY_DISPLAY_NAME = "displayName";
 	private static final String KEY_TYPE = "type";
 	private static final String KEY_COMBAT_LEVEL = "combatLevel";
@@ -70,17 +77,25 @@ public class HiscoreApi {
 			throw new APIError("Unexpected response from the server.");
 		}
 
-		return parseResponse(context, httpResult.output);
+		return parseResponse(context, httpResult.output, username);
 	}
 
-	public static PlayerSkills parseResponse(Context context, String output) {
+	public static PlayerSkills parseResponse(Context context, String output, String username) throws PlayerNotFoundException {
 		try {
 			JSONObject jsonObject = new JSONObject(output);
 			PlayerSkills ps = new PlayerSkills();
 			List<Skill> skillList = ps.skillList;
 
+			if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_NOW_TRACKING)) {
+				ps.isNewlyTracked = true;
+			} else if (jsonObject.has(KEY_STATUS) && (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_UNKNOWN_PLAYER) || TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_INVALID_USERNAME))) {
+				throw new PlayerNotFoundException(username);
+			}
+
+			Logger.add(TAG, ": parseResponse: output=" + output);
 			JSONObject jsonLatestSnapshot = jsonObject.getJSONObject(KEY_LATEST_SNAPSHOT);
-			loop: for (Iterator<String> it = jsonLatestSnapshot.keys(); it.hasNext(); ) {
+			loop:
+			for (Iterator<String> it = jsonLatestSnapshot.keys(); it.hasNext(); ) {
 				String key = it.next();
 
 				if (key.startsWith(KEY_CLUE_SCROLL)) {
@@ -114,6 +129,7 @@ public class HiscoreApi {
 
 					if (rank != -1 && score != -1) {
 						HiscoreLms lms = new HiscoreLms();
+						lms.name = Utils.capitalizeString(key);
 						lms.rank = rank;
 						lms.score = score;
 						ps.hiscoreLms = lms;
@@ -183,8 +199,11 @@ public class HiscoreApi {
 			overallSkill.setVirtualLevel(totalVirtualLevel);
 
 			//Update the account with the proper username and type
-			ps.combatLvl = jsonObject.getInt(KEY_COMBAT_LEVEL);
-			final String username = jsonObject.getString(KEY_USERNAME);
+			if (jsonObject.has(KEY_COMBAT_LEVEL)) {
+				ps.combatLvl = jsonObject.getInt(KEY_COMBAT_LEVEL);
+			} else {
+				ps.combatLvl = Utils.getCombatLvl(ps);
+			}
 			final String displayName = jsonObject.getString(KEY_DISPLAY_NAME);
 			final String type = jsonObject.getString(KEY_TYPE);
 

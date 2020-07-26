@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.HiscoreAdapter;
 import com.infonuascape.osrshelper.db.DBController;
@@ -43,7 +45,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	private Account account;
 	private PlayerSkills playerSkills;
 	private TextView titleView;
-	private View errorView;
+	private TextView errorView;
 	private HiscoreAdapter hiscoreAdapter;
 	private RSView rsView;
 	private RecyclerView recyclerView;
@@ -178,6 +180,11 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 			getActivity().runOnUiThread(() -> {
 				profileHeaderFragment.showCombatLvl(account.combatLvl);
 				if(getView() != null) {
+					if (playerSkills.isNewlyTracked) {
+						playerSkills.isNewlyTracked = false;
+						Snackbar.make(getView(), R.string.hiscore_newly_tracked, Snackbar.LENGTH_LONG).show();
+					}
+
 					getView().findViewById(R.id.share_btn).setVisibility(View.VISIBLE);
 					getView().findViewById(R.id.combat_lvl_btn).setVisibility(account.combatLvl == 126 ? View. GONE : View.VISIBLE);
 					rsView.populateViewForHiscores(playerSkills, this, false);
@@ -215,6 +222,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 	public void onHiscoresError(String errorMessage) {
 		profileHeaderFragment.hideProgressBar();
 		if(errorView != null) {
+			errorView.setText(errorMessage);
 			errorView.setVisibility(View.VISIBLE);
 		}
 	}

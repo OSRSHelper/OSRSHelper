@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.network;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
@@ -36,6 +37,11 @@ public class TrackerApi {
 	private static final String KEY_GAINED = "gained";
 	private static final String KEY_END = "end";
 
+	private static final String KEY_STATUS = "status";
+	private static final String VALUE_NOW_TRACKING = "now_tracking";
+	private static final String VALUE_UNKNOWN_PLAYER = "unknown_player";
+	private static final String VALUE_INVALID_USERNAME = "invalid_username";
+
     public static Map<TrackerTime, PlayerSkills> fetch(String username) throws APIError, PlayerNotFoundException, JSONException {
 		final String url = String.format(API_URL, Uri.encode(username));
 		HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
@@ -51,6 +57,10 @@ public class TrackerApi {
 
 		Map<TrackerTime, PlayerSkills> trackings = new HashMap<>();
 		JSONObject json = new JSONObject(httpResult.output);
+
+		if (json.has(KEY_STATUS) && (TextUtils.equals(json.getString(KEY_STATUS), VALUE_UNKNOWN_PLAYER) || TextUtils.equals(json.getString(KEY_STATUS), VALUE_INVALID_USERNAME))) {
+			throw new PlayerNotFoundException(username);
+		}
 
 		Iterator<String> keys = json.keys();
 		while(keys.hasNext()) {

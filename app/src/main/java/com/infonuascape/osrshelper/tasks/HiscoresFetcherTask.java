@@ -12,6 +12,7 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.network.HiscoreApi;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
+import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 
 import java.lang.ref.WeakReference;
 
@@ -37,8 +38,9 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
         try {
             String output = DBController.getQueryCache(context.get(), HiscoreApi.getQueryUrl(account.username));
             if (!TextUtils.isEmpty(output)) {
-                PlayerSkills playerSkills = HiscoreApi.parseResponse(context.get(), output);
+                PlayerSkills playerSkills = HiscoreApi.parseResponse(context.get(), output, account.username);
                 if(playerSkills != null && listener != null) {
+                    playerSkills.isNewlyTracked = false;
                     listener.onHiscoresCacheFetched(playerSkills);
                 }
             }

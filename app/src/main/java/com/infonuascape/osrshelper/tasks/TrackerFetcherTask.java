@@ -27,6 +27,8 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
     private Account account;
     private TrackerFetcherListener listener;
     private Map<TrackerTime, PlayerSkills> trackings;
+    private String lastUpdate;
+    private int combatLvl;
 
     public TrackerFetcherTask(final Context context, final TrackerFetcherListener listener, final Account account) {
         this.context = new WeakReference<>(context);
@@ -40,6 +42,19 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
             trackings = TrackerApi.fetch(account.username);
             if (trackings.size() > 0) {
                 account.combatLvl = Utils.getCombatLvl(trackings.get(trackings.keySet().iterator().next()));
+
+                for (TrackerTime trackerTime : trackings.keySet()) {
+                    PlayerSkills playerSkills = trackings.get(trackerTime);
+                    if (playerSkills != null && playerSkills.lastUpdate != null) {
+                        lastUpdate = playerSkills.lastUpdate;
+                        combatLvl = Utils.getCombatLvl(playerSkills);
+                        break;
+                    }
+                }
+
+                if (lastUpdate == null) {
+                    throw new PlayerNotFoundException(account.username);
+                }
             }
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
@@ -76,7 +91,7 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
             if (trackings == null) {
                 trackings = new HashMap<>();
             }
-            listener.onTrackingFetched(trackings);
+            listener.onTrackingFetched(trackings, lastUpdate, combatLvl);
         }
     }
 }

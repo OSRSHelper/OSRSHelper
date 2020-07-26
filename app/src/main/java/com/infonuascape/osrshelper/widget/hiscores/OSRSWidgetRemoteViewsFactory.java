@@ -120,18 +120,12 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
 
             playerSkills = HiscoreApi.fetch(mContext, account.username);
             skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
-        } catch (PlayerNotFoundException e) {
+        } catch (Exception e) {
             if(playerSkills == null) {
                 playerSkills = new PlayerSkills();
                 skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
             }
             e.printStackTrace();
-        } catch (Exception uhe) {
-            if(playerSkills == null) {
-                playerSkills = new PlayerSkills();
-                skills = PlayerSkills.getSkillsInOrderForRSView(playerSkills);
-            }
-            uhe.printStackTrace();
         }
     }
 }

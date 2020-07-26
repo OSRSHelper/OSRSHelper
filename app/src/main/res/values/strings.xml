@@ -34,7 +34,7 @@
     <string name="loading_ge_details">Loading %1$s</string>
     <string name="combat_lvl_for_share">Combat lvl: %1$d</string>
     <string name="combat_lvl">(level-%1$d)</string>
-    <string name="not_existing_player">Failed to load account</string>
+    <string name="not_existing_player">Player not found</string>
     <string name="not_tracked_player">Account is not tracked yet. Press update to track them from now on.</string>
     <string name="showing_results">Showing hiscores for: %1$s</string>
     <string name="internal_error">Network error</string>
@@ -55,6 +55,7 @@
     <string name="virtual_levels">Virtual Levels</string>
     <string name="update">Update</string>
     <string name="updating">Updating</string>
+    <string name="updating_failed">Failed to update player</string>
     <string name="widget_username_name">Hiscores</string>
     <string name="widget_grand_exchange_name">Grand Exchange Price</string>
     <string name="next_page">Next Page</string>
@@ -153,7 +154,8 @@
 
     <string name="skill_diff_xp">XP:</string>
     <string name="skill_diff_rank">Rank:</string>
-    <string name="profile_recent_gains">Gains tracked in the last 3 months</string>
+    <string name="profile_recent_gains">Gains tracked in the last month</string>
+    <string name="profile_recent_gains_empty">No gains tracked in the last month</string>
     <string name="profile_delta_on">%1$s &#x2192; %2$s</string>
     <string name="error_when_sharing">Error when sharing stats</string>
     <string name="error_when_fetching">Error when fetching</string>
@@ -171,6 +173,7 @@
     <string name="hiscore_title_bosses">Bosses</string>
     <string name="hiscore_title_lms">Last Man Standing</string>
     <string name="hiscore_title_league_points">League Points</string>
+    <string name="hiscore_newly_tracked">Wise Old Man will now track that player\'s progress</string>
 
     <string name="hiscore_experience">XP: %1$s</string>
     <string name="hiscore_score">Score</string>

@@ -1,11 +1,10 @@
 package com.infonuascape.osrshelper.fragments;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
-import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
 import com.infonuascape.osrshelper.adapters.DataPointsAdapter;
-import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.DataPointsListener;
-import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.Delta;
-import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.DatapointsFetcherTask;
 import com.infonuascape.osrshelper.utils.Logger;
 
@@ -31,7 +26,7 @@ import java.util.ArrayList;
  * Created by marc_ on 2018-01-20.
  */
 
-public class DataPointsFragment extends OSRSFragment implements DataPointsListener, HiscoresFetcherListener {
+public class DataPointsFragment extends OSRSFragment implements DataPointsListener {
     private static final String TAG = "DataPointsFragment";
     private static final String EXTRA_ACCOUNT = "EXTRA_ACCOUNT";
     private Account account;
@@ -101,61 +96,20 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
         }
     }
 
-    private void followThisAccount() {
-        account.isFollowing = !account.isFollowing;
-        DBController.updateAccount(getContext(), account);
-        profileHeaderFragment.refreshProfile(account);
-        refreshScreen();
-        Toast.makeText(getContext(), "Coming soon©", Toast.LENGTH_SHORT).show();
-    }
-
-    private void switchAccountType() {
-        final AccountTypeAdapter adapter = new AccountTypeAdapter(getActivity());
-        new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(R.string.select_account_type)
-                .setAdapter(adapter, (dialog, item) -> {
-                    account.type = adapter.getItem(item);
-                    DBController.updateAccount(getContext(), account);
-                    refreshScreen();
-                }).show();
-    }
-
     @Override
     public void onDataPointsLoaded(ArrayList<Delta> deltas) {
         profileHeaderFragment.hideProgressBar();
         this.deltas = deltas;
         asyncTask = null;
-        if(deltas != null && deltas.size() > 0) {
-            adapter = new DataPointsAdapter(getContext(), deltas);
-            recyclerView.setAdapter(adapter);
+        if(deltas != null) {
+            if (deltas.size() > 0) {
+                adapter = new DataPointsAdapter(getContext(), deltas);
+                recyclerView.setAdapter(adapter);
+            } else {
+                ((TextView) getView().findViewById(R.id.profile_gains)).setText(R.string.profile_recent_gains_empty);
+            }
         } else {
             getView().findViewById(R.id.profile_gains).setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onHiscoresCacheFetched(PlayerSkills playerSkills) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                if(account.combatLvl > 0) {
-                    if (getView() != null) {
-                        profileHeaderFragment.showCombatLvl(account.combatLvl);
-                    }
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onHiscoresFetched(PlayerSkills playerSkills) {
-        if(playerSkills != null) {
-            if (getView() != null) {
-                profileHeaderFragment.showCombatLvl(account.combatLvl);
-            }
-        }
-    }
-
-    @Override
-    public void onHiscoresError(String errorMessage) {
-
     }
 }

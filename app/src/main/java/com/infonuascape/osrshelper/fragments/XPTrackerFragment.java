@@ -128,21 +128,13 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 	}
 
 	@Override
-	public void onTrackingFetched(Map<TrackerTime, PlayerSkills> trackings) {
+	public void onTrackingFetched(Map<TrackerTime, PlayerSkills> trackings, String lastUpdate, int combatLvl) {
 		this.trackings = trackings;
 		if (trackings.size() > 0) {
 			if (getView() != null) {
 				description.setVisibility(View.VISIBLE);
-				String lastUpdate = null;
-				for (TrackerTime trackerTime : trackings.keySet()) {
-					PlayerSkills playerSkills = trackings.get(trackerTime);
-					if (playerSkills.lastUpdate != null) {
-						lastUpdate = playerSkills.lastUpdate;
-						profileHeaderFragment.showCombatLvl(Utils.getCombatLvl(playerSkills));
-						break;
-					}
-				}
 				if (lastUpdate != null) {
+					profileHeaderFragment.showCombatLvl(combatLvl);
 					title.setText(R.string.last_update);
 					description.setText(lastUpdate);
 				} else {
@@ -162,6 +154,7 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 			getActivity().runOnUiThread(() -> {
 				if(getView() != null) {
 					title.setText(R.string.error);
+					description.setVisibility(View.VISIBLE);
 					description.setText(errorMessage);
 
 					for (int i = 0; i < adapter.getCount(); i++) {
@@ -195,6 +188,8 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 				((XPTrackerPeriodFragment) adapter.getItem(i)).onUpdatingSuccessful();
 			}
 			loadTracking();
+		} else {
+			title.setText(R.string.updating_failed);
 		}
 	}
 
