@@ -59,7 +59,7 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
         } catch (PlayerNotFoundException e) {
             if(listener != null) {
                 if(context.get() != null) {
-                    listener.onTrackingError(context.get().getString(R.string.not_existing_player));
+                    listener.onTrackingError(context.get().getString(R.string.now_tracking));
                 } else {
                     listener.onTrackingError("Error");
                 }

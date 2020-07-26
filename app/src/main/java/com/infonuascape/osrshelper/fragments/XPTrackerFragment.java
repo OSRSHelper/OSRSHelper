@@ -134,11 +134,10 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 			if (getView() != null) {
 				description.setVisibility(View.VISIBLE);
 				if (lastUpdate != null) {
+					account.combatLvl = combatLvl;
 					profileHeaderFragment.showCombatLvl(combatLvl);
 					title.setText(R.string.last_update);
 					description.setText(lastUpdate);
-				} else {
-					title.setText(R.string.now_tracking);
 				}
 
 				for(int i=0; i < adapter.getCount(); i++) {

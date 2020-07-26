@@ -77,9 +77,6 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
             profileHeaderFragment.setTitle(R.string.data_points);
             profileHeaderFragment.refreshProfile(account);
             loadDeltas();
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).refreshProfileAccount();
-            }
         }
     }
 
