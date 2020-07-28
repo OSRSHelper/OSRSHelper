@@ -66,6 +66,12 @@ public class TrackerApi {
 		while(keys.hasNext()) {
 			final String period = keys.next();
 			final TrackerTime trackerTime = TrackerTime.create(period);
+
+			if (trackerTime == null) {
+				//Another type of key
+				continue;
+			}
+
 			PlayerSkills ps = new PlayerSkills();
 
 			final JSONObject jsonPeriod = json.getJSONObject(period);

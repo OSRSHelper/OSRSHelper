@@ -26,10 +26,14 @@ import java.util.TimeZone;
 
 public class DataPointsApi {
     private final static String API_URL = NetworkStack.ENDPOINT + "/wom/datapointsdelta/%s";
+    private final static String KEY_DATAPOINTS = "datapoints";
     private final static String KEY_BEFORE = "before";
     private final static String KEY_AFTER = "after";
     private final static String KEY_EXPERIENCE = "experience";
     private final static String KEY_RANK = "rank";
+
+    private static final String KEY_STATUS = "status";
+    private static final String VALUE_OK = "OK";
 
     public static ArrayList<Delta> fetch(final String username) throws PlayerNotFoundException, APIError {
         String url = String.format(API_URL, Uri.encode(username));
@@ -47,35 +51,39 @@ public class DataPointsApi {
         ArrayList<Delta> deltas = new ArrayList<>();
         if(httpResult.statusCode == StatusCode.FOUND) {
             try {
-                JSONArray jsonArray = new JSONArray(httpResult.output);
-                for(int i=0; i<jsonArray.length(); i++) {
-                    JSONObject deltaJson = jsonArray.getJSONObject(i);
-                    Delta delta = new Delta();
-                    Iterator<String> keys = deltaJson.keys();
-                    while(keys.hasNext()) {
-                        String key = keys.next();
-                        if (TextUtils.equals(key, KEY_BEFORE)) {
-                            delta.timestamp = sdf.parse(deltaJson.getString(key)).getTime();
-                        } else if (TextUtils.equals(key, KEY_AFTER)) {
-                            delta.timestampRecent = sdf.parse(deltaJson.getString(key)).getTime();
-                        } else {
-                            final PlayerSkills ps = new PlayerSkills();
-                            for (Skill s : ps.skillList) {
-                                if (s.getSkillType().equals(key)) {
-                                    JSONObject skillNameJson = deltaJson.getJSONObject(key);
-                                    SkillDiff skillDiff = new SkillDiff();
-                                    skillDiff.skillType = s.getSkillType();
-                                    skillDiff.experience = skillNameJson.getLong(KEY_EXPERIENCE);
-                                    skillDiff.rank = skillNameJson.getLong(KEY_RANK);
-                                    delta.skillDiffs.add(skillDiff);
-                                    break;
+                JSONObject jsonObject = new JSONObject(httpResult.output);
+
+                if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK)) {
+                    JSONArray jsonArray = jsonObject.getJSONArray(KEY_DATAPOINTS);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject deltaJson = jsonArray.getJSONObject(i);
+                        Delta delta = new Delta();
+                        Iterator<String> keys = deltaJson.keys();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            if (TextUtils.equals(key, KEY_BEFORE)) {
+                                delta.timestamp = sdf.parse(deltaJson.getString(key)).getTime();
+                            } else if (TextUtils.equals(key, KEY_AFTER)) {
+                                delta.timestampRecent = sdf.parse(deltaJson.getString(key)).getTime();
+                            } else {
+                                final PlayerSkills ps = new PlayerSkills();
+                                for (Skill s : ps.skillList) {
+                                    if (s.getSkillType().equals(key)) {
+                                        JSONObject skillNameJson = deltaJson.getJSONObject(key);
+                                        SkillDiff skillDiff = new SkillDiff();
+                                        skillDiff.skillType = s.getSkillType();
+                                        skillDiff.experience = skillNameJson.getLong(KEY_EXPERIENCE);
+                                        skillDiff.rank = skillNameJson.getLong(KEY_RANK);
+                                        delta.skillDiffs.add(skillDiff);
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if (!delta.skillDiffs.isEmpty()) {
-                        deltas.add(delta);
+                        if (!delta.skillDiffs.isEmpty()) {
+                            deltas.add(delta);
+                        }
                     }
                 }
             } catch (JSONException | ParseException | NullPointerException e) {
