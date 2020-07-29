@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.view.inputmethod.InputMethodManager;
 
@@ -50,7 +52,7 @@ public class Utils {
 			exp += Math.floor(i + 300f * Math.pow(2f, i / 7f));
 		}
 		exp = (float) Math.floor(exp / 4f);
-		
+
 		return exp;
 	}
 
@@ -60,109 +62,109 @@ public class Utils {
 		}
 
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
-		
+
 		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
 		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
 		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
-		
+
 		int combatLvl = (int) Math.floor(base + Math.max(melee, Math.max(range, mage)));
-		
+
 		return combatLvl;
 	}
-	
+
 	public static final int getMissingAttackStrengthUntilNextCombatLvl(final PlayerSkills skills){
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
-		
+
 		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
-		
-		
+
+
 		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
 		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
-		
+
 		double max = Math.max(melee, Math.max(range, mage));
-		
+
 		int combatLvl = (int) Math.floor(base + max);
-		
+
 		int needed = 0;
-		
+
 		for(double start = base + melee; start < (combatLvl + 1); start += 0.325){
 			needed += 1;
 		}
-		
+
 		return needed;
 	}
-	
+
 	public static final int getMissingHPDefenceUntilNextCombatLvl(final PlayerSkills skills){
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
-		
+
 		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
-		
-		
+
+
 		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
 		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
-		
+
 		double max = Math.max(melee, Math.max(range, mage));
-		
+
 		int combatLvl = (int) Math.floor(base + max);
-		
+
 		int needed = 0;
-		
-		
+
+
 		for(double start = base + max; start < (combatLvl + 1); start += 0.25){
 			needed += 1;
 		}
-		
+
 		return needed;
 	}
-	
+
 	public static final int getMissingPrayerUntilNextCombatLvl(final PlayerSkills skills){
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
-		
+
 		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
-		
-		
+
+
 		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
 		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
-		
+
 		double max = Math.max(melee, Math.max(range, mage));
-		
+
 		int combatLvl = (int) Math.floor(base + max);
-		
+
 		int needed = 0;
-		
+
 		for(double start = base + max; start < (combatLvl + 1); start += 0.125){
 			needed += 1;
 		}
-		
+
 		if(skills.prayer.getLevel() % 2 == 0){
 			needed += 1;
 		}
-		
+
 		return needed;
 	}
-	
+
 	public static final int getMissingRangingUntilNextCombatLvl(final PlayerSkills skills){
 		double base = 0.25 * (skills.defence.getLevel() + skills.hitpoints.getLevel() + Math.floor(skills.prayer.getLevel() / 2));
-		
+
 		double melee = 0.325 * (skills.attack.getLevel() + skills.strength.getLevel());
-		
-		
+
+
 		double range = 0.325 * (Math.floor(skills.ranged.getLevel() / 2) + skills.ranged.getLevel());
 		double mage = 0.325 * (Math.floor(skills.magic.getLevel() / 2) + skills.magic.getLevel());
-		
+
 		double max = Math.max(melee, Math.max(range, mage));
-		
+
 		int combatLvl = (int) Math.floor(base + max);
-		
+
 		int needed = 0;
 		double current = skills.ranged.getLevel();
 		double initial = current;
 		current = Math.floor(initial * 1.5) * 0.325;
-		
+
 		while((current + base) < (combatLvl + 1)){
 			current = Math.floor((initial + ++needed) * 1.5d) * 0.325d;
 		}
-		
+
 		return needed;
 	}
 
@@ -196,7 +198,7 @@ public class Utils {
 	private static final int ZEAH_OFFSET_Y = -167 + FOSSIL_ISLAND_OFFSET_Y;
 
 	public static Point VARROCK_POINT = new Point(ZEAH_OFFSET_X + 3685, 2355 + ZEAH_OFFSET_Y);
-	
+
 	public static ArrayList<PointOfInterest> getCitiesPoI(){
 		ArrayList<PointOfInterest> poi = new ArrayList<PointOfInterest>();
 
@@ -329,5 +331,11 @@ public class Utils {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static boolean isNetworkAvailable(final Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+		return networkInfo != null && networkInfo.isConnected();
 	}
 }

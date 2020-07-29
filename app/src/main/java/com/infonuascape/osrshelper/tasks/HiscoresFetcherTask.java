@@ -45,7 +45,9 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
                     listener.onHiscoresCacheFetched(playerSkills);
                 }
             }
-            playerSkills = HiscoreApi.fetch(context.get(), account.username);
+            if (Utils.isNetworkAvailable(context.get())) {
+                playerSkills = HiscoreApi.fetch(context.get(), account.username);
+            }
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();
             errorMessage = context.get().getString(R.string.not_existing_player);

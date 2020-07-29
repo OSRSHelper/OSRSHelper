@@ -211,13 +211,13 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		final Account loadedAccount = DBController.getAccountByUsername(getContext(), account.username);
 		if (loadedAccount != null) {
 			account = loadedAccount;
-		} else {
+		} else if (playerSkills != null) {
 			account.combatLvl = playerSkills.combatLvl;
 		}
 
 		profileHeaderFragment.refreshProfile(account);
-		this.playerSkills = playerSkills;
 		if (playerSkills != null) {
+			this.playerSkills = playerSkills;
 			titleView.setText(getString(R.string.hiscore_fetch, playerSkills.lastUpdate));
 			populateTable();
 		}
