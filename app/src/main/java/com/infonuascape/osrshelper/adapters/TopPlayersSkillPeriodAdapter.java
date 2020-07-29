@@ -97,10 +97,8 @@ public class TopPlayersSkillPeriodAdapter extends RecyclerView.Adapter<TopPlayer
                 }
             });
 
-            itemView.findViewById(R.id.quick_action_hiscore).setOnClickListener(view -> MainFragmentController.getInstance().showRootFragment(-1, HighScoreFragment.newInstance(getAccount(getAdapterPosition()))));
-
+            itemView.findViewById(R.id.quick_action_hiscore).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(HighScoreFragment.newInstance(getAccount(getAdapterPosition()))));
             itemView.findViewById(R.id.quick_action_tracker).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(XPTrackerFragment.newInstance(getAccount(getAdapterPosition()), period)));
-
             itemView.findViewById(R.id.quick_action_data_points).setOnClickListener(view -> MainFragmentController.getInstance().showFragment(DataPointsFragment.newInstance(getAccount(getAdapterPosition()))));
         }
 
