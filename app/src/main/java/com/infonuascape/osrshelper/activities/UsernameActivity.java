@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -14,14 +15,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.UsernamesAdapter;
 import com.infonuascape.osrshelper.db.DBController;
-import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.widget.hiscores.OSRSAppWidgetProvider;
@@ -66,6 +68,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 		findViewById(R.id.username_edit).clearFocus();
 		findViewById(R.id.continue_btn).setOnClickListener(this);
+		findViewById(R.id.runelite_tutorial_btn).setOnClickListener(this);
 		((TextView) findViewById(R.id.page_name)).setText(action == ACTION_WIDGET ? R.string.username_widget : R.string.username_profile);
 	}
 
@@ -107,7 +110,20 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 			} else {
 				Toast.makeText(this, R.string.username_error, Toast.LENGTH_SHORT).show();
 			}
+		} else if (id == R.id.runelite_tutorial_btn) {
+			showRuneLiteTutorial();
 		}
+	}
+
+	private void showRuneLiteTutorial() {
+		View view = LayoutInflater.from(this).inflate(R.layout.runelite_tutorial, null);
+		ImageView tutorialGif = view.findViewById(R.id.runelite_tutorial_image);
+		Glide.with(this).asGif().load(R.drawable.runelite_tutorial).into(tutorialGif);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
+				.setTitle(R.string.username_tutorial_runelite_title)
+				.setMessage(R.string.username_tutorial_runelite_description)
+				.setView(view);
+		builder.show();
 	}
 
 	private void closeActivity(final Account account) {

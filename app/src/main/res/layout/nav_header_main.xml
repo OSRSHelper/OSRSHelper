@@ -27,6 +27,12 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_powered_by"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+    <TextView
         android:id="@+id/profile_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

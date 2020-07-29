@@ -51,18 +51,36 @@
             android:textColor="@color/text_normal"
             android:textCursorDrawable="@drawable/cursor" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" >
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/runelite_tutorial_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bt_sel"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="10dp"
+                android:text="@string/username_tutorial_runelite_title"
+                android:textColor="@android:color/white" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/continue_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="16dp"
                 android:background="@drawable/bt_sel"
                 android:gravity="center"
                 android:paddingBottom="10dp"
@@ -71,7 +89,7 @@
                 android:paddingTop="10dp"
                 android:text="@string/continuee"
                 android:textColor="@android:color/white" />
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <TextView

@@ -10,7 +10,7 @@
             android:title="@string/home" />
 
         <item
-             android:title="@string/data_points" >
+             android:title="@string/profile" >
             <menu>
                 <group
                     android:checkableBehavior="single"

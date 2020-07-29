@@ -2,8 +2,10 @@
 <resources>
 
     <string name="app_name">OSRS Helper</string>
+    <string name="app_powered_by">Powered by Wise Old Man</string>
     <string name="highscores">Hiscores</string>
     <string name="world_map">World Map</string>
+    <string name="profile">Profile</string>
     <string name="wiki">Wiki</string>
     <string name="xptracker">XP Tracker</string>
     <string name="grand_exchange">Grand Exchange</string>
@@ -15,6 +17,8 @@
     <string name="username_desc">Enter a new username</string>
     <string name="username_widget">Widget configuration</string>
     <string name="username_profile">Profile configuration</string>
+    <string name="username_tutorial_runelite_title">RuneLite Tutorial</string>
+    <string name="username_tutorial_runelite_description">If you are using the RuneLite client, you can automatically update your Wise Old Man tracking when you log out. This will also import the existing data from Crystal Math Labs. Here\'s how to do it.</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_search">Search an item...</string>
     <string name="continuee">Continue</string>
