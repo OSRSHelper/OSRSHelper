@@ -43,9 +43,11 @@ public class HiscoreApi {
 	private static final String KEY_SKILLS_RANK = "rank";
 
 	private static final String KEY_STATUS = "status";
+	private static final String VALUE_OK = "OK";
 	private static final String VALUE_NOW_TRACKING = "now_tracking";
 	private static final String VALUE_UNKNOWN_PLAYER = "unknown_player";
 	private static final String VALUE_INVALID_USERNAME = "invalid_username";
+	private static final String VALUE_SERVICE_TIMEOUT = "service_timeout";
 
 	private static final String KEY_LMS = "last_man_standing";
 	private static final String KEY_LEAGUE_POINTS = "league_points";
@@ -80,7 +82,7 @@ public class HiscoreApi {
 		return parseResponse(context, httpResult.output, username);
 	}
 
-	public static PlayerSkills parseResponse(Context context, String output, String username) throws PlayerNotFoundException {
+	public static PlayerSkills parseResponse(Context context, String output, String username) throws PlayerNotFoundException, APIError {
 		try {
 			JSONObject jsonObject = new JSONObject(output);
 			PlayerSkills ps = new PlayerSkills();
@@ -90,130 +92,131 @@ public class HiscoreApi {
 				ps.isNewlyTracked = true;
 			} else if (jsonObject.has(KEY_STATUS) && (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_UNKNOWN_PLAYER) || TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_INVALID_USERNAME))) {
 				throw new PlayerNotFoundException(username);
-			}
+			} else if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_SERVICE_TIMEOUT)) {
+				throw new APIError("Hiscores are unavailable. Try again later.");
+			} else if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK)) {
+				JSONObject jsonLatestSnapshot = jsonObject.getJSONObject(KEY_LATEST_SNAPSHOT);
+				loop:
+				for (Iterator<String> it = jsonLatestSnapshot.keys(); it.hasNext(); ) {
+					String key = it.next();
 
-			Logger.add(TAG, ": parseResponse: output=" + output);
-			JSONObject jsonLatestSnapshot = jsonObject.getJSONObject(KEY_LATEST_SNAPSHOT);
-			loop:
-			for (Iterator<String> it = jsonLatestSnapshot.keys(); it.hasNext(); ) {
-				String key = it.next();
+					if (key.startsWith(KEY_CLUE_SCROLL)) {
+						JSONObject jsonClueScroll = jsonLatestSnapshot.getJSONObject(key);
+						long rank = jsonClueScroll.getLong(KEY_RANK);
+						long score = jsonClueScroll.getLong(KEY_SCORE);
 
-				if (key.startsWith(KEY_CLUE_SCROLL)) {
-					JSONObject jsonClueScroll = jsonLatestSnapshot.getJSONObject(key);
-					long rank = jsonClueScroll.getLong(KEY_RANK);
-					long score = jsonClueScroll.getLong(KEY_SCORE);
+						if (rank != -1 && score != -1) {
+							HiscoreClueScroll clueScroll = new HiscoreClueScroll();
+							clueScroll.name = Utils.capitalizeString(key.replace(KEY_CLUE_SCROLL, ""));
+							clueScroll.rank = rank;
+							clueScroll.score = score;
+							ps.clueScrollsList.add(clueScroll);
+						}
+					} else if (key.startsWith(KEY_BOUNTY_HUNTER)) {
+						JSONObject jsonBountyHunter = jsonLatestSnapshot.getJSONObject(key);
+						long rank = jsonBountyHunter.getLong(KEY_RANK);
+						long score = jsonBountyHunter.getLong(KEY_SCORE);
 
-					if (rank != -1 && score != -1) {
-						HiscoreClueScroll clueScroll = new HiscoreClueScroll();
-						clueScroll.name = Utils.capitalizeString(key.replace(KEY_CLUE_SCROLL, ""));
-						clueScroll.rank = rank;
-						clueScroll.score = score;
-						ps.clueScrollsList.add(clueScroll);
-					}
-				} else if (key.startsWith(KEY_BOUNTY_HUNTER)) {
-					JSONObject jsonBountyHunter = jsonLatestSnapshot.getJSONObject(key);
-					long rank = jsonBountyHunter.getLong(KEY_RANK);
-					long score = jsonBountyHunter.getLong(KEY_SCORE);
+						if (rank != -1 && score != -1) {
+							HiscoreBountyHunter bountyHunter = new HiscoreBountyHunter();
+							bountyHunter.name = Utils.capitalizeString(key.replace(KEY_BOUNTY_HUNTER, ""));
+							bountyHunter.rank = rank;
+							bountyHunter.score = score;
+							ps.bountyHunterList.add(bountyHunter);
+						}
+					} else if (TextUtils.equals(key, KEY_LMS)) {
+						JSONObject json = jsonLatestSnapshot.getJSONObject(key);
+						long rank = json.getLong(KEY_RANK);
+						long score = json.getLong(KEY_SCORE);
 
-					if (rank != -1 && score != -1) {
-						HiscoreBountyHunter bountyHunter = new HiscoreBountyHunter();
-						bountyHunter.name = Utils.capitalizeString(key.replace(KEY_BOUNTY_HUNTER, ""));
-						bountyHunter.rank = rank;
-						bountyHunter.score = score;
-						ps.bountyHunterList.add(bountyHunter);
-					}
-				} else if (TextUtils.equals(key, KEY_LMS)) {
-					JSONObject json = jsonLatestSnapshot.getJSONObject(key);
-					long rank = json.getLong(KEY_RANK);
-					long score = json.getLong(KEY_SCORE);
+						if (rank != -1 && score != -1) {
+							HiscoreLms lms = new HiscoreLms();
+							lms.name = Utils.capitalizeString(key);
+							lms.rank = rank;
+							lms.score = score;
+							ps.hiscoreLms = lms;
+						}
+					} else if (TextUtils.equals(key, KEY_LEAGUE_POINTS)) {
+						JSONObject json = jsonLatestSnapshot.getJSONObject(key);
+						long rank = json.getLong(KEY_RANK);
+						long score = json.getLong(KEY_SCORE);
 
-					if (rank != -1 && score != -1) {
-						HiscoreLms lms = new HiscoreLms();
-						lms.name = Utils.capitalizeString(key);
-						lms.rank = rank;
-						lms.score = score;
-						ps.hiscoreLms = lms;
-					}
-				} else if (TextUtils.equals(key, KEY_LEAGUE_POINTS)) {
-					JSONObject json = jsonLatestSnapshot.getJSONObject(key);
-					long rank = json.getLong(KEY_RANK);
-					long score = json.getLong(KEY_SCORE);
+						if (rank != -1 && score != -1) {
+							HiscoreLeaguePoints leaguePoints = new HiscoreLeaguePoints();
+							leaguePoints.rank = rank;
+							leaguePoints.score = score;
+							ps.hiscoreLeaguePoints = leaguePoints;
+						}
+					} else if (TextUtils.equals(key, KEY_CREATED_AT)) {
+						String dateString = jsonLatestSnapshot.getString(KEY_CREATED_AT);
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+							sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+							ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(sdf.parse(dateString));
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					} else if (!TextUtils.equals(key, KEY_IMPORTED_AT)) {
+						for (Skill s : skillList) {
+							if (s.getSkillType().equals(key)) {
+								JSONObject skillJson = jsonLatestSnapshot.getJSONObject(key);
+								s.setExperience(skillJson.getLong(KEY_SKILLS_EXPERIENCE));
+								s.setRank(Integer.parseInt(skillJson.getString(KEY_SKILLS_RANK)));
 
-					if (rank != -1 && score != -1) {
-						HiscoreLeaguePoints leaguePoints = new HiscoreLeaguePoints();
-						leaguePoints.rank = rank;
-						leaguePoints.score = score;
-						ps.hiscoreLeaguePoints = leaguePoints;
-					}
-				} else if (TextUtils.equals(key, KEY_CREATED_AT)) {
-					String dateString = jsonLatestSnapshot.getString(KEY_CREATED_AT);
-					try {
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-						sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-						ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(sdf.parse(dateString));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-				} else if (!TextUtils.equals(key, KEY_IMPORTED_AT)) {
-					for (Skill s : skillList) {
-						if (s.getSkillType().equals(key)) {
-							JSONObject skillJson = jsonLatestSnapshot.getJSONObject(key);
-							s.setExperience(skillJson.getLong(KEY_SKILLS_EXPERIENCE));
-							s.setRank(Integer.parseInt(skillJson.getString(KEY_SKILLS_RANK)));
-
-							if (!s.getSkillType().equals(SkillType.Overall)) {
-								s.calculateLevel();
+								if (!s.getSkillType().equals(SkillType.Overall)) {
+									s.calculateLevel();
+								}
+								continue loop;
 							}
-							continue loop;
+						}
+
+						//Then it's a boss
+						JSONObject jsonBoss = jsonLatestSnapshot.getJSONObject(key);
+						long rank = jsonBoss.getLong(KEY_RANK);
+						long kills = jsonBoss.getLong(KEY_KILLS);
+
+						if (rank != -1 && kills != -1) {
+							HiscoreBoss boss = new HiscoreBoss();
+							boss.name = Utils.capitalizeString(key);
+							boss.rank = rank;
+							boss.score = kills;
+							ps.bossesList.add(boss);
 						}
 					}
+				}
 
-					//Then it's a boss
-					JSONObject jsonBoss = jsonLatestSnapshot.getJSONObject(key);
-					long rank = jsonBoss.getLong(KEY_RANK);
-					long kills = jsonBoss.getLong(KEY_KILLS);
-
-					if (rank != -1 && kills != -1) {
-						HiscoreBoss boss = new HiscoreBoss();
-						boss.name = Utils.capitalizeString(key);
-						boss.rank = rank;
-						boss.score = kills;
-						ps.bossesList.add(boss);
+				//compute total level
+				short totalLevel = 0;
+				short totalVirtualLevel = 0;
+				for (Skill s : skillList) {
+					if (s.getSkillType() != SkillType.Overall) {
+						totalLevel += s.getLevel();
+						totalVirtualLevel += s.getVirtualLevel();
 					}
 				}
-			}
 
-			//compute total level
-			short totalLevel = 0;
-			short totalVirtualLevel = 0;
-			for (Skill s : skillList) {
-				if (s.getSkillType() != SkillType.Overall) {
-					totalLevel += s.getLevel();
-					totalVirtualLevel += s.getVirtualLevel();
+				//add total level to appropriate Skill entry
+				Skill overallSkill = skillList.get(0); //always first indexed
+				overallSkill.setLevel(totalLevel);
+				overallSkill.setVirtualLevel(totalVirtualLevel);
+
+				//Update the account with the proper username and type
+				if (jsonObject.has(KEY_COMBAT_LEVEL)) {
+					ps.combatLvl = jsonObject.getInt(KEY_COMBAT_LEVEL);
+				} else {
+					ps.combatLvl = Utils.getCombatLvl(ps);
 				}
+				final String displayName = jsonObject.getString(KEY_DISPLAY_NAME);
+				final String type = jsonObject.getString(KEY_TYPE);
+
+				try {
+					DBController.updateAccount(context, username, displayName, type.toUpperCase(), ps.combatLvl);
+				} catch (SecurityException e) {
+					//You can't access database via the widget
+				}
+
+				return ps;
 			}
-
-			//add total level to appropriate Skill entry
-			Skill overallSkill = skillList.get(0); //always first indexed
-			overallSkill.setLevel(totalLevel);
-			overallSkill.setVirtualLevel(totalVirtualLevel);
-
-			//Update the account with the proper username and type
-			if (jsonObject.has(KEY_COMBAT_LEVEL)) {
-				ps.combatLvl = jsonObject.getInt(KEY_COMBAT_LEVEL);
-			} else {
-				ps.combatLvl = Utils.getCombatLvl(ps);
-			}
-			final String displayName = jsonObject.getString(KEY_DISPLAY_NAME);
-			final String type = jsonObject.getString(KEY_TYPE);
-
-			try {
-				DBController.updateAccount(context, username, displayName, type.toUpperCase(), ps.combatLvl);
-			} catch (SecurityException e) {
-				//You can't access database via the widget
-			}
-
-			return ps;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

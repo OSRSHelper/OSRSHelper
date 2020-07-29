@@ -30,7 +30,7 @@ import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.db.PreferencesController;
-import com.infonuascape.osrshelper.fragments.CmlTopFragment;
+import com.infonuascape.osrshelper.fragments.TopPlayersFragment;
 import com.infonuascape.osrshelper.fragments.DataPointsFragment;
 import com.infonuascape.osrshelper.fragments.GrandExchangeDetailFragment;
 import com.infonuascape.osrshelper.fragments.GrandExchangeSearchFragment;
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_hiscores) {
             Account account = DBController.getProfileAccount(this);
             fragment = HighScoreFragment.newInstance(account);
-        } else if (id == R.id.nav_cml_tracker) {
+        } else if (id == R.id.nav_xp_tracker) {
             Account account = DBController.getProfileAccount(this);
             fragment = XPTrackerFragment.newInstance(account);
         } else if (id == R.id.nav_data_points) {
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_grand_exchange) {
             fragment = GrandExchangeSearchFragment.newInstance();
         } else if (id == R.id.nav_top_players) {
-            fragment = CmlTopFragment.newInstance();
+            fragment = TopPlayersFragment.newInstance();
         } else if (id == R.id.nav_switch_profile) {
             UsernameActivity.showForProfileForResult(this, REQUEST_CODE_SET_PROFILE);
             return true;

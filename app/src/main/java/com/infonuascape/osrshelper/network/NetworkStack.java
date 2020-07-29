@@ -59,7 +59,7 @@ public class NetworkStack {
 
         RequestFuture<String> future = RequestFuture.newFuture();
         StringRequest stringRequest = new StringRequest(requestMethod, url, future, future);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(30000, 1 ,1));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(60000, 1 ,1));
         queue.add(stringRequest);
 
         try {

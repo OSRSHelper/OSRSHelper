@@ -34,6 +34,7 @@ public class DataPointsApi {
 
     private static final String KEY_STATUS = "status";
     private static final String VALUE_OK = "OK";
+    private static final String VALUE_SERVICE_TIMEOUT = "service_timeout";
 
     public static ArrayList<Delta> fetch(final String username) throws PlayerNotFoundException, APIError {
         String url = String.format(API_URL, Uri.encode(username));
@@ -53,7 +54,9 @@ public class DataPointsApi {
             try {
                 JSONObject jsonObject = new JSONObject(httpResult.output);
 
-                if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK)) {
+                if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_SERVICE_TIMEOUT)) {
+                    throw new APIError("Datapoints are unavailable. Try again later.");
+                } else if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK)) {
                     JSONArray jsonArray = jsonObject.getJSONArray(KEY_DATAPOINTS);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject deltaJson = jsonArray.getJSONObject(i);

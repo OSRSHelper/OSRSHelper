@@ -77,7 +77,7 @@ public class AccountQuickActionsFragment extends OSRSFragment implements Recycle
             if(quickAction == QuickAction.HISCORES) {
                 MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
             } else if(quickAction == QuickAction.XP_TRACKER) {
-                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_cml_tracker : -1, XPTrackerFragment.newInstance(account));
+                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_xp_tracker : -1, XPTrackerFragment.newInstance(account));
             } else if(quickAction == QuickAction.DATA_POINTS) {
                 MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_data_points : -1, DataPointsFragment.newInstance(account));
             }

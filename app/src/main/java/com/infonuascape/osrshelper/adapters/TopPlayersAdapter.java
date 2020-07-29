@@ -19,24 +19,24 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by marc_ on 2018-01-14.
  */
 
-public class CMLTopAdapter extends RecyclerView.Adapter<CMLTopAdapter.CMLTopHolder> {
+public class TopPlayersAdapter extends RecyclerView.Adapter<TopPlayersAdapter.TopHolder> {
     private Context context;
     private final ArrayList<Skill> skills;
     private RecyclerItemClickListener listener;
 
-    public CMLTopAdapter(final Context context, final RecyclerItemClickListener listener) {
+    public TopPlayersAdapter(final Context context, final RecyclerItemClickListener listener) {
         this.context = context;
         this.skills = PlayerSkills.getSkillsInOrderForRSView(new PlayerSkills());
         this.listener = listener;
     }
 
     @Override
-    public CMLTopHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CMLTopHolder(LayoutInflater.from(context).inflate(R.layout.cml_top_item, null));
+    public TopHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new TopHolder(LayoutInflater.from(context).inflate(R.layout.top_player_item, null));
     }
 
     @Override
-    public void onBindViewHolder(CMLTopHolder holder, int position) {
+    public void onBindViewHolder(TopHolder holder, int position) {
         Skill skill = skills.get(position);
         holder.icon.setImageResource(skill.getSkillType().getDrawableInt());
     }
@@ -50,10 +50,10 @@ public class CMLTopAdapter extends RecyclerView.Adapter<CMLTopAdapter.CMLTopHold
         return skills.get(position);
     }
 
-    protected class CMLTopHolder extends RecyclerView.ViewHolder {
+    protected class TopHolder extends RecyclerView.ViewHolder {
         public ImageView icon;
 
-        public CMLTopHolder(View itemView) {
+        public TopHolder(View itemView) {
             super(itemView);
 
             icon = itemView.findViewById(R.id.skill_image);

@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.adapters.CmlXpTrackerFragmentAdapter;
+import com.infonuascape.osrshelper.adapters.XpTrackerFragmentAdapter;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
@@ -20,7 +20,6 @@ import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.tasks.TrackerUpdateTask;
 import com.infonuascape.osrshelper.tasks.TrackerFetcherTask;
-import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.Map;
 
@@ -32,7 +31,7 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 	private Account account;
 	private TextView title;
 	private TextView description;
-	private CmlXpTrackerFragmentAdapter adapter;
+	private XpTrackerFragmentAdapter adapter;
 	private ViewPager viewPager;
 	private ProfileHeaderFragment profileHeaderFragment;
 	private Map<TrackerTime, PlayerSkills> trackings;
@@ -71,7 +70,7 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 		description = view.findViewById(R.id.track_metadata_desc);
 
 		viewPager = view.findViewById(R.id.viewpager);
-		adapter = new CmlXpTrackerFragmentAdapter(getChildFragmentManager(), getContext());
+		adapter = new XpTrackerFragmentAdapter(getChildFragmentManager(), getContext());
 		viewPager.setAdapter(adapter);
 		viewPager.addOnPageChangeListener(this);
 		viewPager.setOffscreenPageLimit(5);

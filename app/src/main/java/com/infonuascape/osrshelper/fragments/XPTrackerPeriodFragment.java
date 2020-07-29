@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -23,7 +24,7 @@ public class XPTrackerPeriodFragment extends OSRSPagerFragment {
 	private TrackerTableAdapter tableFiller;
 	private TableLayout tableLayout;
 	private View progressBar;
-	private View emptyView;
+	private TextView emptyView;
 
 	public static XPTrackerPeriodFragment newInstance(final TrackerTime period) {
 		XPTrackerPeriodFragment fragment = new XPTrackerPeriodFragment();
@@ -65,6 +66,7 @@ public class XPTrackerPeriodFragment extends OSRSPagerFragment {
 			tableLayout.removeAllViews();
 			progressBar.setVisibility(View.GONE);
 			emptyView.setVisibility(View.VISIBLE);
+			emptyView.setText(R.string.xp_tracker_error_period);
 		}
 	}
 
@@ -95,6 +97,7 @@ public class XPTrackerPeriodFragment extends OSRSPagerFragment {
 			if (playerSkills != null && !TextUtils.isEmpty(playerSkills.lastUpdate)) {
 				tableFiller.fill(playerSkills);
 			} else {
+				emptyView.setText(R.string.xp_tracker_no_gain_period);
 				emptyView.setVisibility(View.VISIBLE);
 			}
 		}

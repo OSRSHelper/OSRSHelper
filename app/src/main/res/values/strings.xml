@@ -7,7 +7,7 @@
     <string name="wiki">Wiki</string>
     <string name="xptracker">XP Tracker</string>
     <string name="grand_exchange">Grand Exchange</string>
-    <string name="cml_top">Crystal Math Labs Top Players</string>
+    <string name="top_players">Top Players</string>
     <string name="donate_group">Donation</string>
     <string name="donate_1">1$ Donation</string>
     <string name="donate_3">3$ Donation</string>
@@ -61,8 +61,8 @@
     <string name="next_page">Next Page</string>
     <string name="back_page">Back Page</string>
 
-    <string name="cml_top_select_skill_title">@string/cml_top</string>
-    <string name="cml_top_select_skill_desc">Choose a skill to see its top players</string>
+    <string name="top_select_skill_title">@string/top_players</string>
+    <string name="top_select_skill_desc">Choose a skill to see its top players</string>
 
     <string name="grand_exchange_search_title">Grand Exchange</string>
     <string name="grand_exchange_search_desc">Search for your item to see its details</string>
@@ -135,10 +135,10 @@
     <string name="donate">Donate</string>
     <string name="follow">Follow</string>
     <string name="following">Following</string>
-    <string name="cml_top_header_1">Rank</string>
-    <string name="cml_top_header_2">Username</string>
-    <string name="cml_top_header_3">Experience</string>
-    <string name="top_players_for_cml">Top players for %1$s</string>
+    <string name="top_header_1">Rank</string>
+    <string name="top_header_2">Username</string>
+    <string name="top_header_3">Experience</string>
+    <string name="top_players_for">Top players for %1$s</string>
     <string name="ge_item_current_price">Current price</string>
     <string name="ge_item_today_change">Today\'s Change</string>
     <string name="ge_item_one_month_change">1 Month Change</string>
@@ -159,7 +159,8 @@
     <string name="profile_delta_on">%1$s &#x2192; %2$s</string>
     <string name="error_when_sharing">Error when sharing stats</string>
     <string name="error_when_fetching">Error when fetching</string>
-    <string name="error_when_fetching_tracker">No information available\nfor this period</string>
+    <string name="xp_tracker_error_period">Error when retrieving tracking information</string>
+    <string name="xp_tracker_no_gain_period">No gain for this period</string>
     <string name="unavailable_right_now">Unavailable right now</string>
     <string name="unknown_account">Unknown</string>
     <string name="hiscore_share_intent_name">My OSRS Stats</string>

@@ -39,7 +39,7 @@ public class AccountTypeAdapter extends ArrayAdapter<AccountType> {
 
         AccountType accountType = accountTypes.get(position);
         ((ImageView) view.findViewById(R.id.account_type_icon)).setImageResource(Utils.getAccountTypeResource(accountType));
-        ((TextView) view.findViewById(R.id.account_type_name)).setText(Utils.getAccountTypeString(accountType));
+        ((TextView) view.findViewById(R.id.account_type_name)).setText(accountType.displayName);
 
         return view;
     }

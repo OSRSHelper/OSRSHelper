@@ -84,7 +84,7 @@
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/error_when_fetching_tracker"
+        android:text="@string/xp_tracker_no_gain_period"
         android:gravity="center"
         android:layout_centerInParent="true"
         android:textColor="@color/text_normal"

@@ -4,27 +4,30 @@ import android.content.Context;
 import androidx.fragment.app.FragmentManager;
 
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.enums.TrackerTime;
-import com.infonuascape.osrshelper.fragments.CmlTopSkillPeriodFragment;
+import com.infonuascape.osrshelper.fragments.TopPlayersSkillPeriodFragment;
 import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
 
-public class CmlTopSkillFragmentAdapter extends OSRSNestedViewPagerAdapter {
+public class TopPlayersSkillFragmentAdapter extends OSRSNestedViewPagerAdapter {
     private SkillType skillType;
+    private AccountType accountType;
 
-    public CmlTopSkillFragmentAdapter(final FragmentManager fm, final Context context, final SkillType skillType) {
+    public TopPlayersSkillFragmentAdapter(final FragmentManager fm, final Context context, final SkillType skillType, final AccountType accountType) {
         super(fm, context);
         this.skillType = skillType;
+        this.accountType = accountType;
     }
 
     @Override
     public int getCount() {
-        return TrackerTime.values().length -1;
+        return TrackerTime.values().length;
     }
 
     @Override
     public OSRSPagerFragment createFragment(int position) {
-        return CmlTopSkillPeriodFragment.newInstance(skillType, TrackerTime.values()[position]);
+        return TopPlayersSkillPeriodFragment.newInstance(skillType, accountType, TrackerTime.values()[position]);
     }
 
     @Override

@@ -13,7 +13,7 @@ public enum TrackerTime {
     Month("month"),
     Year("year");
 
-    private final String period;
+    public final String period;
     private final static Map<String, TrackerTime> map = new HashMap<>();
 
     TrackerTime(String period) {

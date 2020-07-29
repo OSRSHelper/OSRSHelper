@@ -6,27 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.material.tabs.TabLayout;
-import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.adapters.CmlTopSkillFragmentAdapter;
-import com.infonuascape.osrshelper.enums.SkillType;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
-public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPageChangeListener {
-    private static final String TAG = "CmlTopSkillFragment";
+import com.google.android.material.tabs.TabLayout;
+import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.adapters.TopPlayersSkillFragmentAdapter;
+import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.enums.SkillType;
+
+public class TopPlayersSkillFragment extends OSRSFragment implements ViewPager.OnPageChangeListener {
+    private static final String TAG = "TopPlayersSkillFragment";
+    private final static String EXTRA_ACCOUNT_TYPE = "EXTRA_ACCOUNT_TYPE";
     private final static String EXTRA_SKILLTYPE = "EXTRA_SKILLTYPE";
 
-    private SkillType skillType;
-    private CmlTopSkillFragmentAdapter adapter;
+    private TopPlayersSkillFragmentAdapter adapter;
     private ViewPager viewPager;
 
-    public static CmlTopSkillFragment newInstance(SkillType skillType) {
-        CmlTopSkillFragment fragment = new CmlTopSkillFragment();
+    public static TopPlayersSkillFragment newInstance(AccountType accountType, SkillType skillType) {
+        TopPlayersSkillFragment fragment = new TopPlayersSkillFragment();
         Bundle b = new Bundle();
-        b.putSerializable(EXTRA_SKILLTYPE, skillType);
+        b.putInt(EXTRA_SKILLTYPE, skillType.ordinal());
+        b.putInt(EXTRA_ACCOUNT_TYPE, accountType.ordinal());
         fragment.setArguments(b);
         return fragment;
     }
@@ -35,14 +37,16 @@ public class CmlTopSkillFragment extends OSRSFragment implements ViewPager.OnPag
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.cml_top_skill, null);
+        View view = inflater.inflate(R.layout.top_players_skill, null);
 
-        skillType = (SkillType) getArguments().getSerializable(EXTRA_SKILLTYPE);
+        SkillType skillType = SkillType.values()[getArguments().getInt(EXTRA_SKILLTYPE, SkillType.Overall.ordinal())];
+        AccountType accountType = AccountType.values()[getArguments().getInt(EXTRA_ACCOUNT_TYPE, AccountType.REGULAR.ordinal())];
 
-        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.top_players_for_cml, skillType.getSkillName()));
+        ((TextView) view.findViewById(R.id.title)).setText(getResources().getString(R.string.top_players_for, skillType.getSkillName()));
+        ((TextView) view.findViewById(R.id.account_type)).setText(accountType.displayName);
 
         viewPager = view.findViewById(R.id.viewpager);
-        adapter = new CmlTopSkillFragmentAdapter(getChildFragmentManager(), getContext(), skillType);
+        adapter = new TopPlayersSkillFragmentAdapter(getChildFragmentManager(), getContext(), skillType, accountType);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
         viewPager.setOffscreenPageLimit(4);

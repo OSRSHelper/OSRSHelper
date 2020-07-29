@@ -21,7 +21,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/cml_top_list_container"
+                android:id="@+id/top_list_container"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"

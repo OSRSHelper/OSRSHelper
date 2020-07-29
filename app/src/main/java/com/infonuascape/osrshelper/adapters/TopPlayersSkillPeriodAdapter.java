@@ -28,14 +28,14 @@ import java.util.List;
  * Created by marc_ on 2018-01-21.
  */
 
-public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPeriodAdapter.TopSkillViewHolder> {
-    private static final String TAG = "CmlTopSkillPeriodAdapte";
+public class TopPlayersSkillPeriodAdapter extends RecyclerView.Adapter<TopPlayersSkillPeriodAdapter.TopSkillViewHolder> {
+    private static final String TAG = "TopPlayersSkillPeriodAdapter";
 
     private OSRSFragment fragment;
     private List<PlayerExp> playerExps;
     private TrackerTime period;
 
-    public CmlTopSkillPeriodAdapter(final OSRSFragment fragment, final List<PlayerExp> playerExps, final TrackerTime period) {
+    public TopPlayersSkillPeriodAdapter(final OSRSFragment fragment, final List<PlayerExp> playerExps, final TrackerTime period) {
         this.fragment = fragment;
         this.playerExps = playerExps;
         this.period = period;
@@ -43,7 +43,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
 
     @Override
     public TopSkillViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = View.inflate(fragment.getContext(), R.layout.cml_top_skill_list_item, null);
+        View rootView = View.inflate(fragment.getContext(), R.layout.top_players_skill_list_item, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
         return new TopSkillViewHolder(rootView);
@@ -53,7 +53,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
     public void onBindViewHolder(TopSkillViewHolder holder, int position) {
         PlayerExp playerExp = playerExps.get(position);
         holder.accountNumber.setText(String.valueOf(position + 1));
-        holder.accountName.setText(playerExp.playerName);
+        holder.accountName.setText(playerExp.displayName);
         holder.accountExp.setText(NumberFormat.getInstance().format(playerExp.experience) + " xp");
     }
 
@@ -83,7 +83,7 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
             accountExp = itemView.findViewById(R.id.player_exp);
 
             quickActionsContainer = itemView.findViewById(R.id.quick_actions_container);
-            container = itemView.findViewById(R.id.cml_top_list_container);
+            container = itemView.findViewById(R.id.top_list_container);
 
             initAnimations();
 
@@ -172,10 +172,10 @@ public class CmlTopSkillPeriodAdapter extends RecyclerView.Adapter<CmlTopSkillPe
     }
 
     private Account getAccount(final int position) {
-        final String username = playerExps.get(position).playerName;
-        Account account = DBController.getAccountByUsername(fragment.getContext(), username);
+        final PlayerExp playerExp = playerExps.get(position);
+        Account account = DBController.getAccountByUsername(fragment.getContext(), playerExp.username);
         if(account == null) {
-            account = new Account(username);
+            account = new Account(playerExp.username, playerExp.displayName, playerExp.accountType);
         }
 
         return account;

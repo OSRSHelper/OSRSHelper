@@ -80,7 +80,7 @@ public class TrackerApi {
 			try {
 				ps.lastUpdate = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(sdf.parse(dateString));
 			} catch (ParseException e) {
-				e.printStackTrace();
+
 			}
 
 			Iterator<String> skillKeys = jsonData.keys();

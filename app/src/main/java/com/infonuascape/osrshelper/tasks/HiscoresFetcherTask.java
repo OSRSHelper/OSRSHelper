@@ -11,6 +11,7 @@ import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.network.HiscoreApi;
 import com.infonuascape.osrshelper.utils.Utils;
+import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 
@@ -39,7 +40,7 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
             String output = DBController.getQueryCache(context.get(), HiscoreApi.getQueryUrl(account.username));
             if (!TextUtils.isEmpty(output)) {
                 PlayerSkills playerSkills = HiscoreApi.parseResponse(context.get(), output, account.username);
-                if(playerSkills != null && listener != null) {
+                if (playerSkills != null && listener != null) {
                     playerSkills.isNewlyTracked = false;
                     listener.onHiscoresCacheFetched(playerSkills);
                 }
@@ -48,6 +49,9 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();
             errorMessage = context.get().getString(R.string.not_existing_player);
+        } catch (APIError e) {
+            e.printStackTrace();
+            errorMessage = e.getMessage();
         } catch (Exception uhe) {
             uhe.printStackTrace();
             errorMessage = context.get().getString(R.string.internal_error);
@@ -57,7 +61,7 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        if(listener != null) {
+        if (listener != null) {
             if (!TextUtils.isEmpty(errorMessage)) {
                 listener.onHiscoresError(errorMessage);
             } else {

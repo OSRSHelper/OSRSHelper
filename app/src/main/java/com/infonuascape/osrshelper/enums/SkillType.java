@@ -52,6 +52,10 @@ public enum SkillType {
         return drawableId;
     }
 
+    public String getApiName() {
+        return name().toLowerCase();
+    }
+
     SkillType(int drawableId, String skillName) {
         this.drawableId = drawableId;
         this.skillName = skillName;

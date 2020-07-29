@@ -9,9 +9,9 @@ import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.fragments.OSRSPagerFragment;
 import com.infonuascape.osrshelper.fragments.XPTrackerPeriodFragment;
 
-public class CmlXpTrackerFragmentAdapter extends OSRSNestedViewPagerAdapter {
+public class XpTrackerFragmentAdapter extends OSRSNestedViewPagerAdapter {
 
-    public CmlXpTrackerFragmentAdapter(final FragmentManager fm, final Context context) {
+    public XpTrackerFragmentAdapter(final FragmentManager fm, final Context context) {
         super(fm, context);
     }
 
