@@ -5,7 +5,9 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.SkillType;
+import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.HiscoreBoss;
 import com.infonuascape.osrshelper.models.HiscoreBountyHunter;
@@ -207,10 +209,10 @@ public class HiscoreApi {
 					ps.combatLvl = Utils.getCombatLvl(ps);
 				}
 				final String displayName = jsonObject.getString(KEY_DISPLAY_NAME);
-				final String type = jsonObject.getString(KEY_TYPE);
+				final AccountType type = AccountType.create(jsonObject.getString(KEY_TYPE));
 
 				try {
-					DBController.updateAccount(context, username, displayName, type.toUpperCase(), ps.combatLvl);
+					DBController.updateAccount(context, username, displayName, type, ps.combatLvl);
 				} catch (SecurityException e) {
 					//You can't access database via the widget
 				}

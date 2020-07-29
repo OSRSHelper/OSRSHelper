@@ -67,15 +67,15 @@ public class DBController {
 		}
 	}
 
-	public static void updateAccount(final Context context, final String username, final String displayName, final String accountType, final int combatLvl) {
+	public static void updateAccount(final Context context, final String username, final String displayName, final AccountType accountType, final int combatLvl) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_DISPLAY_NAME, displayName);
-		values.put(COLUMN_ACCOUNT_TYPE, accountType);
+		values.put(COLUMN_ACCOUNT_TYPE, accountType.name());
 		values.put(COLUMN_COMBAT_LVL, combatLvl);
 
 		if (context != null) {
 			context.getContentResolver().update(OSRSDatabase.ACCOUNTS_CONTENT_URI, values, COLUMN_USERNAME + "=?", new String[]{username});
-			updateWidgetsByUsername(context, username, displayName, AccountType.valueOf(accountType));
+			updateWidgetsByUsername(context, username, displayName, accountType);
 		}
 	}
 
