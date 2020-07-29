@@ -92,11 +92,13 @@ public class HiscoreApi {
 
 			if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_NOW_TRACKING)) {
 				ps.isNewlyTracked = true;
-			} else if (jsonObject.has(KEY_STATUS) && (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_UNKNOWN_PLAYER) || TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_INVALID_USERNAME))) {
+			}
+
+			if (jsonObject.has(KEY_STATUS) && (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_UNKNOWN_PLAYER) || TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_INVALID_USERNAME))) {
 				throw new PlayerNotFoundException(username);
 			} else if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_SERVICE_TIMEOUT)) {
 				throw new APIError("Hiscores are unavailable. Try again later.");
-			} else if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK)) {
+			} else if (jsonObject.has(KEY_STATUS) && (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK) || TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_NOW_TRACKING))) {
 				JSONObject jsonLatestSnapshot = jsonObject.getJSONObject(KEY_LATEST_SNAPSHOT);
 				loop:
 				for (Iterator<String> it = jsonLatestSnapshot.keys(); it.hasNext(); ) {

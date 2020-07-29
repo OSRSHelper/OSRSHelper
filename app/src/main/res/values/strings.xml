@@ -66,7 +66,7 @@
     <string name="back_page">Back Page</string>
 
     <string name="top_select_skill_title">@string/top_players</string>
-    <string name="top_select_skill_desc">Choose a skill to see its top players</string>
+    <string name="top_select_skill_desc">Choose a skill to see its current top players</string>
 
     <string name="grand_exchange_search_title">Grand Exchange</string>
     <string name="grand_exchange_search_desc">Search for your item to see its details</string>

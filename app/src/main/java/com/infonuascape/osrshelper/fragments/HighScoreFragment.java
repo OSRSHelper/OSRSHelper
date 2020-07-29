@@ -93,6 +93,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 		profileHeaderFragment.setTitle(R.string.highscores);
 
 		rsView = view.findViewById(R.id.rs_view);
+		rsView.populateViewWithoutLevel();
 
 		titleView = view.findViewById(R.id.hiscore_title);
 

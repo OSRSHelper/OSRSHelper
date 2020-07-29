@@ -97,4 +97,9 @@ public class RSView extends RelativeLayout {
 
         return null;
     }
+
+    public void populateViewWithoutLevel() {
+        adapter = new RSViewAdapter(getContext(), new PlayerSkills(), null, false, false);
+        recyclerView.setAdapter(adapter);
+    }
 }

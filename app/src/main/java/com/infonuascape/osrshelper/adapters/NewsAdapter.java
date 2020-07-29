@@ -6,11 +6,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.News;
-import com.infonuascape.osrshelper.utils.Logger;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -18,8 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -53,7 +52,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Logger.add(TAG, ": onCreateViewHolder:");
         View rootView = View.inflate(context, R.layout.news_list_item, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rootView.setLayoutParams(lp);
@@ -62,7 +60,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
-        Logger.add(TAG, ": onBindViewHolder:");
         News news = getItem(position);
         holder.title.setText(news.title);
         holder.description.setText(news.description);
