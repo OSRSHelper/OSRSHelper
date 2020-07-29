@@ -29,7 +29,7 @@
                         android:title="@string/data_points" />
                     <item
                         android:id="@+id/nav_switch_profile"
-                        android:icon="@drawable/ic_launcher"
+                        android:icon="@drawable/edit"
                         android:title="@string/switch_profile" />
 
                 </group>

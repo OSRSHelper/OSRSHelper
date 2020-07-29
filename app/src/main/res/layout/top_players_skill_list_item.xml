@@ -31,7 +31,6 @@
                     android:id="@+id/account_number"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_launcher"
                     android:layout_weight="4"
                     tools:text="1"
                     android:textColor="@color/text_normal"
