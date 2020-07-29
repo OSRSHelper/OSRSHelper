@@ -117,7 +117,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 		if(oldVersion < 10) {
 			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_DISPLAY_NAME + " TEXT");
-			db.execSQL("ALTER TABLE " + WIDGETS_TABLE + " ADD COLUMN " + COLUMN_DISPLAY_NAME + " TEXT");
+			db.execSQL("ALTER TABLE " + TABLE_WIDGET + " ADD COLUMN " + COLUMN_DISPLAY_NAME + " TEXT");
 		}
 	}
 
