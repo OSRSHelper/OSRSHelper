@@ -5,7 +5,8 @@
  <color name="colorAccent">#191919</color>
  <color name="grand_exchange_legend">#40aaaaaa</color>
 
- <color name="white_semi_transparent">#A0FFFFFF</color>
+ <color name="white_20_transparent">#33FFFFFF</color>
+ <color name="white_65_transparent">#A6FFFFFF</color>
  <color name="black_semi_transparent">#60000000</color>
  <color name="gen_white_btn_over">#10000000</color>
  <color name="white">#FFFFFF</color>
@@ -23,7 +24,7 @@
  <color name="text_normal">@color/white</color>
  <color name="dialog_text">#a2a2a2</color>
  <color name="button">@color/colorPrimaryDark</color>
- <color name="button_over">@color/white_semi_transparent</color>
+ <color name="button_over">@color/white_65_transparent</color>
  <color name="rs_view_bg">#453C33</color>
  <color name="widget_rs_view_bg">#50000000</color>
  <color name="progress_bg">#30555555</color>

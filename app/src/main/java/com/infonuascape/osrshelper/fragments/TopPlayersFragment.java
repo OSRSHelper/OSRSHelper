@@ -1,35 +1,25 @@
 package com.infonuascape.osrshelper.fragments;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.adapters.AccountTypeAdapter;
 import com.infonuascape.osrshelper.adapters.TopPlayersAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
-import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
-import com.infonuascape.osrshelper.utils.Utils;
 
 public class TopPlayersFragment extends OSRSFragment implements RecyclerItemClickListener, View.OnClickListener {
     private static final String TAG = "TopPlayersFragment";
-    private RecyclerView recyclerView;
-    private GridLayoutManager gridLayoutManager;
     private TopPlayersAdapter adapter;
-    private AccountType accountType = AccountType.REGULAR;
-    private ImageView accountTypeIcon;
-    private TextView accountTypeName;
+    private View ironmanBtn, hardcoreIronmanBtn, ultimateIronmanBtn;
 
     public static TopPlayersFragment newInstance() {
         TopPlayersFragment fragment = new TopPlayersFragment();
@@ -45,37 +35,27 @@ public class TopPlayersFragment extends OSRSFragment implements RecyclerItemClic
 
         View view = inflater.inflate(R.layout.top_players, null);
 
-        accountTypeIcon = view.findViewById(R.id.account_type_icon);
-        accountTypeName = view.findViewById(R.id.account_type_name);
-
-        view.findViewById(R.id.account_type_btn).setOnClickListener(this);
-
-        recyclerView = view.findViewById(R.id.list_rs_view);
-        gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        RecyclerView recyclerView = view.findViewById(R.id.list_rs_view);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
 
         adapter = new TopPlayersAdapter(getContext(), this);
         recyclerView.setAdapter(adapter);
 
-        return view;
-    }
+        ironmanBtn = view.findViewById(R.id.ironman);
+        ironmanBtn.setOnClickListener(this);
+        hardcoreIronmanBtn = view.findViewById(R.id.hc_ironman);
+        hardcoreIronmanBtn.setOnClickListener(this);
+        ultimateIronmanBtn = view.findViewById(R.id.ult_ironman);
+        ultimateIronmanBtn.setOnClickListener(this);
 
-    private void switchAccountType() {
-        final AccountTypeAdapter adapter = new AccountTypeAdapter(getActivity());
-        new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK).setTitle(R.string.select_account_type)
-                .setAdapter(adapter, (dialog, item) -> {
-                    accountType = adapter.getItem(item);
-                    if (accountType != null) {
-                        accountTypeIcon.setImageResource(Utils.getAccountTypeResource(accountType));
-                        accountTypeName.setText(accountType.displayName);
-                    }
-                }).show();
+        return view;
     }
 
     @Override
     public void onItemClicked(int position) {
         Skill skill = adapter.getItem(position);
-        MainFragmentController.getInstance().showFragment(TopPlayersSkillFragment.newInstance(accountType, skill.getSkillType()));
+        MainFragmentController.getInstance().showFragment(TopPlayersSkillFragment.newInstance(getSelectedAccountType(), skill.getSkillType()));
     }
 
     @Override
@@ -84,9 +64,32 @@ public class TopPlayersFragment extends OSRSFragment implements RecyclerItemClic
     }
 
     @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.account_type_btn) {
-            switchAccountType();
+    public void onClick(View v) {
+        final int id = v.getId();
+
+        if (id == R.id.ironman) {
+            ultimateIronmanBtn.setSelected(false);
+            hardcoreIronmanBtn.setSelected(false);
+            v.setSelected(!v.isSelected());
+        } else if (id == R.id.ult_ironman) {
+            ironmanBtn.setSelected(false);
+            hardcoreIronmanBtn.setSelected(false);
+            v.setSelected(!v.isSelected());
+        } else if (id == R.id.hc_ironman) {
+            ironmanBtn.setSelected(false);
+            ultimateIronmanBtn.setSelected(false);
+            v.setSelected(!v.isSelected());
         }
+    }
+
+    private AccountType getSelectedAccountType() {
+        if (ironmanBtn.isSelected())
+            return AccountType.IRONMAN;
+        else if (ultimateIronmanBtn.isSelected())
+            return AccountType.ULTIMATE_IRONMAN;
+        else if (hardcoreIronmanBtn.isSelected())
+            return AccountType.HARDCORE_IRONMAN;
+        else
+            return AccountType.REGULAR;
     }
 }
