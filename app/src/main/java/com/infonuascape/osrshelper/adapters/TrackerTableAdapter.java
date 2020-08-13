@@ -73,32 +73,32 @@ public class TrackerTableAdapter {
 
             //set appropriate gain color
             if (rankDiff > 0) {
-                textColorResId = R.color.green;
-            } else {
                 textColorResId = R.color.red;
-            }
-
-
-            //ranks "lost" AKA progress were made
-            if (rankDiff > 0 && rankDiff < 1000) {
-                text = context.getString(R.string.gain_small, NumberFormat.getInstance().format(rankDiff));
-            } else if (rankDiff >= 1000 && rankDiff < 10000) {
-                text = context.getString(R.string.gain_medium, rankDiff / 1000.0f);
-            } else if (rankDiff > 10000) {
-                text = context.getString(R.string.gain, rankDiff / 1000);
-            }
-
-            //ranks "gained" AKA no progress were made
-            else if (rankDiff < 0 && rankDiff > -1000) {
-                text = context.getString(R.string.loss_small, Math.abs(rankDiff));
-            } else if (rankDiff <= -1000 && rankDiff > -1000) {
-                text = context.getString(R.string.loss_medium, Math.abs(rankDiff) / 1000.0f);
             } else {
-                text = context.getString(R.string.loss, Math.abs(rankDiff) / 1000);
+                textColorResId = R.color.green;
+            }
+
+
+            //ranks
+            long rankDiffAbs = Math.abs(rankDiff);
+            if (rankDiffAbs > 0 && rankDiffAbs < 1000) {
+                text = context.getString(R.string.gain_small, NumberFormat.getInstance().format(rankDiffAbs));
+            } else if (rankDiffAbs >= 1000 && rankDiffAbs < 10000) {
+                text = context.getString(R.string.gain_medium, rankDiffAbs / 1000.0f);
+            } else {
+                text = context.getString(R.string.gain, rankDiffAbs / 1000);
             }
         }
         ((TextView) view.findViewById(R.id.table_item_diff_rank)).setTextColor(context.getResources().getColor(textColorResId));
         ((TextView) view.findViewById(R.id.table_item_diff_rank)).setText(text);
+
+        if (rankDiff > 0) {
+            ((ImageView) view.findViewById(R.id.table_item_diff_rank_image)).setImageResource(R.drawable.delta_down);
+        } else if(rankDiff < 0) {
+            ((ImageView) view.findViewById(R.id.table_item_diff_rank_image)).setImageResource(R.drawable.delta_up);
+        } else {
+            ((ImageView) view.findViewById(R.id.table_item_diff_rank_image)).setImageResource(R.drawable.delta_neutral);
+        }
 
         return view;
     }

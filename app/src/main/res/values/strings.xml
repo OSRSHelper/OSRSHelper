@@ -47,12 +47,9 @@
     <string name="list_view">List View</string>
     <string name="xp_gain">(XPΔ)</string>
     <string name="rank_diff">(RankΔ)</string>
-    <string name="gain">(+ %1$dK)</string>
-    <string name="gain_small">(+ %1$s)</string>
-    <string name="gain_medium">(+ %1$.1fK)</string>
-    <string name="loss">(- %1$dK)</string>
-    <string name="loss_small">(- %1$d)</string>
-    <string name="loss_medium">(- %1$.1fK)</string>
+    <string name="gain">%1$dK</string>
+    <string name="gain_small">%1$s</string>
+    <string name="gain_medium">%1$.1fK</string>
     <string name="tracking_since">Tracking since</string>
     <string name="last_update">Last track</string>
     <string name="now_tracking">Player not found, please press the update icon</string>
