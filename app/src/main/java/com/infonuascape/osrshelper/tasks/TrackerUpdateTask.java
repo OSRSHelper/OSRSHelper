@@ -13,24 +13,23 @@ import com.infonuascape.osrshelper.network.UpdaterApi;
 public class TrackerUpdateTask extends AsyncTask<Void, Void, Void> {
     private Account account;
     private TrackerUpdateListener listener;
-    private boolean isSuccess;
+    private UpdaterApi.Response response;
 
     public TrackerUpdateTask(final TrackerUpdateListener listener, final Account account) {
         this.listener = listener;
         this.account = account;
-        isSuccess = false;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        isSuccess = UpdaterApi.perform(account.username);
+        response = UpdaterApi.perform(account.username);
         return null;
     }
 
     @Override
     protected void onPostExecute(Void result) {
         if (listener != null) {
-            listener.onUpdatingDone(isSuccess);
+            listener.onUpdatingDone(response);
         }
     }
 }

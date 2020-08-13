@@ -1,15 +1,18 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.XpTrackerFragmentAdapter;
@@ -18,9 +21,11 @@ import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.network.UpdaterApi;
 import com.infonuascape.osrshelper.tasks.TrackerUpdateTask;
 import com.infonuascape.osrshelper.tasks.TrackerFetcherTask;
 import com.infonuascape.osrshelper.utils.Logger;
+import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.Map;
 
@@ -32,10 +37,12 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
     private Account account;
     private TextView title;
     private TextView description;
+    private View updateBtn;
     private XpTrackerFragmentAdapter adapter;
     private ViewPager viewPager;
     private ProfileHeaderFragment profileHeaderFragment;
     private Map<TrackerTime, PlayerSkills> trackings;
+    private Animation rotationAnimation = Utils.get360Rotation();
 
     public static XPTrackerFragment newInstance(final Account account) {
         XPTrackerFragment fragment = new XPTrackerFragment();
@@ -80,7 +87,8 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
         tabLayout.setTabTextColors(getContext().getResources().getColor(R.color.text_light), getContext().getResources().getColor(R.color.text_normal));
         tabLayout.setupWithViewPager(viewPager);
 
-        view.findViewById(R.id.update).setOnClickListener(this);
+        updateBtn = view.findViewById(R.id.update);
+        updateBtn.setOnClickListener(this);
 
         TrackerTime defaultTime = (TrackerTime) getArguments().getSerializable(EXTRA_TRACKER_TIME);
         if (defaultTime != null && defaultTime != TrackerTime.Day) {
@@ -123,11 +131,13 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
 
     private void updateAccount() {
         Logger.add(TAG, ": updateAccount");
-        description.setText(null);
-        title.setText(R.string.updating);
-        profileHeaderFragment.showProgressBar();
-        asyncTask = new TrackerUpdateTask(this, account);
-        asyncTask.execute();
+        if (updateBtn.getAnimation() == null) {
+            updateBtn.startAnimation(rotationAnimation);
+            description.setText(null);
+            title.setText(R.string.updating);
+            asyncTask = new TrackerUpdateTask(this, account);
+            asyncTask.execute();
+        }
     }
 
     @Override
@@ -185,16 +195,22 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
     }
 
     @Override
-    public void onUpdatingDone(boolean isSuccess) {
-        Logger.add(TAG, ": onUpdatingDone: isSuccess=", isSuccess);
-        profileHeaderFragment.hideProgressBar();
-        if (isSuccess) {
+    public void onUpdatingDone(UpdaterApi.Response response) {
+        Logger.add(TAG, ": onUpdatingDone: response=", response);
+        if (updateBtn.getAnimation() != null) {
+            updateBtn.getAnimation().cancel();
+        }
+        if (response.isSuccess) {
             for (int i = 0; i < adapter.getCount(); i++) {
                 ((XPTrackerPeriodFragment) adapter.getItem(i)).onUpdatingSuccessful();
             }
             loadTracking();
         } else {
             title.setText(R.string.updating_failed);
+
+            if (!TextUtils.isEmpty(response.errorMessage) && getView() != null) {
+                Snackbar.make(getView(), response.errorMessage, Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 

@@ -7,15 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * Created by marc_ on 2018-01-21.

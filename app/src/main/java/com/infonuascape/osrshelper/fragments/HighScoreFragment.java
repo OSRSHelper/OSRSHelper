@@ -5,10 +5,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,10 +26,12 @@ import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
+import com.infonuascape.osrshelper.network.UpdaterApi;
 import com.infonuascape.osrshelper.tasks.HiscoresFetcherTask;
 import com.infonuascape.osrshelper.tasks.TrackerUpdateTask;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.ShareImageUtils;
+import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.views.CombatCalcDialog;
 import com.infonuascape.osrshelper.views.RSView;
 import com.infonuascape.osrshelper.views.RSViewDialog;
@@ -45,10 +47,12 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
     private PlayerSkills playerSkills;
     private TextView titleView;
     private TextView errorView;
+    private View updateBtn;
     private HiscoreAdapter hiscoreAdapter;
     private RSView rsView;
     private RecyclerView recyclerView;
     private ProfileHeaderFragment profileHeaderFragment;
+    private Animation rotationAnimation = Utils.get360Rotation();
 
     public static HighScoreFragment newInstance(final Account account) {
         HighScoreFragment fragment = new HighScoreFragment();
@@ -115,7 +119,9 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
         view.findViewById(R.id.share_btn).setOnClickListener(this);
         view.findViewById(R.id.combat_lvl_btn).setOnClickListener(this);
-        view.findViewById(R.id.update).setOnClickListener(this);
+
+        updateBtn = view.findViewById(R.id.update);
+        updateBtn.setOnClickListener(this);
 
         loadHiscores();
 
@@ -161,10 +167,12 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
     private void updateAccount() {
         Logger.add(TAG, ": updateAccount");
-        titleView.setText(R.string.updating);
-        profileHeaderFragment.showProgressBar();
-        asyncTask = new TrackerUpdateTask(this, account);
-        asyncTask.execute();
+        if (updateBtn.getAnimation() == null) {
+            updateBtn.startAnimation(rotationAnimation);
+            titleView.setText(R.string.updating);
+            asyncTask = new TrackerUpdateTask(this, account);
+            asyncTask.execute();
+        }
     }
 
     @Override
@@ -254,9 +262,15 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
     }
 
     @Override
-    public void onUpdatingDone(boolean isSuccess) {
-        Logger.add(TAG, ": onUpdatingDone: isSuccess=", isSuccess);
-        profileHeaderFragment.hideProgressBar();
+    public void onUpdatingDone(UpdaterApi.Response response) {
+        Logger.add(TAG, ": onUpdatingDone: response=", response);
+        if (updateBtn.getAnimation() != null) {
+            updateBtn.getAnimation().cancel();
+        }
         loadHiscores();
+
+        if (!response.isSuccess && !TextUtils.isEmpty(response.errorMessage) && getView() != null) {
+            Snackbar.make(getView(), response.errorMessage, Snackbar.LENGTH_SHORT).show();
+        }
     }
 }

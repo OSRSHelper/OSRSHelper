@@ -7,6 +7,9 @@ import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.firebase.FirebaseApp;
@@ -337,5 +340,13 @@ public class Utils {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnected();
+	}
+
+	public static Animation get360Rotation() {
+		RotateAnimation rotationAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		rotationAnimation.setDuration(750);
+		rotationAnimation.setRepeatCount(Integer.MAX_VALUE);
+		rotationAnimation.setInterpolator(new LinearInterpolator());
+		return rotationAnimation;
 	}
 }

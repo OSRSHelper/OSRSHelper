@@ -3,6 +3,8 @@ package com.infonuascape.osrshelper.network;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -15,22 +17,38 @@ public class UpdaterApi {
 
     private static final String API_URL = NetworkStack.ENDPOINT + "/wom/update/%1$s";
     private static final String KEY_STATUS = "status";
+    private static final String KEY_MESSAGE = "message";
     private static final String VALUE_OK = "OK";
 
-    public static boolean perform(final String username) {
+    public static Response perform(final String username) {
         Logger.add(TAG, ": perform: username=", username);
         final String url = String.format(API_URL, Uri.encode(username));
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
+        Response response = new Response();
 
         if (httpResult.statusCode == StatusCode.FOUND) {
             try {
                 JSONObject jsonObject = new JSONObject(httpResult.output);
-                return jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK);
+                response.isSuccess = jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK);
+                if (jsonObject.has(KEY_MESSAGE)) {
+                    response.errorMessage = jsonObject.getString(KEY_MESSAGE);
+                }
             } catch (JSONException e) {
                 Logger.addException(TAG, e);
             }
         }
 
-        return false;
+        return response;
+    }
+
+    public static class Response {
+        public boolean isSuccess;
+        public String errorMessage;
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "[isSuccess=" + isSuccess + ", errorMessage=" + errorMessage + "]";
+        }
     }
 }
