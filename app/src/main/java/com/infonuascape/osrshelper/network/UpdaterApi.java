@@ -31,7 +31,7 @@ public class UpdaterApi {
                 JSONObject jsonObject = new JSONObject(httpResult.output);
                 response.isSuccess = jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK);
                 if (jsonObject.has(KEY_MESSAGE)) {
-                    response.errorMessage = jsonObject.getString(KEY_MESSAGE);
+                    response.errorMessage = convertErrorMessage(jsonObject.getString(KEY_MESSAGE));
                 }
             } catch (JSONException e) {
                 Logger.addException(TAG, e);
@@ -39,6 +39,14 @@ public class UpdaterApi {
         }
 
         return response;
+    }
+
+    private static String convertErrorMessage(final String errorMessage) {
+        if (errorMessage != null && errorMessage.endsWith("seconds ago.")) {
+            return "Updated less than 60 seconds ago.";
+        }
+
+        return errorMessage;
     }
 
     public static class Response {

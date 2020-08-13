@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
  <color name="colorPrimary">#191919</color>
  <color name="colorPrimaryDark">#303030</color>
  <color name="colorAccent">#191919</color>
+ <color name="design_snackbar_background_color" tools:override="true">#4287F5</color>
  <color name="grand_exchange_legend">#40aaaaaa</color>
 
  <color name="white_20_transparent">#33FFFFFF</color>
