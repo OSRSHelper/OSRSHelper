@@ -42,7 +42,7 @@ public class ProfileHeaderFragment extends OSRSFragment {
 
     public void refreshProfile(final Account account) {
         this.account = account;
-        if(account != null) {
+        if(account != null && getView() != null) {
             ((TextView) getView().findViewById(R.id.account_username)).setText(account.getDisplayName());
             ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
             ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);

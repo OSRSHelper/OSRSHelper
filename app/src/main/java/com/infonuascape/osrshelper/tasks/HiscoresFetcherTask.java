@@ -56,7 +56,9 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
             errorMessage = e.getMessage();
         } catch (Exception uhe) {
             uhe.printStackTrace();
-            errorMessage = context.get().getString(R.string.internal_error);
+            if (context.get() != null) {
+                errorMessage = context.get().getString(R.string.internal_error);
+            }
         }
         return null;
     }
