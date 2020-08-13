@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -81,7 +82,7 @@ public class WebViewFragment extends OSRSFragment {
         webView.setBackgroundColor(Color.TRANSPARENT);
 
         if (getArguments().getBoolean(EXTRA_IS_NEWS, false)) {
-            webView.getSettings().setMinimumFontSize(32);
+            webView.getSettings().setTextZoom(300);
         }
 
         return view;
