@@ -6,6 +6,7 @@ import com.infonuascape.osrshelper.listeners.DataPointsListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.network.DataPointsApi;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 
 public class DatapointsFetcherTask extends AsyncTask<Void, Void, Void> {
+    private static final String TAG = "DatapointsFetcherTask";
     private DataPointsListener listener;
     private Account account;
     private ArrayList<Delta> deltas;
@@ -30,9 +32,9 @@ public class DatapointsFetcherTask extends AsyncTask<Void, Void, Void> {
         try {
             deltas = DataPointsApi.fetch(account.username);
         } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
-        } catch (APIError apiError) {
-            apiError.printStackTrace();
+            Logger.addException(TAG, e);
+        } catch (APIError e) {
+            Logger.addException(TAG, e);
         }
         return null;
     }

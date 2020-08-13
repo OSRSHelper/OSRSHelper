@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.jjoe64.graphview.series.DataPoint;
 
 import org.json.JSONException;
@@ -16,12 +17,15 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GrandExchangeDetailPlotApi {
+    private static final String TAG = "GrandExchangeDetailPlotApi";
+
     private final static String API_URL = "https://services.runescape.com/m=itemdb_oldschool/api/graph/%s.json";
 
     private final static String KEY_DAILY = "daily";
     private final static String KEY_AVERAGE = "average";
 
     public static GrandExchangeDetailPlotResults fetch(String itemId) {
+        Logger.add(TAG, ": fetch: itemId=", itemId);
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemId)));
         if (httpResult.statusCode == StatusCode.FOUND) {
             List<DataPoint> datapoints = new ArrayList<>();
@@ -31,7 +35,7 @@ public class GrandExchangeDetailPlotApi {
                 JSONObject jsonDaily = json.getJSONObject(KEY_DAILY);
 
                 Iterator<String> keys = jsonDaily.keys();
-                while(keys.hasNext()) {
+                while (keys.hasNext()) {
                     String timestamp = keys.next();
                     DataPoint datapoint = new DataPoint(Double.parseDouble(timestamp), jsonDaily.getDouble(timestamp));
                     datapoints.add(datapoint);
@@ -40,7 +44,7 @@ public class GrandExchangeDetailPlotApi {
                 JSONObject jsonAverage = json.getJSONObject(KEY_AVERAGE);
 
                 keys = jsonAverage.keys();
-                while(keys.hasNext()) {
+                while (keys.hasNext()) {
                     String timestamp = keys.next();
                     DataPoint datapoint = new DataPoint(new Date(Long.parseLong(timestamp)), jsonAverage.getLong(timestamp));
                     averages.add(datapoint);
@@ -51,7 +55,7 @@ public class GrandExchangeDetailPlotApi {
                 results.averages = averages.toArray(new DataPoint[0]);
                 return results;
             } catch (JSONException e) {
-                e.printStackTrace();
+                Logger.addException(TAG, e);
             }
         }
         return null;

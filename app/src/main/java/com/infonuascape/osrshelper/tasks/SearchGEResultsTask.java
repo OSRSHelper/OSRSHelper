@@ -31,8 +31,8 @@ public class SearchGEResultsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(final Void result) {
-        if(searchResults != null) {
-            if(listener != null) {
+        if (searchResults != null) {
+            if (listener != null) {
                 listener.onSearchResults(searchTerm, searchResults);
             }
         }

@@ -10,6 +10,7 @@ import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.network.TrackerApi;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 
 public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
+    private static final String TAG = "TrackerFetcherTask";
     private WeakReference<Context> context;
     private Account account;
     private TrackerFetcherListener listener;
@@ -57,26 +59,19 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
                 }
             }
         } catch (PlayerNotFoundException e) {
-            if(listener != null) {
-                if(context.get() != null) {
+            Logger.addException(TAG, e);
+            if (listener != null) {
+                if (context.get() != null) {
                     listener.onTrackingError(context.get().getString(R.string.now_tracking));
                 } else {
                     listener.onTrackingError("Error");
                 }
             }
-        } catch (APIError e) {
-            if(listener != null) {
-                if(context.get() != null) {
+        } catch (Exception e) {
+            Logger.addException(TAG, e);
+            if (listener != null) {
+                if (context.get() != null) {
                     listener.onTrackingError(e.getMessage());
-                } else {
-                    listener.onTrackingError("Error");
-                }
-            }
-        } catch (Exception uhe) {
-            uhe.printStackTrace();
-            if(listener != null) {
-                if(context.get() != null) {
-                    listener.onTrackingError(uhe.getMessage());
                 } else {
                     listener.onTrackingError("Error");
                 }
@@ -87,7 +82,7 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        if(listener != null) {
+        if (listener != null) {
             if (trackings == null) {
                 trackings = new HashMap<>();
             }

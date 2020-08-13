@@ -9,12 +9,15 @@ import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.GrandExchangeDetailInfo;
 import com.infonuascape.osrshelper.models.grandexchange.Trend;
 import com.infonuascape.osrshelper.models.grandexchange.TrendChange;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GrandExchangeDetailInfoApi {
+    private static final String TAG = "GrandExchangeDetailInfoApi";
+
     private final static String API_URL = "https://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=%s";
 
     private final static String ICON_ENDPOINT = "http://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
@@ -37,6 +40,7 @@ public class GrandExchangeDetailInfoApi {
     private final static String VALUE_TRUE = "true";
 
     public static GrandExchangeDetailInfo fetch(String itemId) {
+        Logger.add(TAG, ": fetch: itemId=", itemId);
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemId)));
         if (httpResult.statusCode == StatusCode.FOUND) {
             try {
@@ -61,7 +65,7 @@ public class GrandExchangeDetailInfoApi {
                 itemInfo.day180 = parseTrendChange((JSONObject) json.get(KEY_TREND_DAY_180));
                 return itemInfo;
             } catch (JSONException e) {
-                e.printStackTrace();
+                Logger.addException(TAG, e);
             }
         }
         return null;

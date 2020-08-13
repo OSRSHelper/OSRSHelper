@@ -2,9 +2,7 @@ package com.infonuascape.osrshelper.utils;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 /**
  * Created by marc_ on 2018-02-05.
@@ -13,15 +11,27 @@ import io.fabric.sdk.android.Fabric;
 public class Logger {
     private static final String TAG = "OSRS Helper";
 
-    public static void add(final String... logs) {
+    public static void add(final Object... logs) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for(String log : logs) stringBuilder.append(log);
+        for (Object log : logs) stringBuilder.append(log);
 
         String log = stringBuilder.toString();
-        if(Fabric.isInitialized()) {
-            Crashlytics.log(log);
+        try {
+            FirebaseCrashlytics.getInstance().log(log);
+        } catch (Exception e) {
+            //Ignore
         }
         Log.d(TAG, log);
+    }
+
+    public static void addException(final String tag, final Throwable throwable) {
+        String log = tag + ": exception=" + throwable;
+        try {
+            FirebaseCrashlytics.getInstance().log(log);
+        } catch (Exception e) {
+            //Ignore
+        }
+        Log.e(TAG, log);
     }
 }

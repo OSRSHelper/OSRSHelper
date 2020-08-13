@@ -29,7 +29,7 @@ public class TrackerUpdateTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        if(listener != null) {
+        if (listener != null) {
             listener.onUpdatingDone(isSuccess);
         }
     }

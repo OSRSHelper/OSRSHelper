@@ -10,6 +10,7 @@ import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.models.players.SkillDiff;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
@@ -25,6 +26,8 @@ import java.util.Iterator;
 import java.util.TimeZone;
 
 public class DataPointsApi {
+    private static final String TAG = "DataPointsApi";
+
     private final static String API_URL = NetworkStack.ENDPOINT + "/wom/datapointsdelta/%s";
     private final static String KEY_DATAPOINTS = "datapoints";
     private final static String KEY_BEFORE = "before";
@@ -37,12 +40,13 @@ public class DataPointsApi {
     private static final String VALUE_SERVICE_TIMEOUT = "service_timeout";
 
     public static ArrayList<Delta> fetch(final String username) throws PlayerNotFoundException, APIError {
+        Logger.add(TAG, ": fetch: username=", username);
         String url = String.format(API_URL, Uri.encode(username));
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
 
         if (httpResult.statusCode == StatusCode.NOT_FOUND) {
             throw new PlayerNotFoundException(username);
-        } else if(httpResult.statusCode != StatusCode.FOUND) {
+        } else if (httpResult.statusCode != StatusCode.FOUND) {
             throw new APIError("Unexpected response from the server.");
         }
 
@@ -50,7 +54,7 @@ public class DataPointsApi {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         ArrayList<Delta> deltas = new ArrayList<>();
-        if(httpResult.statusCode == StatusCode.FOUND) {
+        if (httpResult.statusCode == StatusCode.FOUND) {
             try {
                 JSONObject jsonObject = new JSONObject(httpResult.output);
 
@@ -90,15 +94,15 @@ public class DataPointsApi {
                     }
                 }
             } catch (JSONException | ParseException | NullPointerException e) {
-                e.printStackTrace();
+                Logger.addException(TAG, e);
             }
         }
 
         //Sort desc
         Collections.sort(deltas, (delta, t1) -> {
-            if(delta.timestampRecent > t1.timestampRecent) {
+            if (delta.timestampRecent > t1.timestampRecent) {
                 return -1;
-            } else if(delta.timestampRecent == t1.timestampRecent) {
+            } else if (delta.timestampRecent == t1.timestampRecent) {
                 return 0;
             }
 

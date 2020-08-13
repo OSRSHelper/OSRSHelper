@@ -52,7 +52,7 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
 
         account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
 
-        if(account == null) {
+        if (account == null) {
             return view;
         }
 
@@ -73,7 +73,8 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
     }
 
     private void refreshScreen() {
-        if(getView() != null) {
+        Logger.add(TAG, ": refreshScreen");
+        if (getView() != null) {
             profileHeaderFragment.setTitle(R.string.data_points);
             profileHeaderFragment.refreshProfile(account);
             loadDeltas();
@@ -82,7 +83,7 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
 
     private void loadDeltas() {
         Logger.add(TAG, ": loadDeltas");
-        if(deltas == null) {
+        if (deltas == null) {
             profileHeaderFragment.showProgressBar();
             killAsyncTaskIfStillRunning();
             asyncTask = new DatapointsFetcherTask(this, account);
@@ -95,10 +96,11 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
 
     @Override
     public void onDataPointsLoaded(ArrayList<Delta> deltas) {
+        Logger.add(TAG, ": onDataPointsLoaded: deltas=", deltas);
         profileHeaderFragment.hideProgressBar();
         this.deltas = deltas;
         asyncTask = null;
-        if(deltas != null) {
+        if (deltas != null) {
             if (deltas.size() > 0) {
                 adapter = new DataPointsAdapter(getContext(), deltas);
                 recyclerView.setAdapter(adapter);

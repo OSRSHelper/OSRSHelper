@@ -32,7 +32,7 @@ public class OSRSNewsTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         super.onPostExecute(result);
-        if(listener.get() != null) {
+        if (listener.get() != null) {
             if (news.isEmpty() && pageNum == 1) {
                 listener.get().onNewsFetchingError();
             } else {

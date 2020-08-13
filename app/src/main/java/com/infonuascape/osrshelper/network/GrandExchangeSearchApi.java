@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GrandExchangeSearchApi {
+    private static final String TAG = "GrandExchangeSearchApi";
+
     private final static String API_URL = NetworkStack.ENDPOINT + "/ge/search/%s";
 
     private final static String ICON_ENDPOINT = "http://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
@@ -26,6 +29,7 @@ public class GrandExchangeSearchApi {
     private final static String VALUE_TRUE = "true";
 
     public static List<Item> fetch(String itemName) {
+        Logger.add(TAG, ": fetch: itemName=", itemName);
         List<Item> itemsSearch = new ArrayList<>();
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemName)));
         if (httpResult.statusCode == StatusCode.FOUND) {
@@ -33,7 +37,7 @@ public class GrandExchangeSearchApi {
                 JSONObject json = new JSONObject(httpResult.output).getJSONObject(KEY_MATCHES);
 
                 Iterator<String> keys = json.keys();
-                while(keys.hasNext()) {
+                while (keys.hasNext()) {
                     String itemId = keys.next();
                     JSONObject itemJson = json.getJSONObject(itemId);
                     Item item = new Item();
@@ -45,7 +49,7 @@ public class GrandExchangeSearchApi {
                     itemsSearch.add(item);
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Logger.addException(TAG, e);
             }
         }
         return itemsSearch;

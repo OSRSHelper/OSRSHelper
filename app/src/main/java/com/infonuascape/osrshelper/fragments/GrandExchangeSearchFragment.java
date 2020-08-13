@@ -20,102 +20,106 @@ import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.util.List;
 
 public class GrandExchangeSearchFragment extends OSRSFragment implements OnItemClickListener, SearchView.OnQueryTextListener, SearchGEResultsListener {
-	private GrandExchangeSearchAdapter adapter;
-	private SearchView searchView;
-	private String searchText;
-	private ListView list;
-	private Handler handler;
+    private static final String TAG = "GrandExchangeSearchFragment";
 
-	public static GrandExchangeSearchFragment newInstance(){
-		GrandExchangeSearchFragment fragment = new GrandExchangeSearchFragment();
-		Bundle bundle = new Bundle();
-		fragment.setArguments(bundle);
-		return fragment;
-	}
+    private GrandExchangeSearchAdapter adapter;
+    private SearchView searchView;
+    private String searchText;
+    private ListView list;
+    private Handler handler;
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
+    public static GrandExchangeSearchFragment newInstance() {
+        GrandExchangeSearchFragment fragment = new GrandExchangeSearchFragment();
+        Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
-		View view = inflater.inflate(R.layout.search_ge, null);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-		handler = new Handler();
+        View view = inflater.inflate(R.layout.search_ge, null);
 
-		searchView = view.findViewById(R.id.searchView);
-		searchView.setOnQueryTextListener(this);
-		searchView.setIconifiedByDefault(false);
-		searchView.setQueryHint(getResources().getString(R.string.grand_exchange_lookup_hint));
+        handler = new Handler();
 
-		list = view.findViewById(android.R.id.list);
-		list.setOnItemClickListener(this);
+        searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(this);
+        searchView.setIconifiedByDefault(false);
+        searchView.setQueryHint(getResources().getString(R.string.grand_exchange_lookup_hint));
 
-		adapter = new GrandExchangeSearchAdapter(getContext(), DBController.getGrandExchangeItems(getContext()));
-		list.setAdapter(adapter);
+        list = view.findViewById(android.R.id.list);
+        list.setOnItemClickListener(this);
 
-		return view;
-	}
+        adapter = new GrandExchangeSearchAdapter(getContext(), DBController.getGrandExchangeItems(getContext()));
+        list.setAdapter(adapter);
 
-	@Override
-	public boolean onQueryTextSubmit(String searchTerm) {
-		return false;
-	}
+        return view;
+    }
 
-	@Override
-	public boolean onQueryTextChange(String searchTerm) {
-		this.searchText = searchTerm;
-		handler.removeCallbacks(waitForSearchRunnable);
-		handler.postDelayed(waitForSearchRunnable, 300);
-		return false;
-	}
+    @Override
+    public boolean onQueryTextSubmit(String searchTerm) {
+        return false;
+    }
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		final Item item = adapter.getItem(position);
-		MainFragmentController.getInstance().showFragment(GrandExchangeDetailFragment.newInstance(item.name, item.id));
-	}
+    @Override
+    public boolean onQueryTextChange(String searchTerm) {
+        Logger.add(TAG, ": onQueryTextChange: searchTerm=", searchTerm);
+        this.searchText = searchTerm;
+        handler.removeCallbacks(waitForSearchRunnable);
+        handler.postDelayed(waitForSearchRunnable, 300);
+        return false;
+    }
 
-	@Override
-	public void onSearchResults(final String searchTerm, List<Item> searchResults) {
-		getView().findViewById(R.id.progress_loading).setVisibility(View.GONE);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Item item = adapter.getItem(position);
+        if (item != null) {
+            MainFragmentController.getInstance().showFragment(GrandExchangeDetailFragment.newInstance(item.name, item.id));
+        }
+    }
 
-		if(TextUtils.equals(searchTerm, searchText)) {
-			adapter = new GrandExchangeSearchAdapter(getContext(), searchResults);
-			list.setAdapter(adapter);
-		}
-	}
+    @Override
+    public void onSearchResults(final String searchTerm, List<Item> searchResults) {
+        Logger.add(TAG, ": onSearchResults: searchTerm=", searchTerm, ", searchResults=", searchResults);
+        getView().findViewById(R.id.progress_loading).setVisibility(View.GONE);
 
-	private Runnable waitForSearchRunnable = new Runnable() {
-		@Override
-		public void run() {
-			search();
-		}
-	};
+        if (TextUtils.equals(searchTerm, searchText)) {
+            adapter = new GrandExchangeSearchAdapter(getContext(), searchResults);
+            list.setAdapter(adapter);
+        }
+    }
 
-	private void search() {
-		if(getView() != null) {
-			if (adapter != null) {
-				adapter.clear();
-				adapter.notifyDataSetChanged();
-			}
+    private Runnable waitForSearchRunnable = () -> search();
 
-			if (searchText != null && searchText.length() >= 3) {
-				startSearchTask();
-			} else {
-				adapter = new GrandExchangeSearchAdapter(getContext(), DBController.getGrandExchangeItems(getContext()));
-				list.setAdapter(adapter);
-			}
-		}
-	}
+    private void search() {
+		Logger.add(TAG, ": search");
+        if (getView() != null) {
+            if (adapter != null) {
+                adapter.clear();
+                adapter.notifyDataSetChanged();
+            }
 
-	private void startSearchTask() {
-		killAsyncTaskIfStillRunning();
-		asyncTask = new SearchGEResultsTask(this, searchText);
-		asyncTask.execute();
-		getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
-	}
+            if (searchText != null && searchText.length() >= 3) {
+                startSearchTask();
+            } else {
+                adapter = new GrandExchangeSearchAdapter(getContext(), DBController.getGrandExchangeItems(getContext()));
+                list.setAdapter(adapter);
+            }
+        }
+    }
+
+    private void startSearchTask() {
+		Logger.add(TAG, ": startSearchTask");
+        killAsyncTaskIfStillRunning();
+        asyncTask = new SearchGEResultsTask(this, searchText);
+        asyncTask.execute();
+        getView().findViewById(R.id.progress_loading).setVisibility(View.VISIBLE);
+    }
 }

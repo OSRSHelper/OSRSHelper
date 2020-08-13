@@ -94,7 +94,7 @@ public class TopPlayersSkillPeriodFragment extends OSRSPagerFragment implements 
 
     @Override
     public void onPlayersFetched(List<PlayerExp> playerList) {
-        Logger.add(TAG, ": onPlayersFetched");
+        Logger.add(TAG, ": onPlayersFetched: playerList=", playerList);
         asyncTask = null;
         this.playerExp = playerList;
         if (getView() != null) {

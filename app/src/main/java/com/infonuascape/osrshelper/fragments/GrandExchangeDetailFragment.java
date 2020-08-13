@@ -17,6 +17,7 @@ import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.listeners.GEDetailListener;
 import com.infonuascape.osrshelper.models.grandexchange.GrandExchangeDetailInfo;
 import com.infonuascape.osrshelper.tasks.GrandExchangeDetailPlotTask;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.jjoe64.graphview.series.DataPoint;
 
 import androidx.annotation.NonNull;
@@ -69,7 +70,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
         subscribeBtn = view.findViewById(R.id.item_subscribe);
         subscribeBtn.setOnClickListener(this);
 
-        if(!BuildConfig.DEBUG) {
+        if (!BuildConfig.DEBUG) {
             subscribeBtn.setVisibility(View.GONE);
         }
 
@@ -84,7 +85,8 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
     }
 
     private void refreshItemInfo() {
-        if(getView() != null) {
+        Logger.add(TAG, ": refreshItemInfo");
+        if (getView() != null) {
             ((TextView) getView().findViewById(R.id.item_name)).setText(itemInfo.name);
             ((TextView) getView().findViewById(R.id.item_desc)).setText(itemInfo.description);
             ((TextView) getView().findViewById(R.id.item_price)).setText(itemInfo.current.value);
@@ -107,6 +109,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
 
     @Override
     public void onPageSelected(int position) {
+        Logger.add(TAG, ": onPageSelected: position=", position);
         ((GrandExchangePeriodFragment) adapter.getItem(position)).onPageVisible(datapoints, averages);
     }
 
@@ -117,7 +120,8 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
 
     @Override
     public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GrandExchangeDetailInfo itemInfo) {
-        if(datapoints != null && averages != null) {
+        Logger.add(TAG, ": onInfoFetched: datapoints=", datapoints, ", averages=", averages, ", itemInfo=", itemInfo);
+        if (datapoints != null && averages != null) {
             DBController.addGrandExchangeItem(getContext(), itemInfo);
             this.datapoints = datapoints;
             this.averages = averages;
@@ -131,7 +135,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.item_subscribe) {
+        if (view.getId() == R.id.item_subscribe) {
             //Todo: magic
             Toast.makeText(getContext(), "Coming soon©", Toast.LENGTH_SHORT).show();
         }

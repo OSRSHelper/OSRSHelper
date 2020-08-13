@@ -11,6 +11,7 @@ import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,6 @@ import androidx.annotation.Nullable;
 public class ProfileHeaderFragment extends OSRSFragment {
     private static final String TAG = "ProfileHeaderFragment";
 
-    private Account account;
     private TextView combatText;
     private View progressBar;
 
@@ -41,8 +41,8 @@ public class ProfileHeaderFragment extends OSRSFragment {
     }
 
     public void refreshProfile(final Account account) {
-        this.account = account;
-        if(account != null && getView() != null) {
+        Logger.add(TAG, ": refreshProfile: account=", account);
+        if (account != null && getView() != null) {
             ((TextView) getView().findViewById(R.id.account_username)).setText(account.getDisplayName());
             ((ImageView) getView().findViewById(R.id.account_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
             ((AccountQuickActionsFragment) getChildFragmentManager().findFragmentById(R.id.osrs_quick_actions)).setAccount(account);
@@ -61,6 +61,7 @@ public class ProfileHeaderFragment extends OSRSFragment {
     }
 
     public void setTitle(int textResId) {
+        Logger.add(TAG, ": setTitle: textResId=", textResId);
         if (textResId > 0) {
             ((TextView) getView().findViewById(R.id.page_name)).setText(textResId);
         } else {
@@ -69,18 +70,19 @@ public class ProfileHeaderFragment extends OSRSFragment {
     }
 
     public void showCombatLvl(final int combatLvl) {
+        Logger.add(TAG, ": showCombatLvl: combatLvl=", combatLvl);
         final Account myProfile = DBController.getProfileAccount(getContext());
-        if(myProfile != null && myProfile.combatLvl != 0) {
-            if(myProfile.combatLvl > combatLvl) {
-                if(myProfile.combatLvl + 10 > combatLvl) {
+        if (myProfile != null && myProfile.combatLvl != 0) {
+            if (myProfile.combatLvl > combatLvl) {
+                if (myProfile.combatLvl + 10 > combatLvl) {
                     combatText.setTextColor(getResources().getColor(R.color.combat_lvl_lower));
                 } else {
                     combatText.setTextColor(getResources().getColor(R.color.combat_lvl_slightly_lower));
                 }
-            } else if(myProfile.combatLvl == combatLvl) {
+            } else if (myProfile.combatLvl == combatLvl) {
                 combatText.setTextColor(getResources().getColor(R.color.combat_lvl_equal));
             } else {
-                if(myProfile.combatLvl - 10 < combatLvl) {
+                if (myProfile.combatLvl - 10 < combatLvl) {
                     combatText.setTextColor(getResources().getColor(R.color.combat_lvl_over));
                 } else {
                     combatText.setTextColor(getResources().getColor(R.color.combat_lvl_slightly_over));

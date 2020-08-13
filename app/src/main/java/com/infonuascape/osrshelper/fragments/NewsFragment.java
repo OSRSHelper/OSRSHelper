@@ -21,6 +21,7 @@ import com.infonuascape.osrshelper.listeners.NewsFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.News;
 import com.infonuascape.osrshelper.tasks.OSRSNewsTask;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
 import java.util.List;
@@ -79,8 +80,9 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     }
 
     private void refreshSubscribeBtn() {
+        Logger.add(TAG, ": refreshSubscribeBtn");
         final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
-        subscribeBtn.setText(isSubscribedToNews ? R.string.unsubscribe_news: R.string.subscribe_news);
+        subscribeBtn.setText(isSubscribedToNews ? R.string.unsubscribe_news : R.string.subscribe_news);
         subscribeBtn.setSelected(isSubscribedToNews);
     }
 
@@ -92,7 +94,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     }
 
     private void loadNews(int pageNum) {
-        Log.d(TAG, "loadNews: pageNum=" + pageNum);
+        Logger.add(TAG, ": loadNews: pageNum=", pageNum);
         progressBar.setVisibility(View.VISIBLE);
         asyncTask = new OSRSNewsTask(this, pageNum);
         asyncTask.execute();
@@ -100,13 +102,15 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
 
     @Override
     public void onNewsFetchingError() {
+        Logger.add(TAG, ": onNewsFetchingError");
         progressBar.setVisibility(View.GONE);
         emptyText.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onNewsFetched(List<News> news) {
-        if(getView() != null) {
+        Logger.add(TAG, ": onNewsFetched: news=", news);
+        if (getView() != null) {
             progressBar.setVisibility(View.GONE);
             emptyText.setVisibility(View.GONE);
             newsAdapter.addNews(news);
@@ -115,6 +119,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
 
     @Override
     public void onItemClicked(int position) {
+        Logger.add(TAG, ": onItemClicked: position=", position);
         News news = newsAdapter.getItem(position);
         MainFragmentController.getInstance().showFragment(WebViewFragment.newInstance(news.url, true));
     }
@@ -126,7 +131,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.subscribe_btn) {
+        if (view.getId() == R.id.subscribe_btn) {
             final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(getContext(), PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
             Utils.subscribeToNews(getContext(), !isSubscribedToNews);
             refreshSubscribeBtn();

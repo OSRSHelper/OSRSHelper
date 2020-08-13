@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ public class NetworkStack {
     }
 
     public static void init(final Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new NetworkStack(context);
         }
     }
@@ -53,13 +54,13 @@ public class NetworkStack {
     }
 
     public HTTPResult performRequest(String url, int requestMethod, boolean saveOutput) {
-        Log.d(TAG, "performRequest: url=" + url + ", saveOutput=" + saveOutput);
+        Logger.add(TAG, ": performRequest: url=", url, ", requestMethod=", requestMethod, ", saveOutput=", saveOutput);
         HTTPResult result = new HTTPResult();
         result.url = url;
 
         RequestFuture<String> future = RequestFuture.newFuture();
         StringRequest stringRequest = new StringRequest(requestMethod, url, future, future);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(60000, 1 ,1));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(60000, 1, 1));
         queue.add(stringRequest);
 
         try {
@@ -69,7 +70,7 @@ public class NetworkStack {
             if (saveOutput) {
                 try {
                     DBController.insertOutputToQueryCache(context, url, result.output);
-                } catch(SecurityException e) {
+                } catch (SecurityException e) {
                     //The widgets doesn't have the permission to access the database
                 }
             }
@@ -77,8 +78,8 @@ public class NetworkStack {
             result.statusCode = StatusCode.NOT_FOUND;
             //Don't show interrupted exception, it's user-triggered
         } catch (ExecutionException e) {
+            Logger.addException(TAG, e);
             result.statusCode = StatusCode.NOT_FOUND;
-            e.printStackTrace();
         }
 
         return result;

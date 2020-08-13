@@ -5,12 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.AccountQuickActionsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.enums.QuickAction;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,13 +75,14 @@ public class AccountQuickActionsFragment extends OSRSFragment implements Recycle
 
     @Override
     public void onItemClicked(int position) {
-        if(account != null) {
+        Logger.add(TAG, ": onItemClicked: position=", position);
+        if (account != null) {
             QuickAction quickAction = adapter.getItem(position);
-            if(quickAction == QuickAction.HISCORES) {
+            if (quickAction == QuickAction.HISCORES) {
                 MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
-            } else if(quickAction == QuickAction.XP_TRACKER) {
+            } else if (quickAction == QuickAction.XP_TRACKER) {
                 MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_xp_tracker : -1, XPTrackerFragment.newInstance(account));
-            } else if(quickAction == QuickAction.DATA_POINTS) {
+            } else if (quickAction == QuickAction.DATA_POINTS) {
                 MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_data_points : -1, DataPointsFragment.newInstance(account));
             }
         }

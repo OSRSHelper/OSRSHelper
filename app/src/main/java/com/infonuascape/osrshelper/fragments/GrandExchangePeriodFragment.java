@@ -26,102 +26,103 @@ import java.util.Arrays;
 import androidx.annotation.Nullable;
 
 public class GrandExchangePeriodFragment extends OSRSPagerFragment implements OnDataPointTapListener {
-	private static final String TAG = "GrandExchangePeriodFrag";
+    private static final String TAG = "GrandExchangePeriodFrag";
 
-	private final static String EXTRA_GE_PERIOD = "EXTRA_GE_PERIOD";
-	private GraphView graphView;
-	private ProgressBar progressBar;
-	private View errorView;
+    private final static String EXTRA_GE_PERIOD = "EXTRA_GE_PERIOD";
+    private GraphView graphView;
+    private ProgressBar progressBar;
+    private View errorView;
 
-	private GrandExchangePeriods period;
-	private AlertDialog dialog;
+    private GrandExchangePeriods period;
+    private AlertDialog dialog;
 
-	public static GrandExchangePeriodFragment newInstance(final GrandExchangePeriods period) {
-		GrandExchangePeriodFragment fragment = new GrandExchangePeriodFragment();
-		Bundle b = new Bundle();
-		b.putSerializable(EXTRA_GE_PERIOD, period);
-		fragment.setArguments(b);
-		return fragment;
-	}
+    public static GrandExchangePeriodFragment newInstance(final GrandExchangePeriods period) {
+        GrandExchangePeriodFragment fragment = new GrandExchangePeriodFragment();
+        Bundle b = new Bundle();
+        b.putSerializable(EXTRA_GE_PERIOD, period);
+        fragment.setArguments(b);
+        return fragment;
+    }
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-		View view = inflater.inflate(R.layout.ge_detail_period, null);
+        View view = inflater.inflate(R.layout.ge_detail_period, null);
 
-		progressBar = view.findViewById(R.id.progress_bar);
-		errorView = view.findViewById(R.id.empty_view);
+        progressBar = view.findViewById(R.id.progress_bar);
+        errorView = view.findViewById(R.id.empty_view);
 
-		period = (GrandExchangePeriods) getArguments().getSerializable(EXTRA_GE_PERIOD);
+        period = (GrandExchangePeriods) getArguments().getSerializable(EXTRA_GE_PERIOD);
 
-		graphView = view.findViewById(R.id.graph);
-		graphView.setVisibility(View.GONE);
+        graphView = view.findViewById(R.id.graph);
+        graphView.setVisibility(View.GONE);
 
-		graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
-		final int textColor = getResources().getColor(R.color.text_normal);
-		graphView.getGridLabelRenderer().setVerticalLabelsColor(textColor);
-		graphView.getGridLabelRenderer().setHorizontalLabelsColor(textColor);
-		graphView.getLegendRenderer().setTextColor(textColor);
-		graphView.getGridLabelRenderer().reloadStyles();
-		graphView.getGridLabelRenderer().setLabelFormatter(new GrandExchangeAxisFormatter(getActivity(), period.getFormat()));
+        graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL);
+        final int textColor = getResources().getColor(R.color.text_normal);
+        graphView.getGridLabelRenderer().setVerticalLabelsColor(textColor);
+        graphView.getGridLabelRenderer().setHorizontalLabelsColor(textColor);
+        graphView.getLegendRenderer().setTextColor(textColor);
+        graphView.getGridLabelRenderer().reloadStyles();
+        graphView.getGridLabelRenderer().setLabelFormatter(new GrandExchangeAxisFormatter(getActivity(), period.getFormat()));
 
-		return view;
-	}
+        return view;
+    }
 
-	public void onPageVisible(final DataPoint[] datapoints, DataPoint[] averages) {
-		if(getView() != null) {
-			progressBar.setVisibility(View.GONE);
-			graphView.removeAllSeries();
-			if (datapoints != null && averages != null) {
-				errorView.setVisibility(View.GONE);
-				DataPoint[] list = Arrays.copyOfRange(datapoints, Math.max(0, datapoints.length - period.getDays()), datapoints.length);
-				LineGraphSeries<DataPoint> datapointsSerie = new LineGraphSeries<>(list);
-				datapointsSerie.setDrawDataPoints(true);
-				datapointsSerie.setColor(getContext().getResources().getColor(R.color.green));
-				datapointsSerie.setTitle(getContext().getResources().getString(R.string.daily_average));
-				datapointsSerie.setOnDataPointTapListener(this);
-				graphView.addSeries(datapointsSerie);
+    public void onPageVisible(final DataPoint[] datapoints, DataPoint[] averages) {
+        Logger.add(TAG, ": onPageVisible: datapoints=", datapoints, ", averages=", averages);
+        if (getView() != null) {
+            progressBar.setVisibility(View.GONE);
+            graphView.removeAllSeries();
+            if (datapoints != null && averages != null) {
+                errorView.setVisibility(View.GONE);
+                DataPoint[] list = Arrays.copyOfRange(datapoints, Math.max(0, datapoints.length - period.getDays()), datapoints.length);
+                LineGraphSeries<DataPoint> datapointsSerie = new LineGraphSeries<>(list);
+                datapointsSerie.setDrawDataPoints(true);
+                datapointsSerie.setColor(getContext().getResources().getColor(R.color.green));
+                datapointsSerie.setTitle(getContext().getResources().getString(R.string.daily_average));
+                datapointsSerie.setOnDataPointTapListener(this);
+                graphView.addSeries(datapointsSerie);
 
-				LineGraphSeries<DataPoint> averageSerie = new LineGraphSeries<>(Arrays.copyOfRange(averages, Math.max(0, averages.length - period.getDays()), averages.length));
-				averageSerie.setColor(getContext().getResources().getColor(R.color.orange));
-				averageSerie.setTitle(getContext().getResources().getString(R.string.trend));
-				averageSerie.setDrawDataPoints(true);
-				averageSerie.setDataPointsRadius(6f);
-				averageSerie.setOnDataPointTapListener(this);
-				graphView.addSeries(averageSerie);
+                LineGraphSeries<DataPoint> averageSerie = new LineGraphSeries<>(Arrays.copyOfRange(averages, Math.max(0, averages.length - period.getDays()), averages.length));
+                averageSerie.setColor(getContext().getResources().getColor(R.color.orange));
+                averageSerie.setTitle(getContext().getResources().getString(R.string.trend));
+                averageSerie.setDrawDataPoints(true);
+                averageSerie.setDataPointsRadius(6f);
+                averageSerie.setOnDataPointTapListener(this);
+                graphView.addSeries(averageSerie);
 
-				graphView.getViewport().setMinX(datapointsSerie.getLowestValueX());
-				graphView.getViewport().setMaxX(datapointsSerie.getHighestValueX());
-				graphView.getViewport().setXAxisBoundsManual(true);
+                graphView.getViewport().setMinX(datapointsSerie.getLowestValueX());
+                graphView.getViewport().setMaxX(datapointsSerie.getHighestValueX());
+                graphView.getViewport().setXAxisBoundsManual(true);
 
-				graphView.getGridLabelRenderer().setNumHorizontalLabels(period.getNbLabels());
-				graphView.getGridLabelRenderer().setNumVerticalLabels(10);
-				graphView.getLegendRenderer().setVisible(true);
-				graphView.getLegendRenderer().setBackgroundColor(getContext().getResources().getColor(R.color.grand_exchange_legend));
-				graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                graphView.getGridLabelRenderer().setNumHorizontalLabels(period.getNbLabels());
+                graphView.getGridLabelRenderer().setNumVerticalLabels(10);
+                graphView.getLegendRenderer().setVisible(true);
+                graphView.getLegendRenderer().setBackgroundColor(getContext().getResources().getColor(R.color.grand_exchange_legend));
+                graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
-				graphView.getGridLabelRenderer().setHumanRounding(false, true);
+                graphView.getGridLabelRenderer().setHumanRounding(false, true);
 
-				graphView.setVisibility(View.VISIBLE);
-			} else {
-				graphView.setVisibility(View.GONE);
-				errorView.setVisibility(View.VISIBLE);
-			}
-		}
-	}
+                graphView.setVisibility(View.VISIBLE);
+            } else {
+                graphView.setVisibility(View.GONE);
+                errorView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
-	@Override
-	public void onTap(Series series, DataPointInterface dataPointInterface) {
-		Logger.add(TAG, ": onTap: series title=" + series.getTitle());
-		if(dialog == null || !dialog.isShowing()) {
-			dialog = GrandExchangePointDialog.showDialog(getContext(), series.getTitle(), dataPointInterface);
-		}
-	}
+    @Override
+    public void onTap(Series series, DataPointInterface dataPointInterface) {
+        Logger.add(TAG, ": onTap: series=", series, ", dataPointInterface=", dataPointInterface);
+        if (dialog == null || !dialog.isShowing()) {
+            dialog = GrandExchangePointDialog.showDialog(getContext(), series.getTitle(), dataPointInterface);
+        }
+    }
 
-	@Override
-	public void onPageVisible() {
+    @Override
+    public void onPageVisible() {
 
-	}
+    }
 }

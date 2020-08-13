@@ -80,7 +80,7 @@ public class WebViewFragment extends OSRSFragment {
         webView.getSettings().setUseWideViewPort(true);
         webView.setBackgroundColor(Color.TRANSPARENT);
 
-        if(getArguments().getBoolean(EXTRA_IS_NEWS, false)) {
+        if (getArguments().getBoolean(EXTRA_IS_NEWS, false)) {
             webView.getSettings().setMinimumFontSize(32);
         }
 
@@ -95,7 +95,7 @@ public class WebViewFragment extends OSRSFragment {
 
     public void destroyWebView() {
         Logger.add(TAG, ": destroyWebView");
-        if(webViewContainer != null && webView != null) {
+        if (webViewContainer != null && webView != null) {
             webViewContainer.removeAllViews();
             webView.clearHistory();
             webView.clearCache(true);
@@ -117,7 +117,7 @@ public class WebViewFragment extends OSRSFragment {
 
     @Override
     public boolean onBackPressed() {
-        if(!url.equalsIgnoreCase(webView.getOriginalUrl())) {
+        if (!url.equalsIgnoreCase(webView.getOriginalUrl())) {
             webView.goBack();
             return true;
         }

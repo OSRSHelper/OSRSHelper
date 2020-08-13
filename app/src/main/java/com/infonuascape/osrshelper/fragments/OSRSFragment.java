@@ -31,7 +31,7 @@ public abstract class OSRSFragment extends Fragment {
     }
 
     protected void killAsyncTaskIfStillRunning() {
-        if(asyncTask != null) {
+        if (asyncTask != null) {
             if (asyncTask.getStatus() == AsyncTask.Status.RUNNING) {
                 Logger.add(TAG, ": killAsyncTaskIfStillRunning: running=true");
                 asyncTask.cancel(true);

@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.network;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.News;
 import com.infonuascape.osrshelper.models.StatusCode;
+import com.infonuascape.osrshelper.utils.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsApi {
+    private static final String TAG = "NewsApi";
+
     private static final String API_URL = NetworkStack.ENDPOINT + "/news/%s";
     private static final String KEY_TITLE = "title";
     private static final String KEY_DESCRIPTION = "description";
@@ -21,6 +24,7 @@ public class NewsApi {
     private static final String KEY_CATEGORY = "category";
 
     public static List<News> fetch(final int pageNum) {
+        Logger.add(TAG, ": fetch: pageNum=", pageNum);
         final String url = String.format(API_URL, pageNum);
         HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
 
@@ -40,7 +44,7 @@ public class NewsApi {
                     newsList.add(news);
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Logger.addException(TAG, e);
             }
         }
 

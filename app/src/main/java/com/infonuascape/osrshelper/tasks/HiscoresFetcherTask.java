@@ -10,10 +10,10 @@ import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.network.HiscoreApi;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 
 import java.lang.ref.WeakReference;
 
@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
  */
 
 public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
+    private static final String TAG = "HiscoresFetcherTask";
     private WeakReference<Context> context;
     private HiscoresFetcherListener listener;
     private Account account;
@@ -49,13 +50,13 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
                 playerSkills = HiscoreApi.fetch(context.get(), account.username);
             }
         } catch (PlayerNotFoundException e) {
-            e.printStackTrace();
+            Logger.addException(TAG, e);
             errorMessage = context.get().getString(R.string.not_existing_player);
         } catch (APIError e) {
-            e.printStackTrace();
+            Logger.addException(TAG, e);
             errorMessage = e.getMessage();
-        } catch (Exception uhe) {
-            uhe.printStackTrace();
+        } catch (Exception e) {
+            Logger.addException(TAG, e);
             if (context.get() != null) {
                 errorMessage = context.get().getString(R.string.internal_error);
             }

@@ -3,8 +3,9 @@ package com.infonuascape.osrshelper.controllers;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
@@ -13,16 +14,13 @@ import com.infonuascape.osrshelper.fragments.OSRSFragment;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 /**
  * Created by marc_ on 2018-01-21.
  */
 
 public class MainFragmentController {
-    private static final String ROOT_FRAGMENT_TAG = "ROOT_FRAGMENT_TAG";
     private static final String TAG = "MainFragmentController";
+    private static final String ROOT_FRAGMENT_TAG = "ROOT_FRAGMENT_TAG";
 
     private MainActivity mainActivity;
     private NavigationView navigationView;
@@ -43,12 +41,11 @@ public class MainFragmentController {
     }
 
     public void showRootFragment(final int menuId, final OSRSFragment fragment) {
-        Logger.add(TAG, ": showRootFragment:");
+        Logger.add(TAG, ": showRootFragment: menuId=", menuId, ", fragment=", fragment);
         Utils.hideKeyboard(mainActivity);
         setSelectedMenuItem(menuId);
 
-        if(fragment != null && mainActivity.isResumed) {
-            Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
+        if (fragment != null && mainActivity.isResumed) {
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction().replace(R.id.content, fragment, ROOT_FRAGMENT_TAG).commitAllowingStateLoss();
@@ -56,10 +53,9 @@ public class MainFragmentController {
     }
 
     public void showFragment(final OSRSFragment fragment) {
-        Logger.add(TAG, ": showFragment:");
+        Logger.add(TAG, ": showFragment: fragment=", fragment);
         Utils.hideKeyboard(mainActivity);
-        if(fragment != null && !isAlreadyInBackStack(fragment) && mainActivity.isResumed) {
-            Answers.getInstance().logContentView(new ContentViewEvent().putContentName(getCleanName(fragment)));
+        if (fragment != null && !isAlreadyInBackStack(fragment) && mainActivity.isResumed) {
             FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
             final String tag = getTag(fragment);
             fragmentManager.beginTransaction().replace(R.id.content, fragment, tag).addToBackStack(tag).commitAllowingStateLoss();
@@ -67,7 +63,7 @@ public class MainFragmentController {
     }
 
     public void setSelectedMenuItem(final int menuId) {
-        Logger.add(TAG, ": setSelectedMenuItem: menuId=" + menuId);
+        Logger.add(TAG, ": setSelectedMenuItem: menuId=", menuId);
         for (int i = 0; i < navigationView.getMenu().size(); i++) {
             MenuItem menuItem = navigationView.getMenu().getItem(i);
             if (menuItem.getItemId() == menuId) {
@@ -114,18 +110,18 @@ public class MainFragmentController {
 
         Fragment fragment = null;
         //Check the backstack first
-        if(fragmentManager.getBackStackEntryCount() > 0) {
+        if (fragmentManager.getBackStackEntryCount() > 0) {
             final String tag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
             fragment = fragmentManager.findFragmentByTag(tag);
         }
 
         //Else, try to get the root element
-        if(fragment == null) {
+        if (fragment == null) {
             fragment = mainActivity.getSupportFragmentManager().findFragmentByTag(ROOT_FRAGMENT_TAG);
         }
 
         //Only cast if not null
-        if(fragment != null) {
+        if (fragment != null) {
             Logger.add(TAG, ": getCurrentFragment: name=" + fragment.getClass().getSimpleName());
             return (OSRSFragment) fragment;
         }
@@ -134,13 +130,13 @@ public class MainFragmentController {
     }
 
     public boolean onBackPressed() {
-        Logger.add(TAG, ": onBackPressed:");
+        Logger.add(TAG, ": onBackPressed");
         FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
 
-        if(fragmentManager.getBackStackEntryCount() > 0) {
+        if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStackImmediate();
             return true;
-        } else if(fragmentManager.getBackStackEntryCount() == 0) {
+        } else if (fragmentManager.getBackStackEntryCount() == 0) {
             OSRSFragment fragment = getCurrentFragment();
             if (fragment != null) {
                 if (fragment.onBackPressed()) {

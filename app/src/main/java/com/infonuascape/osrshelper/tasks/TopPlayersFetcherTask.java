@@ -8,6 +8,7 @@ import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TopPlayersListener;
 import com.infonuascape.osrshelper.models.players.PlayerExp;
 import com.infonuascape.osrshelper.network.TopPlayersApi;
+import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 
 import org.json.JSONException;
@@ -39,8 +40,8 @@ public class TopPlayersFetcherTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... params) {
         try {
             playerExps = TopPlayersApi.fetch(skillType, accountType, period);
-        } catch (APIError | JSONException apiError) {
-            apiError.printStackTrace();
+        } catch (APIError | JSONException e) {
+            Logger.addException(TAG, e);
         }
 
         return null;
@@ -48,7 +49,7 @@ public class TopPlayersFetcherTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        if(listener.get() != null) {
+        if (listener.get() != null) {
             listener.get().onPlayersFetched(playerExps);
         }
     }
