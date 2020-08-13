@@ -6,6 +6,7 @@ import android.util.Log;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.controllers.NotificationController;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.utils.Utils;

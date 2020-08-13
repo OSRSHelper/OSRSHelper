@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.controllers;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import androidx.core.app.NotificationCompat;
 import android.app.NotificationChannel;
@@ -39,6 +40,7 @@ public class NotificationController {
     }
 
     public static void showOSRSNews(final Context context, final String title, final String description, final String url) {
+        Logger.add(TAG, ": showOSRSNews: context=", context, ", title=", title, ", description=", description, ", url=", url);
         NotificationCompat.Builder builder;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new NotificationCompat.Builder(context, OSRS_HELPER_CHANNEL_ID);
@@ -48,7 +50,8 @@ public class NotificationController {
 
         builder.setContentTitle(title);
         builder.setContentText(description);
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.notif_small_icon);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 
         Intent resultIntent = MainActivity.getNewsIntent(context, url);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
