@@ -4,6 +4,7 @@ import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.HiscoreBoss;
 import com.infonuascape.osrshelper.models.HiscoreBountyHunter;
 import com.infonuascape.osrshelper.models.HiscoreClueScroll;
+import com.infonuascape.osrshelper.models.HiscoreEfficiency;
 import com.infonuascape.osrshelper.models.HiscoreItem;
 import com.infonuascape.osrshelper.models.HiscoreLeaguePoints;
 import com.infonuascape.osrshelper.models.HiscoreLms;
@@ -43,6 +44,7 @@ public class PlayerSkills {
 
 	public List<Skill> skillList = new ArrayList<>();
 	public List<HiscoreBoss> bossesList = new ArrayList<>();
+	public List<HiscoreEfficiency> efficiencyList = new ArrayList<>();
 	public List<HiscoreClueScroll> clueScrollsList = new ArrayList<>();
 	public List<HiscoreBountyHunter> bountyHunterList = new ArrayList<>();
 	public HiscoreLms hiscoreLms;
@@ -140,6 +142,7 @@ public class PlayerSkills {
 
 	public List<HiscoreItem> getHiscoresItems() {
 		List<HiscoreItem> hiscoreItems = new ArrayList<>();
+		hiscoreItems.addAll(efficiencyList);
 		hiscoreItems.addAll(bountyHunterList);
 		hiscoreItems.addAll(clueScrollsList);
 		hiscoreItems.addAll(bossesList);
@@ -155,6 +158,9 @@ public class PlayerSkills {
 	public Object getItem(int position) {
 		int currentPosition = position;
 		currentPosition -= skillList.size();
+		if (currentPosition < efficiencyList.size()) {
+			return efficiencyList.get(currentPosition);
+		}
 		if (currentPosition < bountyHunterList.size()) {
 			return bountyHunterList.get(currentPosition);
 		}

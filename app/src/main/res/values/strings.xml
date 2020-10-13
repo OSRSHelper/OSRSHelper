@@ -108,6 +108,7 @@
     <string name="switch_profile">Switch Profile</string>
     <string name="tools">Tools</string>
     <string name="news">News</string>
+    <string name="bubble">Bubble</string>
     <string name="lookup_user">Lookup user</string>
     <string name="no_profile">No profile selected yet</string>
     <string name="first_time_news_feed">Since you are new here, click here to enter your account name to set as your profile</string>
@@ -173,6 +174,7 @@
     <string name="hiscore_title_bounty_hunter">Bounty Hunter</string>
     <string name="hiscore_title_clue_scrolls">Clue Scrolls</string>
     <string name="hiscore_title_bosses">Bosses</string>
+    <string name="hiscore_title_efficiency">Efficiency</string>
     <string name="hiscore_title_lms">Last Man Standing</string>
     <string name="hiscore_title_league_points">League Points</string>
     <string name="hiscore_newly_tracked">Wise Old Man will now track that player\'s progress</string>

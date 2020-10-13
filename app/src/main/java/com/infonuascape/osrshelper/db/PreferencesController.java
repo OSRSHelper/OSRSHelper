@@ -8,6 +8,8 @@ public class PreferencesController {
 
     public static final String USER_PREF_SHOW_VIRTUAL_LEVELS = "USER_PREF_SHOW_VIRTUAL_LEVELS";
     public static final String USER_PREF_IS_SUBSCRIBED_TO_NEWS = "USER_PREF_IS_SUBSCRIBED_TO_NEWS";
+    public static final String USER_PREF_HOVER_MENU_ENABLED = "USER_PREF_HOVER_MENU_ENABLED";
+    public static final String USER_PREF_HOVER_MENU_SHOWN = "USER_PREF_HOVER_MENU_SHOWN";
     // ADD CONSTANT KEYS HERE
 
     public static void setPreference(final Context context, final String preference, final String value) {

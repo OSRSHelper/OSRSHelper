@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -27,6 +29,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
+import com.infonuascape.osrshelper.bubble.HoverMenuServiceImpl;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.db.PreferencesController;
@@ -45,12 +48,15 @@ import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 
+import io.mattcarroll.hover.overlay.OverlayPermission;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener,
         SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider, View.OnClickListener {
     private static final String TAG = "MainActivity";
     private static final String EXTRA_FRAGMENT_TO_OPEN = "EXTRA_FRAGMENT_TO_OPEN";
     private static final String EXTRA_FRAGMENT_TO_OPEN_BUNDLE = "EXTRA_FRAGMENT_TO_OPEN_BUNDLE";
     public static final int REQUEST_CODE_SET_PROFILE = 9001;
+    public static final int REQUEST_CODE_HOVER_PERMISSION = 9002;
 
     public static Intent getGrandExchangeDetailIntent(Context context, String name, String itemId) {
         Intent i = new Intent(context, MainActivity.class);
@@ -90,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setIconifiedByDefault(false);
         searchView.setQueryHint(getResources().getString(R.string.lookup_user));
         View searchAutoComplete = searchView.findViewById(R.id.search_src_text);
-        if(searchAutoComplete instanceof SearchView.SearchAutoComplete) {
+        if (searchAutoComplete instanceof SearchView.SearchAutoComplete) {
             ((SearchView.SearchAutoComplete) searchAutoComplete).setThreshold(0);
         }
 
@@ -117,14 +123,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void handleIntent(Intent intent) {
         final String fragmentToOpen = intent.getStringExtra(EXTRA_FRAGMENT_TO_OPEN);
-        if(fragmentToOpen != null) {
+        if (fragmentToOpen != null) {
             final Bundle bundle = intent.getBundleExtra(EXTRA_FRAGMENT_TO_OPEN_BUNDLE);
-            if(TextUtils.equals(GrandExchangeDetailFragment.class.getSimpleName(), fragmentToOpen)) {
+            if (TextUtils.equals(GrandExchangeDetailFragment.class.getSimpleName(), fragmentToOpen)) {
                 final String name = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_NAME);
                 final String itemId = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID);
                 OSRSFragment fragment = GrandExchangeDetailFragment.newInstance(name, itemId);
                 MainFragmentController.getInstance().showFragment(fragment);
-            } else if(TextUtils.equals(WebViewFragment.class.getSimpleName(), fragmentToOpen)) {
+            } else if (TextUtils.equals(WebViewFragment.class.getSimpleName(), fragmentToOpen)) {
                 OSRSFragment fragment = WebViewFragment.newInstance(bundle);
                 MainFragmentController.getInstance().showFragment(fragment);
             }
@@ -144,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 profileSubMenu.getItem(i).setVisible(account != null);
             }
         }
-        if(account != null) {
+        if (account != null) {
             ((ImageView) navigationView.getHeaderView(0).findViewById(R.id.profile_icon)).setImageResource(Utils.getAccountTypeResource(account.type));
             ((TextView) navigationView.getHeaderView(0).findViewById(R.id.profile_name)).setText(account.getDisplayName());
         }
@@ -173,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(!MainFragmentController.getInstance().onBackPressed()) {
+        } else if (!MainFragmentController.getInstance().onBackPressed()) {
             super.onBackPressed();
         }
     }
@@ -181,12 +187,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_SET_PROFILE) {
+        if (requestCode == REQUEST_CODE_SET_PROFILE) {
             MainFragmentController.getInstance().setSelectedMenuItem(-1);
 
             if (resultCode == RESULT_OK) {
                 refreshProfileAccount();
             }
+        } else if (requestCode == REQUEST_CODE_HOVER_PERMISSION && resultCode == RESULT_OK) {
+            Utils.openBubble(this);
         }
     }
 
@@ -214,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final boolean isShowVirtualLevels = PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, false);
             PreferencesController.setPreference(this, PreferencesController.USER_PREF_SHOW_VIRTUAL_LEVELS, !isShowVirtualLevels);
             OSRSFragment fragment = MainFragmentController.getInstance().getCurrentFragment();
-            if(fragment != null) {
+            if (fragment != null) {
                 fragment.refreshDataOnPreferencesChanged();
             }
             return true;
@@ -251,12 +259,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = GrandExchangeSearchFragment.newInstance();
         } else if (id == R.id.nav_top_players) {
             fragment = TopPlayersFragment.newInstance();
+        } else if (id == R.id.nav_bubble) {
+            boolean result = Utils.openBubble(this);
+            if (!result) {
+                Intent intent = OverlayPermission.createIntentToRequestOverlayPermission(this);
+                startActivityForResult(intent, REQUEST_CODE_HOVER_PERMISSION);
+            }
         } else if (id == R.id.nav_switch_profile) {
             UsernameActivity.showForProfileForResult(this, REQUEST_CODE_SET_PROFILE);
             return true;
         }
 
-        if(fragment != null) {
+        if (fragment != null) {
             MainFragmentController.getInstance().showRootFragment(id, fragment);
             drawer.closeDrawer(GravityCompat.START);
             drawer.closeDrawers();
@@ -266,19 +280,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {}
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+    }
 
     @Override
     public void onDrawerOpened(View drawerView) {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
     }
 
     @Override
-    public void onDrawerClosed(View drawerView) {}
+    public void onDrawerClosed(View drawerView) {
+    }
 
     @Override
-    public void onDrawerStateChanged(int newState) {}
+    public void onDrawerStateChanged(int newState) {
+    }
 
     @Override
     public boolean onSuggestionSelect(int position) {
@@ -288,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onSuggestionClick(int position) {
         Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
-        if(account != null) {
+        if (account != null) {
             MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
             searchView.setQuery(null, false);
             searchView.clearFocus();
@@ -321,9 +338,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.nav_header_container) {
+        if (view.getId() == R.id.nav_header_container) {
             Account account = DBController.getProfileAccount(this);
-            if(account != null) {
+            if (account != null) {
                 MainFragmentController.getInstance().showRootFragment(R.id.nav_hiscores, HighScoreFragment.newInstance(account));
                 drawer.closeDrawer(GravityCompat.START);
                 drawer.closeDrawers();

@@ -59,6 +59,11 @@
                         android:id="@+id/nav_news"
                         android:icon="@drawable/news"
                         android:title="@string/news" />
+                    <item
+                        android:id="@+id/nav_bubble"
+                        android:icon="@drawable/notif_small_icon"
+                        android:visible="false"
+                        android:title="@string/bubble" />
                 </group>
             </menu>
         </item>

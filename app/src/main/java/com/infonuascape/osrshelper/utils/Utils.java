@@ -1,7 +1,9 @@
 package com.infonuascape.osrshelper.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
@@ -15,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
+import com.infonuascape.osrshelper.bubble.HoverMenuServiceImpl;
 import com.infonuascape.osrshelper.models.PointOfInterest;
 import com.infonuascape.osrshelper.models.PointOfInterestHeader;
 import com.infonuascape.osrshelper.db.PreferencesController;
@@ -23,6 +26,8 @@ import com.infonuascape.osrshelper.enums.TrendRate;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
 
 import java.util.ArrayList;
+
+import io.mattcarroll.hover.overlay.OverlayPermission;
 
 public class Utils {
 
@@ -346,5 +351,27 @@ public class Utils {
 		rotationAnimation.setRepeatCount(Integer.MAX_VALUE);
 		rotationAnimation.setInterpolator(new LinearInterpolator());
 		return rotationAnimation;
+	}
+
+	@SuppressLint("NewApi")
+	public static boolean openBubble(final Context context) {
+		if (OverlayPermission.hasRuntimePermissionToDrawOverlay(context)) {
+			Intent intent = new Intent(context, HoverMenuServiceImpl.class);
+			context.startService(intent);
+			return true;
+		}
+
+		return false;
+	}
+
+	@SuppressLint("NewApi")
+	public static boolean hideBubble(final Context context) {
+		if (OverlayPermission.hasRuntimePermissionToDrawOverlay(context)) {
+			Intent intent = new Intent(context, HoverMenuServiceImpl.class);
+			context.stopService(intent);
+			return true;
+		}
+
+		return false;
 	}
 }
