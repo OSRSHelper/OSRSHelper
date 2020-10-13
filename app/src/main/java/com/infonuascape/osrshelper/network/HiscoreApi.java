@@ -7,11 +7,11 @@ import android.text.TextUtils;
 import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.SkillType;
-import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.HiscoreBoss;
 import com.infonuascape.osrshelper.models.HiscoreBountyHunter;
 import com.infonuascape.osrshelper.models.HiscoreClueScroll;
+import com.infonuascape.osrshelper.models.HiscoreEfficiency;
 import com.infonuascape.osrshelper.models.HiscoreLeaguePoints;
 import com.infonuascape.osrshelper.models.HiscoreLms;
 import com.infonuascape.osrshelper.models.Skill;
@@ -21,7 +21,6 @@ import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotTrackedException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +50,8 @@ public class HiscoreApi {
     private static final String VALUE_INVALID_USERNAME = "invalid_username";
     private static final String VALUE_SERVICE_TIMEOUT = "service_timeout";
 
+    private static final String KEY_EHP = "ehp";
+    private static final String KEY_EHB = "ehb";
     private static final String KEY_LMS = "last_man_standing";
     private static final String KEY_LEAGUE_POINTS = "league_points";
     private static final String KEY_CLUE_SCROLL = "clue_scrolls_";
@@ -62,6 +63,7 @@ public class HiscoreApi {
 
     private static final String KEY_RANK = "rank";
     private static final String KEY_SCORE = "score";
+    private static final String KEY_VALUE = "value";
     private static final String KEY_KILLS = "kills";
 
     private static final String KEY_CREATED_AT = "createdAt";
@@ -141,6 +143,18 @@ public class HiscoreApi {
                             lms.score = score;
                             ps.hiscoreLms = lms;
                         }
+                    } else if (TextUtils.equals(key, KEY_EHP) || TextUtils.equals(key, KEY_EHB)) {
+                        JSONObject json = jsonLatestSnapshot.getJSONObject(key);
+                        long rank = json.getLong(KEY_RANK);
+                        double value = json.getDouble(KEY_VALUE);
+
+                        if (rank != -1 && value != 0) {
+                            HiscoreEfficiency efficiency = new HiscoreEfficiency();
+                            efficiency.name = key.toUpperCase();
+                            efficiency.rank = rank;
+                            efficiency.score = (long) value;
+                            ps.efficiencyList.add(efficiency);
+                        }
                     } else if (TextUtils.equals(key, KEY_LEAGUE_POINTS)) {
                         JSONObject json = jsonLatestSnapshot.getJSONObject(key);
                         long rank = json.getLong(KEY_RANK);
@@ -175,17 +189,19 @@ public class HiscoreApi {
                             }
                         }
 
-                        //Then it's a boss
-                        JSONObject jsonBoss = jsonLatestSnapshot.getJSONObject(key);
-                        long rank = jsonBoss.getLong(KEY_RANK);
-                        long kills = jsonBoss.getLong(KEY_KILLS);
+                        JSONObject jsonItem = jsonLatestSnapshot.getJSONObject(key);
+                        if (jsonItem.has(KEY_KILLS)) {
+                            //It's a boss
+                            long rank = jsonItem.getLong(KEY_RANK);
+                            long kills = jsonItem.getLong(KEY_KILLS);
 
-                        if (rank != -1 && kills != -1) {
-                            HiscoreBoss boss = new HiscoreBoss();
-                            boss.name = Utils.capitalizeString(key);
-                            boss.rank = rank;
-                            boss.score = kills;
-                            ps.bossesList.add(boss);
+                            if (rank != -1 && kills != -1) {
+                                HiscoreBoss boss = new HiscoreBoss();
+                                boss.name = Utils.capitalizeString(key);
+                                boss.rank = rank;
+                                boss.score = kills;
+                                ps.bossesList.add(boss);
+                            }
                         }
                     }
                 }
