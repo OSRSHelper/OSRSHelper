@@ -87,9 +87,12 @@ public class ProfileHeaderFragment extends OSRSFragment {
                     combatText.setTextColor(getResources().getColor(R.color.combat_lvl_slightly_over));
                 }
             }
-        } else {
-            combatText.setTextColor(getResources().getColor(R.color.white));
+        } else if (getContext() != null) {
+            combatText.setTextColor(getContext().getResources().getColor(R.color.white));
         }
-        combatText.setText(getContext().getResources().getString(R.string.combat_lvl, combatLvl));
+
+        if (getContext() != null) {
+            combatText.setText(getContext().getResources().getString(R.string.combat_lvl, combatLvl));
+        }
     }
 }

@@ -191,8 +191,8 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
         Logger.add(TAG, ": populateTable");
         if (getActivity() != null && playerSkills != null) {
             getActivity().runOnUiThread(() -> {
-                profileHeaderFragment.showCombatLvl(playerSkills.combatLvl);
                 if (getView() != null) {
+                    profileHeaderFragment.showCombatLvl(playerSkills.combatLvl);
                     if (playerSkills.isNewlyTracked) {
                         playerSkills.isNewlyTracked = false;
                         Snackbar.make(getView(), R.string.hiscore_newly_tracked, Snackbar.LENGTH_LONG).show();
@@ -230,9 +230,9 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
         }
 
         profileHeaderFragment.refreshProfile(account);
-        if (playerSkills != null) {
+        if (playerSkills != null && getActivity() != null) {
             this.playerSkills = playerSkills;
-            titleView.setText(getString(R.string.hiscore_fetch, playerSkills.lastUpdate));
+            titleView.setText(getActivity().getString(R.string.hiscore_fetch, playerSkills.lastUpdate));
             populateTable();
         }
     }
