@@ -56,6 +56,12 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
 
                 if (lastUpdate == null) {
                     throw new PlayerNotFoundException(account.username);
+                } else {
+                    try {
+                        DBController.updateAccount(context.get(), account);
+                    } catch (Exception e) {
+                        //You can't access database via the widget
+                    }
                 }
             }
         } catch (PlayerNotFoundException e) {
