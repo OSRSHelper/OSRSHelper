@@ -52,6 +52,13 @@ public class RSViewDialog {
                 dialogView.findViewById(R.id.skill_rank).setVisibility(View.GONE);
             }
 
+            if(skill.getEHP() > 0.0) {
+                ((TextView) dialogView.findViewById(R.id.skill_ehp)).setText(NumberFormat.getInstance().format(skill.getEHP()));
+            } else {
+                dialogView.findViewById(R.id.skill_ehp_title).setVisibility(View.GONE);
+                dialogView.findViewById(R.id.skill_ehp).setVisibility(View.GONE);
+            }
+
             builder.setView(dialogView);
             final AlertDialog dialog = builder.create();
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

@@ -40,6 +40,7 @@ public class HiscoreApi {
     private static final String API_URL = NetworkStack.ENDPOINT + "/wom/hiscore/%1$s";
 
     private static final String KEY_LATEST_SNAPSHOT = "latestSnapshot";
+    private static final String KEY_SKILLS_EHP = "ehp";
     private static final String KEY_SKILLS_EXPERIENCE = "experience";
     private static final String KEY_SKILLS_RANK = "rank";
 
@@ -181,6 +182,7 @@ public class HiscoreApi {
                                 JSONObject skillJson = jsonLatestSnapshot.getJSONObject(key);
                                 s.setExperience(skillJson.getLong(KEY_SKILLS_EXPERIENCE));
                                 s.setRank(Integer.parseInt(skillJson.getString(KEY_SKILLS_RANK)));
+                                s.setEHP(Double.parseDouble(skillJson.getString(KEY_SKILLS_EHP)));
 
                                 if (!s.getSkillType().equals(SkillType.Overall)) {
                                     s.calculateLevel();

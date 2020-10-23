@@ -10,6 +10,8 @@ public class Delta {
     public long timestamp;
     public long timestampRecent;
     public ArrayList<SkillDiff> skillDiffs;
+    public double ehpValue;
+    public double ehpRank;
 
     public Delta() {
         skillDiffs = new ArrayList<>();

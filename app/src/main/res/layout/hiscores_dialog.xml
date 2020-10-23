@@ -78,8 +78,8 @@
         android:id="@+id/skill_exp_to_lvl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="3dp"
         android:gravity="center_vertical"
+        android:paddingLeft="3dp"
         android:text="16 000"
         android:textColor="@color/text_normal"
         android:textSize="18sp" />
@@ -98,15 +98,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <TextView
-        android:id="@+id/skill_rank"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="3dp"
-        android:gravity="center_vertical"
-        android:text="16 300"
-        android:textColor="@color/text_normal"
-        android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/skill_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="3dp"
+            android:text="16 300"
+            android:textColor="@color/text_normal"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,4 +117,25 @@
             android:textColor="@color/text_normal"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/skill_ehp_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="3dp"
+        android:text="@string/ehp"
+        android:textColor="@color/dialog_text"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/skill_ehp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="3dp"
+        android:text="10"
+        android:textColor="@color/text_normal"
+        android:textSize="18sp" />
 </LinearLayout>

@@ -3,7 +3,6 @@ package com.infonuascape.osrshelper.network;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.StatusCode;
@@ -32,8 +31,10 @@ public class DataPointsApi {
     private final static String KEY_DATAPOINTS = "datapoints";
     private final static String KEY_BEFORE = "before";
     private final static String KEY_AFTER = "after";
+    private final static String KEY_EHP = "ehp";
     private final static String KEY_EXPERIENCE = "experience";
     private final static String KEY_RANK = "rank";
+    private final static String KEY_VALUE = "value";
 
     private static final String KEY_STATUS = "status";
     private static final String VALUE_OK = "OK";
@@ -72,6 +73,10 @@ public class DataPointsApi {
                                 delta.timestamp = sdf.parse(deltaJson.getString(key)).getTime();
                             } else if (TextUtils.equals(key, KEY_AFTER)) {
                                 delta.timestampRecent = sdf.parse(deltaJson.getString(key)).getTime();
+                            } else if (TextUtils.equals(key, KEY_EHP)) {
+                                JSONObject ehpJson = deltaJson.getJSONObject(key);
+                                delta.ehpRank = ehpJson.getLong(KEY_RANK);
+                                delta.ehpValue = ehpJson.getDouble(KEY_VALUE);
                             } else {
                                 final PlayerSkills ps = new PlayerSkills();
                                 for (Skill s : ps.skillList) {

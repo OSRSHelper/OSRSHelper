@@ -37,6 +37,7 @@ public class TrackerApi {
     private static final String KEY_LAST_UPDATED = "endsAt";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_RANK = "rank";
+    private static final String KEY_EHP = "ehp";
     private static final String KEY_GAINED = "gained";
     private static final String KEY_END = "end";
 
@@ -97,7 +98,7 @@ public class TrackerApi {
                         s.setExperienceDiff(skillJson.getJSONObject(KEY_EXPERIENCE).getLong(KEY_GAINED));
                         s.setRankDiff(skillJson.getJSONObject(KEY_RANK).getLong(KEY_GAINED));
                         s.setExperience(skillJson.getJSONObject(KEY_EXPERIENCE).getLong(KEY_END));
-                        s.setEHP(-1);
+                        s.setEHP(skillJson.getJSONObject(KEY_EHP).getDouble(KEY_GAINED));
                     }
                 }
             }

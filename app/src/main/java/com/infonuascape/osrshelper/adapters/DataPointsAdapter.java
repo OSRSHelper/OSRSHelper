@@ -3,12 +3,14 @@ package com.infonuascape.osrshelper.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.models.players.Delta;
 import com.infonuascape.osrshelper.utils.Logger;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +51,23 @@ public class DataPointsAdapter extends RecyclerView.Adapter<DataPointsAdapter.De
         final String date1 = simpleDateFormat.format(new Date(delta.timestamp));
         final String date2 = simpleDateFormat.format(new Date(delta.timestampRecent));
         holder.date.setText(context.getResources().getString(R.string.profile_delta_on, date1, date2));
+
+        if (delta.ehpValue > 0 || delta.ehpRank > 0) {
+            holder.ehpContainer.setVisibility(View.VISIBLE);
+            holder.ehpValue.setText(NumberFormat.getInstance().format(delta.ehpValue));
+
+            if (delta.ehpRank > 0) {
+                holder.ehpRankImage.setImageResource(R.drawable.delta_down);
+            } else if (delta.ehpRank < 0) {
+                holder.ehpRankImage.setImageResource(R.drawable.delta_up);
+            } else {
+                holder.ehpRankImage.setImageResource(R.drawable.delta_neutral);
+            }
+            holder.ehpRank.setText(NumberFormat.getInstance().format(Math.abs(delta.ehpRank)));
+        } else {
+            holder.ehpContainer.setVisibility(View.GONE);
+        }
+
         holder.adapter = new SkillDiffAdapter(context, delta.skillDiffs);
         holder.deltasList.setAdapter(holder.adapter);
     }
@@ -68,6 +87,11 @@ public class DataPointsAdapter extends RecyclerView.Adapter<DataPointsAdapter.De
         private GridLayoutManager gridLayoutManager;
         private SkillDiffAdapter adapter;
 
+        private View ehpContainer;
+        private TextView ehpValue;
+        private TextView ehpRank;
+        private ImageView ehpRankImage;
+
         public DeltaHolder(View itemView) {
             super(itemView);
 
@@ -76,6 +100,11 @@ public class DataPointsAdapter extends RecyclerView.Adapter<DataPointsAdapter.De
 
             gridLayoutManager = new GridLayoutManager(context ,2);
             deltasList.setLayoutManager(gridLayoutManager);
+
+            ehpContainer = itemView.findViewById(R.id.ehp_container);
+            ehpValue = itemView.findViewById(R.id.ehp_value);
+            ehpRank = itemView.findViewById(R.id.ehp_rank);
+            ehpRankImage = itemView.findViewById(R.id.ehp_rank_image);
         }
     }
 }
