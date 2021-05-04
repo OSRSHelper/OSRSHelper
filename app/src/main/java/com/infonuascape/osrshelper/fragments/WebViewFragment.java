@@ -84,6 +84,7 @@ public class WebViewFragment extends OSRSFragment {
         if (getArguments().getBoolean(EXTRA_IS_NEWS, false)) {
             webView.getSettings().setTextZoom(300);
         }
+        webView.loadUrl(url);
 
         return view;
     }
@@ -113,7 +114,6 @@ public class WebViewFragment extends OSRSFragment {
     @Override
     public void onStart() {
         super.onStart();
-        webView.loadUrl(url);
     }
 
     @Override
