@@ -24,11 +24,18 @@ public class HoverMenuImpl extends HoverMenu {
 
         sections = new ArrayList<>();
         Section sectionWiki = new Section(
-                new SectionId("Wiki"),
+                new SectionId(context.getString(R.string.wiki)),
                 createTabView(R.drawable.wiki),
                 new HoverWikiSection(context)
         );
         sections.add(sectionWiki);
+
+        Section sectionHiscores = new Section(
+                new SectionId(context.getString(R.string.hiscore_title)),
+                createTabView(R.drawable.hiscore),
+                new HoverHiscoreSection(context)
+        );
+        sections.add(sectionHiscores);
     }
 
     private View createTabView(final int drawableId) {
@@ -43,7 +50,7 @@ public class HoverMenuImpl extends HoverMenu {
 
     @Override
     public String getId() {
-        return "OSRS Helper";
+        return context.getString(R.string.app_name);
     }
 
     @Override

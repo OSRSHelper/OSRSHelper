@@ -28,17 +28,13 @@ public class HoverMenuServiceImpl extends HoverMenuService implements HoverView.
 
     @Override
     protected void onHoverMenuLaunched(@NonNull Intent intent, @NonNull HoverView hoverView) {
+        Logger.add(TAG, ": onHoverMenuLaunched: intent=", intent, ", hoverView=", hoverView);
         if (menu == null) {
             hoverView.addOnExpandAndCollapseListener(this);
             hoverView.setOnExitListener(this);
             menu = new HoverMenuImpl(this);
             hoverView.setMenu(menu);
             hoverView.collapse();
-
-            if (PreferencesController.getBooleanPreference(this, PreferencesController.USER_PREF_HOVER_MENU_SHOWN, false)) {
-                Logger.add(TAG, ": onHoverMenuLaunched: expand");
-                handler.postDelayed(hoverView::expand, 200);
-            }
         }
     }
 
@@ -63,7 +59,6 @@ public class HoverMenuServiceImpl extends HoverMenuService implements HoverView.
     @Override
     public void onExpanded() {
         Logger.add(TAG, ": onExpanded");
-        PreferencesController.setPreference(this, PreferencesController.USER_PREF_HOVER_MENU_SHOWN, true);
     }
 
     @Override
@@ -84,11 +79,11 @@ public class HoverMenuServiceImpl extends HoverMenuService implements HoverView.
     @Override
     public void onClosed() {
         Logger.add(TAG, ": onClosed");
+        stopSelf();
     }
 
     @Override
     public void onExit() {
         Logger.add(TAG, ": onExit");
-        PreferencesController.setPreference(this, PreferencesController.USER_PREF_HOVER_MENU_SHOWN, false);
     }
 }
