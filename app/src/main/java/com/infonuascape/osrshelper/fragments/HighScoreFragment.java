@@ -212,9 +212,11 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
     public void onHiscoresCacheFetched(PlayerSkills playerSkills) {
         Logger.add(TAG, ": onHiscoresCacheFetched: playerSkills=", playerSkills);
         this.playerSkills = playerSkills;
-        if (playerSkills != null) {
-            titleView.setText(getString(R.string.hiscore_cached, playerSkills.lastUpdate));
-            populateTable();
+        if (getActivity() != null && playerSkills != null) {
+            getActivity().runOnUiThread(() ->{
+                titleView.setText(getString(R.string.hiscore_cached, playerSkills.lastUpdate));
+                populateTable();
+            });
         }
     }
 

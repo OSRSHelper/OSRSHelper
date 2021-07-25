@@ -28,7 +28,6 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
     private Account account;
     private PlayerSkills playerSkills;
     private String errorMessage;
-    private boolean isFromCache;
 
     public HiscoresFetcherTask(final Context context, final HiscoresFetcherListener listener, final Account account) {
         this.context = new WeakReference<>(context);
@@ -44,8 +43,9 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
                 playerSkills = HiscoreApi.parseResponse(context.get(), output, account.username);
                 if (playerSkills != null) {
                     playerSkills.isNewlyTracked = false;
-                    isFromCache = true;
-                    return null;
+                    if (listener != null) {
+                        listener.onHiscoresCacheFetched(playerSkills);
+                    }
                 }
             }
             if (Utils.isNetworkAvailable(context.get())) {
@@ -71,8 +71,6 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
         if (listener != null) {
             if (!TextUtils.isEmpty(errorMessage)) {
                 listener.onHiscoresError(errorMessage);
-            } else if (isFromCache) {
-                listener.onHiscoresCacheFetched(playerSkills);
             } else {
                 listener.onHiscoresFetched(playerSkills);
             }
