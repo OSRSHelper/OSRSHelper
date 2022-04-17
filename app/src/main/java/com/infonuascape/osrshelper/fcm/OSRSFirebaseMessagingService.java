@@ -1,19 +1,18 @@
 package com.infonuascape.osrshelper.fcm;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.infonuascape.osrshelper.controllers.NotificationController;
+import com.infonuascape.osrshelper.utils.Logger;
 
 /**
  * Created by marc_ on 2018-02-03.
  */
 
 public class OSRSFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "OSRSFirebaseMessagingSe";
+    private static final String TAG = "OSRSFirebaseMessagingService";
     private static final String KEY_TITLE = "title";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_URL = "url";
@@ -21,10 +20,10 @@ public class OSRSFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Logger.add(TAG, "From: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Logger.add(TAG, "Message data payload: " + remoteMessage.getData());
             try {
                 final String title = remoteMessage.getData().get(KEY_TITLE);
                 final String description = remoteMessage.getData().get(KEY_DESCRIPTION);
@@ -37,7 +36,12 @@ public class OSRSFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            Logger.add(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
+    }
+
+    @Override
+    public void onNewToken(@NonNull String s) {
+        super.onNewToken(s);
     }
 }

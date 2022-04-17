@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -31,7 +30,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		final int N = appWidgetIds.length;
 
-		Log.d(TAG,  "Updating widgets " + appWidgetIds);
+		Logger.add(TAG,  "Updating widgets " + appWidgetIds);
 
 		for (int i = 0; i < N; i++) {
 			final int appWidgetId = appWidgetIds[i];

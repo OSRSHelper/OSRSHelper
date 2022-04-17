@@ -3,7 +3,6 @@ package com.infonuascape.osrshelper.fragments;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,7 +71,7 @@ public class WorldMapFragment extends OSRSFragment implements OnClickListener, P
                 public void onReady() {
                     // Setup/restore state
                     if (savedInstanceState != null) {
-                        Log.d(TAG, "restoring state");
+                        Logger.add(TAG, "restoring state");
                         float x = savedInstanceState.getFloat(KEY_X);
                         float y = savedInstanceState.getFloat(KEY_Y);
                         animateMap(x, y);

@@ -1,7 +1,6 @@
 package com.infonuascape.osrshelper.network;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -13,9 +12,6 @@ import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.utils.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 

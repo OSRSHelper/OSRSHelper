@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.util.Log;
 
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -86,7 +85,7 @@ public class OSRSDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
-		Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
+		Logger.add(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
 		if(oldVersion < 4) {
 			db.execSQL("ALTER TABLE " + TABLE_USERNAMES + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE + " TEXT");
 			db.execSQL("ALTER TABLE " + TABLE_WIDGET + " ADD COLUMN " + COLUMN_ACCOUNT_TYPE + " TEXT");

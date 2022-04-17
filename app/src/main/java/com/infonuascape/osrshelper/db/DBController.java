@@ -1,18 +1,5 @@
 package com.infonuascape.osrshelper.db;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.infonuascape.osrshelper.enums.AccountType;
-import com.infonuascape.osrshelper.models.Account;
-import com.infonuascape.osrshelper.models.grandexchange.Item;
-import com.infonuascape.osrshelper.utils.Logger;
-
-import java.util.ArrayList;
-
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_ACCOUNT_TYPE;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_COMBAT_LVL;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_DISPLAY_NAME;
@@ -31,6 +18,18 @@ import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_QUERY;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_TIME_USED;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_USERNAME;
 import static com.infonuascape.osrshelper.db.OSRSDatabase.COLUMN_WIDGET_ID;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.text.TextUtils;
+
+import com.infonuascape.osrshelper.enums.AccountType;
+import com.infonuascape.osrshelper.models.Account;
+import com.infonuascape.osrshelper.models.grandexchange.Item;
+import com.infonuascape.osrshelper.utils.Logger;
+
+import java.util.ArrayList;
 
 public class DBController {
 	private static final String TAG = "DBController";
@@ -208,7 +207,7 @@ public class DBController {
 			}
 		}
 
-		Log.d(TAG, "getAccountForWidget: account=" + account + " appWidgetId=" + appWidgetId);
+		Logger.add(TAG, "getAccountForWidget: account=" + account + " appWidgetId=" + appWidgetId);
 		return account;
 	}
 
@@ -230,7 +229,7 @@ public class DBController {
 			}
 		}
 
-		Log.d(TAG, "isUsernameInWidgets: isFound=" + isFound);
+		Logger.add(TAG, "isUsernameInWidgets: isFound=" + isFound);
 		return isFound;
 	}
 

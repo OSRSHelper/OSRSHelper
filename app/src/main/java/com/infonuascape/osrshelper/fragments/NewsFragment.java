@@ -1,7 +1,6 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.listeners.EndlessRecyclerOnScrollListener;
 import com.infonuascape.osrshelper.adapters.NewsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
 import com.infonuascape.osrshelper.db.PreferencesController;
+import com.infonuascape.osrshelper.listeners.EndlessRecyclerOnScrollListener;
 import com.infonuascape.osrshelper.listeners.NewsFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.models.News;
