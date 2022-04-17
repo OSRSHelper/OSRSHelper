@@ -20,7 +20,7 @@ public class GrandExchangeDetailInfoApi {
 
     private final static String API_URL = "https://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=%s";
 
-    private final static String ICON_ENDPOINT = "http://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
+    private final static String ICON_ENDPOINT = "https://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
     private final static String KEY_ITEM = "item";
     private final static String KEY_NAME = "name";
     private final static String KEY_DESCRIPTION = "description";

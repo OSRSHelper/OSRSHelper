@@ -21,7 +21,7 @@ public class GrandExchangeSearchApi {
 
     private final static String API_URL = NetworkStack.ENDPOINT + "/ge/search/%s";
 
-    private final static String ICON_ENDPOINT = "http://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
+    private final static String ICON_ENDPOINT = "https://services.runescape.com/m=itemdb_oldschool/obj_big.gif?id=";
     private final static String KEY_MATCHES = "matches";
     private final static String KEY_NAME = "name";
     private final static String KEY_DESCRIPTION = "description";
