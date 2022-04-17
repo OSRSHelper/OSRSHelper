@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.infonuascape.osrshelper"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 50
         versionName '3.0.5'
     }
@@ -27,19 +27,19 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.2'
     implementation(name: 'graphview', ext: 'aar')
-    implementation 'com.google.firebase:firebase-crashlytics:17.4.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation 'com.android.volley:volley:1.2.0'
+    implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'io.mattcarroll.hover:hover:0.9.8'
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
-    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
     implementation 'io.mattcarroll.hover:hover:0.9.8'
 }
 

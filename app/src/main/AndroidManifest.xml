@@ -18,6 +18,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
@@ -29,7 +30,8 @@
 
         <!-- Hiscores widget -->
         <activity
-            android:name=".activities.UsernameActivity">
+            android:name=".activities.UsernameActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -37,6 +39,7 @@
 
         <receiver
             android:name=".widget.hiscores.OSRSAppWidgetProvider"
+            android:exported="false"
             android:label="@string/widget_username_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -49,12 +52,13 @@
 
         <service
             android:name=".widget.hiscores.OSRSWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <!-- Grand Exchange widget -->
 
         <activity
-            android:name=".activities.WidgetGrandExchangeSearchActivity">
+            android:name=".activities.WidgetGrandExchangeSearchActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -62,6 +66,7 @@
 
         <receiver
             android:name=".widget.grandexchange.GrandExchangeAppWidgetProvider"
+            android:exported="false"
             android:label="@string/widget_grand_exchange_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -74,7 +79,7 @@
 
         <service
             android:name=".widget.grandexchange.GrandExchangeWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <!-- Firebase -->
 
@@ -92,6 +97,7 @@
         <provider
             android:name=".db.OSRSContentProvider"
             android:authorities="com.infonuascape.osrshelper.provider"
+            android:exported="false"
             android:enabled="true" />
     </application>
 
