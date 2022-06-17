@@ -1,26 +1,22 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-        maven {
-            url 'http://maven.google.com'
-        }
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:7.2.0'
         classpath 'com.google.gms:google-services:4.3.10'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
     }
 }
 
 allprojects {
     repositories {
-        maven {
-            url 'http://maven.google.com'
-        }
-        jcenter()
+        google()
         flatDir {
             dirs 'src/main/libs'
         }
+        jcenter()
     }
 }
