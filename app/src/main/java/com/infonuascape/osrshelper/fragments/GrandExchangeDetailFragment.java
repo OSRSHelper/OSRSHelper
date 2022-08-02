@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeDetailFragmentAdapter;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.listeners.GEDetailListener;
 import com.infonuascape.osrshelper.models.grandexchange.GrandExchangeDetailInfo;
 import com.infonuascape.osrshelper.tasks.GrandExchangeDetailPlotTask;
@@ -122,7 +122,7 @@ public class GrandExchangeDetailFragment extends OSRSFragment implements ViewPag
     public void onInfoFetched(DataPoint[] datapoints, DataPoint[] averages, GrandExchangeDetailInfo itemInfo) {
         Logger.add(TAG, ": onInfoFetched: datapoints=", datapoints, ", averages=", averages, ", itemInfo=", itemInfo);
         if (datapoints != null && averages != null) {
-            DBController.addGrandExchangeItem(getContext(), itemInfo);
+            OSRSApp.getInstance().getDatabaseFacade().addGrandExchangeItem(getContext(), itemInfo);
             this.datapoints = datapoints;
             this.averages = averages;
             this.itemInfo = itemInfo;

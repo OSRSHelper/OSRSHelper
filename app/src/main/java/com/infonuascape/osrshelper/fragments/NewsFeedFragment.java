@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.activities.UsernameActivity;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 
@@ -56,7 +56,7 @@ public class NewsFeedFragment extends OSRSFragment implements View.OnClickListen
 
     private void refreshHeader() {
         Logger.add(TAG, ": refreshHeader");
-        final Account account = DBController.getProfileAccount(getContext());
+        final Account account = OSRSApp.getInstance().getDatabaseFacade().getProfileAccount(getContext());
         if (account == null) {
             profileNotSetContainer.setVisibility(View.VISIBLE);
             profileHeaderContainer.setVisibility(View.GONE);

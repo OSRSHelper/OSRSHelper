@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
@@ -41,6 +42,11 @@ dependencies {
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     implementation 'jp.wasabeef:glide-transformations:4.3.0'
     implementation 'io.mattcarroll.hover:hover:0.9.8'
+    implementation "androidx.core:core-ktx:1.8.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

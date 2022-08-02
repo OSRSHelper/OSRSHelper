@@ -17,7 +17,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
 import com.infonuascape.osrshelper.activities.WidgetGrandExchangeSearchActivity;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.utils.Logger;
 
@@ -48,7 +48,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 		views.setOnClickPendingIntent(R.id.update_btn, pendingSync);
 
 		//Username
-		final Item item = DBController.getGrandExchangeByWidgetId(context, appWidgetId);
+		final Item item = OSRSApp.getInstance().getDatabaseFacade().getGrandExchangeByWidgetId(context, appWidgetId);
 		if(item != null) {
 			views.setTextViewText(R.id.item_name, item.name);
 			views.setTextViewText(R.id.item_price, "");

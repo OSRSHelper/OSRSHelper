@@ -15,7 +15,7 @@ import android.widget.ListView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.GrandExchangeSearchAdapter;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.listeners.SearchGEResultsListener;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
 import com.infonuascape.osrshelper.tasks.SearchGEResultsTask;
@@ -23,7 +23,6 @@ import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
 import com.infonuascape.osrshelper.widget.grandexchange.GrandExchangeAppWidgetProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -107,8 +106,8 @@ public class WidgetGrandExchangeSearchActivity extends Activity implements OnIte
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Utils.hideKeyboard(this);
 		final Item item = adapter.getItem(position);
-		DBController.addGrandExchangeItem(this, item);
-		DBController.setGrandExchangeWidgetIdToItem(this, item.id, String.valueOf(mAppWidgetId));
+		OSRSApp.getInstance().getDatabaseFacade().addGrandExchangeItem(this, item);
+		OSRSApp.getInstance().getDatabaseFacade().setGrandExchangeWidgetIdToItem(this, item.id, String.valueOf(mAppWidgetId));
 		Intent resultValue = new Intent();
 		resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 		setResult(RESULT_OK, resultValue);
@@ -144,7 +143,7 @@ public class WidgetGrandExchangeSearchActivity extends Activity implements OnIte
 		if (searchText != null && searchText.length() >= 3) {
 			startSearchTask();
 		} else {
-			adapter = new GrandExchangeSearchAdapter(this, DBController.getGrandExchangeItems(this));
+			adapter = new GrandExchangeSearchAdapter(this, OSRSApp.getInstance().getDatabaseFacade().getGrandExchangeItems(this));
 			list.setAdapter(adapter);
 		}
 	}

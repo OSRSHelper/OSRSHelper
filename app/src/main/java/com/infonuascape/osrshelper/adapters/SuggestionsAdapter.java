@@ -2,7 +2,6 @@ package com.infonuascape.osrshelper.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Utils;
@@ -46,7 +45,7 @@ public class SuggestionsAdapter extends CursorAdapter {
 
 	@Override
 	public void bindView(View view, final Context context, Cursor cursor) {
-		final Account account = DBController.createAccountFromCursor(cursor);
+		final Account account = OSRSApp.getInstance().getDatabaseFacade().createAccountFromCursor(cursor);
 
 		ViewHolder holder = (ViewHolder) view.getTag();
 		if(account != null) {
@@ -62,7 +61,7 @@ public class SuggestionsAdapter extends CursorAdapter {
 								.setTitle(R.string.delete)
 								.setMessage(R.string.delete_username)
 								.setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
-									DBController.deleteAccount(context, account);
+									OSRSApp.getInstance().getDatabaseFacade().deleteAccount(context, account);
 									notifyDataSetChanged();
 								})
 								.setNegativeButton(R.string.dialog_no, null)

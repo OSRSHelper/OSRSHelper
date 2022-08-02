@@ -8,7 +8,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.app.OSRSApp;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -22,23 +23,12 @@ import java.util.concurrent.ExecutionException;
 public class NetworkStack {
     private static final String TAG = "NetworkStack";
     public static final String ENDPOINT = "https://api.buying-gf.com/v2";
-    private static NetworkStack instance;
     private final RequestQueue queue;
     private final Context context;
 
-    private NetworkStack(final Context context) {
+    public NetworkStack(final Context context) {
         this.context = context;
         queue = Volley.newRequestQueue(context);
-    }
-
-    public static void init(final Context context) {
-        if (instance == null) {
-            instance = new NetworkStack(context);
-        }
-    }
-
-    public static NetworkStack getInstance() {
-        return instance;
     }
 
     public HTTPResult performGetRequest(String url) {
@@ -65,7 +55,7 @@ public class NetworkStack {
 
             if (saveOutput) {
                 try {
-                    DBController.insertOutputToQueryCache(context, url, result.output);
+                    OSRSApp.getInstance().getDatabaseFacade().insertOutputToQueryCache(context, url, result.output);
                 } catch (SecurityException e) {
                     //The widgets doesn't have the permission to access the database
                 }

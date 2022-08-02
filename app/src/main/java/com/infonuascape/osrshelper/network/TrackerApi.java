@@ -49,7 +49,7 @@ public class TrackerApi {
     public static Map<TrackerTime, PlayerSkills> fetch(String username) throws APIError, PlayerNotFoundException, JSONException {
         Logger.add(TAG, ": fetch: username=", username);
         final String url = String.format(API_URL, Uri.encode(username));
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
+        HTTPResult httpResult = OSRSApp.getInstance().getNetworkStack().performGetRequest(url);
 
         if (httpResult.statusCode == StatusCode.NOT_FOUND) {
             throw new PlayerNotFoundException(username);

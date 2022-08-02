@@ -4,7 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.app.OSRSApp;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.HTTPResult;
@@ -77,7 +78,7 @@ public class HiscoreApi {
     public static PlayerSkills fetch(Context context, String username) throws PlayerNotFoundException, APIError {
         Logger.add(TAG, ": fetch: context=", context, ", username=", username);
         String url = getQueryUrl(username);
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url, true);
+        HTTPResult httpResult = OSRSApp.getInstance().getNetworkStack().performGetRequest(url, true);
 
         if (httpResult.statusCode == StatusCode.NOT_FOUND) {
             throw new PlayerNotFoundException(username);
@@ -233,7 +234,7 @@ public class HiscoreApi {
                 final AccountType type = AccountType.create(jsonObject.getString(KEY_TYPE));
 
                 try {
-                    DBController.updateAccount(context, username, displayName, type, ps.combatLvl);
+                    OSRSApp.getInstance().getDatabaseFacade().updateAccount(context, username, displayName, type, ps.combatLvl);
                 } catch (SecurityException e) {
                     //You can't access database via the widget
                 }

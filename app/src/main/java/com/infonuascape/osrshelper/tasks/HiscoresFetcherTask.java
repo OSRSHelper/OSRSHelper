@@ -5,7 +5,8 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.app.OSRSApp;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.players.PlayerSkills;
@@ -38,7 +39,7 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            String output = DBController.getQueryCache(context.get(), HiscoreApi.getQueryUrl(account.username));
+            String output = OSRSApp.getInstance().getDatabaseFacade().getQueryCache(context.get(), HiscoreApi.getQueryUrl(account.username));
             if (!TextUtils.isEmpty(output)) {
                 playerSkills = HiscoreApi.parseResponse(context.get(), output, account.username);
                 if (playerSkills != null) {

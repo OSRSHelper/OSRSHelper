@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
@@ -70,7 +70,7 @@ public class ProfileHeaderFragment extends OSRSFragment {
 
     public void showCombatLvl(final int combatLvl) {
         Logger.add(TAG, ": showCombatLvl: combatLvl=", combatLvl);
-        final Account myProfile = DBController.getProfileAccount(getContext());
+        final Account myProfile = OSRSApp.getInstance().getDatabaseFacade().getProfileAccount(getContext());
         if (myProfile != null && myProfile.combatLvl != 0) {
             if (myProfile.combatLvl > combatLvl) {
                 if (myProfile.combatLvl + 10 > combatLvl) {

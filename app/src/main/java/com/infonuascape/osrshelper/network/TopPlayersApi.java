@@ -39,7 +39,7 @@ public class TopPlayersApi {
     public static List<PlayerExp> fetch(SkillType skillType, AccountType accountType, TrackerTime period) throws APIError, JSONException {
         Logger.add(TAG, ": fetch: skillType=", skillType, ", accountType=", accountType, ", period=", period);
         String url = String.format(API_URL, accountType.apiName, skillType.getApiName(), period.period);
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
+        HTTPResult httpResult = OSRSApp.getInstance().getNetworkStack().performGetRequest(url);
 
         if (httpResult.statusCode != StatusCode.FOUND) {
             throw new APIError("Unexpected response from the server.");

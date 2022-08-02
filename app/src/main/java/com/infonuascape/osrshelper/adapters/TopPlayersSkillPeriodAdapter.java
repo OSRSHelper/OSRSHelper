@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.fragments.DataPointsFragment;
 import com.infonuascape.osrshelper.fragments.HighScoreFragment;
@@ -171,7 +171,7 @@ public class TopPlayersSkillPeriodAdapter extends RecyclerView.Adapter<TopPlayer
 
     private Account getAccount(final int position) {
         final PlayerExp playerExp = playerExps.get(position);
-        Account account = DBController.getAccountByUsername(fragment.getContext(), playerExp.username);
+        Account account = OSRSApp.getInstance().getDatabaseFacade().getAccountByUsername(fragment.getContext(), playerExp.username);
         if(account == null) {
             account = new Account(playerExp.username, playerExp.displayName, playerExp.accountType);
         }

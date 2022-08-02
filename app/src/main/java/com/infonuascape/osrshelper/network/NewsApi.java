@@ -26,7 +26,7 @@ public class NewsApi {
     public static List<News> fetch(final int pageNum) {
         Logger.add(TAG, ": fetch: pageNum=", pageNum);
         final String url = String.format(API_URL, pageNum);
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
+        HTTPResult httpResult = OSRSApp.getInstance().getNetworkStack().performGetRequest(url);
 
         List<News> newsList = new ArrayList<>();
         if (httpResult.statusCode == StatusCode.FOUND) {

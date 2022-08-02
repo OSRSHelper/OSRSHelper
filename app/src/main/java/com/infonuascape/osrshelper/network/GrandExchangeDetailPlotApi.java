@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.network;
 import android.net.Uri;
 
 import com.android.volley.Request;
+import com.infonuascape.osrshelper.app.OSRSApp;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -26,7 +27,7 @@ public class GrandExchangeDetailPlotApi {
 
     public static GrandExchangeDetailPlotResults fetch(String itemId) {
         Logger.add(TAG, ": fetch: itemId=", itemId);
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemId)));
+        HTTPResult httpResult = OSRSApp.getInstance().getNetworkStack().performGetRequest(String.format(API_URL, Uri.encode(itemId)));
         if (httpResult.statusCode == StatusCode.FOUND) {
             List<DataPoint> datapoints = new ArrayList<>();
             List<DataPoint> averages = new ArrayList<>();

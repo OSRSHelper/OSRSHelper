@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.app.OSRSApp;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.enums.TrackerTime;
 import com.infonuascape.osrshelper.listeners.TrackerFetcherListener;
 import com.infonuascape.osrshelper.models.Account;
@@ -12,7 +13,6 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.network.TrackerApi;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
-import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
 import java.lang.ref.WeakReference;
@@ -58,7 +58,7 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
                     throw new PlayerNotFoundException(account.username);
                 } else {
                     try {
-                        DBController.updateAccount(context.get(), account);
+                        OSRSApp.getInstance().getDatabaseFacade().updateAccount(context.get(), account);
                     } catch (Exception e) {
                         //You can't access database via the widget
                     }

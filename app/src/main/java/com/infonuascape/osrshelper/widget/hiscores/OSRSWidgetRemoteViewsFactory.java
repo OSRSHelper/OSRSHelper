@@ -8,7 +8,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.infonuascape.osrshelper.R;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.enums.SkillType;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.models.Skill;
@@ -17,7 +17,6 @@ import com.infonuascape.osrshelper.network.HiscoreApi;
 import com.infonuascape.osrshelper.network.NetworkStack;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
-import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
 import java.util.ArrayList;
 
@@ -110,7 +109,7 @@ public class OSRSWidgetRemoteViewsFactory implements RemoteViewsService.RemoteVi
     public void onDataSetChanged() {
         Logger.add(TAG, ": onDataSetChanged");
         final long identityToken = Binder.clearCallingIdentity();
-        final Account account = DBController.getAccountForWidget(mContext, mAppWidgetId);
+        final Account account = OSRSApp.getInstance().getDatabaseFacade().getAccountForWidget(mContext, mAppWidgetId);
         Binder.restoreCallingIdentity(identityToken);
 
         try {

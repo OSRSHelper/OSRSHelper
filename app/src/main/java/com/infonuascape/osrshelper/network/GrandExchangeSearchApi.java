@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
+import com.infonuascape.osrshelper.app.OSRSApp;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
@@ -31,7 +32,7 @@ public class GrandExchangeSearchApi {
     public static List<Item> fetch(String itemName) {
         Logger.add(TAG, ": fetch: itemName=", itemName);
         List<Item> itemsSearch = new ArrayList<>();
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(String.format(API_URL, Uri.encode(itemName)));
+        HTTPResult httpResult = OSRSApp.getInstance().getNetworkStack().performGetRequest(String.format(API_URL, Uri.encode(itemName)));
         if (httpResult.statusCode == StatusCode.FOUND) {
             try {
                 JSONObject json = new JSONObject(httpResult.output).getJSONObject(KEY_MATCHES);

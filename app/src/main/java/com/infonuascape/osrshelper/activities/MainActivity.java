@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -18,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -29,9 +27,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.SuggestionsAdapter;
-import com.infonuascape.osrshelper.bubble.HoverMenuServiceImpl;
+import com.infonuascape.osrshelper.app.OSRSApp;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.db.PreferencesController;
 import com.infonuascape.osrshelper.fragments.TopPlayersFragment;
 import com.infonuascape.osrshelper.fragments.DataPointsFragment;
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ((SearchView.SearchAutoComplete) searchAutoComplete).setThreshold(0);
         }
 
-        suggestionsAdapter = new SuggestionsAdapter(this, DBController.searchAccountsByUsername(this, null));
+        suggestionsAdapter = new SuggestionsAdapter(this, OSRSApp.getInstance().getDatabaseFacade().searchAccountsByUsername(this, null));
         searchView.setSuggestionsAdapter(suggestionsAdapter);
         suggestionsAdapter.setFilterQueryProvider(this);
 
@@ -141,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void refreshProfileAccount() {
         Logger.add(TAG, ": refreshProfileAccount");
-        Account account = DBController.getProfileAccount(this);
+        Account account = OSRSApp.getInstance().getDatabaseFacade().getProfileAccount(this);
         SubMenu profileSubMenu = navigationView.getMenu().getItem(1).getSubMenu();
 
         //If there's no data_points set, hide the options
@@ -241,13 +239,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_home) {
             fragment = NewsFeedFragment.newInstance();
         } else if (id == R.id.nav_hiscores) {
-            Account account = DBController.getProfileAccount(this);
+            Account account = OSRSApp.getInstance().getDatabaseFacade().getProfileAccount(this);
             fragment = HighScoreFragment.newInstance(account);
         } else if (id == R.id.nav_xp_tracker) {
-            Account account = DBController.getProfileAccount(this);
+            Account account = OSRSApp.getInstance().getDatabaseFacade().getProfileAccount(this);
             fragment = XPTrackerFragment.newInstance(account);
         } else if (id == R.id.nav_data_points) {
-            Account account = DBController.getProfileAccount(this);
+            Account account = OSRSApp.getInstance().getDatabaseFacade().getProfileAccount(this);
             fragment = DataPointsFragment.newInstance(account);
         } else if (id == R.id.nav_world_map) {
             fragment = WorldMapFragment.newInstance();
@@ -304,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onSuggestionClick(int position) {
-        Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
+        Account account = OSRSApp.getInstance().getDatabaseFacade().createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
         if (account != null) {
             MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
             searchView.setQuery(null, false);
@@ -332,14 +330,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Cursor runQuery(CharSequence query) {
         Logger.add(TAG, ": runQuery: charSequence=" + query);
 
-        Cursor c = DBController.searchAccountsByUsername(this, query);
+        Cursor c = OSRSApp.getInstance().getDatabaseFacade().searchAccountsByUsername(this, query);
         return c;
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.nav_header_container) {
-            Account account = DBController.getProfileAccount(this);
+            Account account = OSRSApp.getInstance().getDatabaseFacade().getProfileAccount(this);
             if (account != null) {
                 MainFragmentController.getInstance().showRootFragment(R.id.nav_hiscores, HighScoreFragment.newInstance(account));
                 drawer.closeDrawer(GravityCompat.START);

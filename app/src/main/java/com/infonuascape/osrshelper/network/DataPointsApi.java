@@ -3,6 +3,7 @@ package com.infonuascape.osrshelper.network;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.infonuascape.osrshelper.app.OSRSApp;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.Skill;
 import com.infonuascape.osrshelper.models.StatusCode;
@@ -43,7 +44,7 @@ public class DataPointsApi {
     public static ArrayList<Delta> fetch(final String username) throws PlayerNotFoundException, APIError {
         Logger.add(TAG, ": fetch: username=", username);
         String url = String.format(API_URL, Uri.encode(username));
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
+        HTTPResult httpResult = OSRSApp.getInstance().getNetworkStack().performGetRequest(url);
 
         if (httpResult.statusCode == StatusCode.NOT_FOUND) {
             throw new PlayerNotFoundException(username);

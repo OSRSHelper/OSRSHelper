@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.HiscoreAdapter;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.listeners.HiscoresFetcherListener;
 import com.infonuascape.osrshelper.listeners.RecyclerItemClickListener;
 import com.infonuascape.osrshelper.listeners.TrackerUpdateListener;
@@ -79,10 +79,10 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
 
         if (getArguments().containsKey(EXTRA_USERNAME)) {
             final String username = getArguments().getString(EXTRA_USERNAME);
-            account = DBController.getAccountByUsername(getContext(), username);
+            account = OSRSApp.getInstance().getDatabaseFacade().getAccountByUsername(getContext(), username);
             if (account == null) {
                 account = new Account(username);
-                DBController.addOrUpdateAccount(getContext(), account);
+                OSRSApp.getInstance().getDatabaseFacade().addOrUpdateAccount(getContext(), account);
             }
         } else if (getArguments().containsKey(EXTRA_ACCOUNT)) {
             account = (Account) getArguments().getSerializable(EXTRA_ACCOUNT);
@@ -224,7 +224,7 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
     public void onHiscoresFetched(PlayerSkills playerSkills) {
         Logger.add(TAG, ": onHiscoresFetched: playerSkills=", playerSkills);
         profileHeaderFragment.hideProgressBar();
-        final Account loadedAccount = DBController.getAccountByUsername(getContext(), account.username);
+        final Account loadedAccount = OSRSApp.getInstance().getDatabaseFacade().getAccountByUsername(getContext(), account.username);
         if (loadedAccount != null) {
             account = loadedAccount;
         } else if (playerSkills != null) {

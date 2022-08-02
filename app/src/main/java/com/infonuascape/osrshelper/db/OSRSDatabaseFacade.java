@@ -31,12 +31,19 @@ import com.infonuascape.osrshelper.utils.Logger;
 
 import java.util.ArrayList;
 
-public class DBController {
-	private static final String TAG = "DBController";
-	private static final String[] ACCOUNTS_PROJECTION = new String[]{COLUMN_ID, COLUMN_USERNAME, COLUMN_DISPLAY_NAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE, COLUMN_COMBAT_LVL};
-	private static final String[] GRAND_EXCHANGE_PROJECTION = new String[]{COLUMN_ID, COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_DESCRIPTION, COLUMN_ITEM_IMAGE, COLUMN_IS_MEMBERS, COLUMN_IS_STARRED, COLUMN_WIDGET_ID};
+public class OSRSDatabaseFacade {
+	private static final String TAG = "OSRSDatabaseFacade";
 
-	public static void addOrUpdateAccount(final Context context, final Account account) {
+	private static final String[] ACCOUNTS_PROJECTION = new String[] {COLUMN_ID, COLUMN_USERNAME, COLUMN_DISPLAY_NAME, COLUMN_ACCOUNT_TYPE, COLUMN_TIME_USED, COLUMN_IS_FOLLOWING, COLUMN_IS_PROFILE, COLUMN_COMBAT_LVL};
+	private static final String[] GRAND_EXCHANGE_PROJECTION = new String[] {COLUMN_ID, COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_DESCRIPTION, COLUMN_ITEM_IMAGE, COLUMN_IS_MEMBERS, COLUMN_IS_STARRED, COLUMN_WIDGET_ID};
+
+	private Context context;
+
+	public OSRSDatabaseFacade(final Context context) {
+		this.context = context;
+	}
+
+	public void addOrUpdateAccount(final Context context, final Account account) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_USERNAME, account.username);
 		values.put(COLUMN_ACCOUNT_TYPE, account.type.name());
@@ -54,7 +61,7 @@ public class DBController {
 		}
 	}
 
-	public static void updateAccount(final Context context, final Account account) {
+	public void updateAccount(final Context context, final Account account) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_USERNAME, account.username);
 		values.put(COLUMN_ACCOUNT_TYPE, account.type.name());
@@ -66,7 +73,7 @@ public class DBController {
 		}
 	}
 
-	public static void updateAccount(final Context context, final String username, final String displayName, final AccountType accountType, final int combatLvl) {
+	public void updateAccount(final Context context, final String username, final String displayName, final AccountType accountType, final int combatLvl) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_DISPLAY_NAME, displayName);
 		values.put(COLUMN_ACCOUNT_TYPE, accountType.name());
@@ -78,7 +85,7 @@ public class DBController {
 		}
 	}
 
-	public static void setAccountForWidget(final Context context, final int appWidgetId, final Account account) {
+	public void setAccountForWidget(final Context context, final int appWidgetId, final Account account) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_USERNAME, account.username);
 		values.put(COLUMN_ACCOUNT_TYPE, account.type.name());
@@ -101,7 +108,7 @@ public class DBController {
 		}
 	}
 
-	public static void updateWidgetsByUsername(final Context context, final String username, final String displayName, final AccountType accountType) {
+	public void updateWidgetsByUsername(final Context context, final String username, final String displayName, final AccountType accountType) {
 		if(context != null) {
 			final ContentValues values = new ContentValues();
 			values.put(COLUMN_ACCOUNT_TYPE, accountType.name());
@@ -120,7 +127,7 @@ public class DBController {
 		}
 	}
 
-	public static Account getAccountByUsername(final Context context, final String username) {
+	public Account getAccountByUsername(final Context context, final String username) {
 		Account account = null;
 		final String[] projection = ACCOUNTS_PROJECTION;
 		final String where = COLUMN_USERNAME + "=?";
@@ -145,7 +152,7 @@ public class DBController {
 		return account;
 	}
 
-	public static void setProfileAccount(final Context context, final Account account) {
+	public void setProfileAccount(final Context context, final Account account) {
 		ContentValues values = new ContentValues();
 		if(context != null) {
 			values.put(COLUMN_IS_PROFILE, 0);
@@ -159,7 +166,7 @@ public class DBController {
 
 	}
 
-	public static Account getProfileAccount(final Context context) {
+	public Account getProfileAccount(final Context context) {
 		Account account = null;
 		final String[] projection = ACCOUNTS_PROJECTION;
 		final String where = COLUMN_IS_PROFILE + "=?";
@@ -185,7 +192,7 @@ public class DBController {
 		return account;
 	}
 
-	public static Account getAccountForWidget(final Context context, final int appWidgetId) {
+	public Account getAccountForWidget(final Context context, final int appWidgetId) {
 		Account account = null;
 
 		if(context != null) {
@@ -211,7 +218,7 @@ public class DBController {
 		return account;
 	}
 
-	public static boolean isUsernameInWidgets(final Context context, final String username) {
+	public boolean isUsernameInWidgets(final Context context, final String username) {
 		boolean isFound = false;
 
 		if(context != null) {
@@ -251,7 +258,7 @@ public class DBController {
 		return null;
 	}
 
-	public static ArrayList<Account> getAllAccounts(final Context context) {
+	public ArrayList<Account> getAllAccounts(final Context context) {
 		final ArrayList<Account> accounts = new ArrayList<>();
 		final String[] projection = ACCOUNTS_PROJECTION;
 
@@ -279,7 +286,7 @@ public class DBController {
 		return accounts;
 	}
 
-	public static ArrayList<Account> getAllFollowingAccounts(final Context context) {
+	public ArrayList<Account> getAllFollowingAccounts(final Context context) {
 		final ArrayList<Account> accounts = new ArrayList<>();
 		final String[] projection = ACCOUNTS_PROJECTION;
 		final String where = COLUMN_IS_FOLLOWING + "=?";
@@ -309,7 +316,7 @@ public class DBController {
 		return accounts;
 	}
 
-	public static void deleteAccount(final Context context, final Account account) {
+	public void deleteAccount(final Context context, final Account account) {
 		final String where = COLUMN_USERNAME + "=?";
 		final String[] whereArgs = new String[]{account.username};
 
@@ -318,14 +325,13 @@ public class DBController {
 		}
 	}
 
-	public static void deleteAllAccounts(final Context context) {
+	public void deleteAllAccounts(final Context context) {
 		if(context != null) {
 			context.getContentResolver().delete(OSRSDatabase.ACCOUNTS_CONTENT_URI, null, null);
 		}
 	}
 
-	public static Cursor searchAccountsByUsername(final Context context, CharSequence query) {
-		final String[] projection = ACCOUNTS_PROJECTION;
+	public Cursor searchAccountsByUsername(final Context context, CharSequence query) {
 		String where = null;
 		String[] whereArgs = null;
 
@@ -335,7 +341,7 @@ public class DBController {
 		}
 
 		if(context != null) {
-			return context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, projection, where, whereArgs, COLUMN_TIME_USED + " DESC");
+			return context.getContentResolver().query(OSRSDatabase.ACCOUNTS_CONTENT_URI, ACCOUNTS_PROJECTION, where, whereArgs, COLUMN_TIME_USED + " DESC");
 		}
 
 		return null;
@@ -347,16 +353,16 @@ public class DBController {
 
 	public static Item createGrandExchangeItemFromCursor(final Cursor cursor) {
 		final Item item = new Item();
-		item.id = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_ID));
-		item.name = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_NAME));
-		item.description = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_DESCRIPTION));
-		item.iconLarge = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_IMAGE));
-		item.widgetId = cursor.getString(cursor.getColumnIndex(COLUMN_WIDGET_ID));
-		item.members = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_MEMBERS)) == 1;
+		item.id = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ITEM_ID));
+		item.name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ITEM_NAME));
+		item.description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ITEM_DESCRIPTION));
+		item.iconLarge = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ITEM_IMAGE));
+		item.widgetId = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WIDGET_ID));
+		item.members = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_IS_MEMBERS)) == 1;
 		return item;
 	}
 
-	public static void addGrandExchangeItem(final Context context, Item item) {
+	public void addGrandExchangeItem(final Context context, Item item) {
 		final boolean isExist = doesGrandExchangeItemExist(context, item.id);
 		if(!isExist && context != null) {
 			final ContentValues values = new ContentValues();
@@ -369,7 +375,7 @@ public class DBController {
 		}
 	}
 
-	public static ArrayList<Item> getGrandExchangeItems(final Context context) {
+	public ArrayList<Item> getGrandExchangeItems(final Context context) {
 		final ArrayList<Item> items = new ArrayList<>();
 		final String[] projection = GRAND_EXCHANGE_PROJECTION;
 		final String sortOrder = COLUMN_IS_STARRED + " DESC, " + COLUMN_ITEM_NAME + " ASC";
@@ -395,7 +401,7 @@ public class DBController {
 		return items;
 	}
 
-	public static void setGrandExchangeWidgetIdToItem(final Context context, String itemId, final String widgetId) {
+	public void setGrandExchangeWidgetIdToItem(final Context context, String itemId, final String widgetId) {
 		ContentValues values = new ContentValues();
 
 		if(context != null) {
@@ -410,7 +416,7 @@ public class DBController {
 	}
 
 
-	public static void setGrandExchangeStarred(final Context context, String itemId, final boolean isStarred, final long price) {
+	public void setGrandExchangeStarred(final Context context, String itemId, final boolean isStarred, final long price) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_IS_STARRED, isStarred ? 1 : 0);
 		values.put(COLUMN_PRICE_WANTED, price);
@@ -420,7 +426,7 @@ public class DBController {
 		}
 	}
 
-	private static boolean doesGrandExchangeItemExist(Context context, String itemId) {
+	private boolean doesGrandExchangeItemExist(Context context, String itemId) {
 		final String where = COLUMN_ITEM_ID + "=?";
 		final String[] whereArgs = new String[]{itemId};
 
@@ -444,7 +450,7 @@ public class DBController {
 		return isExist;
 	}
 
-	public static Item getGrandExchangeByWidgetId(Context context, int appWidgetId) {
+	public Item getGrandExchangeByWidgetId(Context context, int appWidgetId) {
 		Item item = null;
 		final String[] projection = GRAND_EXCHANGE_PROJECTION;
 		final String where = COLUMN_WIDGET_ID + "=?";
@@ -469,7 +475,7 @@ public class DBController {
 		return item;
 	}
 
-	public static String getQueryCache(final Context context, final String query) {
+	public String getQueryCache(final Context context, final String query) {
 		final String[] projection = new String[]{COLUMN_OUTPUT};
 		final String where = COLUMN_QUERY + "=?";
 		final String[] whereArgs = new String[]{query};
@@ -495,7 +501,7 @@ public class DBController {
 		return output;
 	}
 
-	public static boolean isQueryInCache(final Context context, final String query) {
+	public boolean isQueryInCache(final Context context, final String query) {
 		final String[] projection = new String[]{"COUNT(*)"};
 		final String where = COLUMN_QUERY + "=?";
 		final String[] whereArgs = new String[]{String.valueOf(query)};
@@ -521,7 +527,7 @@ public class DBController {
 		return count > 0;
 	}
 
-	public static void insertOutputToQueryCache(final Context context, String query, final String output) {
+	public void insertOutputToQueryCache(final Context context, String query, final String output) {
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_OUTPUT, output);
 

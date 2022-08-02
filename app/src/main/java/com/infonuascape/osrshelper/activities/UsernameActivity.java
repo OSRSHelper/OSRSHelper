@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.UsernamesAdapter;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.widget.hiscores.OSRSAppWidgetProvider;
@@ -87,7 +87,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 	public void onResume(){
 		super.onResume();
 		// Get all usernames
-		ArrayList<Account> accounts = DBController.getAllAccounts(this);
+		ArrayList<Account> accounts = OSRSApp.getInstance().getDatabaseFacade().getAllAccounts(this);
 
 		adapter = new UsernamesAdapter(this, accounts);
 		ListView list = findViewById(android.R.id.list);
@@ -128,11 +128,11 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 	private void closeActivity(final Account account) {
 		if (account != null) {
-			DBController.addOrUpdateAccount(this, account);
+			OSRSApp.getInstance().getDatabaseFacade().addOrUpdateAccount(this, account);
 		}
 
 		if (action == ACTION_WIDGET) {
-			DBController.setAccountForWidget(this, mAppWidgetId, account);
+			OSRSApp.getInstance().getDatabaseFacade().setAccountForWidget(this, mAppWidgetId, account);
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 			setResult(RESULT_OK, resultValue);
@@ -140,7 +140,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{mAppWidgetId});
 			sendBroadcast(intent);
 		} else if (action == ACTION_PROFILE) {
-			DBController.setProfileAccount(this, account);
+			OSRSApp.getInstance().getDatabaseFacade().setProfileAccount(this, account);
 			setResult(RESULT_OK);
 		}
 		finish();
@@ -161,7 +161,7 @@ public class UsernameActivity extends Activity implements OnClickListener, OnIte
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				DBController.deleteAccount(getApplicationContext(), account);
+				OSRSApp.getInstance().getDatabaseFacade().deleteAccount(getApplicationContext(), account);
 				adapter.remove(account);
 			}
 		}).setNegativeButton(R.string.cancel, null).create().show();

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.UsernameActivity;
-import com.infonuascape.osrshelper.db.DBController;
+import com.infonuascape.osrshelper.db.OSRSDatabaseFacade;
 import com.infonuascape.osrshelper.models.Account;
 import com.infonuascape.osrshelper.utils.Logger;
 
@@ -52,7 +52,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			views.setOnClickPendingIntent(R.id.update_btn, pendingSync);
 			
 			//Username
-			final Account account = DBController.getAccountForWidget(context, appWidgetId);
+			final Account account = OSRSApp.getInstance().getDatabaseFacade().getAccountForWidget(context, appWidgetId);
 			if(account != null) {
 				views.setTextViewText(R.id.username, account.getDisplayName());
 				views.setViewVisibility(R.id.icon, View.VISIBLE);
