@@ -28,15 +28,14 @@ public class Logger {
         }
     }
 
-    public static void addException(final String tag, final Throwable throwable) {
-        String log = tag + ": exception=" + throwable;
+    public static void addException(final Throwable throwable) {
         try {
-            FirebaseCrashlytics.getInstance().log(log);
+            FirebaseCrashlytics.getInstance().recordException(throwable);
         } catch (Exception e) {
             //Ignore
         }
         if (BuildConfig.DEBUG) {
-            Log.e(TAG, log);
+            throwable.printStackTrace();
         }
     }
 }

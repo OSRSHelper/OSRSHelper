@@ -102,7 +102,7 @@ public class WorldMapFragment extends OSRSFragment implements OnClickListener, P
                 }
             });
         } catch (Exception e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
         }
     }
 

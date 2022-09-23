@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.infonuascape.osrshelper.enums.AccountType;
 import com.infonuascape.osrshelper.models.Account;
@@ -522,16 +523,25 @@ public class DBController {
 	}
 
 	public static void insertOutputToQueryCache(final Context context, String query, final String output) {
+		Logger.add(TAG, ": insertOutputToQueryCache: query=" + query);
 		final ContentValues values = new ContentValues();
 		values.put(COLUMN_OUTPUT, output);
 
-		if(context != null) {
+		if (context != null) {
 			if (isQueryInCache(context, query)) {
 				context.getContentResolver().update(OSRSDatabase.QUERY_CACHE_CONTENT_URI, values, COLUMN_QUERY + "=?", new String[]{query});
 			} else {
 				values.put(COLUMN_QUERY, query);
 				context.getContentResolver().insert(OSRSDatabase.QUERY_CACHE_CONTENT_URI, values);
 			}
+		}
+	}
+
+	public static void deleteOutputFromQueryCache(final Context context, String query) {
+		Logger.add(TAG, ": deleteOutputFromQueryCache: query=" + query);
+
+		if (context != null) {
+			context.getContentResolver().delete(OSRSDatabase.QUERY_CACHE_CONTENT_URI, COLUMN_QUERY + "=?", new String[]{query});
 		}
 	}
 }

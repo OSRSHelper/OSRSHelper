@@ -41,7 +41,7 @@ public class TopPlayersFetcherTask extends AsyncTask<Void, Void, Void> {
         try {
             playerExps = TopPlayersApi.fetch(skillType, accountType, period);
         } catch (APIError | JSONException e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
         }
 
         return null;

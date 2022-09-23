@@ -44,7 +44,7 @@ public class NewsApi {
                     newsList.add(news);
                 }
             } catch (JSONException e) {
-                Logger.addException(TAG, e);
+                Logger.addException(e);
             }
         }
 

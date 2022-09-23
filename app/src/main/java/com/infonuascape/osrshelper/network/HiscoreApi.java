@@ -77,7 +77,7 @@ public class HiscoreApi {
     public static PlayerSkills fetch(Context context, String username) throws PlayerNotFoundException, APIError {
         Logger.add(TAG, ": fetch: context=", context, ", username=", username);
         String url = getQueryUrl(username);
-        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url, true);
+        HTTPResult httpResult = NetworkStack.getInstance().performGetRequest(url);
 
         if (httpResult.statusCode == StatusCode.NOT_FOUND) {
             throw new PlayerNotFoundException(username);
@@ -85,10 +85,10 @@ public class HiscoreApi {
             throw new APIError("Unexpected response from the server.");
         }
 
-        return parseResponse(context, httpResult.output, username);
+        return parseResponse(context, httpResult.output, username, url);
     }
 
-    public static PlayerSkills parseResponse(Context context, String output, String username) throws PlayerNotFoundException, APIError {
+    public static PlayerSkills parseResponse(Context context, String output, String username, String url) throws PlayerNotFoundException, APIError {
         try {
             JSONObject jsonObject = new JSONObject(output);
             PlayerSkills ps = new PlayerSkills();
@@ -234,6 +234,7 @@ public class HiscoreApi {
 
                 try {
                     DBController.updateAccount(context, username, displayName, type, ps.combatLvl);
+                    DBController.insertOutputToQueryCache(context, url, output);
                 } catch (SecurityException e) {
                     //You can't access database via the widget
                 }
@@ -241,7 +242,7 @@ public class HiscoreApi {
                 return ps;
             }
         } catch (JSONException e) {
-			Logger.addException(TAG, e);
+			Logger.addException(e);
         }
 
         return null;

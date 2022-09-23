@@ -3,7 +3,6 @@ package com.infonuascape.osrshelper.network;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.GrandExchangeDetailInfo;
@@ -65,7 +64,7 @@ public class GrandExchangeDetailInfoApi {
                 itemInfo.day180 = parseTrendChange((JSONObject) json.get(KEY_TREND_DAY_180));
                 return itemInfo;
             } catch (JSONException e) {
-                Logger.addException(TAG, e);
+                Logger.addException(e);
             }
         }
         return null;

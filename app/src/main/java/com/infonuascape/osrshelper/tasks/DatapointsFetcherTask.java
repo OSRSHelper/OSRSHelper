@@ -32,9 +32,9 @@ public class DatapointsFetcherTask extends AsyncTask<Void, Void, Void> {
         try {
             deltas = DataPointsApi.fetch(account.username);
         } catch (PlayerNotFoundException e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
         } catch (APIError e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
         }
         return null;
     }

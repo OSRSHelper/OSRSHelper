@@ -12,7 +12,6 @@ import com.infonuascape.osrshelper.models.players.PlayerSkills;
 import com.infonuascape.osrshelper.network.TrackerApi;
 import com.infonuascape.osrshelper.utils.Logger;
 import com.infonuascape.osrshelper.utils.Utils;
-import com.infonuascape.osrshelper.utils.exceptions.APIError;
 import com.infonuascape.osrshelper.utils.exceptions.PlayerNotFoundException;
 
 import java.lang.ref.WeakReference;
@@ -65,7 +64,7 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
                 }
             }
         } catch (PlayerNotFoundException e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
             if (listener != null) {
                 if (context.get() != null) {
                     listener.onTrackingError(context.get().getString(R.string.now_tracking));
@@ -74,7 +73,7 @@ public class TrackerFetcherTask extends AsyncTask<Void, Void, Void> {
                 }
             }
         } catch (Exception e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
             if (listener != null) {
                 if (context.get() != null) {
                     listener.onTrackingError(e.getMessage());

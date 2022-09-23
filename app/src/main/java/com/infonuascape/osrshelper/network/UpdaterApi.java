@@ -34,7 +34,7 @@ public class UpdaterApi {
                     response.errorMessage = convertErrorMessage(jsonObject.getString(KEY_MESSAGE));
                 }
             } catch (JSONException e) {
-                Logger.addException(TAG, e);
+                Logger.addException(e);
             }
         }
 

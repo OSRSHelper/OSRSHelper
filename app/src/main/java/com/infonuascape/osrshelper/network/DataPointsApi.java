@@ -99,7 +99,7 @@ public class DataPointsApi {
                     }
                 }
             } catch (JSONException | ParseException | NullPointerException e) {
-                Logger.addException(TAG, e);
+                Logger.addException(e);
             }
         }
 

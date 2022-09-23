@@ -8,12 +8,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.infonuascape.osrshelper.db.DBController;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.utils.Logger;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by marc_ on 2017-07-08.
@@ -42,15 +39,11 @@ public class NetworkStack {
     }
 
     public HTTPResult performGetRequest(String url) {
-        return performRequest(url, Request.Method.GET, false);
+        return performRequest(url, Request.Method.GET);
     }
 
-    public HTTPResult performGetRequest(String url, boolean saveOutput) {
-        return performRequest(url, Request.Method.GET, saveOutput);
-    }
-
-    public HTTPResult performRequest(String url, int requestMethod, boolean saveOutput) {
-        Logger.add(TAG, ": performRequest: url=", url, ", requestMethod=", requestMethod, ", saveOutput=", saveOutput);
+    public HTTPResult performRequest(String url, int requestMethod) {
+        Logger.add(TAG, ": performRequest: url=", url, ", requestMethod=", requestMethod);
         HTTPResult result = new HTTPResult();
         result.url = url;
 
@@ -62,19 +55,8 @@ public class NetworkStack {
         try {
             result.output = future.get();
             result.statusCode = StatusCode.FOUND;
-
-            if (saveOutput) {
-                try {
-                    DBController.insertOutputToQueryCache(context, url, result.output);
-                } catch (SecurityException e) {
-                    //The widgets doesn't have the permission to access the database
-                }
-            }
-        } catch (InterruptedException e) {
-            result.statusCode = StatusCode.NOT_FOUND;
-            //Don't show interrupted exception, it's user-triggered
-        } catch (ExecutionException e) {
-            Logger.addException(TAG, e);
+        } catch (Exception e) {
+            Logger.addException(e);
             result.statusCode = StatusCode.NOT_FOUND;
         }
 

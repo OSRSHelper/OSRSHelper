@@ -38,9 +38,16 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            String output = DBController.getQueryCache(context.get(), HiscoreApi.getQueryUrl(account.username));
+            String url = HiscoreApi.getQueryUrl(account.username);
+            String output = DBController.getQueryCache(context.get(), url);
             if (!TextUtils.isEmpty(output)) {
-                playerSkills = HiscoreApi.parseResponse(context.get(), output, account.username);
+                try {
+                    playerSkills = HiscoreApi.parseResponse(context.get(), output, account.username, url);
+                } catch (Exception e) {
+                    Logger.addException(e);
+                    //We shouldn't have saved that output
+                    DBController.deleteOutputFromQueryCache(context.get(), url);
+                }
                 if (playerSkills != null) {
                     playerSkills.isNewlyTracked = false;
                     if (listener != null) {
@@ -52,13 +59,13 @@ public class HiscoresFetcherTask extends AsyncTask<Void, Void, Void> {
                 playerSkills = HiscoreApi.fetch(context.get(), account.username);
             }
         } catch (PlayerNotFoundException e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
             errorMessage = context.get().getString(R.string.not_existing_player);
         } catch (APIError e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
             errorMessage = e.getMessage();
         } catch (Exception e) {
-            Logger.addException(TAG, e);
+            Logger.addException(e);
             if (context.get() != null) {
                 errorMessage = context.get().getString(R.string.internal_error);
             }

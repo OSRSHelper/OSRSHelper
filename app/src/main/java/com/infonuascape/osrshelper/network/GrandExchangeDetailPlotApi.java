@@ -2,7 +2,6 @@ package com.infonuascape.osrshelper.network;
 
 import android.net.Uri;
 
-import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.utils.Logger;
@@ -55,7 +54,7 @@ public class GrandExchangeDetailPlotApi {
                 results.averages = averages.toArray(new DataPoint[0]);
                 return results;
             } catch (JSONException e) {
-                Logger.addException(TAG, e);
+                Logger.addException(e);
             }
         }
         return null;

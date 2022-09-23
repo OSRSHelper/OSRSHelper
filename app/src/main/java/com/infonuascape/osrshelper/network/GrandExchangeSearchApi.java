@@ -3,7 +3,6 @@ package com.infonuascape.osrshelper.network;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.android.volley.Request;
 import com.infonuascape.osrshelper.models.HTTPResult;
 import com.infonuascape.osrshelper.models.StatusCode;
 import com.infonuascape.osrshelper.models.grandexchange.Item;
@@ -49,7 +48,7 @@ public class GrandExchangeSearchApi {
                     itemsSearch.add(item);
                 }
             } catch (JSONException e) {
-                Logger.addException(TAG, e);
+                Logger.addException(e);
             }
         }
         return itemsSearch;
