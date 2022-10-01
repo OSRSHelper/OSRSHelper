@@ -26,8 +26,6 @@ public class OSRSApp extends Application {
         FirebaseApp.initializeApp(this);
         NetworkStack.init(this);
 
-        NotificationController.initNotificationChannels(this);
-
         final boolean isSubscribedToNews = PreferencesController.getBooleanPreference(this,
                 PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, false);
         Utils.subscribeToNews(this, isSubscribedToNews);

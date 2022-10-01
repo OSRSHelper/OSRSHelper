@@ -18,6 +18,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.bubble.HoverMenuServiceImpl;
+import com.infonuascape.osrshelper.fcm.OSRSFirebaseMessagingService;
 import com.infonuascape.osrshelper.models.PointOfInterest;
 import com.infonuascape.osrshelper.models.PointOfInterestHeader;
 import com.infonuascape.osrshelper.db.PreferencesController;
@@ -330,9 +331,9 @@ public class Utils {
 			FirebaseApp.initializeApp(context.getApplicationContext());
 			PreferencesController.setPreference(context, PreferencesController.USER_PREF_IS_SUBSCRIBED_TO_NEWS, isSubscribed);
 			if (!isSubscribed) {
-				FirebaseMessaging.getInstance().unsubscribeFromTopic("news");
+				FirebaseMessaging.getInstance().unsubscribeFromTopic(OSRSFirebaseMessagingService.NEWS_TOPIC);
 			} else {
-				FirebaseMessaging.getInstance().subscribeToTopic("news");
+				FirebaseMessaging.getInstance().subscribeToTopic(OSRSFirebaseMessagingService.NEWS_TOPIC);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

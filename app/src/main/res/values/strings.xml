@@ -185,4 +185,7 @@
     <string name="hiscore_rank">Rank</string>
     <string name="hiscore_rank_item">th</string>
 
+    <string name="notification_enable_system">Notifications needs to be enabled through system settings</string>
+    <string name="notification_enable_system_action">Settings</string>
+
 </resources>

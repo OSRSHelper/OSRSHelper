@@ -17,6 +17,8 @@ public class OSRSFirebaseMessagingService extends FirebaseMessagingService {
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_URL = "url";
 
+    public static final String NEWS_TOPIC = "news";
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);

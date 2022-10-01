@@ -98,7 +98,8 @@ public class HiscoreApi {
                 ps.isNewlyTracked = true;
             }
 
-            if (jsonObject.has(KEY_STATUS) && (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_UNKNOWN_PLAYER) || TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_INVALID_USERNAME))) {
+            if (jsonObject.has(KEY_STATUS) && (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_UNKNOWN_PLAYER) || TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_INVALID_USERNAME)
+                    || (TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_OK) && jsonObject.isNull(KEY_LATEST_SNAPSHOT)))) {
                 throw new PlayerNotFoundException(username);
             } else if (jsonObject.has(KEY_STATUS) && TextUtils.equals(jsonObject.getString(KEY_STATUS), VALUE_SERVICE_TIMEOUT)) {
                 throw new APIError("Hiscores are unavailable. Try again later.");

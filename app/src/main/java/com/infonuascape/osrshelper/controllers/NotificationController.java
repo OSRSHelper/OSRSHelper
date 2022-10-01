@@ -9,7 +9,10 @@ import androidx.core.app.NotificationCompat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+import android.view.View;
 
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.activities.MainActivity;
@@ -27,7 +30,7 @@ public class NotificationController {
 
     private final static int OSRS_NEWS_ID = 9001;
 
-    public static void initNotificationChannels(final Context context) {
+    private static void initNotificationChannels(final Context context) {
         Logger.add(TAG, ": initNotificationChannels:");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(OSRS_HELPER_CHANNEL_ID, OSRS_HELPER_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
@@ -41,12 +44,15 @@ public class NotificationController {
 
     public static void showOSRSNews(final Context context, final String title, final String description, final String url) {
         Logger.add(TAG, ": showOSRSNews: context=", context, ", title=", title, ", description=", description, ", url=", url);
-        NotificationCompat.Builder builder;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder = new NotificationCompat.Builder(context, OSRS_HELPER_CHANNEL_ID);
-        } else {
-            builder = new NotificationCompat.Builder(context);
+
+        NotificationManager notificationManager = ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !notificationManager.areNotificationsEnabled()) {
+            Logger.add(TAG, ": showOSRSNews: notifications are disabled");
         }
+
+        initNotificationChannels(context);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, OSRS_HELPER_CHANNEL_ID);
 
         builder.setContentTitle(title);
         builder.setContentText(description);
@@ -55,13 +61,28 @@ public class NotificationController {
 
         Intent resultIntent = MainActivity.getNewsIntent(context, url);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(resultPendingIntent);
         builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         builder.setVibrate(new long[]{0,100,50,100});
         builder.setStyle(new NotificationCompat.BigTextStyle().setBigContentTitle(title).bigText(description));
 
         Notification notification = builder.build();
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(title.hashCode(), notification);
+
+        notificationManager.notify(OSRS_NEWS_ID, notification);
+    }
+
+    public static Intent getNotificationsIntent(Context context) {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+        } else {
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", context.getPackageName());
+            intent.putExtra("app_uid", context.getApplicationInfo().uid);
+        }
+
+        return intent;
     }
 }

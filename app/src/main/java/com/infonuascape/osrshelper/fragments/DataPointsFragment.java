@@ -74,7 +74,7 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
 
     private void refreshScreen() {
         Logger.add(TAG, ": refreshScreen");
-        if (getView() != null) {
+        if (getView() != null && profileHeaderFragment != null) {
             profileHeaderFragment.setTitle(R.string.data_points);
             profileHeaderFragment.refreshProfile(account);
             loadDeltas();

@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.AccountQuickActionsAdapter;
 import com.infonuascape.osrshelper.controllers.MainFragmentController;
