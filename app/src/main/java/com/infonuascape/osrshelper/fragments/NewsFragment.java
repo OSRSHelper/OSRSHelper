@@ -46,6 +46,8 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     private ProgressBar progressBar;
     private TextView subscribeBtn;
 
+    private boolean isLoadingNews = false;
+
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
         Bundle b = new Bundle();
@@ -101,15 +103,19 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     }
 
     private void loadNews(int pageNum) {
-        Logger.add(TAG, ": loadNews: pageNum=", pageNum);
+        Logger.add(TAG, ": loadNews: pageNum=", pageNum, ", isLoadingNews=", isLoadingNews);
         progressBar.setVisibility(View.VISIBLE);
-        asyncTask = new OSRSNewsTask(this, pageNum);
-        asyncTask.execute();
+        if (!isLoadingNews) {
+            isLoadingNews = true;
+            asyncTask = new OSRSNewsTask(this, pageNum);
+            asyncTask.execute();
+        }
     }
 
     @Override
     public void onNewsFetchingError() {
         Logger.add(TAG, ": onNewsFetchingError");
+        isLoadingNews = false;
         progressBar.setVisibility(View.GONE);
         emptyText.setVisibility(View.VISIBLE);
     }
@@ -117,6 +123,7 @@ public class NewsFragment extends OSRSFragment implements NewsFetcherListener, R
     @Override
     public void onNewsFetched(List<News> news) {
         Logger.add(TAG, ": onNewsFetched: news=", news);
+        isLoadingNews = false;
         if (getView() != null) {
             progressBar.setVisibility(View.GONE);
             emptyText.setVisibility(View.GONE);
