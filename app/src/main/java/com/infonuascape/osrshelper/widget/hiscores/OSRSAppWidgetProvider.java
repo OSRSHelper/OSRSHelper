@@ -38,7 +38,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 			// Create an Intent to launch ExampleActivity
 			Intent intentSync = new Intent(context, OSRSAppWidgetProvider.class);
 			intentSync.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-			PendingIntent pendingSync = PendingIntent.getBroadcast(context, 0, intentSync, PendingIntent.FLAG_UPDATE_CURRENT); //You need to specify a proper flag for the intent. Or else the intent will become deleted.
+			PendingIntent pendingSync = PendingIntent.getBroadcast(context, 0, intentSync, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE); //You need to specify a proper flag for the intent. Or else the intent will become deleted.
 
 
 			Intent intentService = new Intent(context, OSRSWidgetService.class);
@@ -78,7 +78,7 @@ public class OSRSAppWidgetProvider extends AppWidgetProvider {
 	        configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 	        configIntent.setAction(ACTION_WIDGET_CONFIGURE + Integer.toString(appWidgetId));
-			PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
+			PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 			views.setOnClickPendingIntent(R.id.username_btn, configPendingIntent);
 
 			views.setRemoteAdapter(R.id.grid_view, intentService);

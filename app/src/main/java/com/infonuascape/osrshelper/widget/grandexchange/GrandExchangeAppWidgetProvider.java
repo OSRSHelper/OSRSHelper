@@ -42,7 +42,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 		Intent intentSync = new Intent(context, GrandExchangeAppWidgetProvider.class);
 		intentSync.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		intentSync.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-		PendingIntent pendingSync = PendingIntent.getBroadcast(context, appWidgetId, intentSync, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingSync = PendingIntent.getBroadcast(context, appWidgetId, intentSync, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 		final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_grand_exchange_layout);
 		views.setOnClickPendingIntent(R.id.update_btn, pendingSync);
@@ -74,7 +74,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 		configIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		configIntent.setAction(ACTION_WIDGET_CONFIGURE + Integer.toString(appWidgetId));
-		PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, 0);
+		PendingIntent configPendingIntent = PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 		views.setOnClickPendingIntent(R.id.change_item_btn, configPendingIntent);
 
 		//Info
@@ -82,7 +82,7 @@ public class GrandExchangeAppWidgetProvider extends AppWidgetProvider {
 			views.setViewVisibility(R.id.info_item_btn, View.VISIBLE);
 			Intent infoIntent = MainActivity.getGrandExchangeDetailIntent(context, item.name, item.id);
 			infoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			PendingIntent infoPendingIntent = PendingIntent.getActivity(context, appWidgetId, infoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent infoPendingIntent = PendingIntent.getActivity(context, appWidgetId, infoIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 			views.setOnClickPendingIntent(R.id.info_item_btn, infoPendingIntent);
 		} else {
 			views.setViewVisibility(R.id.info_item_btn, View.GONE);
