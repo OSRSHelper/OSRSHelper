@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.google.android.material.navigation.NavigationView;
+import com.infonuascape.osrshelper.BuildConfig;
 import com.infonuascape.osrshelper.R;
 import com.infonuascape.osrshelper.adapters.PoIAdapter;
 import com.infonuascape.osrshelper.models.PointOfInterest;
@@ -27,7 +29,7 @@ public class WorldMapFragment extends OSRSFragment implements OnClickListener, P
     private static final String TAG = "WorldMapFragment";
     private static final String KEY_X = "X";
     private static final String KEY_Y = "Y";
-    private static final String MAP_FILE_NAME = "osrs.jpg";
+    private static final String MAP_FILE_NAME = "osrs.png";
     private DrawerLayout drawerLayout;
     private RecyclerView poICitiesRecyclerView;
     private PoIAdapter adapterCities;
@@ -77,6 +79,16 @@ public class WorldMapFragment extends OSRSFragment implements OnClickListener, P
                         animateMap(x, y);
                     } else {
                         animateMap(Utils.VARROCK_POINT.x, Utils.VARROCK_POINT.y);
+                    }
+
+                    if (BuildConfig.DEBUG) {
+                        imageSurfaceView.setOnLongClickListener(v -> {
+                            PointF centerPoint = imageSurfaceView.getCenter();
+                            if (centerPoint != null) {
+                                Toast.makeText(getActivity(), centerPoint.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                            return false;
+                        });
                     }
                 }
 

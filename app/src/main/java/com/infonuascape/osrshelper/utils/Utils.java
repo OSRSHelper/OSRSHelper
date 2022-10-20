@@ -211,6 +211,7 @@ public class Utils {
 
 		poi.add(new PointOfInterestHeader("Cities", null));
 		poi.add(new PointOfInterest("Al Kharid", new Point(ZEAH_OFFSET_X + 3932, 3126 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Ape Atoll", new Point(4854, 4083)));
 		poi.add(new PointOfInterest("Ardougne", new Point(ZEAH_OFFSET_X + 1920, 2775 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Barbarian Village", new Point(ZEAH_OFFSET_X + 3285, 2400 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Brimhaven", new Point(ZEAH_OFFSET_X + 2400, 3110 + ZEAH_OFFSET_Y)));
@@ -226,17 +227,21 @@ public class Utils {
 		poi.add(new PointOfInterest("Grand Tree", new Point(ZEAH_OFFSET_X + 1445, 2185 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Jatizso", new Point(ZEAH_OFFSET_X + 1270, 1250 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Lumbridge", new Point(ZEAH_OFFSET_X + 3760, 2983 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Menaphos", new Point(6286, 4030)));
 		poi.add(new PointOfInterest("Miscellania", new Point(ZEAH_OFFSET_X + 1685, 1045 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Mortton", new Point(ZEAH_OFFSET_X + 4520, 2820 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Musa Point", new Point(ZEAH_OFFSET_X + 2770, 3185 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Nardah", new Point(ZEAH_OFFSET_X + 4340, 3940 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Neitiznot", new Point(ZEAH_OFFSET_X + 1045, 1250 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Necropolis", new Point(6585, 4121)));
 		poi.add(new PointOfInterest("Pollnivneach", new Point(ZEAH_OFFSET_X + 4120, 3745 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Port Khazard", new Point(ZEAH_OFFSET_X + 2015, 3175 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Port Phasmatys", new Point(ZEAH_OFFSET_X + 5080, 2205 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Port Sarim", new Point(ZEAH_OFFSET_X + 3130, 2990 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Rellekka", new Point(ZEAH_OFFSET_X + 2020, 1635 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Rimmington", new Point(ZEAH_OFFSET_X + 2915, 3000 + ZEAH_OFFSET_Y)));
+		poi.add(new PointOfInterest("Ruins of Ullek", new Point(6824, 3920)));
+		poi.add(new PointOfInterest("Ruins of Unkah", new Point(6100, 3845)));
 		poi.add(new PointOfInterest("Seers' Village", new Point(ZEAH_OFFSET_X + 2175, 2215 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Shilo Village", new Point(ZEAH_OFFSET_X + 2590, 3740 + ZEAH_OFFSET_Y)));
 		poi.add(new PointOfInterest("Slepe", new Point(7750, 2330)));
