@@ -76,12 +76,19 @@ public class AccountQuickActionsFragment extends OSRSFragment implements Recycle
         Logger.add(TAG, ": onItemClicked: position=", position);
         if (account != null) {
             QuickAction quickAction = adapter.getItem(position);
+            OSRSFragment currentFragment = MainFragmentController.getInstance().getCurrentFragment();
             if (quickAction == QuickAction.HISCORES) {
-                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
+                if (!(currentFragment instanceof HighScoreFragment) || !((HighScoreFragment) currentFragment).isSameAccount(account)) {
+                    MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
+                }
             } else if (quickAction == QuickAction.XP_TRACKER) {
-                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_xp_tracker : -1, XPTrackerFragment.newInstance(account));
+                if (!(currentFragment instanceof XPTrackerFragment) || !((XPTrackerFragment) currentFragment).isSameAccount(account)) {
+                    MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_xp_tracker : -1, XPTrackerFragment.newInstance(account));
+                }
             } else if (quickAction == QuickAction.DATA_POINTS) {
-                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_data_points : -1, DataPointsFragment.newInstance(account));
+                if (!(currentFragment instanceof DataPointsFragment) || !((DataPointsFragment) currentFragment).isSameAccount(account)) {
+                    MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_data_points : -1, DataPointsFragment.newInstance(account));
+                }
             }
         }
     }

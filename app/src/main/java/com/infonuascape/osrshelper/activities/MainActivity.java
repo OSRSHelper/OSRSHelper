@@ -237,18 +237,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         OSRSFragment fragment = null;
+        OSRSFragment currentFragment = MainFragmentController.getInstance().getCurrentFragment();
 
         if (id == R.id.nav_home) {
             fragment = NewsFeedFragment.newInstance();
         } else if (id == R.id.nav_hiscores) {
             Account account = DBController.getProfileAccount(this);
-            fragment = HighScoreFragment.newInstance(account);
+            if (!(currentFragment instanceof HighScoreFragment) || !((HighScoreFragment) currentFragment).isSameAccount(account)) {
+                fragment = HighScoreFragment.newInstance(account);
+            }
         } else if (id == R.id.nav_xp_tracker) {
             Account account = DBController.getProfileAccount(this);
-            fragment = XPTrackerFragment.newInstance(account);
+            if (!(currentFragment instanceof XPTrackerFragment) || !((XPTrackerFragment) currentFragment).isSameAccount(account)) {
+                fragment = XPTrackerFragment.newInstance(account);
+            }
         } else if (id == R.id.nav_data_points) {
             Account account = DBController.getProfileAccount(this);
-            fragment = DataPointsFragment.newInstance(account);
+            if (!(currentFragment instanceof DataPointsFragment) || !((DataPointsFragment) currentFragment).isSameAccount(account)) {
+                fragment = DataPointsFragment.newInstance(account);
+            }
         } else if (id == R.id.nav_world_map) {
             fragment = WorldMapFragment.newInstance();
         } else if (id == R.id.nav_wiki) {
@@ -272,9 +279,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (fragment != null) {
             MainFragmentController.getInstance().showRootFragment(id, fragment);
-            drawer.closeDrawer(GravityCompat.START);
-            drawer.closeDrawers();
         }
+
+        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawers();
 
         return true;
     }
@@ -306,7 +314,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onSuggestionClick(int position) {
         Account account = DBController.createAccountFromCursor((Cursor) suggestionsAdapter.getItem(position));
         if (account != null) {
-            MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
+            OSRSFragment currentFragment = MainFragmentController.getInstance().getCurrentFragment();
+            if (!(currentFragment instanceof HighScoreFragment) || !((HighScoreFragment) currentFragment).isSameAccount(account)) {
+                MainFragmentController.getInstance().showRootFragment(account.isProfile ? R.id.nav_hiscores : -1, HighScoreFragment.newInstance(account));
+            }
             searchView.setQuery(null, false);
             searchView.clearFocus();
         }
@@ -332,8 +343,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public Cursor runQuery(CharSequence query) {
         Logger.add(TAG, ": runQuery: charSequence=" + query);
 
-        Cursor c = DBController.searchAccountsByUsername(this, query);
-        return c;
+        return DBController.searchAccountsByUsername(this, query);
     }
 
     @Override
@@ -341,7 +351,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (view.getId() == R.id.nav_header_container) {
             Account account = DBController.getProfileAccount(this);
             if (account != null) {
-                MainFragmentController.getInstance().showRootFragment(R.id.nav_hiscores, HighScoreFragment.newInstance(account));
+                OSRSFragment currentFragment = MainFragmentController.getInstance().getCurrentFragment();
+                if (!(currentFragment instanceof HighScoreFragment) || !((HighScoreFragment) currentFragment).isSameAccount(account)) {
+                    MainFragmentController.getInstance().showRootFragment(R.id.nav_hiscores, HighScoreFragment.newInstance(account));
+                }
                 drawer.closeDrawer(GravityCompat.START);
                 drawer.closeDrawers();
             }

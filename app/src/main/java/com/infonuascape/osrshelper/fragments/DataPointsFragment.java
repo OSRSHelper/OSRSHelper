@@ -1,6 +1,7 @@
 package com.infonuascape.osrshelper.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,10 @@ public class DataPointsFragment extends OSRSFragment implements DataPointsListen
     public void onStart() {
         super.onStart();
         refreshScreen();
+    }
+
+    public boolean isSameAccount(Account account) {
+        return this.account != null && account != null && TextUtils.equals(this.account.getDisplayName(), account.getDisplayName());
     }
 
     private void refreshScreen() {

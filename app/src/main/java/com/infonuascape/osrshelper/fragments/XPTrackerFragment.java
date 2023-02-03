@@ -140,6 +140,10 @@ public class XPTrackerFragment extends OSRSFragment implements OnClickListener, 
         }
     }
 
+    public boolean isSameAccount(Account account) {
+        return this.account != null && account != null && TextUtils.equals(this.account.getDisplayName(), account.getDisplayName());
+    }
+
     @Override
     public void onTrackingFetched(Map<TrackerTime, PlayerSkills> trackings, String lastUpdate, int combatLvl) {
         Logger.add(TAG, ": onTrackingFetched: trackings=", trackings, ", lastUpdate=", lastUpdate, ", combatLvl=", combatLvl);

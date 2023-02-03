@@ -176,6 +176,10 @@ public class HighScoreFragment extends OSRSFragment implements View.OnClickListe
         }
     }
 
+    public boolean isSameAccount(Account account) {
+        return this.account != null && account != null && TextUtils.equals(this.account.getDisplayName(), account.getDisplayName());
+    }
+
     @Override
     public void onItemClicked(int position) {
         Logger.add(TAG, ": onItemClicked: position=", position);
