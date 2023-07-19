@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <capability android:name="actions.intent.GET_GAME_OBSERVATION">
+        <intent
+            android:action="com.infonuascape.osrshelper.action.HISCORE"
+            android:targetPackage="com.infonuascape.osrshelper"
+            android:targetClass="com.infonuascape.osrshelper.activities.MainActivity">
+            <parameter
+                android:name="gameObservation.about.name"
+                android:key="EXTRA_ASSISTANT_HISCORE_NAME"/>
+            <parameter
+                android:name="gameObservation.measuredProperty.name"
+                android:key="EXTRA_ASSISTANT_HISCORE_TYPE"/>
+            <parameter
+                android:name="gameObservation.about.competitor.name"
+                android:key="EXTRA_ASSISTANT_HISCORE_PLAYER_NAME"/>
+        </intent>
+    </capability>
+
+    <!-- Short and long labels must be @string resource. -->
+    <shortcut
+        android:shortcutId="ID_ONE"
+        android:shortcutShortLabel="@string/shortcut_hiscore_short_label"
+        android:shortcutLongLabel="@string/shortcut_hiscore_long_label">
+        <capability-binding android:key="actions.intent.GET_GAME_OBSERVATION">
+            <parameter-binding
+                android:value="EXTRA_ASSISTANT_HISCORE_NAME"
+                android:key="gameObservation.about.name"/>
+            <parameter-binding
+                android:key="gameObservation.measuredProperty.name"
+                android:value="EXTRA_ASSISTANT_HISCORE_TYPE"/>
+            <parameter-binding
+                android:key="gameObservation.about.competitor.name"
+                android:value="EXTRA_ASSISTANT_HISCORE_PLAYER_NAME"/>
+        </capability-binding>
+    </shortcut>
+
+</shortcuts>

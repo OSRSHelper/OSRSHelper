@@ -1,5 +1,5 @@
 # Created by https://www.gitignore.io/api/gradle,android
-
+.DS_Store
 ### Gradle ###
 .gradle
 

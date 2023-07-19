@@ -188,4 +188,7 @@
     <string name="notification_enable_system">Notifications needs to be enabled through system settings</string>
     <string name="notification_enable_system_action">Settings</string>
 
+    <string name="shortcut_hiscore_short_label">Hiscore</string>
+    <string name="shortcut_hiscore_long_label">Check the hiscores</string>
+
 </resources>

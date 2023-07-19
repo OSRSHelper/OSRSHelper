@@ -53,8 +53,12 @@ import io.mattcarroll.hover.overlay.OverlayPermission;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener,
         SearchView.OnSuggestionListener, SearchView.OnQueryTextListener, FilterQueryProvider, View.OnClickListener {
     private static final String TAG = "MainActivity";
+    private static final String ACTION_GOOGLE_ASSISTANT = "com.infonuascape.osrshelper.action.HISCORE";
     private static final String EXTRA_FRAGMENT_TO_OPEN = "EXTRA_FRAGMENT_TO_OPEN";
     private static final String EXTRA_FRAGMENT_TO_OPEN_BUNDLE = "EXTRA_FRAGMENT_TO_OPEN_BUNDLE";
+    private static final String EXTRA_ASSISTANT_HISCORE_NAME = "EXTRA_ASSISTANT_HISCORE_NAME";
+    private static final String EXTRA_ASSISTANT_HISCORE_TYPE = "EXTRA_ASSISTANT_HISCORE_TYPE";
+    private static final String EXTRA_ASSISTANT_HISCORE_PLAYER_NAME = "EXTRA_ASSISTANT_HISCORE_PLAYER_NAME";
     public static final int REQUEST_CODE_SET_PROFILE = 9001;
     public static final int REQUEST_CODE_HOVER_PERMISSION = 9002;
 
@@ -122,20 +126,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleIntent(Intent intent) {
-        final String fragmentToOpen = intent.getStringExtra(EXTRA_FRAGMENT_TO_OPEN);
-        if (fragmentToOpen != null) {
-            final Bundle bundle = intent.getBundleExtra(EXTRA_FRAGMENT_TO_OPEN_BUNDLE);
-            if (TextUtils.equals(GrandExchangeDetailFragment.class.getSimpleName(), fragmentToOpen)) {
-                final String name = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_NAME);
-                final String itemId = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID);
-                OSRSFragment fragment = GrandExchangeDetailFragment.newInstance(name, itemId);
-                MainFragmentController.getInstance().showFragment(fragment);
-            } else if (TextUtils.equals(WebViewFragment.class.getSimpleName(), fragmentToOpen)) {
-                OSRSFragment fragment = WebViewFragment.newInstance(bundle);
-                MainFragmentController.getInstance().showFragment(fragment);
-            }
+        if (TextUtils.equals(intent.getAction(), ACTION_GOOGLE_ASSISTANT)) {
+            final String playerName = intent.getStringExtra(EXTRA_ASSISTANT_HISCORE_PLAYER_NAME);
+            final String hiscoreName = intent.getStringExtra(EXTRA_ASSISTANT_HISCORE_NAME);
+            final String hiscoreType = intent.getStringExtra(EXTRA_ASSISTANT_HISCORE_TYPE);
+            Logger.add(TAG, ": handleIntent: playerName=", playerName, ", hiscoreName=", hiscoreName, ", hiscoreType=", hiscoreType);
+            OSRSFragment fragment = TopPlayersFragment.newInstance();
+            MainFragmentController.getInstance().showFragment(fragment);
+        } else {
+            final String fragmentToOpen = intent.getStringExtra(EXTRA_FRAGMENT_TO_OPEN);
+            if (fragmentToOpen != null) {
+                final Bundle bundle = intent.getBundleExtra(EXTRA_FRAGMENT_TO_OPEN_BUNDLE);
+                if (TextUtils.equals(GrandExchangeDetailFragment.class.getSimpleName(), fragmentToOpen)) {
+                    final String name = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_NAME);
+                    final String itemId = intent.getStringExtra(GrandExchangeDetailFragment.EXTRA_ITEM_ID);
+                    OSRSFragment fragment = GrandExchangeDetailFragment.newInstance(name, itemId);
+                    MainFragmentController.getInstance().showFragment(fragment);
+                } else if (TextUtils.equals(WebViewFragment.class.getSimpleName(), fragmentToOpen)) {
+                    OSRSFragment fragment = WebViewFragment.newInstance(bundle);
+                    MainFragmentController.getInstance().showFragment(fragment);
+                }
 
-            intent.removeExtra(EXTRA_FRAGMENT_TO_OPEN);
+                intent.removeExtra(EXTRA_FRAGMENT_TO_OPEN);
+            }
         }
     }
 
